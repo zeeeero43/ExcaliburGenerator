@@ -62,7 +62,7 @@ export default function Home() {
             <ProductCard
               title={t('completeSolarSystems')}
               description={t('completeSolarSystemsDesc')}
-              image="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"
+              image="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
               linkText={t('viewSystems')}
               category="solar-systems"
             />
@@ -70,7 +70,7 @@ export default function Home() {
             <ProductCard
               title={t('solarPanels')}
               description={t('solarPanelsDesc')}
-              image="https://images.unsplash.com/photo-1497440001374-f26997328c1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"
+              image="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
               linkText={t('viewPanels')}
               category="panels"
             />
@@ -78,7 +78,7 @@ export default function Home() {
             <ProductCard
               title={t('inverters')}
               description={t('invertersDesc')}
-              image="https://images.unsplash.com/photo-1621905251918-48416bd8575a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"
+              image="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
               linkText={t('viewInverters')}
               category="inverters"
             />
@@ -86,7 +86,7 @@ export default function Home() {
             <ProductCard
               title={t('batteries')}
               description={t('batteriesDesc')}
-              image="https://images.unsplash.com/photo-1609250291996-47aa4c7c9235?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"
+              image="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
               linkText={t('viewBatteries')}
               category="batteries"
             />
@@ -94,7 +94,7 @@ export default function Home() {
             <ProductCard
               title={t('generators')}
               description={t('generatorsDesc')}
-              image="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"
+              image="https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
               linkText={t('viewGenerators')}
               category="generators"
             />
@@ -151,6 +151,56 @@ export default function Home() {
                   {t('warehouseDesc')}
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SEO Content Section - Why Solar in Cuba */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-800 mb-6">
+                ¿Por qué elegir energía solar en Cuba?
+              </h2>
+              <p className="text-xl text-excalibur-gray leading-relaxed">
+                Cuba tiene más de 300 días de sol al año, convirtiendo la energía solar en la mejor inversión energética. 
+                Nuestros sistemas reducen tu factura eléctrica hasta en 90% y proporcionan independencia energética completa.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              <div className="text-center p-6 bg-excalibur-light rounded-xl">
+                <div className="text-3xl font-bold text-excalibur-blue mb-4">300+</div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Días de sol anuales</h3>
+                <p className="text-excalibur-gray">Irradiación solar promedio de 5.5 kWh/m² ideal para generación fotovoltaica</p>
+              </div>
+              <div className="text-center p-6 bg-excalibur-light rounded-xl">
+                <div className="text-3xl font-bold text-excalibur-orange mb-4">90%</div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Reducción en factura</h3>
+                <p className="text-excalibur-gray">Ahorro promedio en costos de electricidad con sistema solar dimensionado correctamente</p>
+              </div>
+              <div className="text-center p-6 bg-excalibur-light rounded-xl">
+                <div className="text-3xl font-bold text-green-600 mb-4">25</div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Años de garantía</h3>
+                <p className="text-excalibur-gray">Garantía de rendimiento en paneles solares respaldada por fabricantes internacionales</p>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-8">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                El mercado solar cubano en crecimiento
+              </h3>
+              <p className="text-excalibur-gray leading-relaxed mb-4">
+                El mercado solar cubano está en crecimiento exponencial. Con las nuevas regulaciones gubernamentales 
+                que permiten la venta de excedentes a la red nacional, invertir en energía solar nunca ha sido más rentable.
+              </p>
+              <p className="text-excalibur-gray leading-relaxed">
+                Como representantes oficiales de Excalibur Power Group y con el respaldo de AFDL Import & Export de Alemania, 
+                garantizamos productos de calidad internacional a precios competitivos, con stock disponible en nuestro 
+                almacén de Havanna del Este para entrega inmediata.
+              </p>
             </div>
           </div>
         </div>

@@ -8,30 +8,30 @@ export default function About() {
   const stats = [
     { number: '35', label: t('yearsExperience') },
     { number: '20+', label: t('solarSystems') },
-    { number: '1000+', label: 'Clientes satisfechos' },
-    { number: '24/7', label: 'Soporte técnico' }
+    { number: '1000+', label: t('satisfiedClients') },
+    { number: '24/7', label: t('technicalSupportStats') }
   ];
 
   const features = [
     {
       icon: Shield,
-      title: 'Calidad Garantizada',
-      description: 'Productos certificados internacionalmente con garantías extendidas'
+      title: t('guaranteedQuality'),
+      description: t('guaranteedQualityDesc')
     },
     {
       icon: Users,
-      title: 'Equipo Experto',
-      description: 'Técnicos especializados con más de 10 años de experiencia'
+      title: t('expertTeam'),
+      description: t('expertTeamDesc')
     },
     {
       icon: Award,
-      title: 'Mejor Precio',
-      description: 'Compras directas de fábrica para ofrecer los mejores precios'
+      title: t('bestPrice'),
+      description: t('bestPriceDesc')
     },
     {
       icon: Globe,
-      title: 'Alcance Internacional',
-      description: 'Respaldados por AFDL Import & Export de Alemania'
+      title: t('internationalReach'),
+      description: t('internationalReachDesc')
     }
   ];
 
@@ -44,8 +44,7 @@ export default function About() {
             {t('aboutTitle')}
           </h1>
           <p className="text-xl text-excalibur-gray max-w-3xl mx-auto leading-relaxed">
-            Representantes oficiales de Excalibur Power Group en Cuba, 
-            ofreciendo soluciones energéticas de alta calidad para iluminar el futuro de Cuba.
+            {t('heroSubtitle')}
           </p>
         </div>
 
@@ -67,23 +66,20 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
             <h2 className="text-3xl font-bold text-gray-800 mb-6">
-              Nuestra Historia
+              {t('ourHistory')}
             </h2>
             <div className="space-y-4 text-lg text-excalibur-gray">
               <p>{t('aboutText1')}</p>
               <p>{t('aboutText2')}</p>
               <p>
-                Nuestro almacén en Havanna del Este está estratégicamente ubicado 
-                para servir a toda Cuba con entregas rápidas y stock abundante. 
-                Trabajamos directamente con las fábricas para garantizar los mejores 
-                precios y la más alta calidad.
+                {t('warehouseLocation')}
               </p>
             </div>
           </div>
 
           <div className="space-y-6">
             <img
-              src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500"
+              src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500"
               alt="Almacén Excalibur Cuba"
               className="rounded-xl shadow-lg w-full"
               loading="lazy"
@@ -105,7 +101,7 @@ export default function About() {
         {/* Features */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-12">
-            ¿Por qué elegir Excalibur Cuba?
+            {t('whyChooseUs')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
@@ -128,7 +124,7 @@ export default function About() {
         <div className="bg-excalibur-light rounded-xl p-8 md:p-12">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">
-              Nuestro Socio Estratégico
+              {t('strategicPartner')}
             </h2>
             <div className="max-w-3xl mx-auto">
               <div className="bg-white rounded-lg p-6 shadow-md mb-6">
@@ -136,25 +132,21 @@ export default function About() {
                   AFDL IMPORT & EXPORT
                 </h3>
                 <p className="text-excalibur-gray leading-relaxed">
-                  Con sede en Alemania y 35 años de experiencia en el mercado internacional, 
-                  AFDL Import & Export es nuestro socio Joint Venture que nos permite 
-                  ofrecer productos de la más alta calidad a precios competitivos. 
-                  Su experiencia y red de contactos directos con las fábricas nos 
-                  permite mantener un inventario abundante y precios excepcionales.
+                  {t('partnershipDesc')}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                 <div>
                   <div className="text-2xl font-bold text-excalibur-orange mb-2">35+</div>
-                  <div className="text-sm text-excalibur-gray">Años de experiencia</div>
+                  <div className="text-sm text-excalibur-gray">{t('yearsExperience')}</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-excalibur-orange mb-2">50+</div>
-                  <div className="text-sm text-excalibur-gray">Países servidos</div>
+                  <div className="text-sm text-excalibur-gray">{t('countriesServed')}</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-excalibur-orange mb-2">1000+</div>
-                  <div className="text-sm text-excalibur-gray">Contenedores enviados</div>
+                  <div className="text-sm text-excalibur-gray">{t('containersSent')}</div>
                 </div>
               </div>
             </div>

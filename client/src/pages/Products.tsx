@@ -21,7 +21,7 @@ export default function Products() {
       id: 'solar-systems',
       title: t('completeSolarSystems'),
       description: t('completeSolarSystemsDesc'),
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400',
+      image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600',
       linkText: t('viewSystems'),
       category: 'solar-systems'
     },
@@ -29,7 +29,7 @@ export default function Products() {
       id: 'panels',
       title: t('solarPanels'),
       description: t('solarPanelsDesc'),
-      image: 'https://images.unsplash.com/photo-1497440001374-f26997328c1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400',
+      image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600',
       linkText: t('viewPanels'),
       category: 'panels'
     },
@@ -37,7 +37,7 @@ export default function Products() {
       id: 'inverters',
       title: t('inverters'),
       description: t('invertersDesc'),
-      image: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400',
+      image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600',
       linkText: t('viewInverters'),
       category: 'inverters'
     },
@@ -45,7 +45,7 @@ export default function Products() {
       id: 'batteries',
       title: t('batteries'),
       description: t('batteriesDesc'),
-      image: 'https://images.unsplash.com/photo-1609250291996-47aa4c7c9235?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400',
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600',
       linkText: t('viewBatteries'),
       category: 'batteries'
     },
@@ -53,7 +53,7 @@ export default function Products() {
       id: 'generators',
       title: t('generators'),
       description: t('generatorsDesc'),
-      image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400',
+      image: 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600',
       linkText: t('viewGenerators'),
       category: 'generators'
     },
@@ -61,7 +61,7 @@ export default function Products() {
       id: 'accessories',
       title: t('accessories'),
       description: t('accessoriesDesc'),
-      image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400',
+      image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600',
       linkText: t('viewAccessories'),
       category: 'accessories'
     }
