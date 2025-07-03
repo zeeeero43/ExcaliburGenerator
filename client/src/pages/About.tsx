@@ -79,8 +79,8 @@ export default function About() {
 
           <div className="space-y-6">
             <img
-              src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500"
-              alt="Almacén Excalibur Cuba"
+              src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500"
+              alt="Solar installation team"
               className="rounded-xl shadow-lg w-full"
               loading="lazy"
             />

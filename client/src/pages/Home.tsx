@@ -137,8 +137,8 @@ export default function Home() {
 
             <div className="space-y-6">
               <img
-                src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500"
-                alt="Warehouse in Cuba"
+                src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500"
+                alt="Solar panel warehouse"
                 className="rounded-xl shadow-lg w-full"
                 loading="lazy"
               />
@@ -161,7 +161,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800 mb-6">
+              <h2 className="text-4xl font-bold gradient-text mb-6">
                 ¿Por qué elegir energía solar en Cuba?
               </h2>
               <p className="text-xl text-excalibur-gray leading-relaxed">

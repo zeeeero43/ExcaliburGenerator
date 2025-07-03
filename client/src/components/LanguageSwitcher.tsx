@@ -4,12 +4,20 @@ import { Button } from './ui/button';
 export function LanguageSwitcher() {
   const { currentLanguage, switchLanguage } = useLanguage();
 
+  const handleLanguageChange = (lang: 'es' | 'de' | 'en') => {
+    switchLanguage(lang);
+    // Force complete page reload to ensure all translations are updated
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
+
   return (
     <div className="flex space-x-1">
       <Button
         variant={currentLanguage === 'es' ? 'default' : 'ghost'}
         size="sm"
-        onClick={() => switchLanguage('es')}
+        onClick={() => handleLanguageChange('es')}
         className="px-2 py-1"
       >
         ES
@@ -17,7 +25,7 @@ export function LanguageSwitcher() {
       <Button
         variant={currentLanguage === 'de' ? 'default' : 'ghost'}
         size="sm"
-        onClick={() => switchLanguage('de')}
+        onClick={() => handleLanguageChange('de')}
         className="px-2 py-1"
       >
         DE
@@ -25,7 +33,7 @@ export function LanguageSwitcher() {
       <Button
         variant={currentLanguage === 'en' ? 'default' : 'ghost'}
         size="sm"
-        onClick={() => switchLanguage('en')}
+        onClick={() => handleLanguageChange('en')}
         className="px-2 py-1"
       >
         EN

@@ -148,7 +148,7 @@ export const sampleProducts: Product[] = [
       'Garantia': '25 anos paneles, 10 anos bateria'
     },
     images: [
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600'
+      'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600'
     ],
     availability: true
   },
@@ -166,7 +166,7 @@ export const sampleProducts: Product[] = [
       'Nivel de ruido': '<60dB'
     },
     images: [
-      'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600'
+      'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600'
     ],
     availability: true
   }

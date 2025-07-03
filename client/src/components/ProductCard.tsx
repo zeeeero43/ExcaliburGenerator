@@ -14,7 +14,7 @@ interface ProductCardProps {
 export function ProductCard({ title, description, image, linkText, category, className = "" }: ProductCardProps) {
   return (
     <Link href={`/products/${category}`}>
-      <Card className={`group cursor-pointer hover:shadow-xl transition-all duration-300 overflow-hidden ${className}`}>
+      <Card className={`group cursor-pointer card-enhanced hover-lift overflow-hidden ${className}`}>
         <div className="aspect-video overflow-hidden">
           <img
             src={image}
