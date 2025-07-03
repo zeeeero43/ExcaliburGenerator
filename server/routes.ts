@@ -1,10 +1,48 @@
 import type { Express } from "express";
+import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupSession, isAuthenticated, loginUser, logoutUser } from "./auth";
 import { seedDatabase } from "./seed";
 import { z } from "zod";
 import { insertCategorySchema, insertSubcategorySchema, insertProductSchema, insertInquirySchema } from "@shared/schema";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Create uploads directory if it doesn't exist
+const uploadsDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Configure multer for image uploads
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, uploadsDir);
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+  }),
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only JPEG, PNG, and WebP images are allowed.') as any, false);
+    }
+  }
+});
 
 // Helper function to generate slug from text
 function generateSlug(text: string): string {
@@ -237,17 +275,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/products", isAuthenticated, async (req, res) => {
     try {
-      const productData = insertProductSchema.parse(req.body);
+      // Transform the request body to match the schema
+      const transformedData = {
+        ...req.body,
+        name: req.body.nameEs, // Use Spanish name as main name
+        slug: req.body.slug || generateSlug(req.body.nameEs),
+        price: req.body.price ? req.body.price.toString() : null,
+        shortDescription: req.body.shortDescriptionEs,
+        description: req.body.descriptionEs,
+      };
       
-      // Generate slug if not provided
-      if (!productData.slug) {
-        productData.slug = generateSlug(productData.nameEs || productData.name);
-      }
-
+      const productData = insertProductSchema.parse(transformedData);
       const product = await storage.createProduct(productData);
       res.json(product);
     } catch (error) {
       console.error("Error creating product:", error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ 
+          error: "Validation error", 
+          details: error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ')
+        });
+      }
       res.status(500).json({ error: "Failed to create product" });
     }
   });
@@ -325,6 +373,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
     };
     
     res.json(mockResponse);
+  });
+
+  // Static file serving for uploads
+  app.use('/uploads', express.static(uploadsDir));
+
+  // Image Upload Routes
+  app.get("/api/admin/images", isAuthenticated, async (req, res) => {
+    try {
+      const images = await storage.getUploadedImages();
+      res.json(images);
+    } catch (error) {
+      console.error("Error fetching images:", error);
+      res.status(500).json({ error: "Failed to fetch images" });
+    }
+  });
+
+  app.post("/api/admin/images/upload", isAuthenticated, upload.array('images', 10), async (req, res) => {
+    try {
+      const files = req.files as Express.Multer.File[];
+      if (!files || files.length === 0) {
+        return res.status(400).json({ error: "No files uploaded" });
+      }
+
+      const uploadedImages = [];
+      for (const file of files) {
+        const imageData = {
+          filename: file.filename,
+          originalName: file.originalname,
+          mimetype: file.mimetype,
+          size: file.size,
+          url: `/uploads/${file.filename}`,
+          uploadedBy: (req as any).session.userId,
+        };
+
+        const savedImage = await storage.createUploadedImage(imageData);
+        uploadedImages.push(savedImage);
+      }
+
+      res.json(uploadedImages);
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      res.status(500).json({ error: "Failed to upload images" });
+    }
+  });
+
+  app.delete("/api/admin/images/:id", isAuthenticated, async (req, res) => {
+    try {
+      const imageId = parseInt(req.params.id);
+      const image = await storage.getUploadedImageById(imageId);
+      
+      if (!image) {
+        return res.status(404).json({ error: "Image not found" });
+      }
+
+      // Delete file from filesystem
+      const filePath = path.join(uploadsDir, image.filename);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+
+      await storage.deleteUploadedImage(imageId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      res.status(500).json({ error: "Failed to delete image" });
+    }
   });
 
   const httpServer = createServer(app);

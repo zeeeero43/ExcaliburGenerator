@@ -5,6 +5,7 @@ import {
   products,
   inquiries,
   siteSettings,
+  uploadedImages,
   type AdminUser,
   type InsertAdminUser,
   type Category,
@@ -17,6 +18,8 @@ import {
   type InsertInquiry,
   type SiteSetting,
   type InsertSiteSetting,
+  type UploadedImage,
+  type InsertUploadedImage,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -64,6 +67,12 @@ export interface IStorage {
   getSiteSettings(): Promise<SiteSetting[]>;
   getSiteSetting(key: string): Promise<SiteSetting | undefined>;
   updateSiteSetting(key: string, value: string): Promise<SiteSetting>;
+  
+  // Uploaded Images
+  getUploadedImages(): Promise<UploadedImage[]>;
+  getUploadedImageById(id: number): Promise<UploadedImage | undefined>;
+  createUploadedImage(image: InsertUploadedImage): Promise<UploadedImage>;
+  deleteUploadedImage(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -275,6 +284,25 @@ export class DatabaseStorage implements IStorage {
       })
       .returning();
     return updated;
+  }
+
+  // Uploaded Images
+  async getUploadedImages(): Promise<UploadedImage[]> {
+    return await db.select().from(uploadedImages).orderBy(uploadedImages.createdAt);
+  }
+
+  async getUploadedImageById(id: number): Promise<UploadedImage | undefined> {
+    const [image] = await db.select().from(uploadedImages).where(eq(uploadedImages.id, id));
+    return image;
+  }
+
+  async createUploadedImage(image: InsertUploadedImage): Promise<UploadedImage> {
+    const [created] = await db.insert(uploadedImages).values(image).returning();
+    return created;
+  }
+
+  async deleteUploadedImage(id: number): Promise<void> {
+    await db.delete(uploadedImages).where(eq(uploadedImages.id, id));
   }
 }
 

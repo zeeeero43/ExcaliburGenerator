@@ -1,10 +1,21 @@
 import { Shield, Truck, Users, CheckCircle } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { HeroSlider } from '../components/HeroSlider';
 import { ProductCard } from '../components/ProductCard';
+import type { Product, Category } from '@shared/schema';
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
+  
+  // Fetch featured products and categories from database
+  const { data: featuredProducts = [] } = useQuery<Product[]>({
+    queryKey: ['/api/products', { featured: true }],
+  });
+
+  const { data: categories = [] } = useQuery<Category[]>({
+    queryKey: ['/api/categories'],
+  });
 
   return (
     <div>
@@ -59,147 +70,136 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ProductCard
-              title={t('completeSolarSystems')}
-              description={t('completeSolarSystemsDesc')}
-              image="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              linkText={t('viewSystems')}
-              category="solar-systems"
-            />
-            
-            <ProductCard
-              title={t('solarPanels')}
-              description={t('solarPanelsDesc')}
-              image="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              linkText={t('viewPanels')}
-              category="panels"
-            />
-            
-            <ProductCard
-              title={t('inverters')}
-              description={t('invertersDesc')}
-              image="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              linkText={t('viewInverters')}
-              category="inverters"
-            />
-            
-            <ProductCard
-              title={t('batteries')}
-              description={t('batteriesDesc')}
-              image="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              linkText={t('viewBatteries')}
-              category="batteries"
-            />
-            
-            <ProductCard
-              title={t('generators')}
-              description={t('generatorsDesc')}
-              image="https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              linkText={t('viewGenerators')}
-              category="generators"
-            />
-            
-            <ProductCard
-              title={t('accessories')}
-              description={t('accessoriesDesc')}
-              image="https://images.unsplash.com/photo-1581092921461-eab62e97a780?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"
-              linkText={t('viewAccessories')}
-              category="accessories"
-            />
-          </div>
-        </div>
-      </section>
+            {/* Show Featured Products */}
+            {featuredProducts.length > 0 ? (
+              featuredProducts.map((product) => {
+                let title, description;
+                
+                switch (currentLanguage) {
+                  case 'de':
+                    title = product.nameDe;
+                    description = product.shortDescriptionDe;
+                    break;
+                  case 'en':
+                    title = product.nameEn;
+                    description = product.shortDescriptionEn;
+                    break;
+                  default:
+                    title = product.nameEs;
+                    description = product.shortDescriptionEs;
+                }
 
-      {/* About Preview Section */}
-      <section className="py-16 bg-excalibur-light">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-gray-800 mb-6">
-                {t('aboutTitle')}
-              </h2>
-              <div className="space-y-4 text-lg text-excalibur-gray">
-                <p>{t('aboutText1')}</p>
-                <p>{t('aboutText2')}</p>
-              </div>
+                return (
+                  <ProductCard
+                    key={product.id}
+                    title={title || product.nameEs}
+                    description={description || product.shortDescriptionEs}
+                    image={product.mainImage || "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"}
+                    linkText={t('viewDetails')}
+                    category={product.slug}
+                  />
+                );
+              })
+            ) : (
+              /* Show Categories if no featured products */
+              categories.slice(0, 6).map((category) => {
+                let title, description;
+                
+                switch (currentLanguage) {
+                  case 'de':
+                    title = category.nameDe;
+                    description = category.descriptionDe;
+                    break;
+                  case 'en':
+                    title = category.nameEn;
+                    description = category.descriptionEn;
+                    break;
+                  default:
+                    title = category.nameEs;
+                    description = category.descriptionEs;
+                }
 
-              <div className="mt-8 grid grid-cols-2 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-excalibur-blue">35</div>
-                  <div className="text-sm text-excalibur-gray">{t('yearsExperience')}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-excalibur-orange">20+</div>
-                  <div className="text-sm text-excalibur-gray">{t('solarSystems')}</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <img
-                src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500"
-                alt="Solar panel warehouse"
-                className="rounded-xl shadow-lg w-full"
-                loading="lazy"
-              />
-              
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                  {t('ourWarehouse')}
-                </h3>
-                <p className="text-excalibur-gray">
-                  {t('warehouseDesc')}
+                return (
+                  <ProductCard
+                    key={category.id}
+                    title={title || category.nameEs}
+                    description={description || category.descriptionEs}
+                    image={category.image || "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"}
+                    linkText={t('viewCategory')}
+                    category={category.slug}
+                  />
+                );
+              })
+            )}
+            
+            {/* Show placeholder if no data */}
+            {featuredProducts.length === 0 && categories.length === 0 && (
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-600 text-lg">
+                  Noch keine Produkte verfügbar
+                </p>
+                <p className="text-gray-500 mt-2">
+                  Produkte werden bald hinzugefügt
                 </p>
               </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* About Section with Cuba focus */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl font-bold text-gray-800 mb-6">
+              {t('aboutUs')}
+            </h2>
+            <p className="text-xl text-excalibur-gray mb-8">
+              {t('aboutUsSubtitle')}
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <CheckCircle className="w-8 h-8 text-green-500 mb-4" />
+                <h3 className="text-xl font-semibold mb-3">{t('qualityProducts')}</h3>
+                <p className="text-gray-600">{t('qualityProductsDesc')}</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <Truck className="w-8 h-8 text-excalibur-blue mb-4" />
+                <h3 className="text-xl font-semibold mb-3">{t('reliableShipping')}</h3>
+                <p className="text-gray-600">{t('reliableShippingDesc')}</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SEO Content Section - Why Solar in Cuba */}
+      {/* SEO Content Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold gradient-text mb-6">
-                ¿Por qué elegir energía solar en Cuba?
-              </h2>
-              <p className="text-xl text-excalibur-gray leading-relaxed">
-                Cuba tiene más de 300 días de sol al año, convirtiendo la energía solar en la mejor inversión energética. 
-                Nuestros sistemas reducen tu factura eléctrica hasta en 90% y proporcionan independencia energética completa.
+            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+              {t('solarEnergyInCuba')}
+            </h2>
+            
+            <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
+              <p>
+                {t('solarEnergyIntro')}
               </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-              <div className="text-center p-6 bg-excalibur-light rounded-xl">
-                <div className="text-3xl font-bold text-excalibur-blue mb-4">300+</div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Días de sol anuales</h3>
-                <p className="text-excalibur-gray">Irradiación solar promedio de 5.5 kWh/m² ideal para generación fotovoltaica</p>
-              </div>
-              <div className="text-center p-6 bg-excalibur-light rounded-xl">
-                <div className="text-3xl font-bold text-excalibur-orange mb-4">90%</div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Reducción en factura</h3>
-                <p className="text-excalibur-gray">Ahorro promedio en costos de electricidad con sistema solar dimensionado correctamente</p>
-              </div>
-              <div className="text-center p-6 bg-excalibur-light rounded-xl">
-                <div className="text-3xl font-bold text-green-600 mb-4">25</div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Años de garantía</h3>
-                <p className="text-excalibur-gray">Garantía de rendimiento en paneles solares respaldada por fabricantes internacionales</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-8">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                El mercado solar cubano en crecimiento
+              
+              <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                {t('whySolarEnergy')}
               </h3>
-              <p className="text-excalibur-gray leading-relaxed mb-4">
-                El mercado solar cubano está en crecimiento exponencial. Con las nuevas regulaciones gubernamentales 
-                que permiten la venta de excedentes a la red nacional, invertir en energía solar nunca ha sido más rentable.
+              <p>
+                {t('whySolarEnergyDesc')}
               </p>
-              <p className="text-excalibur-gray leading-relaxed">
-                Como representantes oficiales de Excalibur Power Group y con el respaldo de AFDL Import & Export de Alemania, 
-                garantizamos productos de calidad internacional a precios competitivos, con stock disponible en nuestro 
-                almacén de Havanna del Este para entrega inmediata.
+              
+              <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                {t('ourSolutions')}
+              </h3>
+              <p>
+                {t('ourSolutionsDesc')}
               </p>
             </div>
           </div>

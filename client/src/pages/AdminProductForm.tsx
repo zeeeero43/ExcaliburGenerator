@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useLocation, useParams } from 'wouter';
 import { ArrowLeft, Upload, X } from 'lucide-react';
 import type { Category, Subcategory } from '@shared/schema';
+import { ImageUpload } from '@/components/ImageUpload';
 
 const productSchema = z.object({
   nameEs: z.string().min(1, 'Produktname (Spanisch) ist erforderlich'),
@@ -400,10 +401,29 @@ export default function AdminProductForm() {
                   name="mainImage"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Hauptbild URL</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="https://images.unsplash.com/..." />
-                      </FormControl>
+                      <FormLabel>Hauptbild</FormLabel>
+                      <div className="space-y-2">
+                        <ImageUpload 
+                          onImageSelect={field.onChange}
+                          currentImage={field.value}
+                        />
+                        <FormControl>
+                          <Input 
+                            {...field} 
+                            placeholder="Oder URL eingeben: https://..." 
+                            className="mt-2"
+                          />
+                        </FormControl>
+                        {field.value && (
+                          <div className="mt-2">
+                            <img 
+                              src={field.value} 
+                              alt="Produktbild Vorschau" 
+                              className="w-32 h-32 object-cover rounded border"
+                            />
+                          </div>
+                        )}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}

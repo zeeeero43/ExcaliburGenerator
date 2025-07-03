@@ -128,6 +128,18 @@ export const siteSettings = pgTable("site_settings", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Uploaded Images
+export const uploadedImages = pgTable("uploaded_images", {
+  id: serial("id").primaryKey(),
+  filename: varchar("filename", { length: 255 }).notNull(),
+  originalName: varchar("original_name", { length: 255 }).notNull(),
+  mimetype: varchar("mimetype", { length: 100 }).notNull(),
+  size: integer("size").notNull(),
+  url: varchar("url", { length: 500 }).notNull(),
+  uploadedBy: integer("uploaded_by").references(() => adminUsers.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Relations
 export const categoriesRelations = relations(categories, ({ many }) => ({
   subcategories: many(subcategories),
@@ -210,3 +222,6 @@ export type Inquiry = typeof inquiries.$inferSelect;
 export type InsertInquiry = z.infer<typeof insertInquirySchema>;
 export type SiteSetting = typeof siteSettings.$inferSelect;
 export type InsertSiteSetting = z.infer<typeof insertSiteSettingSchema>;
+
+export type UploadedImage = typeof uploadedImages.$inferSelect;
+export type InsertUploadedImage = typeof uploadedImages.$inferInsert;
