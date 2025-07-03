@@ -13,6 +13,7 @@ import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProductForm from "./pages/AdminProductForm";
+import AdminCategoryForm from "./pages/AdminCategoryForm";
 import NotFound from "./pages/not-found";
 
 function Router() {
@@ -38,6 +39,8 @@ function Router() {
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/admin/products/new" component={AdminProductForm} />
       <Route path="/admin/products/:id/edit" component={AdminProductForm} />
+      <Route path="/admin/categories/new" component={AdminCategoryForm} />
+      <Route path="/admin/categories/:id/edit" component={AdminCategoryForm} />
       
       {/* Public Routes - With Layout */}
       <Route path="/">
