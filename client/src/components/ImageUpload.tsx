@@ -129,7 +129,9 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
   };
 
   const handleImageSelect = (url: string) => {
-    onImageSelect(url);
+    // Ensure the URL is properly formatted for local uploads
+    const fullUrl = url.startsWith('/uploads/') ? url : `/uploads/${url}`;
+    onImageSelect(fullUrl);
     setIsOpen(false);
     toast({
       title: "Bild ausgewählt",

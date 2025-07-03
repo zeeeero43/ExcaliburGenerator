@@ -100,7 +100,7 @@ export default function AdminProductForm() {
         specifications: specifications.length > 0 
           ? Object.fromEntries(specifications.map(spec => [spec.key, spec.value]))
           : undefined,
-        price: data.price ? parseFloat(data.price) : undefined,
+        price: data.price ? data.price.toString() : undefined,
       };
 
       const url = isEdit ? `/api/admin/products/${params.id}` : '/api/admin/products';
@@ -128,11 +128,36 @@ export default function AdminProductForm() {
       setLocation('/admin');
     },
     onError: (error: any) => {
+      console.error('Product save error:', error);
+      
+      let errorMessage = "Unbekannter Fehler beim Speichern des Produkts.";
+      
+      if (error.message) {
+        if (error.message.includes('Validation error')) {
+          errorMessage = `Validierungsfehler: ${error.message.split('details: ')[1] || error.message}`;
+        } else if (error.message.includes('Required')) {
+          errorMessage = "Pflichtfelder fehlen. Bitte überprüfen Sie alle erforderlichen Felder.";
+        } else if (error.message.includes('unique constraint')) {
+          errorMessage = "Ein Produkt mit diesem Namen oder SKU existiert bereits.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
-        title: "Fehler",
-        description: error.message || "Fehler beim Speichern des Produkts.",
+        title: "Produkterstellung fehlgeschlagen",
+        description: errorMessage,
         variant: "destructive",
       });
+      
+      // Show detailed error in console for debugging
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Detailed error information:', {
+          error,
+          formData: form.getValues(),
+          specifications
+        });
+      }
     },
   });
 

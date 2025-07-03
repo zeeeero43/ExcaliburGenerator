@@ -10,7 +10,7 @@ export default function Home() {
   
   // Fetch featured products and categories from database
   const { data: featuredProducts = [] } = useQuery<Product[]>({
-    queryKey: ['/api/products', { featured: true }],
+    queryKey: ['/api/products/featured'],
   });
 
   const { data: categories = [] } = useQuery<Category[]>({
@@ -70,7 +70,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Show Featured Products */}
+            {/* Only show products that are explicitly featured by admin */}
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product) => {
                 let title, description;
@@ -101,46 +101,23 @@ export default function Home() {
                 );
               })
             ) : (
-              /* Show Categories if no featured products */
-              categories.slice(0, 6).map((category) => {
-                let title, description;
-                
-                switch (currentLanguage) {
-                  case 'de':
-                    title = category.nameDe;
-                    description = category.descriptionDe;
-                    break;
-                  case 'en':
-                    title = category.nameEn;
-                    description = category.descriptionEn;
-                    break;
-                  default:
-                    title = category.nameEs;
-                    description = category.descriptionEs;
-                }
-
-                return (
-                  <ProductCard
-                    key={category.id}
-                    title={title || category.nameEs}
-                    description={description || category.descriptionEs}
-                    image={category.image || "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"}
-                    linkText={t('viewCategory')}
-                    category={category.slug}
-                  />
-                );
-              })
-            )}
-            
-            {/* Show placeholder if no data */}
-            {featuredProducts.length === 0 && categories.length === 0 && (
-              <div className="col-span-full text-center py-12">
-                <p className="text-gray-600 text-lg">
-                  Noch keine Produkte verfügbar
-                </p>
-                <p className="text-gray-500 mt-2">
-                  Produkte werden bald hinzugefügt
-                </p>
+              /* Show empty state - admin must create and feature products */
+              <div className="col-span-full text-center py-16">
+                <div className="bg-gray-50 rounded-lg p-8 max-w-md mx-auto">
+                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    Keine Produkte verfügbar
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Erstellen Sie Produkte im Admin-Panel und markieren Sie sie als "Empfohlen", 
+                    damit sie auf der Startseite angezeigt werden.
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Login: /admin/login (admin/admin123)
+                  </p>
+                </div>
               </div>
             )}
           </div>

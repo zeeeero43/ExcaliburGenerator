@@ -288,15 +288,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const productData = insertProductSchema.parse(transformedData);
       const product = await storage.createProduct(productData);
       res.json(product);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating product:", error);
+      
       if (error.name === 'ZodError') {
+        const validationErrors = error.errors.map((e: any) => {
+          const field = e.path.join('.');
+          return `${field}: ${e.message}`;
+        }).join(', ');
+        
         return res.status(400).json({ 
           error: "Validation error", 
-          details: error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ')
+          details: validationErrors,
+          fields: error.errors.map((e: any) => e.path.join('.'))
         });
       }
-      res.status(500).json({ error: "Failed to create product" });
+      
+      if (error.code === '23505') { // PostgreSQL unique constraint violation
+        return res.status(409).json({ 
+          error: "Conflict error",
+          details: "Ein Produkt mit diesem Namen oder SKU existiert bereits."
+        });
+      }
+      
+      if (error.code === '23502') { // PostgreSQL not null constraint violation
+        return res.status(400).json({ 
+          error: "Required field missing",
+          details: "Ein Pflichtfeld fehlt oder ist leer."
+        });
+      }
+      
+      res.status(500).json({ 
+        error: "Failed to create product",
+        details: error.message || "Unbekannter Server-Fehler"
+      });
     }
   });
 
