@@ -133,6 +133,14 @@ export const translations = {
     systemFeature4: "Baterías LiFePO4 de larga duración",
     systemFeature5: "Instalación y soporte técnico especializado",
     
+    // Additional SEO Content
+    generatorsTitle: "Generadores de Respaldo: Seguridad Energética Garantizada",
+    generatorsDescription: "Complementamos nuestros sistemas solares con generadores silenciosos de última generación, proporcionando una solución energética integral que garantiza suministro eléctrico continuo. Nuestros generadores diesel y gasolina ofrecen desde 2KVA hasta 10KVA, ideales para hogares, pequeños negocios y aplicaciones industriales.",
+    whyChooseTitle: "¿Por qué elegir Excalibur Power Cuba?",
+    whyChooseDescription: "Con 35 años de experiencia en el mercado energético y un sólido respaldo de nuestro partner alemán AFDL IMPORT & EXPORT, ofrecemos la mejor relación calidad-precio en componentes solares y generadores. Nuestro compromiso es iluminar Cuba con tecnología de vanguardia y servicio profesional.",
+    monthlyImportsTitle: "Importaciones Mensuales - Siempre con Stock Disponible",
+    monthlyImportsDescription: "Recibimos contenedores mensuales desde Alemania con productos frescos y las últimas tecnologías del mercado. Nuestro almacén en Havanna del Este mantiene un inventario amplio para satisfacer la demanda inmediata de nuestros clientes. Esto nos permite ofrecer precios competitivos y disponibilidad garantizada.",
+    
     // Footer
     quickLinks: "Enlaces Rápidos",
     allRightsReserved: "Todos los derechos reservados.",
@@ -281,6 +289,14 @@ export const translations = {
     systemFeature4: "Langlebige LiFePO4-Batterien",
     systemFeature5: "Installation und spezialisierte technische Unterstützung",
     
+    // Additional SEO Content
+    generatorsTitle: "Backup-Generatoren: Garantierte Energiesicherheit",
+    generatorsDescription: "Wir ergänzen unsere Solarsysteme mit modernen geräuscharmen Generatoren und bieten eine integrierte Energielösung, die kontinuierliche Stromversorgung gewährleistet. Unsere Diesel- und Benzin-Generatoren bieten 2KVA bis 10KVA, ideal für Haushalte, kleine Unternehmen und industrielle Anwendungen.",
+    whyChooseTitle: "Warum Excalibur Power Cuba wählen?",
+    whyChooseDescription: "Mit 35 Jahren Erfahrung im Energiemarkt und der soliden Unterstützung unseres deutschen Partners AFDL IMPORT & EXPORT bieten wir das beste Preis-Leistungs-Verhältnis für Solarkomponenten und Generatoren. Unser Engagement ist es, Kuba mit modernster Technologie und professionellem Service zu erleuchten.",
+    monthlyImportsTitle: "Monatliche Importe - Immer verfügbar",
+    monthlyImportsDescription: "Wir erhalten monatliche Container aus Deutschland mit frischen Produkten und den neuesten Markttechnologien. Unser Lager in Havanna del Este hält ein umfangreiches Inventar bereit, um die sofortige Nachfrage unserer Kunden zu erfüllen. Dies ermöglicht uns, wettbewerbsfähige Preise und garantierte Verfügbarkeit zu bieten.",
+    
     // Footer
     quickLinks: "Schnellzugriff",
     allRightsReserved: "Alle Rechte vorbehalten.",
@@ -406,5 +422,27 @@ export const translations = {
     // Form Messages
     formSubmitted: "Form submitted. We will contact you soon.",
     formError: "Error submitting form. Please try again.",
+    
+    // Additional SEO Content
+    solarEnergyTitle: "Solar Energy in Cuba: A Sustainable Solution",
+    solarEnergyDescription: "Cuba is in a geographically privileged position for solar energy utilization, with over 330 sunny days per year and an average solar irradiation of 5.5 kWh/m²/day. This abundant solar radiation makes the island an ideal location for photovoltaic system implementation.",
+    solarAdvantagesTitle: "Advantages of Solar Energy in Cuba",
+    solarAdvantage1: "Significant reduction in electricity costs",
+    solarAdvantage2: "Energy independence for home or business",
+    solarAdvantage3: "Reliable technology with international warranties",
+    solarAdvantage4: "Low maintenance and long lifespan",
+    solarAdvantage5: "Contributing to environmental protection",
+    ourSystemsTitle: "Our Solar Systems",
+    systemFeature1: "Complete systems from 1KW to 20KW",
+    systemFeature2: "High-efficiency monocrystalline panels",
+    systemFeature3: "Hybrid inverters with battery backup",
+    systemFeature4: "Long-lasting LiFePO4 batteries",
+    systemFeature5: "Installation and specialized technical support",
+    generatorsTitle: "Backup Generators: Guaranteed Energy Security",
+    generatorsDescription: "We complement our solar systems with modern silent generators, providing an integrated energy solution that ensures continuous power supply. Our diesel and gasoline generators offer 2KVA to 10KVA, ideal for homes, small businesses, and industrial applications.",
+    whyChooseTitle: "Why Choose Excalibur Power Cuba?",
+    whyChooseDescription: "With 35 years of experience in the energy market and solid support from our German partner AFDL IMPORT & EXPORT, we offer the best price-performance ratio in solar components and generators. Our commitment is to illuminate Cuba with cutting-edge technology and professional service.",
+    monthlyImportsTitle: "Monthly Imports - Always Available",
+    monthlyImportsDescription: "We receive monthly containers from Germany with fresh products and the latest market technologies. Our warehouse in Havanna del Este maintains a comprehensive inventory to meet immediate customer demand. This allows us to offer competitive prices and guaranteed availability.",
   }
 };

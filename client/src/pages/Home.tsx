@@ -350,34 +350,27 @@ export default function Home() {
               </div>
               
               <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-                Generadores de Respaldo: Seguridad Energética Garantizada
+                {t('generatorsTitle')}
               </h3>
               <p className="text-gray-700 mb-6">
-                Complementamos nuestros sistemas solares con generadores silenciosos de última generación, 
-                proporcionando una solución energética integral que garantiza suministro eléctrico continuo. 
-                Nuestros generadores diesel y gasolina ofrecen desde 2KVA hasta 10KVA, ideales para hogares, 
-                pequeños negocios y aplicaciones industriales.
+                {t('generatorsDescription')}
               </p>
               
               <div className="bg-gray-50 p-6 rounded-lg mb-8">
                 <h4 className="text-lg font-semibold text-gray-800 mb-3">
-                  ¿Por qué elegir Excalibur Power Cuba?
+                  {t('whyChooseTitle')}
                 </h4>
                 <p className="text-gray-700">
-                  Con 35 años de experiencia en el mercado energético y un sólido respaldo de nuestro partner alemán AFDL IMPORT & EXPORT, 
-                  ofrecemos la mejor relación calidad-precio en componentes solares y generadores. Nuestro compromiso es iluminar Cuba 
-                  con tecnología de vanguardia y servicio profesional.
+                  {t('whyChooseDescription')}
                 </p>
               </div>
 
               <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
                 <h4 className="text-lg font-semibold text-yellow-800 mb-3">
-                  Importaciones Mensuales - Siempre con Stock Disponible
+                  {t('monthlyImportsTitle')}
                 </h4>
                 <p className="text-yellow-700">
-                  Recibimos contenedores mensuales desde Alemania con productos frescos y las últimas tecnologías del mercado. 
-                  Nuestro almacén en Havanna del Este mantiene un inventario amplio para satisfacer la demanda inmediata de nuestros clientes.
-                  Esto nos permite ofrecer precios competitivos y disponibilidad garantizada.
+                  {t('monthlyImportsDescription')}
                 </p>
               </div>
             </div>

@@ -54,17 +54,45 @@ function Router() {
       
       {/* Public Routes - With Layout */}
       <Route path="/">
-        <Layout>
-          <Switch>
-            <Route path="/" component={Home} />
-            <Route path="/products" component={Products} />
-            <Route path="/product/:slug" component={ProductDetail} />
-            <Route path="/about" component={About} />
-            <Route path="/contact" component={Contact} />
-            <Route component={NotFound} />
-          </Switch>
-        </Layout>
+        {() => (
+          <Layout>
+            <Home />
+          </Layout>
+        )}
       </Route>
+      <Route path="/products">
+        {() => (
+          <Layout>
+            <Products />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/product/:slug">
+        {() => (
+          <Layout>
+            <ProductDetail />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/about">
+        {() => (
+          <Layout>
+            <About />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/contact">
+        {() => (
+          <Layout>
+            <Contact />
+          </Layout>
+        )}
+      </Route>
+      <Route component={() => (
+        <Layout>
+          <NotFound />
+        </Layout>
+      )} />
     </Switch>
   );
 }
