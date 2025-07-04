@@ -138,8 +138,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/categories", isAuthenticated, async (req, res) => {
     try {
-      const categoryData = insertCategorySchema.parse(req.body);
-      const category = await storage.createCategory(categoryData);
+      const categoryData = req.body;
+      
+      // Generate slug if not provided
+      if (!categoryData.slug) {
+        categoryData.slug = generateSlug(categoryData.nameEs || categoryData.name);
+      }
+
+      const validatedData = insertCategorySchema.parse(categoryData);
+      const category = await storage.createCategory(validatedData);
       res.json(category);
     } catch (error) {
       console.error("Error creating category:", error);
@@ -174,46 +181,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/categories", isAuthenticated, async (req, res) => {
-    try {
-      const categoryData = insertCategorySchema.parse(req.body);
-      
-      // Generate slug if not provided
-      if (!categoryData.slug) {
-        categoryData.slug = generateSlug(categoryData.nameEs || categoryData.name);
-      }
 
-      const category = await storage.createCategory(categoryData);
-      res.json(category);
-    } catch (error) {
-      console.error("Error creating category:", error);
-      res.status(500).json({ error: "Failed to create category" });
-    }
-  });
 
-  app.put("/api/admin/categories/:id", isAuthenticated, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const categoryData = req.body;
-      
-      const category = await storage.updateCategory(id, categoryData);
-      res.json(category);
-    } catch (error) {
-      console.error("Error updating category:", error);
-      res.status(500).json({ error: "Failed to update category" });
-    }
-  });
 
-  app.delete("/api/admin/categories/:id", isAuthenticated, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      await storage.deleteCategory(id);
-      res.json({ success: true });
-    } catch (error) {
-      console.error("Error deleting category:", error);
-      res.status(500).json({ error: "Failed to delete category" });
-    }
-  });
 
   // Subcategories API
   app.get("/api/subcategories", async (req, res) => {

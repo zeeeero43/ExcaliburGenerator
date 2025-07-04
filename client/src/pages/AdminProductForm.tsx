@@ -31,7 +31,7 @@ const productSchema = z.object({
   sku: z.string().optional(),
   price: z.string().optional(),
   priceNote: z.string().optional(),
-  mainImage: z.string().url().optional().or(z.literal('')),
+  mainImage: z.string().optional(),
   isActive: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   stockStatus: z.enum(['in_stock', 'out_of_stock', 'limited']).default('in_stock'),

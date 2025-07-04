@@ -8,13 +8,13 @@ import { useToast } from '@/hooks/use-toast';
 import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye } from 'lucide-react';
-import type { Category, Product, Inquiry } from '@shared/schema';
+import type { Category, Product, Inquiry, AdminUser } from '@shared/schema';
 
 // Check if user is authenticated
 function useAdminAuth() {
   const [, setLocation] = useLocation();
   
-  const { data: user, isLoading, error } = useQuery({
+  const { data: user, isLoading, error } = useQuery<AdminUser>({
     queryKey: ['/api/admin/user'],
     queryFn: getQueryFn({ on401: "returnNull" }),
     retry: false,
@@ -36,24 +36,28 @@ export default function AdminDashboard() {
   const queryClient = useQueryClient();
 
   // Fetch data
-  const { data: categories = [] } = useQuery({
+  const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ['/api/admin/categories'],
     enabled: isAuthenticated,
   });
 
-  const { data: products = [] } = useQuery({
+  const { data: products = [] } = useQuery<Product[]>({
     queryKey: ['/api/admin/products'],
     enabled: isAuthenticated,
   });
 
-  const { data: inquiries = [] } = useQuery({
+  const { data: inquiries = [] } = useQuery<Inquiry[]>({
     queryKey: ['/api/admin/inquiries'],
     enabled: isAuthenticated,
   });
 
   // Logout mutation
   const logoutMutation = useMutation({
-    mutationFn: () => apiRequest('/api/admin/logout', { method: 'POST' }),
+    mutationFn: async () => {
+      const response = await fetch('/api/admin/logout', { method: 'POST' });
+      if (!response.ok) throw new Error('Logout failed');
+      return response.json();
+    },
     onSuccess: () => {
       queryClient.clear();
       setLocation('/admin/login');
@@ -91,7 +95,7 @@ export default function AdminDashboard() {
           <div className="flex justify-between items-center py-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Excalibur Cuba Admin</h1>
-              <p className="text-sm text-gray-600">Willkommen, {user?.firstName || user?.username}!</p>
+              <p className="text-sm text-gray-600">Willkommen, {(user as AdminUser)?.firstName || (user as AdminUser)?.username || 'Admin'}!</p>
             </div>
             <div className="flex items-center space-x-4">
               <Button

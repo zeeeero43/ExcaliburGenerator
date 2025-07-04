@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -33,44 +33,47 @@ export default function AdminCategoryForm() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
-  // Get category ID from URL
-  const categoryId = new URLSearchParams(window.location.search).get('id');
-  const isEdit = !!categoryId;
+  // Get category ID from URL path
+  const pathParts = window.location.pathname.split('/');
+  const isEdit = window.location.pathname.includes('/edit');
+  const categoryId = isEdit ? pathParts[pathParts.length - 2] : null;
 
   // Fetch existing category data for editing
   const { data: category, isLoading: isLoadingCategory } = useQuery<Category>({
-    queryKey: ['/api/admin/categories', categoryId],
-    enabled: isEdit,
+    queryKey: [`/api/admin/categories/${categoryId}`],
+    enabled: isEdit && !!categoryId,
   });
 
   // Form setup
   const form = useForm<CategoryForm>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
-      name: category?.name || '',
-      nameEs: category?.nameEs || '',
-      nameEn: category?.nameEn || '',
-      nameDe: category?.nameDe || '',
-      description: category?.description || '',
-      descriptionEs: category?.descriptionEs || '',
-      descriptionEn: category?.descriptionEn || '',
-      descriptionDe: category?.descriptionDe || '',
+      name: '',
+      nameEs: '',
+      nameEn: '',
+      nameDe: '',
+      description: '',
+      descriptionEs: '',
+      descriptionEn: '',
+      descriptionDe: '',
     },
   });
 
   // Update form when category data loads
-  if (category && isEdit) {
-    form.reset({
-      name: category.name,
-      nameEs: category.nameEs || '',
-      nameEn: category.nameEn || '',
-      nameDe: category.nameDe || '',
-      description: category.description || '',
-      descriptionEs: category.descriptionEs || '',
-      descriptionEn: category.descriptionEn || '',
-      descriptionDe: category.descriptionDe || '',
-    });
-  }
+  useEffect(() => {
+    if (category && isEdit) {
+      form.reset({
+        name: category.name,
+        nameEs: category.nameEs || '',
+        nameEn: category.nameEn || '',
+        nameDe: category.nameDe || '',
+        description: category.description || '',
+        descriptionEs: category.descriptionEs || '',
+        descriptionEn: category.descriptionEn || '',
+        descriptionDe: category.descriptionDe || '',
+      });
+    }
+  }, [category, isEdit, form]);
 
   // Create/Update mutation
   const saveCategoryMutation = useMutation({
