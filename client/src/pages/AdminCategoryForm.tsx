@@ -15,8 +15,8 @@ import { ArrowLeft, Save, Trash2 } from 'lucide-react';
 import { insertCategorySchema, type Category } from '@shared/schema';
 
 // Form validation schema
-const categoryFormSchema = insertCategorySchema.extend({
-  name: z.string().min(1, 'Name ist erforderlich'),
+const categoryFormSchema = z.object({
+  name: z.string().min(1, 'System-Name ist erforderlich'),
   nameEs: z.string().min(1, 'Spanischer Name ist erforderlich'),
   nameEn: z.string().min(1, 'Englischer Name ist erforderlich'),
   nameDe: z.string().min(1, 'Deutscher Name ist erforderlich'),
@@ -24,6 +24,10 @@ const categoryFormSchema = insertCategorySchema.extend({
   descriptionEs: z.string().optional(),
   descriptionEn: z.string().optional(),
   descriptionDe: z.string().optional(),
+  slug: z.string().optional(),
+  image: z.string().optional(),
+  isActive: z.boolean().default(true),
+  sortOrder: z.number().default(0),
 });
 
 type CategoryForm = z.infer<typeof categoryFormSchema>;
@@ -56,6 +60,10 @@ export default function AdminCategoryForm() {
       descriptionEs: '',
       descriptionEn: '',
       descriptionDe: '',
+      slug: '',
+      image: '',
+      isActive: true,
+      sortOrder: 0,
     },
   });
 
@@ -71,6 +79,10 @@ export default function AdminCategoryForm() {
         descriptionEs: category.descriptionEs || '',
         descriptionEn: category.descriptionEn || '',
         descriptionDe: category.descriptionDe || '',
+        slug: category.slug || '',
+        image: category.image || '',
+        isActive: category.isActive ?? true,
+        sortOrder: category.sortOrder ?? 0,
       });
     }
   }, [category, isEdit, form]);

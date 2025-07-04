@@ -264,7 +264,12 @@ export default function AdminDashboard() {
                 <h2 className="text-xl font-semibold">Kategorienverwaltung</h2>
                 <p className="text-gray-600">Organisieren Sie Ihre Produktkategorien</p>
               </div>
-              <Button onClick={() => setLocation('/admin/categories/new')}>
+              <Button 
+                onClick={() => {
+                  console.log('Navigating to category form...');
+                  setLocation('/admin/categories/new');
+                }}
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Neue Kategorie
               </Button>

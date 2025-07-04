@@ -72,10 +72,30 @@ export default function AdminProductForm() {
     },
   });
 
-  // Fetch categories
-  const { data: categories = [] } = useQuery<Category[]>({
-    queryKey: ['/api/admin/categories'],
+  // Check authentication first
+  const { data: user } = useQuery({
+    queryKey: ['/api/admin/user'],
+    retry: false,
   });
+
+  // Fetch categories - must be authenticated
+  const { data: categories = [], isLoading: categoriesLoading, error: categoriesError } = useQuery<Category[]>({
+    queryKey: ['/api/admin/categories'],
+    enabled: !!user,
+    retry: false,
+  });
+
+  // Debug logging
+  useEffect(() => {
+    console.log('Categories data:', { 
+      categories, 
+      categoriesLoading, 
+      categoriesError,
+      categoriesCount: categories.length,
+      user: !!user,
+      errorMessage: categoriesError?.message
+    });
+  }, [categories, categoriesLoading, categoriesError, user]);
 
   // Fetch subcategories based on selected category
   const { data: subcategories = [] } = useQuery<Subcategory[]>({
@@ -274,11 +294,17 @@ export default function AdminProductForm() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {categories.map((category) => (
-                              <SelectItem key={category.id} value={category.id.toString()}>
-                                {category.nameDe}
+                            {categories.length === 0 ? (
+                              <SelectItem value="" disabled>
+                                Keine Kategorien verfügbar
                               </SelectItem>
-                            ))}
+                            ) : (
+                              categories.map((category) => (
+                                <SelectItem key={category.id} value={category.id.toString()}>
+                                  {category.nameDe || category.nameEs || category.name}
+                                </SelectItem>
+                              ))
+                            )}
                           </SelectContent>
                         </Select>
                         <FormMessage />

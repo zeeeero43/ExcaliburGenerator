@@ -39,8 +39,18 @@ function Router() {
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/admin/products/new" component={AdminProductForm} />
       <Route path="/admin/products/:id/edit" component={AdminProductForm} />
-      <Route path="/admin/categories/new" component={AdminCategoryForm} />
-      <Route path="/admin/categories/:id/edit" component={AdminCategoryForm} />
+      <Route path="/admin/categories/new">
+        {() => {
+          console.log('AdminCategoryForm route matched: /admin/categories/new');
+          return <AdminCategoryForm />;
+        }}
+      </Route>
+      <Route path="/admin/categories/:id/edit">
+        {(params) => {
+          console.log('AdminCategoryForm route matched: /admin/categories/:id/edit', params);
+          return <AdminCategoryForm />;
+        }}
+      </Route>
       
       {/* Public Routes - With Layout */}
       <Route path="/">

@@ -73,27 +73,28 @@ export default function Home() {
             {/* Only show products that are explicitly featured by admin */}
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product) => {
-                let title, description;
+                let title: string;
+                let description: string;
                 
                 switch (currentLanguage) {
                   case 'de':
-                    title = product.nameDe;
-                    description = product.shortDescriptionDe;
+                    title = product.nameDe || product.nameEs || '';
+                    description = product.shortDescriptionDe || product.shortDescriptionEs || '';
                     break;
                   case 'en':
-                    title = product.nameEn;
-                    description = product.shortDescriptionEn;
+                    title = product.nameEn || product.nameEs || '';
+                    description = product.shortDescriptionEn || product.shortDescriptionEs || '';
                     break;
                   default:
-                    title = product.nameEs;
-                    description = product.shortDescriptionEs;
+                    title = product.nameEs || '';
+                    description = product.shortDescriptionEs || '';
                 }
 
                 return (
                   <ProductCard
                     key={product.id}
-                    title={title || product.nameEs}
-                    description={description || product.shortDescriptionEs}
+                    title={title}
+                    description={description}
                     image={product.mainImage || "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"}
                     linkText={t('viewDetails')}
                     category={product.slug}
