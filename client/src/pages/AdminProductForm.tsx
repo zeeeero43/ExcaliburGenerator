@@ -243,6 +243,58 @@ export default function AdminProductForm() {
     setSpecifications([...specifications, { key: '', value: '' }]);
   };
 
+  const addSolarSpecifications = () => {
+    const solarSpecs = [
+      { key: 'Leistung', value: '' },
+      { key: 'Spannung', value: '' },
+      { key: 'Strom', value: '' },
+      { key: 'Wirkungsgrad', value: '' },
+      { key: 'Garantie', value: '' },
+      { key: 'Abmessungen', value: '' },
+      { key: 'Gewicht', value: '' },
+      { key: 'Zertifizierungen', value: '' },
+      { key: 'Betriebstemperatur', value: '' },
+      { key: 'Schutzklasse', value: '' }
+    ];
+    
+    // Add only those that don't already exist
+    const existingKeys = specifications.map(spec => spec.key);
+    const newSpecs = solarSpecs.filter(spec => !existingKeys.includes(spec.key));
+    
+    setSpecifications([...specifications, ...newSpecs]);
+    
+    toast({
+      title: "Solar-Spezifikationen hinzugefügt",
+      description: `${newSpecs.length} neue technische Felder wurden hinzugefügt.`,
+    });
+  };
+
+  const addGeneratorSpecifications = () => {
+    const generatorSpecs = [
+      { key: 'Leistung', value: '' },
+      { key: 'Kraftstofftyp', value: '' },
+      { key: 'Tankvolumen', value: '' },
+      { key: 'Laufzeit', value: '' },
+      { key: 'Spannung', value: '' },
+      { key: 'Frequenz', value: '' },
+      { key: 'Lautstärke', value: '' },
+      { key: 'Abmessungen', value: '' },
+      { key: 'Gewicht', value: '' },
+      { key: 'Garantie', value: '' }
+    ];
+    
+    // Add only those that don't already exist
+    const existingKeys = specifications.map(spec => spec.key);
+    const newSpecs = generatorSpecs.filter(spec => !existingKeys.includes(spec.key));
+    
+    setSpecifications([...specifications, ...newSpecs]);
+    
+    toast({
+      title: "Generator-Spezifikationen hinzugefügt",
+      description: `${newSpecs.length} neue technische Felder wurden hinzugefügt.`,
+    });
+  };
+
   const removeSpecification = (index: number) => {
     setSpecifications(specifications.filter((_, i) => i !== index));
   };
@@ -501,46 +553,64 @@ export default function AdminProductForm() {
                 </div>
 
                 {/* Main Image */}
-                <FormField
-                  control={form.control}
-                  name="mainImage"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Hauptbild</FormLabel>
-                      <div className="space-y-2">
-                        <ImageUpload 
-                          onImageSelect={field.onChange}
-                          currentImage={field.value}
-                        />
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            placeholder="Oder URL eingeben: https://..." 
-                            className="mt-2"
-                          />
-                        </FormControl>
-                        {field.value && (
-                          <div className="mt-2">
-                            <img 
-                              src={field.value} 
-                              alt="Produktbild Vorschau" 
-                              className="w-32 h-32 object-cover rounded border"
+                <Card className="bg-blue-50 border-blue-200">
+                  <CardHeader>
+                    <CardTitle className="text-lg text-blue-800">📸 Produktbild hochladen</CardTitle>
+                    <CardDescription className="text-blue-600">
+                      Wichtig: Laden Sie hier das Hauptbild für Ihr Produkt hoch. Dieses wird auf der Website angezeigt.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <FormField
+                      control={form.control}
+                      name="mainImage"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-base font-medium">Hauptbild *</FormLabel>
+                          <div className="space-y-2">
+                            <ImageUpload 
+                              onImageSelect={field.onChange}
+                              currentImage={field.value}
                             />
+                            <FormControl>
+                              <Input 
+                                {...field} 
+                                placeholder="Oder URL eingeben: https://..." 
+                                className="mt-2"
+                              />
+                            </FormControl>
+                            {field.value && (
+                              <div className="mt-2">
+                                <img 
+                                  src={field.value} 
+                                  alt="Produktbild Vorschau" 
+                                  className="w-32 h-32 object-cover rounded border"
+                                />
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </CardContent>
+                </Card>
 
                 {/* Specifications */}
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <h3 className="text-lg font-medium">Technische Spezifikationen</h3>
-                    <Button type="button" variant="outline" onClick={addSpecification}>
-                      Spezifikation hinzufügen
-                    </Button>
+                    <div className="flex flex-wrap gap-2">
+                      <Button type="button" variant="outline" onClick={addSolarSpecifications}>
+                        🌞 Solar-Spezifikationen
+                      </Button>
+                      <Button type="button" variant="outline" onClick={addGeneratorSpecifications}>
+                        ⚡ Generator-Spezifikationen
+                      </Button>
+                      <Button type="button" variant="outline" onClick={addSpecification}>
+                        ➕ Eigene Spezifikation
+                      </Button>
+                    </div>
                   </div>
                   
                   {specifications.map((spec, index) => (
