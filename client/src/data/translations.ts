@@ -181,7 +181,7 @@ export const translations = {
     installationStep2: "Instalación profesional de paneles, inversor y baterías",
     installationStep3: "Configuración y puesta en marcha del sistema completo",
     installationStep4: "Capacitación al usuario y entrega de documentación",
-    technicalSupportDesc: "Soporte técnico especializado disponible las 24 horas del día.",
+    technicalSupportExtended: "Soporte técnico especializado disponible las 24 horas del día.",
     supportChannels: "Canales de Soporte",
     technicalDetails: "Detalles Técnicos",
     certifications: "Certificaciones",
@@ -198,7 +198,7 @@ export const translations = {
     supportWarrantyDesc: "Soporte técnico gratuito durante toda la vida útil del producto",
     aboutExcaliburCuba: "Sobre Excalibur Cuba",
     aboutExcaliburDesc: "Representantes oficiales de Excalibur Power Group en Cuba, ofreciendo soluciones energéticas de alta calidad para iluminar el futuro de Cuba.",
-    contactPhone: "Llamar por Teléfono",
+
   },
   
   de: {
@@ -383,7 +383,7 @@ export const translations = {
     installationStep2: "Professionelle Installation von Panels, Wechselrichter und Batterien",
     installationStep3: "Konfiguration und Inbetriebnahme des kompletten Systems",
     installationStep4: "Benutzerschulung und Übergabe der Dokumentation",
-    technicalSupportDesc: "Spezialisierter technischer Support rund um die Uhr verfügbar.",
+    technicalSupportExtended: "Spezialisierter technischer Support rund um die Uhr verfügbar.",
     supportChannels: "Support-Kanäle",
     technicalDetails: "Technische Details",
     certifications: "Zertifizierungen",
@@ -400,7 +400,7 @@ export const translations = {
     supportWarrantyDesc: "Kostenloser technischer Support während der gesamten Produktlebensdauer",
     aboutExcaliburCuba: "Über Excalibur Cuba",
     aboutExcaliburDesc: "Offizielle Vertreter der Excalibur Power Group in Kuba, die hochwertige Energielösungen anbieten, um Kubas Zukunft zu erhellen.",
-    contactPhone: "Telefonisch kontaktieren",
+
   },
   
   en: {

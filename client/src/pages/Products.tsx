@@ -130,9 +130,12 @@ export default function Products() {
                 <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
                   <div className="relative overflow-hidden rounded-t-lg">
                     <img
-                      src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600'}
+                      src={product.mainImage || '/api/placeholder/500/500'}
                       alt={getLocalizedText(product, 'name')}
                       className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                      onError={(e) => {
+                        e.currentTarget.src = '/api/placeholder/500/500';
+                      }}
                     />
                     {product.isFeatured && (
                       <Badge className="absolute top-3 left-3 bg-excalibur-orange text-white">

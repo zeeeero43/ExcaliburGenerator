@@ -126,18 +126,18 @@ export default function Home() {
       </section>
 
       {/* About Excalibur Power Section */}
-      <section className="py-16 bg-gradient-to-r from-excalibur-blue to-blue-700 text-white">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6">
+            <h2 className="text-4xl font-bold mb-6 text-gray-800">
               EXCALIBUR POWER: SOLAR ANLAGEN, GENERATOREN & MEHR
             </h2>
-            <p className="text-2xl font-light mb-8 text-blue-100">
+            <p className="text-2xl font-light mb-8 text-excalibur-blue">
               Wir möchten Cuba erleuchten
             </p>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 mb-8">
-              <p className="text-lg leading-relaxed mb-6">
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 mb-8">
+              <p className="text-lg leading-relaxed mb-6 text-gray-700">
                 Wir sind die KKMU Harry Lag Constructions aus Matanzas & repräsentieren die Excalibur Power Group in Cuba. 
                 Excalibur gehört zu den führenden Herstellern weltweit für Generatoren, Solar und vielen anderen Komponenten.
               </p>
@@ -147,22 +147,22 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                <Shield className="w-12 h-12 mx-auto mb-4 text-blue-200" />
-                <h3 className="text-xl font-semibold mb-2">35 Jahre Erfahrung</h3>
-                <p className="text-blue-100">Joint Venture Partner AFDL IMPORT & EXPORT aus Deutschland</p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <Shield className="w-12 h-12 mx-auto mb-4 text-excalibur-blue" />
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">35 Jahre Erfahrung</h3>
+                <p className="text-gray-600">Joint Venture Partner AFDL IMPORT & EXPORT aus Deutschland</p>
               </div>
               
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                <Truck className="w-12 h-12 mx-auto mb-4 text-blue-200" />
-                <h3 className="text-xl font-semibold mb-2">Direkt vom Hersteller</h3>
-                <p className="text-blue-100">Containerweise direkt von den Fabriken nach Cuba</p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <Truck className="w-12 h-12 mx-auto mb-4 text-excalibur-blue" />
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">Direkt vom Hersteller</h3>
+                <p className="text-gray-600">Containerweise direkt von den Fabriken nach Cuba</p>
               </div>
               
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                <Users className="w-12 h-12 mx-auto mb-4 text-blue-200" />
-                <h3 className="text-xl font-semibold mb-2">Zentral in Havanna</h3>
-                <p className="text-blue-100">Lager in Havanna del Este - leicht zu erreichen</p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <Users className="w-12 h-12 mx-auto mb-4 text-excalibur-blue" />
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">Zentral in Havanna</h3>
+                <p className="text-gray-600">Lager in Havanna del Este - leicht zu erreichen</p>
               </div>
             </div>
           </div>
@@ -282,26 +282,26 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-              {t('solarEnergyInCuba')}
+              Solarenergie in Cuba - Die Zukunft der nachhaltigen Energieversorgung
             </h2>
             
             <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
               <p>
-                {t('solarEnergyIntro')}
+                Cuba erlebt derzeit eine Energiewende hin zu erneuerbaren Energiequellen. Mit über 330 Sonnentagen im Jahr bietet die Insel ideale Bedingungen für Solarenergie. Excalibur Power Cuba importiert hochwertige Solarsysteme und Generatoren direkt von deutschen und europäischen Herstellern, um Privatpersonen und Unternehmen in Cuba zuverlässige Energielösungen zu bieten.
               </p>
               
               <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                {t('whySolarEnergy')}
+                Warum Solarenergie die beste Wahl für Cuba ist
               </h3>
               <p>
-                {t('whySolarEnergyDesc')}
+                Die geografische Lage Cubas macht es zu einem idealen Standort für Photovoltaik-Anlagen. Mit einer durchschnittlichen Sonneneinstrahlung von 5-6 kWh/m² pro Tag können Solaranlagen das ganze Jahr über effizient Strom produzieren. Unsere Systeme sind speziell für das tropische Klima konzipiert und bieten höchste Effizienz auch bei hohen Temperaturen und Luftfeuchtigkeit.
               </p>
               
               <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                {t('ourSolutions')}
+                Unsere maßgeschneiderten Energielösungen
               </h3>
               <p>
-                {t('ourSolutionsDesc')}
+                Von kompakten 1KW Systemen für kleine Haushalte bis zu großen 20KW Anlagen für Unternehmen - wir bieten die passende Lösung für jeden Bedarf. Alle unsere Systeme werden mit hochwertigen LiFePO4 Batterien, effizienten MPPT Ladereglern und zuverlässigen Hybrid-Wechselrichtern geliefert. Bei Stromausfällen sorgen unsere leisen Diesel- und Benzin-Generatoren für unterbrechungsfreie Energieversorgung.
               </p>
             </div>
           </div>
