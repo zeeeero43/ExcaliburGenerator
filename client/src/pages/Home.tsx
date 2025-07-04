@@ -313,40 +313,38 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-              Energía Solar en Cuba: Una Solución Sostenible
+              {t('solarEnergyTitle')}
             </h2>
             
             <div className="prose prose-lg max-w-none">
               <p className="text-gray-700 mb-6">
-                Cuba se encuentra en una posición geográfica privilegiada para el aprovechamiento de la energía solar, 
-                con más de 330 días de sol al año y una irradiación solar promedio de 5.5 kWh/m²/día. 
-                Esta abundante radiación solar convierte a la isla en un lugar ideal para la implementación de sistemas fotovoltaicos.
+                {t('solarEnergyDescription')}
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <div className="bg-blue-50 p-6 rounded-lg">
                   <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                    Ventajas de la Energía Solar en Cuba
+                    {t('solarAdvantagesTitle')}
                   </h3>
                   <ul className="text-gray-700 space-y-2">
-                    <li>✓ Reducción significativa en costos de electricidad</li>
-                    <li>✓ Independencia energética del hogar o negocio</li>
-                    <li>✓ Tecnología confiable con garantías internacionales</li>
-                    <li>✓ Bajo mantenimiento y larga vida útil</li>
-                    <li>✓ Contribución al cuidado del medio ambiente</li>
+                    <li>✓ {t('solarAdvantage1')}</li>
+                    <li>✓ {t('solarAdvantage2')}</li>
+                    <li>✓ {t('solarAdvantage3')}</li>
+                    <li>✓ {t('solarAdvantage4')}</li>
+                    <li>✓ {t('solarAdvantage5')}</li>
                   </ul>
                 </div>
                 
                 <div className="bg-green-50 p-6 rounded-lg">
                   <h3 className="text-xl font-semibold text-green-800 mb-3">
-                    Nuestros Sistemas Solares
+                    {t('ourSystemsTitle')}
                   </h3>
                   <ul className="text-gray-700 space-y-2">
-                    <li>• Sistemas completos de 1KW a 20KW</li>
-                    <li>• Paneles monocristalinos de alta eficiencia</li>
-                    <li>• Inversores híbridos con respaldo de batería</li>
-                    <li>• Baterías LiFePO4 de larga duración</li>
-                    <li>• Instalación y soporte técnico especializado</li>
+                    <li>• {t('systemFeature1')}</li>
+                    <li>• {t('systemFeature2')}</li>
+                    <li>• {t('systemFeature3')}</li>
+                    <li>• {t('systemFeature4')}</li>
+                    <li>• {t('systemFeature5')}</li>
                   </ul>
                 </div>
               </div>

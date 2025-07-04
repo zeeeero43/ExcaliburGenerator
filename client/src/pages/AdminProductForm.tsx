@@ -13,7 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation, useParams } from 'wouter';
 import { ArrowLeft, Upload, X } from 'lucide-react';
-import type { Category, Subcategory } from '@shared/schema';
+import type { Category, Subcategory, Product } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
 
 const productSchema = z.object({
@@ -78,6 +78,13 @@ export default function AdminProductForm() {
     retry: false,
   });
 
+  // Fetch existing product if editing
+  const { data: existingProduct, isLoading: productLoading } = useQuery<Product>({
+    queryKey: ['/api/admin/products', params.id],
+    enabled: Boolean(isEdit && params.id && user),
+    retry: false,
+  });
+
   // Fetch categories - must be authenticated
   const { data: categories = [], isLoading: categoriesLoading, error: categoriesError } = useQuery<Category[]>({
     queryKey: ['/api/admin/categories'],
@@ -87,7 +94,11 @@ export default function AdminProductForm() {
 
   // Debug logging
   useEffect(() => {
-    console.log('Categories data:', { 
+    console.log('Form data:', { 
+      isEdit,
+      productId: params.id,
+      existingProduct,
+      productLoading,
       categories, 
       categoriesLoading, 
       categoriesError,
@@ -95,13 +106,56 @@ export default function AdminProductForm() {
       user: !!user,
       errorMessage: categoriesError?.message
     });
-  }, [categories, categoriesLoading, categoriesError, user]);
+  }, [isEdit, params.id, existingProduct, productLoading, categories, categoriesLoading, categoriesError, user]);
 
   // Fetch subcategories based on selected category
   const { data: subcategories = [] } = useQuery<Subcategory[]>({
     queryKey: ['/api/subcategories', { categoryId: selectedCategoryId }],
     enabled: !!selectedCategoryId,
   });
+
+  // Populate form with existing product data
+  useEffect(() => {
+    if (existingProduct && isEdit) {
+      console.log('Populating form with existing product:', existingProduct);
+      
+      // Reset form with existing product data
+      form.reset({
+        nameEs: existingProduct.nameEs || '',
+        nameDe: existingProduct.nameDe || '',
+        nameEn: existingProduct.nameEn || '',
+        shortDescriptionEs: existingProduct.shortDescriptionEs || '',
+        shortDescriptionDe: existingProduct.shortDescriptionDe || '',
+        shortDescriptionEn: existingProduct.shortDescriptionEn || '',
+        descriptionEs: existingProduct.descriptionEs || '',
+        descriptionDe: existingProduct.descriptionDe || '',
+        descriptionEn: existingProduct.descriptionEn || '',
+        price: existingProduct.price || '',
+        categoryId: existingProduct.categoryId || undefined,
+        subcategoryId: existingProduct.subcategoryId || undefined,
+        mainImage: existingProduct.mainImage || '',
+        sku: existingProduct.sku || '',
+        priceNote: existingProduct.priceNote || '',
+        isFeatured: existingProduct.isFeatured || false,
+        isActive: existingProduct.isActive !== false,
+        stockStatus: (existingProduct.stockStatus as 'in_stock' | 'out_of_stock' | 'limited') || 'in_stock',
+      });
+
+      // Set category for subcategories
+      if (existingProduct.categoryId) {
+        setSelectedCategoryId(existingProduct.categoryId);
+      }
+
+      // Parse specifications
+      if (existingProduct.specifications && typeof existingProduct.specifications === 'object') {
+        const specsArray = Object.entries(existingProduct.specifications).map(([key, value]) => ({
+          key,
+          value: value as string,
+        }));
+        setSpecifications(specsArray);
+      }
+    }
+  }, [existingProduct, isEdit, form]);
 
   // Watch category changes
   const watchedCategoryId = form.watch('categoryId');

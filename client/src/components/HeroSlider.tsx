@@ -66,7 +66,7 @@ export function HeroSlider() {
   return (
     <section className="relative h-screen overflow-hidden">
       {/* Background Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-excalibur-blue/80 to-excalibur-orange/60 z-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-black/30 z-10"></div>
       
       {/* Slides */}
       <div className="relative h-full">
