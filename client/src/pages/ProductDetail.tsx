@@ -221,6 +221,194 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
+
+        {/* Extended Product Features Section */}
+        <div className="max-w-6xl mx-auto px-4 mt-16">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+            {t('productFeatures')}
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 text-center">
+                <Shield className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+                <h3 className="text-lg font-semibold mb-2">{t('qualityAssurance')}</h3>
+                <p className="text-gray-600">{t('qualityAssuranceDesc')}</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 text-center">
+                <Zap className="w-12 h-12 mx-auto mb-4 text-yellow-600" />
+                <h3 className="text-lg font-semibold mb-2">{t('highPerformance')}</h3>
+                <p className="text-gray-600">{t('highPerformanceDesc')}</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 text-center">
+                <Star className="w-12 h-12 mx-auto mb-4 text-green-600" />
+                <h3 className="text-lg font-semibold mb-2">{t('warranty')}</h3>
+                <p className="text-gray-600">{t('warrantyDesc')}</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Installation & Setup Section */}
+        <div className="bg-gray-50 py-16">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+              {t('installationSetup')}
+            </h2>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <div>
+                <h3 className="text-xl font-semibold mb-4">{t('professionalInstallation')}</h3>
+                <p className="text-gray-700 mb-6">
+                  {t('professionalInstallationDesc')}
+                </p>
+                
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <Check className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                    <span>{t('installationStep1')}</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                    <span>{t('installationStep2')}</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                    <span>{t('installationStep3')}</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                    <span>{t('installationStep4')}</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div>
+                <h3 className="text-xl font-semibold mb-4">{t('technicalSupport')}</h3>
+                <p className="text-gray-700 mb-6">
+                  {t('technicalSupportDesc')}
+                </p>
+                
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <h4 className="font-semibold mb-3">{t('supportChannels')}</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center">
+                      <Phone className="w-4 h-4 text-blue-600 mr-2" />
+                      <span className="text-sm">+49 157 516 91275 (Germany)</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Phone className="w-4 h-4 text-blue-600 mr-2" />
+                      <span className="text-sm">+53 58 78 1416 (Cuba)</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Mail className="w-4 h-4 text-blue-600 mr-2" />
+                      <span className="text-sm">info@excalibur-cuba.com</span>
+                    </div>
+                    <div className="flex items-center">
+                      <MessageCircle className="w-4 h-4 text-green-600 mr-2" />
+                      <span className="text-sm">WhatsApp 24/7</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Technical Details & Certifications */}
+        <div className="py-16">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+              {t('technicalDetails')}
+            </h2>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle>{t('certifications')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span>{t('ceCompliance')}</span>
+                      <Badge className="bg-green-100 text-green-800">✓ {t('certified')}</Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>{t('iecStandard')}</span>
+                      <Badge className="bg-green-100 text-green-800">✓ {t('certified')}</Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>{t('rohs')}</span>
+                      <Badge className="bg-green-100 text-green-800">✓ {t('certified')}</Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>{t('iso9001')}</span>
+                      <Badge className="bg-green-100 text-green-800">✓ {t('certified')}</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>{t('warranty')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-semibold text-blue-600">{t('manufacturerWarranty')}</h4>
+                      <p className="text-gray-600">{t('manufacturerWarrantyDesc')}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-blue-600">{t('performanceWarranty')}</h4>
+                      <p className="text-gray-600">{t('performanceWarrantyDesc')}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-blue-600">{t('supportWarranty')}</h4>
+                      <p className="text-gray-600">{t('supportWarrantyDesc')}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+
+        {/* About Excalibur Cuba */}
+        <div className="bg-blue-900 text-white py-16">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">
+              {t('aboutExcaliburCuba')}
+            </h2>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-300 mb-2">35+</div>
+                <div className="text-lg">{t('yearsExperience')}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-300 mb-2">1000+</div>
+                <div className="text-lg">{t('satisfiedClients')}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-300 mb-2">24/7</div>
+                <div className="text-lg">{t('technicalSupportStats')}</div>
+              </div>
+            </div>
+            
+            <div className="text-center mt-12">
+              <p className="text-lg text-blue-100 max-w-3xl mx-auto">
+                {t('aboutExcaliburDesc')}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
