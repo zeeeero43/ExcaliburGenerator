@@ -101,6 +101,12 @@ export default function ProductDetail() {
                 src={product.mainImage || '/api/placeholder/500/500'}
                 alt={productName}
                 className="w-full h-full object-cover"
+                onLoad={() => console.log('Image loaded successfully:', product.mainImage)}
+                onError={(e) => {
+                  console.log('Image failed to load:', product.mainImage);
+                  console.log('Falling back to placeholder');
+                  e.currentTarget.src = '/api/placeholder/500/500';
+                }}
               />
             </div>
             
