@@ -77,6 +77,8 @@ export default function ProductDetail() {
     window.location.href = `mailto:info@excalibur-cuba.com?subject=${encodeURIComponent(subject) as string}&body=${encodeURIComponent(body) as string}`;
   };
 
+
+
   return (
     <div className="py-16 bg-white min-h-screen">
       <div className="container mx-auto px-4">
@@ -96,27 +98,21 @@ export default function ProductDetail() {
         <div className="grid md:grid-cols-2 gap-12">
           {/* Product Image */}
           <div className="space-y-4">
-            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-              <img
-                src={product.mainImage || '/api/placeholder/500/500'}
-                alt={productName}
-                className="w-full h-full object-cover"
-                onLoad={(e) => {
-                  console.log('✅ Image loaded successfully:', product.mainImage);
-                  console.log('✅ Final image src:', e.currentTarget.src);
-                }}
-                onError={(e) => {
-                  console.log('❌ Image failed to load:', product.mainImage);
-                  console.log('❌ Error details:', e);
-                  console.log('❌ Attempted src:', e.currentTarget.src);
-                  console.log('❌ Falling back to placeholder');
-                  e.currentTarget.src = '/api/placeholder/500/500';
-                }}
-              />
-              {/* Debug info */}
-              <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs p-2 rounded">
-                {product.mainImage ? `IMG: ${product.mainImage}` : 'No image'}
-              </div>
+            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+              {product.mainImage ? (
+                <img
+                  src={`http://localhost:5000${product.mainImage}`}
+                  alt={productName}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = '/api/placeholder/500/500';
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                  <span className="text-gray-500">No Image</span>
+                </div>
+              )}
             </div>
             
             {/* Trust Badges */}
@@ -167,7 +163,7 @@ export default function ProductDetail() {
             {/* Product Description */}
             {productDescription && (
               <div>
-                <h2 className="text-xl font-semibold mb-3">{t('description') as string}</h2>
+                <h2 className="text-xl font-semibold mb-3">{String(t('description'))}</h2>
                 <p className="text-gray-700 leading-relaxed">{productDescription}</p>
               </div>
             )}

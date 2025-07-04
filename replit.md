@@ -156,6 +156,14 @@ Changelog:
   * Fixed all duplicate key warnings in translation system
   * Massively expanded product detail pages with features, installation guides, certifications, support sections
   * Website now fully polished and ready for production deployment
+- July 04, 2025 (critical image loading fix). Resolved major image loading issue:
+  * Fixed product images not displaying on individual product detail pages
+  * Changed image paths from relative URLs to full URLs (localhost:5000/uploads/...)
+  * Images now load correctly on both product listings and product detail pages
+  * Enhanced category creation with image upload functionality
+  * Added technical specification templates for solar panels and generators
+  * Restructured products page to show categories first, then products within selected category
+  * All product images now display correctly throughout the application
 ```
 
 ## User Preferences
