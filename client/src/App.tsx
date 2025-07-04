@@ -1,5 +1,6 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +19,12 @@ import NotFound from "./pages/not-found";
 
 function Router() {
   const { isLoading } = useLanguage();
+  const [location] = useLocation();
+
+  // Scroll to top whenever route changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   if (isLoading) {
     return (

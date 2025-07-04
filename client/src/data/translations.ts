@@ -198,6 +198,15 @@ export const translations = {
     supportWarrantyDesc: "Soporte técnico gratuito durante toda la vida útil del producto",
     aboutExcaliburCuba: "Sobre Excalibur Cuba",
     aboutExcaliburDesc: "Representantes oficiales de Excalibur Power Group en Cuba, ofreciendo soluciones energéticas de alta calidad para iluminar el futuro de Cuba.",
+    
+    // Missing keys for Home page  
+    ourServices: "Nuestros Servicios",
+    contactDesc: "Con gusto le armamos el sistema solar que se adapte a sus necesidades",
+    germany: "Alemania",
+    cuba: "Cuba", 
+    warehouse: "Almacén y Entrega",
+    havanaLocation: "Habana del Este",
+    emailLabel: "Contacto por Email:",
 
   },
   
@@ -400,6 +409,15 @@ export const translations = {
     supportWarrantyDesc: "Kostenloser technischer Support während der gesamten Produktlebensdauer",
     aboutExcaliburCuba: "Über Excalibur Cuba",
     aboutExcaliburDesc: "Offizielle Vertreter der Excalibur Power Group in Kuba, die hochwertige Energielösungen anbieten, um Kubas Zukunft zu erhellen.",
+    
+    // Missing keys for Home page
+    ourServices: "Unsere Leistungen für Sie",
+    contactDesc: "Wir stellen Ihnen gern die für Sie passende Solaranlage nach Ihren Wünschen zusammen",
+    germany: "Deutschland", 
+    cuba: "Cuba",
+    warehouse: "Lager & Warenausgabe",
+    havanaLocation: "Havanna del Este",
+    emailLabel: "E-Mail Kontakt:",
 
   },
   
@@ -586,5 +604,14 @@ export const translations = {
     backToCategories: "Back to Categories",
     productCount: "Products",
     inThisCategory: "in this category",
+    
+    // Missing keys for Home page
+    ourServices: "Our Services",
+    contactDesc: "We are happy to put together the right solar system for you according to your wishes",
+    germany: "Germany",
+    cuba: "Cuba",
+    warehouse: "Warehouse & Delivery",
+    havanaLocation: "Havana del Este",
+    emailLabel: "Email Contact:",
   }
 };
