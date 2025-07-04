@@ -580,6 +580,11 @@ export const translations = {
     supportWarranty: "Support Warranty",
     supportWarrantyDesc: "Free technical support throughout the product's lifespan",
     aboutExcaliburCuba: "About Excalibur Cuba",
-    aboutExcaliburDesc: "Official representatives of Excalibur Power Group in Cuba, providing high-quality energy solutions to illuminate Cuba's future.",
+    aboutExcalibirDesc: "Official representatives of Excalibur Power Group in Cuba, providing high-quality energy solutions to illuminate Cuba's future.",
+    
+    // Navigation and Categories
+    backToCategories: "Back to Categories",
+    productCount: "Products",
+    inThisCategory: "in this category",
   }
 };

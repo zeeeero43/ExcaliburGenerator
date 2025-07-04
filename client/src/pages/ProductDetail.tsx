@@ -101,13 +101,22 @@ export default function ProductDetail() {
                 src={product.mainImage || '/api/placeholder/500/500'}
                 alt={productName}
                 className="w-full h-full object-cover"
-                onLoad={() => console.log('Image loaded successfully:', product.mainImage)}
+                onLoad={(e) => {
+                  console.log('✅ Image loaded successfully:', product.mainImage);
+                  console.log('✅ Final image src:', e.currentTarget.src);
+                }}
                 onError={(e) => {
-                  console.log('Image failed to load:', product.mainImage);
-                  console.log('Falling back to placeholder');
+                  console.log('❌ Image failed to load:', product.mainImage);
+                  console.log('❌ Error details:', e);
+                  console.log('❌ Attempted src:', e.currentTarget.src);
+                  console.log('❌ Falling back to placeholder');
                   e.currentTarget.src = '/api/placeholder/500/500';
                 }}
               />
+              {/* Debug info */}
+              <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs p-2 rounded">
+                {product.mainImage ? `IMG: ${product.mainImage}` : 'No image'}
+              </div>
             </div>
             
             {/* Trust Badges */}

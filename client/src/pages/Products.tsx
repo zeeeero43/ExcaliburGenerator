@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Filter, Grid, List } from 'lucide-react';
+import { Filter, Grid, List, ArrowLeft, Eye } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
@@ -11,8 +11,9 @@ import type { Product, Category } from '@shared/schema';
 
 export default function Products() {
   const { t, currentLanguage } = useLanguage();
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [showCategories, setShowCategories] = useState(true);
 
   // Load real categories from database
   const { data: categories = [] } = useQuery<Category[]>({
@@ -24,17 +25,37 @@ export default function Products() {
     queryKey: ['/api/products'],
   });
 
-  // Filter products by category
-  const filteredProducts = selectedCategory === 'all'
-    ? products.filter(product => product.isActive)
-    : products.filter(product => 
-        product.isActive && product.categoryId === parseInt(selectedCategory)
-      );
-
   // Helper function to get localized text
   const getLocalizedText = (item: any, field: string) => {
+    if (!item) return '';
     const langField = `${field}${currentLanguage === 'es' ? 'Es' : currentLanguage === 'de' ? 'De' : currentLanguage === 'en' ? 'En' : ''}`;
     return item[langField] || item[field] || '';
+  };
+
+  // Filter products by selected category
+  const filteredProducts = selectedCategory
+    ? products.filter(product => 
+        product.isActive && product.categoryId === selectedCategory
+      )
+    : [];
+
+  // Handle category selection
+  const selectCategory = (categoryId: number, categoryName: string) => {
+    setSelectedCategory(categoryId);
+    setShowCategories(false);
+  };
+
+  // Handle back to categories
+  const backToCategories = () => {
+    setSelectedCategory(null);
+    setShowCategories(true);
+  };
+
+  // Get selected category name
+  const getSelectedCategoryName = () => {
+    if (!selectedCategory) return '';
+    const category = categories.find(c => c.id === selectedCategory);
+    return category ? getLocalizedText(category, 'name') || 'Kategorie' : '';
   };
 
   if (isLoading) {
@@ -56,38 +77,95 @@ export default function Products() {
     );
   }
 
+  // Categories View
+  if (showCategories) {
+    return (
+      <div className="py-16 bg-white min-h-screen">
+        <div className="container mx-auto px-4">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+              {t('ourProducts')}
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              {t('selectCategory')} - {t('productsSubtitle')}
+            </p>
+          </div>
+
+          {/* Categories Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {categories.map((category) => (
+              <Card 
+                key={category.id} 
+                className="hover:shadow-lg transition-shadow cursor-pointer group"
+                onClick={() => selectCategory(category.id, getLocalizedText(category, 'name'))}
+              >
+                <CardContent className="p-0">
+                  {/* Category Image */}
+                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden">
+                    <img
+                      src={category.image || '/api/placeholder/400/250'}
+                      alt={getLocalizedText(category, 'name')}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  
+                  {/* Category Info */}
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                      {getLocalizedText(category, 'name')}
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      {getLocalizedText(category, 'description') || 'Kategorie anzeigen'}
+                    </p>
+                    
+                    {/* Product Count */}
+                    <div className="flex items-center justify-between">
+                      <Badge variant="secondary">
+                        {products.filter(p => p.categoryId === category.id && p.isActive).length} {t('productCount')}
+                      </Badge>
+                      <Button variant="ghost" size="sm" className="group-hover:bg-excalibur-blue group-hover:text-white">
+                        <Eye className="w-4 h-4 mr-2" />
+                        {t('viewDetails')}
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Products View for Selected Category
   return (
     <div className="py-16 bg-white min-h-screen">
       <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            {t('ourProducts')}
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {t('productsSubtitle')}
-          </p>
+        {/* Header with Back Button */}
+        <div className="mb-8">
+          <Button
+            variant="outline"
+            onClick={backToCategories}
+            className="mb-4"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {t('backToCategories')}
+          </Button>
+          
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+              {getSelectedCategoryName()}
+            </h1>
+            <p className="text-xl text-gray-600">
+              {filteredProducts.length} {t('productCount')} {t('inThisCategory')}
+            </p>
+          </div>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8 items-center justify-between">
-          <div className="flex gap-4 items-center">
-            <Filter className="w-5 h-5 text-gray-500" />
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder={t('selectCategory')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('allCategories')}</SelectItem>
-                {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id.toString()}>
-                    {getLocalizedText(category, 'name')}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          
+        {/* View Mode Toggle */}
+        <div className="flex justify-end mb-8">
           <div className="flex gap-2">
             <Button
               variant={viewMode === 'grid' ? 'default' : 'outline'}

@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { ArrowLeft, Save, Trash2 } from 'lucide-react';
 import { insertCategorySchema, type Category } from '@shared/schema';
+import { ImageUpload } from '@/components/ImageUpload';
 
 // Form validation schema
 const categoryFormSchema = z.object({
@@ -320,6 +321,50 @@ export default function AdminCategoryForm() {
                     )}
                   />
                 </div>
+
+                {/* Category Image */}
+                <Card className="bg-blue-50 border-blue-200">
+                  <CardHeader>
+                    <CardTitle className="text-lg text-blue-800">📸 Kategorie-Bild</CardTitle>
+                    <CardDescription className="text-blue-600">
+                      Fügen Sie ein Bild für diese Kategorie hinzu. Dieses wird in der Kategorieansicht angezeigt.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <FormField
+                      control={form.control}
+                      name="image"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-base font-medium">Kategorie-Bild</FormLabel>
+                          <div className="space-y-2">
+                            <ImageUpload 
+                              onImageSelect={field.onChange}
+                              currentImage={field.value}
+                            />
+                            <FormControl>
+                              <Input 
+                                {...field} 
+                                placeholder="Oder URL eingeben: https://..." 
+                                className="mt-2"
+                              />
+                            </FormControl>
+                            {field.value && (
+                              <div className="mt-2">
+                                <img 
+                                  src={field.value} 
+                                  alt="Kategorie-Bild Vorschau" 
+                                  className="w-32 h-32 object-cover rounded border"
+                                />
+                              </div>
+                            )}
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </CardContent>
+                </Card>
 
                 {/* Action Buttons */}
                 <div className="flex justify-between pt-6 border-t">
