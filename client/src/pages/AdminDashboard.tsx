@@ -68,6 +68,94 @@ export default function AdminDashboard() {
     },
   });
 
+  // Delete product mutation
+  const deleteProductMutation = useMutation({
+    mutationFn: async (productId: number) => {
+      const response = await fetch(`/api/admin/products/${productId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) throw new Error('Failed to delete product');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
+      toast({
+        title: "Produkt gelöscht",
+        description: "Das Produkt wurde erfolgreich entfernt.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Fehler beim Löschen",
+        description: "Das Produkt konnte nicht gelöscht werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Delete category mutation
+  const deleteCategoryMutation = useMutation({
+    mutationFn: async (categoryId: number) => {
+      const response = await fetch(`/api/admin/categories/${categoryId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete category');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
+      toast({
+        title: "Kategorie gelöscht",
+        description: "Die Kategorie wurde erfolgreich entfernt.",
+      });
+    },
+    onError: (error: any) => {
+      if (error.message.includes('Cannot delete category with existing products')) {
+        toast({
+          title: "Kategorie hat Produkte",
+          description: "Diese Kategorie kann nicht gelöscht werden, da sie noch Produkte enthält. Löschen Sie erst alle Produkte in dieser Kategorie.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Fehler beim Löschen",
+          description: "Die Kategorie konnte nicht gelöscht werden.",
+          variant: "destructive",
+        });
+      }
+    },
+  });
+
+  // Update inquiry status mutation
+  const updateInquiryMutation = useMutation({
+    mutationFn: async ({ id, status }: { id: number; status: string }) => {
+      const response = await fetch(`/api/admin/inquiries/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      if (!response.ok) throw new Error('Failed to update inquiry');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/inquiries'] });
+      toast({
+        title: "Anfrage aktualisiert",
+        description: "Der Status wurde erfolgreich geändert.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fehler",
+        description: "Die Anfrage konnte nicht aktualisiert werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -228,11 +316,9 @@ export default function AdminDashboard() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            // Delete functionality would go here
-                            toast({
-                              title: "Funktion in Entwicklung",
-                              description: "Löschfunktion wird bald verfügbar sein.",
-                            });
+                            if (confirm('Sind Sie sicher, dass Sie dieses Produkt löschen möchten?')) {
+                              deleteProductMutation.mutate(product.id);
+                            }
                           }}
                         >
                           <Trash2 className="w-4 h-4" />
@@ -306,6 +392,17 @@ export default function AdminDashboard() {
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            if (confirm('Sind Sie sicher, dass Sie diese Kategorie löschen möchten?')) {
+                              deleteCategoryMutation.mutate(category.id);
+                            }
+                          }}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
@@ -345,19 +442,29 @@ export default function AdminDashboard() {
                           {new Date(inquiry.createdAt!).toLocaleDateString('de-DE')}
                         </p>
                       </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          // Mark as read functionality
-                          toast({
-                            title: "Funktion in Entwicklung",
-                            description: "Bearbeitungsfunktion wird bald verfügbar sein.",
-                          });
-                        }}
-                      >
-                        Bearbeiten
-                      </Button>
+                      <div className="flex space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            updateInquiryMutation.mutate({ 
+                              id: inquiry.id, 
+                              status: inquiry.status === 'new' ? 'processed' : 'new' 
+                            });
+                          }}
+                        >
+                          {inquiry.status === 'new' ? 'Als bearbeitet markieren' : 'Als neu markieren'}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            window.open(`mailto:${inquiry.email}?subject=Re: Ihre Anfrage&body=Hallo ${inquiry.name},%0D%0A%0D%0AVielen Dank für Ihre Anfrage.%0D%0A%0D%0A${inquiry.message}%0D%0A%0D%0AMit freundlichen Grüßen%0D%0AExcalibur Cuba Team`, '_blank');
+                          }}
+                        >
+                          E-Mail senden
+                        </Button>
+                      </div>
                     </div>
                   ))}
                   

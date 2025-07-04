@@ -4,6 +4,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupSession, isAuthenticated, loginUser, logoutUser } from "./auth";
 import { seedDatabase } from "./seed";
+import { setupSEO } from "./seo";
 import { z } from "zod";
 import { insertCategorySchema, insertSubcategorySchema, insertProductSchema, insertInquirySchema } from "@shared/schema";
 import multer from "multer";
@@ -173,7 +174,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete("/api/admin/categories/:id", isAuthenticated, async (req, res) => {
     try {
-      await storage.deleteCategory(parseInt(req.params.id));
+      const categoryId = parseInt(req.params.id);
+      
+      // Check if category has products
+      const products = await storage.getProducts({ categoryId });
+      
+      if (products.length > 0) {
+        return res.status(400).json({ 
+          error: "Cannot delete category with existing products", 
+          productCount: products.length,
+          products: products.map(p => ({ id: p.id, name: p.name }))
+        });
+      }
+      
+      await storage.deleteCategory(categoryId);
       res.json({ success: true });
     } catch (error) {
       console.error("Error deleting category:", error);
@@ -244,6 +258,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const filters = {
         categoryId: req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined,
         subcategoryId: req.query.subcategoryId ? parseInt(req.query.subcategoryId as string) : undefined,
+        search: req.query.search as string || undefined,
         isActive: true
       };
       
@@ -486,6 +501,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to delete image" });
     }
   });
+
+  // Setup SEO routes (robots.txt, sitemap.xml, structured data)
+  setupSEO(app);
 
   const httpServer = createServer(app);
   return httpServer;

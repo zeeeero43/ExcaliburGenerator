@@ -5,6 +5,7 @@ export const translations = {
     products: "Productos",
     about: "Nosotros",
     contact: "Contacto",
+    searchProducts: "Buscar productos...",
     
     // Hero Section
     heroTitle1: "ENERGÍA SOLAR PARA CUBA",
@@ -216,6 +217,7 @@ export const translations = {
     products: "Produkte",
     about: "Über uns",
     contact: "Kontakt",
+    searchProducts: "Produkte suchen...",
     
     // Hero Section
     heroTitle1: "SOLARENERGIE FÜR KUBA",
@@ -427,6 +429,7 @@ export const translations = {
     products: "Products",
     about: "About Us",
     contact: "Contact",
+    searchProducts: "Search products...",
     
     // Hero Section
     heroTitle1: "SOLAR ENERGY FOR CUBA",

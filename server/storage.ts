@@ -49,7 +49,7 @@ export interface IStorage {
   deleteSubcategory(id: number): Promise<void>;
   
   // Products
-  getProducts(filters?: { categoryId?: number; subcategoryId?: number; isActive?: boolean }): Promise<Product[]>;
+  getProducts(filters?: { categoryId?: number; subcategoryId?: number; search?: string; isActive?: boolean }): Promise<Product[]>;
   getProductById(id: number): Promise<Product | undefined>;
   getProductBySlug(slug: string): Promise<Product | undefined>;
   getFeaturedProducts(): Promise<Product[]>;
@@ -182,7 +182,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Products
-  async getProducts(filters?: { categoryId?: number; subcategoryId?: number; isActive?: boolean }): Promise<Product[]> {
+  async getProducts(filters?: { categoryId?: number; subcategoryId?: number; search?: string; isActive?: boolean }): Promise<Product[]> {
     let query = db.select().from(products);
     
     const conditions = [];
@@ -194,6 +194,21 @@ export class DatabaseStorage implements IStorage {
     }
     if (filters?.subcategoryId) {
       conditions.push(eq(products.subcategoryId, filters.subcategoryId));
+    }
+    if (filters?.search) {
+      const searchTerm = `%${filters.search}%`;
+      conditions.push(
+        or(
+          ilike(products.name, searchTerm),
+          ilike(products.nameEs, searchTerm),
+          ilike(products.nameDe, searchTerm),
+          ilike(products.nameEn, searchTerm),
+          ilike(products.description, searchTerm),
+          ilike(products.descriptionEs, searchTerm),
+          ilike(products.descriptionDe, searchTerm),
+          ilike(products.descriptionEn, searchTerm)
+        )
+      );
     }
 
     if (conditions.length > 0) {
