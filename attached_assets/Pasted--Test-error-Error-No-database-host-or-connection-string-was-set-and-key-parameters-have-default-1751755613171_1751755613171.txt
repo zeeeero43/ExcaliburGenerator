@@ -1,0 +1,39 @@
+"
+Test error: Error: No database host or connection string was set, and key parameters have default values (host: localhost, user: root, db: root, password: null). Is an environment variable missing? Alternatively, if you intended to connect with these parameters, please set the host to 'localhost' explicitly.
+    at Tn.connect (/var/www/excalibur-cuba/ExcaliburGenerator/node_modules/@neondatabase/serverless/index.js:1582:62)
+    at In.newClient (/var/www/excalibur-cuba/ExcaliburGenerator/node_modules/@neondatabase/serverless/index.js:1383:3)
+    at In.connect (/var/www/excalibur-cuba/ExcaliburGenerator/node_modules/@neondatabase/serverless/index.js:1378:23)
+    at testLogin ([eval]:7:31)
+    at [eval]:28:1
+    at runScriptInThisContext (node:internal/vm:209:10)
+    at node:internal/process/execution:118:14
+    at [eval]-wrapper:6:24
+    at runScript (node:internal/process/execution:101:62)
+    at evalScript (node:internal/process/execution:133:3)
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# ls -la /var/www/excalibur-cuba/ExcaliburGenerator/.env
+-rw-r--r-- 1 root root 182 Jul  5 22:11 /var/www/excalibur-cuba/ExcaliburGenerator/.env
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# cd /var/www/excalibur-cuba/ExcaliburGenerator
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# export DATABASE_URL=$(grep DATABASE_URL .env | cut -d '=' -f2)
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo "DATABASE_URL: $DATABASE_URL"
+DATABASE_URL: postgresql://excalibur_user:SecurePass2025@localhost:5432/excalibur_cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sudo -u postgres psql excalibur_cuba -c "SELECT username, password, is_active FROM admin_users WHERE username = 'excalibur_admin';"
+    username     |                           password                           | is_active
+-----------------+--------------------------------------------------------------+-----------
+ excalibur_admin | $2b$10$xoya0DE0emU6CaqFw9ejmuayC4nDOlR0NZZIuMVGtKtQRIQRsjb2K | t
+(1 row)
+
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sudo -u postgres psql excalibur_cuba -c "
+SELECT
+  username,
+  password,
+  is_active,
+  CASE WHEN password = '\$2b\$10\$xoya0DE0emU6CaqFw9ejmuayC4nDOlR0NZZIuMVGtKtQRIQRsjb2K' THEN 'Hash Match' ELSE 'Hash Mismatch' END as hash_check
+FROM admin_users
+WHERE username = 'excalibur_admin';
+"
+    username     |                           password                           | is_active | hash_check
+-----------------+--------------------------------------------------------------+-----------+------------
+ excalibur_admin | $2b$10$xoya0DE0emU6CaqFw9ejmuayC4nDOlR0NZZIuMVGtKtQRIQRsjb2K | t         | Hash Match
+(1 row)
+
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
