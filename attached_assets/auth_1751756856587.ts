@@ -17,7 +17,7 @@ export function setupSession(app: express.Application) {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: true, // set to true in production with HTTPS
+        secure: false, // set to true in production with HTTPS
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
       },
