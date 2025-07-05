@@ -1,0 +1,1247 @@
+  inflating: ExcaliburGenerator/.git/objects/01/03c1f0032b44a3fc3f710cba34d4aefe2e9deb
+  inflating: ExcaliburGenerator/.git/objects/01/221846b1d78f28a8beb1f979baba2cc7d87bde
+  inflating: ExcaliburGenerator/.git/objects/01/49cc5f54bfecb22cb85ce66dd25dce455841af
+  inflating: ExcaliburGenerator/.git/objects/01/a1528fc22bb1335ef5faf1a926d3aa2078ce1f
+  inflating: ExcaliburGenerator/.git/objects/01/b8b6d4f716ff7c26065bc9e46aebd932729fc1
+  inflating: ExcaliburGenerator/.git/objects/01/cd3ca615564f24b75ec0f8f2c5e46fc4b0e467
+   creating: ExcaliburGenerator/.git/objects/02/
+  inflating: ExcaliburGenerator/.git/objects/02/661ce00e8d48d29a886be98e0080ef48ddfa8d
+  inflating: ExcaliburGenerator/.git/objects/02/970714bb30ab1fd0eb270bedd5ce6e4391c4f0
+  inflating: ExcaliburGenerator/.git/objects/02/b632fcf91e961ca3dfeb15061d314319431eae
+   creating: ExcaliburGenerator/.git/objects/03/
+  inflating: ExcaliburGenerator/.git/objects/03/3650af21539a9bc456f0be67c8f3002b508a83
+  inflating: ExcaliburGenerator/.git/objects/03/4c96c5f12951768af9bf674f7b8a0f7f6cee6b
+   creating: ExcaliburGenerator/.git/objects/04/
+  inflating: ExcaliburGenerator/.git/objects/04/150e8aaac978dbb184f46e457dbc81d1de0189
+  inflating: ExcaliburGenerator/.git/objects/04/4b18ad2b220b9542ed2524d481ab6f19ab6a9e
+  inflating: ExcaliburGenerator/.git/objects/04/6b1a03c20a94963dd9a3c6e4f26f487bc31388
+  inflating: ExcaliburGenerator/.git/objects/04/7d3c85eebf252881b90ae61219abb46a7bcdc3
+  inflating: ExcaliburGenerator/.git/objects/04/efd3b8445b186800ec887e7742c50cc49d7029
+   creating: ExcaliburGenerator/.git/objects/06/
+  inflating: ExcaliburGenerator/.git/objects/06/7a3cbb13e852d9ee51bf3922e5eb381cc89484
+  inflating: ExcaliburGenerator/.git/objects/06/866826cfc0bad54f4d118c7c1d947545eb8722
+  inflating: ExcaliburGenerator/.git/objects/06/bd5050990c00f509cef09ad302a66c381315e6
+   creating: ExcaliburGenerator/.git/objects/07/
+  inflating: ExcaliburGenerator/.git/objects/07/7cf58e57e0f49b76cf6f13eabc260647efdf2d
+  inflating: ExcaliburGenerator/.git/objects/07/82b312527f0e888d0ab6df468d6f34546953c5
+  inflating: ExcaliburGenerator/.git/objects/07/dd136b9eca0dba9425b77eaac0208b9946e7e9
+   creating: ExcaliburGenerator/.git/objects/08/
+  inflating: ExcaliburGenerator/.git/objects/08/12d7d0fb6ac02f0c5c4a2486eff614f7d2df36
+  inflating: ExcaliburGenerator/.git/objects/08/a5828906c5a195c881faac782f17838d2f21cf
+  inflating: ExcaliburGenerator/.git/objects/08/b960ff36ec7e8ebd4b4ba761f6a24830197883
+  inflating: ExcaliburGenerator/.git/objects/08/d74c0f9e43425c8e124ea4e3dfbc78bf59258f
+  inflating: ExcaliburGenerator/.git/objects/08/f6ee868b47117f3438eacfabd6b7400d425cb4
+   creating: ExcaliburGenerator/.git/objects/09/
+  inflating: ExcaliburGenerator/.git/objects/09/2047a0d4dd3b7304cf60f66408ff4032bb355c
+   creating: ExcaliburGenerator/.git/objects/0c/
+  inflating: ExcaliburGenerator/.git/objects/0c/4688657a7cdfdb353f9987e057d066a0a19189
+  inflating: ExcaliburGenerator/.git/objects/0c/c8e50615d2e7b4b6c4727dac57dfd9340d1b29
+   creating: ExcaliburGenerator/.git/objects/0d/
+  inflating: ExcaliburGenerator/.git/objects/0d/2c35d5d20731406f95f67fb88d65cf1f77487d
+  inflating: ExcaliburGenerator/.git/objects/0d/6a90741d778fb7e539878e3c2c394ea22c9aa2
+  inflating: ExcaliburGenerator/.git/objects/0d/a5cb8b74d1b02569a8bf0eaf36d135c97315d5
+  inflating: ExcaliburGenerator/.git/objects/0d/e103cb44b0a2e0ce253c2faafb2b068543a596
+  inflating: ExcaliburGenerator/.git/objects/0d/ea367303cf31ae2a7a538162f09b8f03b0bd44
+   creating: ExcaliburGenerator/.git/objects/0e/
+  inflating: ExcaliburGenerator/.git/objects/0e/3f53862bbc133487ea7f8115f086e7d5d395fb
+  inflating: ExcaliburGenerator/.git/objects/0e/4bd323c62237037b63c8d7a909badd73e2d0ec
+  inflating: ExcaliburGenerator/.git/objects/0e/d6a016760dd4cfcf03a7f1e0c5d8e83fba974d
+  inflating: ExcaliburGenerator/.git/objects/0e/eaf202d756d696d7eda84ba22d4401480461b4
+   creating: ExcaliburGenerator/.git/objects/0f/
+  inflating: ExcaliburGenerator/.git/objects/0f/8dc22680160b2e77ad7962e5ad9ffdcb5cd4fa
+   creating: ExcaliburGenerator/.git/objects/10/
+  inflating: ExcaliburGenerator/.git/objects/10/026f700597b732f273583cac8abcff5d07b1c3
+   creating: ExcaliburGenerator/.git/objects/11/
+  inflating: ExcaliburGenerator/.git/objects/11/1f0fc02e624c4e9025940ce27078bef451dca3
+  inflating: ExcaliburGenerator/.git/objects/11/6a05998ae48e4748df7e9e147dd9ef82d8d4ba
+  inflating: ExcaliburGenerator/.git/objects/11/a57e373d50c4dd5fcd0e575a2a6a895e40ae62
+   creating: ExcaliburGenerator/.git/objects/12/
+  inflating: ExcaliburGenerator/.git/objects/12/8914bde51055f6f67afc61cc905632ff5509b9
+   creating: ExcaliburGenerator/.git/objects/13/
+  inflating: ExcaliburGenerator/.git/objects/13/7dec5596aa8a5e648e962f7c42ce412ccf31c0
+  inflating: ExcaliburGenerator/.git/objects/13/d8491fe492ccbcddb0af37d302586cfffd57fc
+   creating: ExcaliburGenerator/.git/objects/14/
+  inflating: ExcaliburGenerator/.git/objects/14/02a361c4bec12d4ce7c4cc72d6606e70f6d9e6
+  inflating: ExcaliburGenerator/.git/objects/14/928a3427bc52f75fba4e37c1eb7fd3a8684f03
+   creating: ExcaliburGenerator/.git/objects/15/
+  inflating: ExcaliburGenerator/.git/objects/15/842762dafdde3eef88d06199d4661e416b51f6
+   creating: ExcaliburGenerator/.git/objects/16/
+  inflating: ExcaliburGenerator/.git/objects/16/bc9fd89c96ddbaf0e12f8c555db8354d6fe9b8
+   creating: ExcaliburGenerator/.git/objects/17/
+  inflating: ExcaliburGenerator/.git/objects/17/1c2939c34522f5dc7b508bea0375c85cf1f8f6
+  inflating: ExcaliburGenerator/.git/objects/17/2aab6d6ef60914906e035c8b98dc55e314abb0
+  inflating: ExcaliburGenerator/.git/objects/17/5749d2820479e3faa0bbd5d3ca4d6dc13f8635
+  inflating: ExcaliburGenerator/.git/objects/17/77de97a008754ceb02b7d3b0ebc5c9f6356b59
+   creating: ExcaliburGenerator/.git/objects/18/
+  inflating: ExcaliburGenerator/.git/objects/18/01b31d82ee19a557e47c9af35cec193342d6a1
+  inflating: ExcaliburGenerator/.git/objects/18/6be1d07a688993e19dde1b1ad654d20b997ef9
+  inflating: ExcaliburGenerator/.git/objects/18/f2d124bd4fe06bd7da5fabdbec2613b02a4104
+   creating: ExcaliburGenerator/.git/objects/19/
+  inflating: ExcaliburGenerator/.git/objects/19/24d15ccfe9eb3497f74161ea9033961117cb57
+  inflating: ExcaliburGenerator/.git/objects/19/29ad203ce23bba7bdfaa518817cd91e313e1dc
+  inflating: ExcaliburGenerator/.git/objects/19/5823960adcaf9d0f5cbdcd0d156cd5d7226fdd
+  inflating: ExcaliburGenerator/.git/objects/19/6e44ef7caf877666d17018309011a58eddba90
+  inflating: ExcaliburGenerator/.git/objects/19/734e796024115f0ade35248daae0d64f21c38e
+  inflating: ExcaliburGenerator/.git/objects/19/84cbbe4fa2858a775a347d3339c67d5854162e
+  inflating: ExcaliburGenerator/.git/objects/19/e500b4837b12fbef48f6fb76852da4a0fabc56
+   creating: ExcaliburGenerator/.git/objects/1a/
+  inflating: ExcaliburGenerator/.git/objects/1a/20e34d8c6d12c42b99b81237a5cf66568153e1
+  inflating: ExcaliburGenerator/.git/objects/1a/5597e2dae18992c324c0b8c5bcaf3de90abb02
+  inflating: ExcaliburGenerator/.git/objects/1a/a8f764b412131c332cff8b9729c8717c9495e6
+   creating: ExcaliburGenerator/.git/objects/1b/
+  inflating: ExcaliburGenerator/.git/objects/1b/31d0e63c2c8beb67f084408bfb9e2f5d12865c
+  inflating: ExcaliburGenerator/.git/objects/1b/75dd4db7b955e35e292732de66e038806e2350
+  inflating: ExcaliburGenerator/.git/objects/1b/9402dd320328fdc93a36e273870e052a3095f9
+  inflating: ExcaliburGenerator/.git/objects/1b/bb30d749fe87c0cb10a7fa9108e8a1a1b0d5cd
+  inflating: ExcaliburGenerator/.git/objects/1b/ee04c73dba47803d16d02c4da455baa677ef47
+   creating: ExcaliburGenerator/.git/objects/1c/
+  inflating: ExcaliburGenerator/.git/objects/1c/408d9beada95aeaf6d6beae264f0579c2144c7
+  inflating: ExcaliburGenerator/.git/objects/1c/6af6cfc3f250cbcb34089df210064879dd8df9
+  inflating: ExcaliburGenerator/.git/objects/1c/876bbeecabe59b684719afe58e684f34cdecbf
+  inflating: ExcaliburGenerator/.git/objects/1c/ba316faee457e717b89a0e3d73459ccd88de24
+   creating: ExcaliburGenerator/.git/objects/1d/
+  inflating: ExcaliburGenerator/.git/objects/1d/b6ba0f92722af0c9fe4db6a528c3d2864b2350
+  inflating: ExcaliburGenerator/.git/objects/1d/c0b412a656263181626b9ef17052f6a7e20685
+   creating: ExcaliburGenerator/.git/objects/1e/
+  inflating: ExcaliburGenerator/.git/objects/1e/3b13acff03535cbca6daeeafbcca61891a9c68
+  inflating: ExcaliburGenerator/.git/objects/1e/817daf4db2910932925f17032e4d0111c068ab
+   creating: ExcaliburGenerator/.git/objects/21/
+  inflating: ExcaliburGenerator/.git/objects/21/74f7101ba18ec1385eed03f69dbd619feb98aa
+  inflating: ExcaliburGenerator/.git/objects/21/c9ad35d0f52a4810a7f6ce2b0dfe255e2c29ee
+   creating: ExcaliburGenerator/.git/objects/22/
+  inflating: ExcaliburGenerator/.git/objects/22/3c84f8a6cc65fd85a05f811b0852ac8a4c56e6
+  inflating: ExcaliburGenerator/.git/objects/22/4e33590e144d781d25f5bab52eae2e0d44e2ae
+  inflating: ExcaliburGenerator/.git/objects/22/abca8a07f7137c4830c2ef09d439bb53efef24
+  inflating: ExcaliburGenerator/.git/objects/22/f757f2b48f1a951fd79e59d6edf04da3de15aa
+   creating: ExcaliburGenerator/.git/objects/23/
+  inflating: ExcaliburGenerator/.git/objects/23/26446e4bbee4575b5c2eadc01ba25d8408c596
+  inflating: ExcaliburGenerator/.git/objects/23/4dfc5888251962787ee67bf24855bfbe0dc84c
+  inflating: ExcaliburGenerator/.git/objects/23/5d7d1d82f7346621268557586e5ea0b63a9f64
+  inflating: ExcaliburGenerator/.git/objects/23/bc36c31c8f748ea27ead6bfec7cd6423291d96
+   creating: ExcaliburGenerator/.git/objects/24/
+  inflating: ExcaliburGenerator/.git/objects/24/3037579bccc4e4dba248edf0a6afd11b767d08
+  inflating: ExcaliburGenerator/.git/objects/24/53a0fdfa81e344077c2c29e813ec8bf5022842
+  inflating: ExcaliburGenerator/.git/objects/24/823b12b7bbd53ba7ea1a5b65466eabb97140cf
+  inflating: ExcaliburGenerator/.git/objects/24/da09bd33e1bf633cd98b0943d9fa55e26be2c3
+   creating: ExcaliburGenerator/.git/objects/25/
+  inflating: ExcaliburGenerator/.git/objects/25/49699f9d2edc11afd90a40d93ec05b7d4f24eb
+  inflating: ExcaliburGenerator/.git/objects/25/565aac00658e12fce4030ff5620dd0dfc1835a
+  inflating: ExcaliburGenerator/.git/objects/25/6c7c88474722bea43a891092381da7a14b3d84
+  inflating: ExcaliburGenerator/.git/objects/25/8da7d65462ac07db4a281eb83588b791c90a54
+   creating: ExcaliburGenerator/.git/objects/26/
+  inflating: ExcaliburGenerator/.git/objects/26/d21296d849e050a74bb1deb607127e81123006
+  inflating: ExcaliburGenerator/.git/objects/26/eb2c31e064679e4202a703ecf34b6c20cf3083
+   creating: ExcaliburGenerator/.git/objects/27/
+  inflating: ExcaliburGenerator/.git/objects/27/3480db4da64ff35cfeaa51a560c5caef707a4d
+  inflating: ExcaliburGenerator/.git/objects/27/8135190065e2e21ec1c0a31a6a13a982848486
+  inflating: ExcaliburGenerator/.git/objects/27/ae8a3545349db5039001c438b327797e331629
+  inflating: ExcaliburGenerator/.git/objects/27/e4b17106716efb0323d4c04ec8e9f641e4bd34
+   creating: ExcaliburGenerator/.git/objects/28/
+  inflating: ExcaliburGenerator/.git/objects/28/ce323c35a7114ff357fa8c47919d9da037861d
+  inflating: ExcaliburGenerator/.git/objects/28/e88103b039306a28b96d9ddfb768d4df965eb6
+   creating: ExcaliburGenerator/.git/objects/29/
+  inflating: ExcaliburGenerator/.git/objects/29/5696bce825a491ac79edced1b963454da3bc43
+  inflating: ExcaliburGenerator/.git/objects/29/a06acd852161288769a047483f7a95123a444e
+  inflating: ExcaliburGenerator/.git/objects/29/b4e34042c47192b2550d486e7f54593539e7b0
+  inflating: ExcaliburGenerator/.git/objects/29/d3b87a05a3a44a03bbf288f013c07a329238d5
+   creating: ExcaliburGenerator/.git/objects/2a/
+  inflating: ExcaliburGenerator/.git/objects/2a/cdf9b630facee2bca96c1e98b4cd03bc052823
+  inflating: ExcaliburGenerator/.git/objects/2a/fcc93feeb5704e82dad1d959971790569eb78a
+   creating: ExcaliburGenerator/.git/objects/2b/
+  inflating: ExcaliburGenerator/.git/objects/2b/0fe1dfef3b17850bbac040665f514a8ffd0f15
+   creating: ExcaliburGenerator/.git/objects/2c/
+  inflating: ExcaliburGenerator/.git/objects/2c/14125ac48b874740770da80d9e424daf1db58b
+  inflating: ExcaliburGenerator/.git/objects/2c/1922763cb97fb58a53e96c461e4e1a39948e80
+  inflating: ExcaliburGenerator/.git/objects/2c/30369fb00956871401b9ec9463ad230e54daf3
+  inflating: ExcaliburGenerator/.git/objects/2c/401c3e32db91acc9c6cf61e7f1700659536174
+  inflating: ExcaliburGenerator/.git/objects/2c/9c2b82e8f3f09d9e753c6e96a1ff86e87859a5
+  inflating: ExcaliburGenerator/.git/objects/2c/cb29386819545ddae0476eb13e9ed65b3f3fee
+  inflating: ExcaliburGenerator/.git/objects/2c/e76066a0bfbf03114e873bbe2f3bcc87579d68
+   creating: ExcaliburGenerator/.git/objects/2d/
+  inflating: ExcaliburGenerator/.git/objects/2d/2a1f84e15432d2bd55c5aaf46f8fa7c91ac3b9
+  inflating: ExcaliburGenerator/.git/objects/2d/8c2d5d872d4ee5231c741d60cd8008a153dd09
+  inflating: ExcaliburGenerator/.git/objects/2d/9d489684511490c1492554817b2d1647b4c907
+  inflating: ExcaliburGenerator/.git/objects/2d/d84bf5cd14cc09ccf48fc7251a5f657f766486
+   creating: ExcaliburGenerator/.git/objects/2e/
+  inflating: ExcaliburGenerator/.git/objects/2e/23736ff4ac9c68b6c07fd4d3e61b18bd81cc7a
+  inflating: ExcaliburGenerator/.git/objects/2e/7af2b7f1a6f391da1631d93968a9d487ba977d
+   creating: ExcaliburGenerator/.git/objects/2f/
+  inflating: ExcaliburGenerator/.git/objects/2f/115ee258fb47f52d3b4f47836018e97d9b3b6b
+  inflating: ExcaliburGenerator/.git/objects/2f/1bf11af7432dcedfaffb1f37ad828fbada4124
+  inflating: ExcaliburGenerator/.git/objects/2f/48d0ae97017e4a8a990a122d24a05dd7fe996b
+  inflating: ExcaliburGenerator/.git/objects/2f/f04385e21b193f2bf5ab0afc2e8a50ee56b8bb
+  inflating: ExcaliburGenerator/.git/objects/2f/f2851525709fdea92ab52074df0fceea91e7fb
+   creating: ExcaliburGenerator/.git/objects/30/
+  inflating: ExcaliburGenerator/.git/objects/30/b0a83aa89f9a0fb1699187c03d8e5e2a139054
+  inflating: ExcaliburGenerator/.git/objects/30/beb48c25fd150d4fe89c20b1870a6874139963
+   creating: ExcaliburGenerator/.git/objects/31/
+  inflating: ExcaliburGenerator/.git/objects/31/1ce924a2faea3cda76f9f253e65078412bd5e6
+   creating: ExcaliburGenerator/.git/objects/32/
+  inflating: ExcaliburGenerator/.git/objects/32/5cb2a55c66bc07f80471c4243760061a7ab2a3
+  inflating: ExcaliburGenerator/.git/objects/32/aeab0a276fb3e48d8ce964766b92ecbf1875cf
+   creating: ExcaliburGenerator/.git/objects/33/
+  inflating: ExcaliburGenerator/.git/objects/33/1fa46b4045cb9717bcc5c2504e38715d55c387
+  inflating: ExcaliburGenerator/.git/objects/33/6575257b81256439a85336f2f5ba76ede9ff1d
+  inflating: ExcaliburGenerator/.git/objects/33/77efd215337ed70b372567443e8db79fa21e9e
+  inflating: ExcaliburGenerator/.git/objects/33/7d7429b1e11be62817a9436fb539004e96882e
+   creating: ExcaliburGenerator/.git/objects/34/
+  inflating: ExcaliburGenerator/.git/objects/34/0284f168a5aeb94dc229316a100bf03527affd
+  inflating: ExcaliburGenerator/.git/objects/34/c7e0ddb045a7520442c658624c0fe4ac35af2d
+  inflating: ExcaliburGenerator/.git/objects/34/f7acab4250a35f8c32aed95c3c23904ba2c640
+   creating: ExcaliburGenerator/.git/objects/35/
+  inflating: ExcaliburGenerator/.git/objects/35/5e8d0ad49739d578341be8f88794db7d4cbc5e
+   creating: ExcaliburGenerator/.git/objects/36/
+  inflating: ExcaliburGenerator/.git/objects/36/496a28727a3643b4212a14225d4f6cbd50bda5
+  inflating: ExcaliburGenerator/.git/objects/36/4cefde01e75e78941deceac93e05d4e5be3a2d
+  inflating: ExcaliburGenerator/.git/objects/36/a443115e0cad18d7a8f1353c7038dd50efe985
+  inflating: ExcaliburGenerator/.git/objects/36/a9b322302acb9dbb0d763a10359791eeaefda3
+  inflating: ExcaliburGenerator/.git/objects/36/ec53fe78700824a9fb6a4fc864bbd85de8f6e9
+  inflating: ExcaliburGenerator/.git/objects/36/edcc94b920b438b8ea99a9750944d039d3c135
+   creating: ExcaliburGenerator/.git/objects/38/
+  inflating: ExcaliburGenerator/.git/objects/38/336808f29c918842dde0abc6df1c2931fee6f5
+  inflating: ExcaliburGenerator/.git/objects/38/42a5d6d0081d29a461a189d44ea958ef5ca76d
+   creating: ExcaliburGenerator/.git/objects/39/
+  inflating: ExcaliburGenerator/.git/objects/39/15a17ae39c912628a9fa11755b905792891d67
+  inflating: ExcaliburGenerator/.git/objects/39/56606adadef679ffde44c174b0f265579bbb93
+  inflating: ExcaliburGenerator/.git/objects/39/72ec51ef40b74fedc9d44c51a007613140f0df
+  inflating: ExcaliburGenerator/.git/objects/39/98c2231c53c7356846c19a5361ec99b935ee16
+  inflating: ExcaliburGenerator/.git/objects/39/a896871788dbf1ebace1cb10c7bcc3e3719ec6
+  inflating: ExcaliburGenerator/.git/objects/39/d2f575a6a72d06f584ba8ecd6f631fa98816e2
+  inflating: ExcaliburGenerator/.git/objects/39/d7608baaced4a0c69893e23b50e6a33e412ff9
+  inflating: ExcaliburGenerator/.git/objects/39/fba6d6fc8509b968824b5076a8791c46650294
+   creating: ExcaliburGenerator/.git/objects/3a/
+  inflating: ExcaliburGenerator/.git/objects/3a/0d925d05225c91e2d9a1f1cc0d8f6138bd5832
+  inflating: ExcaliburGenerator/.git/objects/3a/4519fa6d733e1f81465ac8e382ee32cde1feda
+  inflating: ExcaliburGenerator/.git/objects/3a/89118246534a0754f5ebb6ec715081da4eca20
+  inflating: ExcaliburGenerator/.git/objects/3a/c8c23a5b9afed4f6e1890786467285bdd8df2c
+  inflating: ExcaliburGenerator/.git/objects/3a/f680d55e998040511d8c88505a747c9076158b
+   creating: ExcaliburGenerator/.git/objects/3c/
+  inflating: ExcaliburGenerator/.git/objects/3c/48fd06b400059ccdaf0d626de29dfbe7eba5fd
+  inflating: ExcaliburGenerator/.git/objects/3c/ce894bcbdbe65f69be1002015324e879ca6a95
+  inflating: ExcaliburGenerator/.git/objects/3c/f6303c2588d41d2c3d2f0e289eec6e8142b264
+   creating: ExcaliburGenerator/.git/objects/3d/
+  inflating: ExcaliburGenerator/.git/objects/3d/4eb6411cb3e45886ad6dd59c6e4a7a12ecb752
+  inflating: ExcaliburGenerator/.git/objects/3d/4ff6e73be3a90f91e5f57f6697ad39140f8d84
+  inflating: ExcaliburGenerator/.git/objects/3d/6eec39a05a58e5ea2059c1a473ae842ea76b02
+  inflating: ExcaliburGenerator/.git/objects/3d/c2ff9e872ac0e3d919041855e8409de45891bd
+   creating: ExcaliburGenerator/.git/objects/3e/
+  inflating: ExcaliburGenerator/.git/objects/3e/4bbfc480e5c589821c1fc7fa8bb9eddb16f019
+  inflating: ExcaliburGenerator/.git/objects/3e/84fa3521204c0bf1e9972a19da827b082b3ab5
+  inflating: ExcaliburGenerator/.git/objects/3e/8da56b89018e6ce563f048bbf9a15b5b8ffe8e
+   creating: ExcaliburGenerator/.git/objects/40/
+  inflating: ExcaliburGenerator/.git/objects/40/2824f1c5906db7e9bc599bdb514bb1e3241820
+  inflating: ExcaliburGenerator/.git/objects/40/7a0f967339d1f23c90fd3110db5c7afbbfd7ff
+   creating: ExcaliburGenerator/.git/objects/41/
+  inflating: ExcaliburGenerator/.git/objects/41/1f51922144bf667c2a5d512ff712d1c37098bd
+  inflating: ExcaliburGenerator/.git/objects/41/54af80539b623cb54f6db936d89a2fb0d3be29
+  inflating: ExcaliburGenerator/.git/objects/41/ad962f26f51483491b97b340a411262511234f
+  inflating: ExcaliburGenerator/.git/objects/41/fa7e0561a3fdb5f986c1213a35e563de740e96
+   creating: ExcaliburGenerator/.git/objects/42/
+  inflating: ExcaliburGenerator/.git/objects/42/3029084ad779cd4b7f58adc3bd67369d43df93
+  inflating: ExcaliburGenerator/.git/objects/42/6da873703ab387282a4d5350abed502763ccb9
+   creating: ExcaliburGenerator/.git/objects/43/
+  inflating: ExcaliburGenerator/.git/objects/43/38c38b5a5ceff00b54ea3819d141e5edd8e39f
+  inflating: ExcaliburGenerator/.git/objects/43/81da3f19f56462a6b8eeeddec2c6dbe719d983
+  inflating: ExcaliburGenerator/.git/objects/43/8623eaadc3aff73c93453449b3583b60353603
+  inflating: ExcaliburGenerator/.git/objects/43/b43b48b84d3045a442409006d5cb8c5f35adfd
+   creating: ExcaliburGenerator/.git/objects/44/
+  inflating: ExcaliburGenerator/.git/objects/44/21a490b6cf9b1a8bfacf6c37adbee8d9c07d99
+   creating: ExcaliburGenerator/.git/objects/45/
+  inflating: ExcaliburGenerator/.git/objects/45/57ab042d0993f651ed63d93834d2107108a5f4
+  inflating: ExcaliburGenerator/.git/objects/45/bdcb91e85e2bb601f4477aeb73ae54fd57ed37
+   creating: ExcaliburGenerator/.git/objects/46/
+  inflating: ExcaliburGenerator/.git/objects/46/d286f6e149e9ff060084dd56f18880971029cd
+   creating: ExcaliburGenerator/.git/objects/47/
+  inflating: ExcaliburGenerator/.git/objects/47/e5a34abcddaa7e402db691521de786bce9469f
+  inflating: ExcaliburGenerator/.git/objects/47/f51563d80b176ac88ebdb78c13da7d8593195e
+   creating: ExcaliburGenerator/.git/objects/49/
+  inflating: ExcaliburGenerator/.git/objects/49/32df2c4851f156e87ac3d2b8c25d9934baa982
+  inflating: ExcaliburGenerator/.git/objects/49/d4aceb1b5d1249ad0e9b2515fa8e68179881ba
+   creating: ExcaliburGenerator/.git/objects/4a/
+  inflating: ExcaliburGenerator/.git/objects/4a/67ce3a8f41d320aa1b80734c532e22edfe8a32
+  inflating: ExcaliburGenerator/.git/objects/4a/fe2a6b6ef7bc57a26572ae92c6210f56fcb7fc
+   creating: ExcaliburGenerator/.git/objects/4b/
+  inflating: ExcaliburGenerator/.git/objects/4b/9de62b72243c3335af38b2541e99db853b5649
+  inflating: ExcaliburGenerator/.git/objects/4b/bb7f38c744d8c9a94a75034af326714d2d387d
+   creating: ExcaliburGenerator/.git/objects/4c/
+  inflating: ExcaliburGenerator/.git/objects/4c/0b82581315d8ab17f115c7234a7faddd5badd2
+  inflating: ExcaliburGenerator/.git/objects/4c/d7b4cb3770a444d70ce72acabcb58e4e3ab18a
+   creating: ExcaliburGenerator/.git/objects/4d/
+  inflating: ExcaliburGenerator/.git/objects/4d/7d89f0d7e9146e1e11cc799ce465e21f2e5c4a
+  inflating: ExcaliburGenerator/.git/objects/4d/858bb6b02662c749d3cb334129a9a1977b0c51
+  inflating: ExcaliburGenerator/.git/objects/4d/dfaf252a666560945612c525a5b71b9af8d39c
+   creating: ExcaliburGenerator/.git/objects/4e/
+  inflating: ExcaliburGenerator/.git/objects/4e/7c99c201f3bbc80651ec9f598bd0d37358e7ee
+  inflating: ExcaliburGenerator/.git/objects/4e/cc0bd184f4dc988a1101f28219c4e4b11ddc3e
+   creating: ExcaliburGenerator/.git/objects/4f/
+  inflating: ExcaliburGenerator/.git/objects/4f/02ae6a48799a297ae92a9bcfa1f8de4d879be1
+  inflating: ExcaliburGenerator/.git/objects/4f/a23ac589e723cd82f137822de73e09db882060
+  inflating: ExcaliburGenerator/.git/objects/4f/cf7c23150090b22fb12bb494c9cfa7cc186d1f
+   creating: ExcaliburGenerator/.git/objects/50/
+  inflating: ExcaliburGenerator/.git/objects/50/4afd1aab8564b66912baf06f101e5ff2097cd4
+  inflating: ExcaliburGenerator/.git/objects/50/641930a95614f4f0ef371bfe08f3234ef24c45
+  inflating: ExcaliburGenerator/.git/objects/50/6e1d7ba12c4b459a45b3a061600cd1de9c04e8
+  inflating: ExcaliburGenerator/.git/objects/50/a050585e794c8639f26d6a9b485170641e5b36
+  inflating: ExcaliburGenerator/.git/objects/50/c80b9674476644ea944adccaac19e7d86ad598
+  inflating: ExcaliburGenerator/.git/objects/50/e9389ed27f205800655ec51838899375c2fb54
+   creating: ExcaliburGenerator/.git/objects/51/
+  inflating: ExcaliburGenerator/.git/objects/51/0e6a95013d626e0c2838a06ca36a8016e3179f
+  inflating: ExcaliburGenerator/.git/objects/51/36c9c9ca61f4c9412006337ddc392d9b9086c9
+  inflating: ExcaliburGenerator/.git/objects/51/383e079f8b3b4c3939523f5eda0220837a9975
+  inflating: ExcaliburGenerator/.git/objects/51/4e28536029be41dbdcb8b413d309a9ad0e6550
+  inflating: ExcaliburGenerator/.git/objects/51/55aa2ba0e2d67c3e2fb66509a712a8a4759d81
+  inflating: ExcaliburGenerator/.git/objects/51/7fe9443a87db90abf9cb74e9dd893f865287fe
+  inflating: ExcaliburGenerator/.git/objects/51/9355077cc3ca388a124ac3600bbfc81ea9f551
+  inflating: ExcaliburGenerator/.git/objects/51/c30a33320e87376af41496d6475a2a229d21a0
+  inflating: ExcaliburGenerator/.git/objects/51/e507ba9d08bcdbb1fb630498f1cbdf2bf50093
+  inflating: ExcaliburGenerator/.git/objects/51/f28d3e640816c1a3cad4a7c0f44a1279a0487d
+  inflating: ExcaliburGenerator/.git/objects/51/f344ffac11f3c19cd01f940721e073a6ab4c1d
+   creating: ExcaliburGenerator/.git/objects/52/
+  inflating: ExcaliburGenerator/.git/objects/52/91e05453c16ce7afb187288299270fe715ca51
+   creating: ExcaliburGenerator/.git/objects/53/
+  inflating: ExcaliburGenerator/.git/objects/53/4d8e54b879e8954c4798e641d75184c07889aa
+  inflating: ExcaliburGenerator/.git/objects/53/5defedd7b9ce8fe59deed4afe0728ccd1dfd3b
+  inflating: ExcaliburGenerator/.git/objects/53/6b89dcc413dafc75e5d2e026bf2c068c3a2a6c
+  inflating: ExcaliburGenerator/.git/objects/53/b30e3e48c43d082976afcc06dc6fc0864d6d84
+   creating: ExcaliburGenerator/.git/objects/54/
+  inflating: ExcaliburGenerator/.git/objects/54/0d5804352487ab82bc3a8ce153199720ca2e15
+  inflating: ExcaliburGenerator/.git/objects/54/d0122ade59feb5fead953860a1e9deedb0987c
+   creating: ExcaliburGenerator/.git/objects/56/
+  inflating: ExcaliburGenerator/.git/objects/56/652cb87e606571fc03e9dfc7a433c5d8361526
+  inflating: ExcaliburGenerator/.git/objects/56/bbd61de41076522e9ca711bd7ea64841b0922d
+  inflating: ExcaliburGenerator/.git/objects/56/d1030924b95ae7be450b4a3e3c20c29ec2e70b
+   creating: ExcaliburGenerator/.git/objects/57/
+  inflating: ExcaliburGenerator/.git/objects/57/15f982bb7155909ecfe5890db102a78f118935
+  inflating: ExcaliburGenerator/.git/objects/57/5601f092e3a7bd7a414af9445b149beba12799
+  inflating: ExcaliburGenerator/.git/objects/57/be00930f549777717365c1b13a94a8e968caa8
+  inflating: ExcaliburGenerator/.git/objects/57/d2fb561abe24ec7e2bd1ddf27bfca82d2f1963
+   creating: ExcaliburGenerator/.git/objects/58/
+  inflating: ExcaliburGenerator/.git/objects/58/69a2f0fb346715eaeb50b203c064b05d570f9b
+  inflating: ExcaliburGenerator/.git/objects/58/a4c59f5a3acfaee5c655140939347f8a5ca6a2
+   creating: ExcaliburGenerator/.git/objects/59/
+  inflating: ExcaliburGenerator/.git/objects/59/30bb775098e53a889de66951888937a1a434ad
+  inflating: ExcaliburGenerator/.git/objects/59/3989bd6f93a6ddceef5001f3f9c4fd5f0ef68d
+   creating: ExcaliburGenerator/.git/objects/5a/
+  inflating: ExcaliburGenerator/.git/objects/5a/a1540e566ba138b3bd952bbdf57509419c5e9e
+   creating: ExcaliburGenerator/.git/objects/5b/
+  inflating: ExcaliburGenerator/.git/objects/5b/3a2e88dcecfe1ba646dfa2b5b3dd70fe84da86
+  inflating: ExcaliburGenerator/.git/objects/5b/646546492c437539e222a36a26330650cd27c4
+  inflating: ExcaliburGenerator/.git/objects/5b/c299667e83379b8451837e8622a7bdb253b678
+   creating: ExcaliburGenerator/.git/objects/5c/
+  inflating: ExcaliburGenerator/.git/objects/5c/87ea4865610374cdc591d1619157b4d8909a87
+   creating: ExcaliburGenerator/.git/objects/5e/
+  inflating: ExcaliburGenerator/.git/objects/5e/165495daf3adef5475813da3127819daca0a9e
+  inflating: ExcaliburGenerator/.git/objects/5e/209624e351056e0fc8de51f179b7c9efde8c01
+  inflating: ExcaliburGenerator/.git/objects/5e/31e0ce405ca8931a513962dd0135eb19d4bb02
+  inflating: ExcaliburGenerator/.git/objects/5e/472df282026b433662265085ff8741bb76e3ef
+  inflating: ExcaliburGenerator/.git/objects/5e/fd0ee97647fb67822e9b7931eaa6decf76ce71
+   creating: ExcaliburGenerator/.git/objects/5f/
+  inflating: ExcaliburGenerator/.git/objects/5f/9f84ea44803fad13b4db23868fe299904900cc
+  inflating: ExcaliburGenerator/.git/objects/5f/ac7d69eb104e9aaeaeb95aa044a5e884692cfc
+  inflating: ExcaliburGenerator/.git/objects/5f/b0ddc7b2d5fddeaa6b785eee5809fca6f47c8a
+  inflating: ExcaliburGenerator/.git/objects/5f/fd1e5f30487ef7a1f015060eefb628391a69b3
+   creating: ExcaliburGenerator/.git/objects/60/
+  inflating: ExcaliburGenerator/.git/objects/60/be61c3811c628d0cd1b4b788865e884aaf92fd
+  inflating: ExcaliburGenerator/.git/objects/60/e6c96f72f0350d08b47e4730cab8f3975dc853
+   creating: ExcaliburGenerator/.git/objects/61/
+  inflating: ExcaliburGenerator/.git/objects/61/8a4a99598d13e78b771fc57d05dc3723556a1d
+   creating: ExcaliburGenerator/.git/objects/62/
+  inflating: ExcaliburGenerator/.git/objects/62/9027d23b6b726920ef06a5906737015e829176
+  inflating: ExcaliburGenerator/.git/objects/62/cc4a53e3e562f0a8de8b548c74b56b1f351e08
+   creating: ExcaliburGenerator/.git/objects/64/
+  inflating: ExcaliburGenerator/.git/objects/64/2b6a9abb7431080dcddacdda839c45c13ec3c8
+  inflating: ExcaliburGenerator/.git/objects/64/7f5f1637f9988ac1a15d7b854ea2597c9d7a49
+   creating: ExcaliburGenerator/.git/objects/65/
+  inflating: ExcaliburGenerator/.git/objects/65/44b40acc89ad477fffadf6338053f993c9d5cd
+  inflating: ExcaliburGenerator/.git/objects/65/478e24594b16869d8aee6c25e2e741341903a3
+  inflating: ExcaliburGenerator/.git/objects/65/99a6b8fcabaa099bf384c111f2a7e70969ff4e
+   creating: ExcaliburGenerator/.git/objects/66/
+  inflating: ExcaliburGenerator/.git/objects/66/691fc846e33ee817d157c1ccd9b812a6d8ea89
+  inflating: ExcaliburGenerator/.git/objects/66/9cd23aff65b106b3c2b8dbc328e9643c5ade21
+  inflating: ExcaliburGenerator/.git/objects/66/a89f8a2711d04b70ea8077a5865e4677d5762e
+   creating: ExcaliburGenerator/.git/objects/67/
+  inflating: ExcaliburGenerator/.git/objects/67/160afc56a87547997a7cab57188d5161cbd41d
+  inflating: ExcaliburGenerator/.git/objects/67/4a4bee5688c85d3aa8a01c91766c1c611e0f2c
+  inflating: ExcaliburGenerator/.git/objects/67/79daabf181c55392463abc4e33682d6726877c
+  inflating: ExcaliburGenerator/.git/objects/67/a90124d252f8926b5fbc3bcbc5b9ccb82527ac
+   creating: ExcaliburGenerator/.git/objects/68/
+  inflating: ExcaliburGenerator/.git/objects/68/3faa793819982d64e21cb2939666fd6d4a7b13
+  inflating: ExcaliburGenerator/.git/objects/68/551b9276b4164a8263aa58d385db30f81a4453
+  inflating: ExcaliburGenerator/.git/objects/68/57642b14b22388279b5bd93f091b2f6447bd8a
+  inflating: ExcaliburGenerator/.git/objects/68/b07201ccdc96faa36868a4e00e402a8ad7d556
+  inflating: ExcaliburGenerator/.git/objects/68/b2fec828040d3fe29559887e2acb097d98db37
+   creating: ExcaliburGenerator/.git/objects/69/
+  inflating: ExcaliburGenerator/.git/objects/69/6bb3c0479e80a6a280d048a48c32a14199e0ac
+  inflating: ExcaliburGenerator/.git/objects/69/6e0d2b94fbc09e5bf2378678cfe86625c2f15c
+  inflating: ExcaliburGenerator/.git/objects/69/9916a3054234d04278896ab3ae03c6d7efb834
+  inflating: ExcaliburGenerator/.git/objects/69/c53bd4da3f709b7e153475a7c43d9f7d0e4cb1
+   creating: ExcaliburGenerator/.git/objects/6a/
+  inflating: ExcaliburGenerator/.git/objects/6a/0ef53dde8991d3adeadd791cd262808aaf9ac0
+  inflating: ExcaliburGenerator/.git/objects/6a/df2c3149d403eff4655b924a3c22db88807ca9
+  inflating: ExcaliburGenerator/.git/objects/6a/f194fd71d74ebe667fdacbabaea23c208bb3ed
+  inflating: ExcaliburGenerator/.git/objects/6a/fd795cad5c6ea4f8dd70616ad03619b6e6e84a
+   creating: ExcaliburGenerator/.git/objects/6b/
+  inflating: ExcaliburGenerator/.git/objects/6b/dc2392352a2d1ae3e9bc6e5fd3ed191c8d15aa
+   creating: ExcaliburGenerator/.git/objects/6c/
+  inflating: ExcaliburGenerator/.git/objects/6c/27e671c033f848dac7fcd4033c80b86c124f04
+  inflating: ExcaliburGenerator/.git/objects/6c/48c072d9c8e5d44e754cddedfe1f6cc9294225
+  inflating: ExcaliburGenerator/.git/objects/6c/5d2afc15cc79fe960758c47ce6bdac8da7d3ae
+  inflating: ExcaliburGenerator/.git/objects/6c/67edff67a48c6ac1c46f25a6d468dd461e66cb
+  inflating: ExcaliburGenerator/.git/objects/6c/bf652ea0f41906baf54b4aab01bf0849fb3408
+  inflating: ExcaliburGenerator/.git/objects/6c/d4c9eb596329189353da27713df025b6547145
+   creating: ExcaliburGenerator/.git/objects/6d/
+  inflating: ExcaliburGenerator/.git/objects/6d/7f12265ba0338704f013930ce4d52c56527dd1
+  inflating: ExcaliburGenerator/.git/objects/6d/8eedfba27b6f292fe3a83ead0b329bc379cac7
+  inflating: ExcaliburGenerator/.git/objects/6d/a57867f6514ecb819eb59b0f9857022f1adb92
+   creating: ExcaliburGenerator/.git/objects/6e/
+  inflating: ExcaliburGenerator/.git/objects/6e/63b0b5befbe40c53a75e9e8bcb938559c3373b
+  inflating: ExcaliburGenerator/.git/objects/6e/accb8e8f613044a3bd65c0ea8ba607f29476f1
+  inflating: ExcaliburGenerator/.git/objects/6e/de4df8ca768f7a61ed5eec9a8368eac8060f9b
+  inflating: ExcaliburGenerator/.git/objects/6e/e6cae02fbc92485f8bdff42336575ff8aee8e1
+  inflating: ExcaliburGenerator/.git/objects/6e/f5115bd6a18ed0b94eacaa8544c60b7f61184b
+   creating: ExcaliburGenerator/.git/objects/6f/
+  inflating: ExcaliburGenerator/.git/objects/6f/0b1b7f568d795fd3513b3d2559cbbcf84c8165
+  inflating: ExcaliburGenerator/.git/objects/6f/27f45400314e286e3d4d8ff1954bcfdb116198
+  inflating: ExcaliburGenerator/.git/objects/6f/3131ca88dc2bee1001d9688204b8c59d9365ce
+  inflating: ExcaliburGenerator/.git/objects/6f/37608a4b77801a6e00c5d12f7a357f2e4e2f18
+  inflating: ExcaliburGenerator/.git/objects/6f/b75fce58adbc96d2f7aa299d64324414651f4d
+  inflating: ExcaliburGenerator/.git/objects/6f/c1afcf86cd481d053ed3e246486206c59bc86d
+  inflating: ExcaliburGenerator/.git/objects/6f/e527867d7fa7a56dcce191e08e830f871a096f
+   creating: ExcaliburGenerator/.git/objects/70/
+  inflating: ExcaliburGenerator/.git/objects/70/bc210339b1e123ab6c9966796711f7538fcbd8
+   creating: ExcaliburGenerator/.git/objects/72/
+  inflating: ExcaliburGenerator/.git/objects/72/8a9ff0f5bb8657c1015a4bcec2f5817355c587
+   creating: ExcaliburGenerator/.git/objects/73/
+  inflating: ExcaliburGenerator/.git/objects/73/11ca1c318acdc3ad176ee206c8570771f61e1b
+   creating: ExcaliburGenerator/.git/objects/74/
+  inflating: ExcaliburGenerator/.git/objects/74/87f70b626797f9b2c6a36f57acb8154c8406a2
+  inflating: ExcaliburGenerator/.git/objects/74/9e01e5302d049aa4cc93d3bbb09141bedcacc4
+  inflating: ExcaliburGenerator/.git/objects/74/b56c57847d5eab6b95cd36e4437e2601167d05
+  inflating: ExcaliburGenerator/.git/objects/74/c815977e3c763a0137533c6846877dd93bf277
+  inflating: ExcaliburGenerator/.git/objects/74/efa6bee7037d46ea6f1a08a89b68963660cca0
+   creating: ExcaliburGenerator/.git/objects/75/
+  inflating: ExcaliburGenerator/.git/objects/75/4bab6c3c6184ae3c8a0ee15f5780b763c07071
+  inflating: ExcaliburGenerator/.git/objects/75/65985fb5dd79a2f60582487cdf14e4dd7dd86b
+  inflating: ExcaliburGenerator/.git/objects/75/779c1867e9a09d871776f7d4f22ce797070076
+  inflating: ExcaliburGenerator/.git/objects/75/7f056cf04f2b09422bded09be4c04ac4ae4f17
+  inflating: ExcaliburGenerator/.git/objects/75/b19ac6d43b0adf2dda9a825f67b690d07eadb7
+   creating: ExcaliburGenerator/.git/objects/78/
+  inflating: ExcaliburGenerator/.git/objects/78/293d13f0cbdff3774e198001971cabeb9c62f6
+  inflating: ExcaliburGenerator/.git/objects/78/750c52d6dcfbb74f426ae167dc481db75fc441
+  inflating: ExcaliburGenerator/.git/objects/78/ac42aa1580e7d0f63628d57d49d1acbf7e7051
+  inflating: ExcaliburGenerator/.git/objects/78/d30d7384ffc57e509581ec98e44aea185c2109
+  inflating: ExcaliburGenerator/.git/objects/78/da13cf92421480c77d37ee135ed98aa2ffc69b
+   creating: ExcaliburGenerator/.git/objects/79/
+  inflating: ExcaliburGenerator/.git/objects/79/5677f6fc2775aeb3c7b7ca82f0e41560e13e08
+  inflating: ExcaliburGenerator/.git/objects/79/6077984eefd7ad53c945541758f4e07ec629f3
+   creating: ExcaliburGenerator/.git/objects/7a/
+  inflating: ExcaliburGenerator/.git/objects/7a/1b1ceb1397d4f57c8ca26f59491a69cf40e0c0
+  inflating: ExcaliburGenerator/.git/objects/7a/362eb28ef5743cf031e730726a0b9fc76fd329
+  inflating: ExcaliburGenerator/.git/objects/7a/5513f80156e47d148dc752a4ce61f33d8603aa
+  inflating: ExcaliburGenerator/.git/objects/7a/56e0c383aa3729feffff5d652083b8be66fc01
+  inflating: ExcaliburGenerator/.git/objects/7a/ba4ea09c13e91fa772d27343f44d872cbcbaee
+   creating: ExcaliburGenerator/.git/objects/7b/
+  inflating: ExcaliburGenerator/.git/objects/7b/13af4afdf3fb6e6782a20f7512d4aeabd6fa9c
+  inflating: ExcaliburGenerator/.git/objects/7b/3a71b182d16a2655aaf048797b39a5c27f931a
+  inflating: ExcaliburGenerator/.git/objects/7b/6d6f33dfd059ef8f7d185a6033449464de2949
+   creating: ExcaliburGenerator/.git/objects/7c/
+  inflating: ExcaliburGenerator/.git/objects/7c/1af5cac546a31a2f4258162af06f2aeb838ea6
+  inflating: ExcaliburGenerator/.git/objects/7c/a3d56a2c6c16922e98f870012a2f5e2fa9fb45
+  inflating: ExcaliburGenerator/.git/objects/7c/a92f39309773f320b0d4b506a673c8f96e4b72
+  inflating: ExcaliburGenerator/.git/objects/7c/ebe8a8828c44b0010cc993b6e1d009baccd86b
+   creating: ExcaliburGenerator/.git/objects/7d/
+  inflating: ExcaliburGenerator/.git/objects/7d/5fbed983ee42ec95e39e564be0a8df7e92ddae
+  inflating: ExcaliburGenerator/.git/objects/7d/780caa744972da5a0e17f9185e4985b91e6fc1
+  inflating: ExcaliburGenerator/.git/objects/7d/fd9dabc19f99076cf59e629db683be191d9cbc
+   creating: ExcaliburGenerator/.git/objects/7f/
+  inflating: ExcaliburGenerator/.git/objects/7f/0b7f864b1f64c3865f31ce8f89c1742836a4ca
+  inflating: ExcaliburGenerator/.git/objects/7f/3502f8b2820be1d6f0aa4c1ffaa351799c1ed3
+  inflating: ExcaliburGenerator/.git/objects/7f/a3b00fc7a9674d569f44e1c8a3b27f2a8c71ea
+  inflating: ExcaliburGenerator/.git/objects/7f/c38a93ccdeb31f45fbbea3b9eb07cf77ecacba
+   creating: ExcaliburGenerator/.git/objects/80/
+  inflating: ExcaliburGenerator/.git/objects/80/98cffb9901967b3810a690fb7cc9d290fff910
+  inflating: ExcaliburGenerator/.git/objects/80/a34be1f539e89b5085ebd9eb5b91c7eb86022b
+  inflating: ExcaliburGenerator/.git/objects/80/ac7b385b95b6750e51c5705ec7cd508dc8cf21
+  inflating: ExcaliburGenerator/.git/objects/80/bcb5387048570ad33d64ee267a4d883595cbe6
+  inflating: ExcaliburGenerator/.git/objects/80/e85b448339eb3aef4c90435aafc2aff15be3bf
+   creating: ExcaliburGenerator/.git/objects/81/
+  inflating: ExcaliburGenerator/.git/objects/81/c404289934fc5347afa8ccfe148b5016ae1813
+   creating: ExcaliburGenerator/.git/objects/82/
+  inflating: ExcaliburGenerator/.git/objects/82/1a32f3701193ec91f9cf2e22e34c6807c09d14
+  inflating: ExcaliburGenerator/.git/objects/82/407b2830794c6e757e4771ee04d9c9d25af9fc
+  inflating: ExcaliburGenerator/.git/objects/82/481f831963fcb8ee026ea2099928dc3a45dfb2
+  inflating: ExcaliburGenerator/.git/objects/82/873b5ced3a235ef78656f1699a5e0d9eb64afb
+  inflating: ExcaliburGenerator/.git/objects/82/b768c123e065c7b53c0bfb81c15b06202c4eb2
+   creating: ExcaliburGenerator/.git/objects/83/
+  inflating: ExcaliburGenerator/.git/objects/83/7bf23daaf16dd07e5530779b734f94f04de0c0
+  inflating: ExcaliburGenerator/.git/objects/83/804ce716ac437eaef95c7c7d3c78bb9010357a
+   creating: ExcaliburGenerator/.git/objects/84/
+  inflating: ExcaliburGenerator/.git/objects/84/5ee0eff405dd3d7fcd6ed834cc771bfc26e9b8
+   creating: ExcaliburGenerator/.git/objects/85/
+  inflating: ExcaliburGenerator/.git/objects/85/3a8c5ad9c63b1de8342043a94114208547a75a
+  inflating: ExcaliburGenerator/.git/objects/85/c97251e63d05e1f29fc483a9a0117798344273
+  inflating: ExcaliburGenerator/.git/objects/85/fd9d4db2c0401a7913aa55671f5810e2e1b48d
+   creating: ExcaliburGenerator/.git/objects/86/
+  inflating: ExcaliburGenerator/.git/objects/86/013b082995681224485df31a6d6b04b2809999
+  inflating: ExcaliburGenerator/.git/objects/86/2a27d3314ad6055e94f6d4a9b4ddda0a5fea2d
+   creating: ExcaliburGenerator/.git/objects/87/
+  inflating: ExcaliburGenerator/.git/objects/87/22561cf6bda62d62f9a0c67730aefda971873a
+  inflating: ExcaliburGenerator/.git/objects/87/ecc15b30e0e4ab28f605aea0b1e870964bf00d
+   creating: ExcaliburGenerator/.git/objects/88/
+  inflating: ExcaliburGenerator/.git/objects/88/046ba7cdeac0fedb532aeace241787d0a0875d
+  inflating: ExcaliburGenerator/.git/objects/88/1a556df38acbf8eb47f5c6d9201d34a0b1965b
+  inflating: ExcaliburGenerator/.git/objects/88/9ae34dd070556c204c2e58a528ecac90131b10
+  inflating: ExcaliburGenerator/.git/objects/88/b8fd68267479dc32528e5a159690423c76505d
+  inflating: ExcaliburGenerator/.git/objects/88/da9afdcd71c5acc78457939c982ca01308596b
+   creating: ExcaliburGenerator/.git/objects/89/
+  inflating: ExcaliburGenerator/.git/objects/89/4dd7eaceffc5ea3c571aee15afcea309beee65
+   creating: ExcaliburGenerator/.git/objects/8a/
+  inflating: ExcaliburGenerator/.git/objects/8a/2f3a2d2715eb597a9543b0f67f9a07ec769e4e
+  inflating: ExcaliburGenerator/.git/objects/8a/7611f4b89385d9181ab067208a350926b27c59
+  inflating: ExcaliburGenerator/.git/objects/8a/9b9ff85be54d45ecad01af59e8076d577fe58d
+  inflating: ExcaliburGenerator/.git/objects/8a/cdb674861ab314c9fa563147a5db8af04ddece
+  inflating: ExcaliburGenerator/.git/objects/8a/e10399267d5dee55d79787b6952d33dcbba455
+  inflating: ExcaliburGenerator/.git/objects/8a/e6fcaa6f80517d3433768b5096bf28ed6bc1a9
+   creating: ExcaliburGenerator/.git/objects/8b/
+  inflating: ExcaliburGenerator/.git/objects/8b/983191909586c5fc9eee06c0c71f7c113665ff
+  inflating: ExcaliburGenerator/.git/objects/8b/edd3d26d75853efeb28c67453c9a2a27f41ccd
+   creating: ExcaliburGenerator/.git/objects/8d/
+  inflating: ExcaliburGenerator/.git/objects/8d/27902d47fcdc2336647988ef54687f4170f323
+  inflating: ExcaliburGenerator/.git/objects/8d/72a8d865aff0dfe200b077f1af59f888ff7cba
+  inflating: ExcaliburGenerator/.git/objects/8d/ce75244ed7609035f972e5f9b1b544e86b0d91
+   creating: ExcaliburGenerator/.git/objects/8e/
+  inflating: ExcaliburGenerator/.git/objects/8e/9d5068fcfd7c77302087831f0efa01d39bbeef
+   creating: ExcaliburGenerator/.git/objects/8f/
+  inflating: ExcaliburGenerator/.git/objects/8f/64940bfcc2c1e5cc59e9a62799152f67ca9afb
+  inflating: ExcaliburGenerator/.git/objects/8f/6df181ba81cb79ad1c0e1c323feb32f5d4ee69
+  inflating: ExcaliburGenerator/.git/objects/8f/75c09bc9c6d448c8f4060fd4ea2978d2bfd5af
+  inflating: ExcaliburGenerator/.git/objects/8f/7695c946ca4e431673f385801a0698618f68c7
+  inflating: ExcaliburGenerator/.git/objects/8f/cb3576b6b4b3264287e1ee1401c8df942c1840
+   creating: ExcaliburGenerator/.git/objects/90/
+  inflating: ExcaliburGenerator/.git/objects/90/007e29cdef604d99de4f2414d3cb087372a269
+  inflating: ExcaliburGenerator/.git/objects/90/673e592d06c9eac745c14fabedb1d946d2ab1a
+  inflating: ExcaliburGenerator/.git/objects/90/849d10b50feb799398a647273d16833577ff5b
+  inflating: ExcaliburGenerator/.git/objects/90/f74c7f4f93d435c0f80e03e7407aea29dd2071
+   creating: ExcaliburGenerator/.git/objects/91/
+  inflating: ExcaliburGenerator/.git/objects/91/b52f88db4efcecbd597b10d2a7f111023c7d5c
+  inflating: ExcaliburGenerator/.git/objects/91/d7be148daa59c3d9414034db62b0cae8fae244
+   creating: ExcaliburGenerator/.git/objects/92/
+  inflating: ExcaliburGenerator/.git/objects/92/096229ac06c916bd2f63e03e60e16d0eda0ddc
+  inflating: ExcaliburGenerator/.git/objects/92/894459fefa4ffb43cdfea159a92f3effbb3e90
+  inflating: ExcaliburGenerator/.git/objects/92/90a8833b5c6e501ab4e9b91cb2afd0a659ac94
+   creating: ExcaliburGenerator/.git/objects/93/
+  inflating: ExcaliburGenerator/.git/objects/93/31f06f249c138ec3f2d2fd03c5ec6968a3b044
+  inflating: ExcaliburGenerator/.git/objects/93/8e83d94eeec7d669e61760a1798e0f0b033f85
+  inflating: ExcaliburGenerator/.git/objects/93/d5b50f8a55fab5f6b2c9219625baecad0cbca0
+  inflating: ExcaliburGenerator/.git/objects/93/f85f4db91908e4310b292023b2caa14de1b7fa
+   creating: ExcaliburGenerator/.git/objects/94/
+  inflating: ExcaliburGenerator/.git/objects/94/25437f30ace9f8b090ee170b601cba3d37830b
+  inflating: ExcaliburGenerator/.git/objects/94/2fb1ab3b23b0dd544dc7375ed8744d73049f33
+   creating: ExcaliburGenerator/.git/objects/95/
+  inflating: ExcaliburGenerator/.git/objects/95/395a0cf4d14020edd7155297743375c61aebbd
+  inflating: ExcaliburGenerator/.git/objects/95/7b32a35f977ee83fcbeb1a5c2ada2fffca1ded
+  inflating: ExcaliburGenerator/.git/objects/95/8db184d8e9cb53fe08e1b079b65c98180571b0
+  inflating: ExcaliburGenerator/.git/objects/95/9042122f64deaa92ee1fcccbadcde37a0ffef5
+   creating: ExcaliburGenerator/.git/objects/96/
+  inflating: ExcaliburGenerator/.git/objects/96/594a792aae9bf18c5f373563b160c2491502d8
+  inflating: ExcaliburGenerator/.git/objects/96/a8f62214457cc22430996b19c9fbe8f23cfcc9
+  inflating: ExcaliburGenerator/.git/objects/96/e7835d60a9393b691a833f2bf728321e714975
+   creating: ExcaliburGenerator/.git/objects/97/
+  inflating: ExcaliburGenerator/.git/objects/97/468a8e58dfd8af317707b49af414b0940122e5
+   creating: ExcaliburGenerator/.git/objects/98/
+  inflating: ExcaliburGenerator/.git/objects/98/47076cd8b018009a80f6e97fe26b9df9927b1a
+  inflating: ExcaliburGenerator/.git/objects/98/acfa521f452780a49b6ec4a3529ef602d22663
+  inflating: ExcaliburGenerator/.git/objects/98/b325656dee7264909f3024b8784e44558a6b3b
+  inflating: ExcaliburGenerator/.git/objects/98/b6edf9ddd0172d212f38a8700bd31481388c0f
+  inflating: ExcaliburGenerator/.git/objects/98/e45e0f404ac5381e956288077566c6ffd5fe88
+   creating: ExcaliburGenerator/.git/objects/99/
+  inflating: ExcaliburGenerator/.git/objects/99/6f1de3636b1b94cea6b37da58cbaa2fe05d9aa
+  inflating: ExcaliburGenerator/.git/objects/99/7f8e5b752e7be1986a63d471bb70a4ae960f2b
+  inflating: ExcaliburGenerator/.git/objects/99/87638a48ab50542c39f33dd37f3870d562854d
+   creating: ExcaliburGenerator/.git/objects/9a/
+  inflating: ExcaliburGenerator/.git/objects/9a/239c08467893d012ac0f906fdc11d9fa32db4e
+   creating: ExcaliburGenerator/.git/objects/9c/
+  inflating: ExcaliburGenerator/.git/objects/9c/2b9bf3705d8421bef00704c0c52e83d371ca11
+  inflating: ExcaliburGenerator/.git/objects/9c/cc317b686838f806e391e1df83dca9d9fd0a97
+   creating: ExcaliburGenerator/.git/objects/9d/
+  inflating: ExcaliburGenerator/.git/objects/9d/41cca25ebf9ad8b4efb1ca69c8a9f37bd4d414
+  inflating: ExcaliburGenerator/.git/objects/9d/50062ea29cf94c18ae78e7e06f7e489690d6da
+  inflating: ExcaliburGenerator/.git/objects/9d/fea88b2d7fd647ffaf09de52529024b8fee056
+   creating: ExcaliburGenerator/.git/objects/9e/
+  inflating: ExcaliburGenerator/.git/objects/9e/3e2b4182beaf59165a7c5b4affa165242e4b99
+   creating: ExcaliburGenerator/.git/objects/9f/
+  inflating: ExcaliburGenerator/.git/objects/9f/95870b513d759eb428373e083fea1c3da96514
+  inflating: ExcaliburGenerator/.git/objects/9f/a48946afd1eb56bd932377fd888e3986304676
+   creating: ExcaliburGenerator/.git/objects/a0/
+  inflating: ExcaliburGenerator/.git/objects/a0/203eefcb88d0dcf5e5ff0e2f90150a1b46ee05
+   creating: ExcaliburGenerator/.git/objects/a1/
+  inflating: ExcaliburGenerator/.git/objects/a1/ee77ab231192739211598b5d61fff06da1c4f4
+  inflating: ExcaliburGenerator/.git/objects/a1/fd49761af2649bc7a2b582d6b1062850c539ac
+   creating: ExcaliburGenerator/.git/objects/a2/
+  inflating: ExcaliburGenerator/.git/objects/a2/6052aa33802de1078b8adc57a3b99ef6900853
+  inflating: ExcaliburGenerator/.git/objects/a2/777045e1ed4295d0c686d54c03c1768c4d9b77
+  inflating: ExcaliburGenerator/.git/objects/a2/7a615e1800b7a8e1785028356e2af8986bf758
+   creating: ExcaliburGenerator/.git/objects/a3/
+  inflating: ExcaliburGenerator/.git/objects/a3/6a7c11e6365eee60048cd7bb92c348125d1a6a
+  inflating: ExcaliburGenerator/.git/objects/a3/7f17ba04055c1c174bd439d58aa3b5b2857cc9
+  inflating: ExcaliburGenerator/.git/objects/a3/919e4dcf0e68d79ea2570276faa057743ea7e7
+  inflating: ExcaliburGenerator/.git/objects/a3/9a174ce6af36b9c3619a5a60c1c64b06d0faae
+   creating: ExcaliburGenerator/.git/objects/a4/
+  inflating: ExcaliburGenerator/.git/objects/a4/5647c222f60248d3a206e50c9266fecda2bf1c
+  inflating: ExcaliburGenerator/.git/objects/a4/76984a2f30d1d01520994b24bc7684cc4b4a83
+  inflating: ExcaliburGenerator/.git/objects/a4/9b56a4ae5d52f56e4807c2e0af17ea4a1f11d3
+   creating: ExcaliburGenerator/.git/objects/a7/
+  inflating: ExcaliburGenerator/.git/objects/a7/200cda3a0026732f84c21607a78178f9bc6dcd
+  inflating: ExcaliburGenerator/.git/objects/a7/8626d4409dd4463742900832705208e500bc5f
+  inflating: ExcaliburGenerator/.git/objects/a7/8669206becdda6bfe3683c653362d538056062
+  inflating: ExcaliburGenerator/.git/objects/a7/94b89450440854829bb779c44256ba81595b23
+   creating: ExcaliburGenerator/.git/objects/a8/
+  inflating: ExcaliburGenerator/.git/objects/a8/22477534192c4df5073e4015f7461e739d3344
+  inflating: ExcaliburGenerator/.git/objects/a8/992fa22af7ba979d88388301893b4df1c1efe3
+  inflating: ExcaliburGenerator/.git/objects/a8/b3fc1dad0c6038f92144938cccff47f6ed1003
+   creating: ExcaliburGenerator/.git/objects/a9/
+  inflating: ExcaliburGenerator/.git/objects/a9/793e1278c17425ee7c4105152ef953fbd0863e
+  inflating: ExcaliburGenerator/.git/objects/a9/d570a98f4985ea743c81baddc8993061f391b0
+  inflating: ExcaliburGenerator/.git/objects/a9/dafa9651f0236c898a0e96c073f29beecf9185
+   creating: ExcaliburGenerator/.git/objects/aa/
+  inflating: ExcaliburGenerator/.git/objects/aa/2404880fb1c34bfef68f0c96a1417c834d86ca
+  inflating: ExcaliburGenerator/.git/objects/aa/3ef7792b866380aa91038beff862aa39ebe5c5
+  inflating: ExcaliburGenerator/.git/objects/aa/556319a5302cb256419445e53571305db06726
+  inflating: ExcaliburGenerator/.git/objects/aa/58baa29c676db7b14a37436a9662107b0111ec
+  inflating: ExcaliburGenerator/.git/objects/aa/b0254f3370ec07fed038f73dd0e20d898af5fa
+  inflating: ExcaliburGenerator/.git/objects/aa/cd49085b069fd263d0949f046d6de2c9df8741
+   creating: ExcaliburGenerator/.git/objects/ab/
+  inflating: ExcaliburGenerator/.git/objects/ab/1bca54d78bf9d3ce3822bddaee047f10a50bfc
+  inflating: ExcaliburGenerator/.git/objects/ab/af4771dac10c6639195d670226df3550653310
+   creating: ExcaliburGenerator/.git/objects/ac/
+  inflating: ExcaliburGenerator/.git/objects/ac/1efed2abe4f6c3d9a4ce814409c5cbcea460ac
+  inflating: ExcaliburGenerator/.git/objects/ac/2409aa111a32babd54e055db8df1f3c078839c
+  inflating: ExcaliburGenerator/.git/objects/ac/4ca24f54c1c7e3798f8330376732b7453bcf07
+  inflating: ExcaliburGenerator/.git/objects/ac/b4fff18c5556e87c9d10e92691107fc5e9b2c4
+   creating: ExcaliburGenerator/.git/objects/ad/
+  inflating: ExcaliburGenerator/.git/objects/ad/15b2b656a31fc12fbddc775410157e9262bc64
+  inflating: ExcaliburGenerator/.git/objects/ad/8ca7fe515ce2c0602da308088a28acc9454f7e
+  inflating: ExcaliburGenerator/.git/objects/ad/95a0900bf630812846a1cdd860d976b2a570b3
+  inflating: ExcaliburGenerator/.git/objects/ad/a750257187f50a4a7d8a72d61eb37fcabdc7ec
+  inflating: ExcaliburGenerator/.git/objects/ad/aa8e7490d3546c37ae81ba883a38f5271a62a3
+   creating: ExcaliburGenerator/.git/objects/ae/
+  inflating: ExcaliburGenerator/.git/objects/ae/76631ddb8de0ef7a152b8dc09c13f648d136d0
+   creating: ExcaliburGenerator/.git/objects/af/
+  inflating: ExcaliburGenerator/.git/objects/af/6b1317cc32bcea743abe909517499572d3ccbd
+  inflating: ExcaliburGenerator/.git/objects/af/d5dfd8aeb17c0f03e21bd40afa109507bd53da
+  inflating: ExcaliburGenerator/.git/objects/af/e784d6b6a7e5a44e117cc857e33ea4226ce83d
+   creating: ExcaliburGenerator/.git/objects/b0/
+  inflating: ExcaliburGenerator/.git/objects/b0/5ac13812369b8fa0b9e3e3bb34eae1af78106d
+  inflating: ExcaliburGenerator/.git/objects/b0/805a242d74fd3a5bca5222946c83c1ad06d488
+  inflating: ExcaliburGenerator/.git/objects/b0/e79526e39cdecb71eb96fd15a5b38b706e1368
+  inflating: ExcaliburGenerator/.git/objects/b0/f9993571a94961b734bc244ff16135be812603
+  inflating: ExcaliburGenerator/.git/objects/b0/fb875376f3260f0525c7cb6c461f9da42553ea
+   creating: ExcaliburGenerator/.git/objects/b2/
+  inflating: ExcaliburGenerator/.git/objects/b2/39eb1c8fbf7e5eb37bf6f35579049399b10ff6
+  inflating: ExcaliburGenerator/.git/objects/b2/e2de034bafe3eec364d6472b55b1921e52b8cd
+   creating: ExcaliburGenerator/.git/objects/b3/
+  inflating: ExcaliburGenerator/.git/objects/b3/674f70f0363d4e4354310addfe756afbd5bcfd
+   creating: ExcaliburGenerator/.git/objects/b4/
+  inflating: ExcaliburGenerator/.git/objects/b4/2352fcc731e8fe5ef3de6dd5f81bec671a5d60
+   creating: ExcaliburGenerator/.git/objects/b5/
+  inflating: ExcaliburGenerator/.git/objects/b5/65636dfc22690b54f45890d1d0dc62e81bc915
+  inflating: ExcaliburGenerator/.git/objects/b5/954ef608cae267e0a90ea3ea24f74340dfcb0f
+   creating: ExcaliburGenerator/.git/objects/b6/
+  inflating: ExcaliburGenerator/.git/objects/b6/2014d2b5b103a78279506df58aae536cabc01f
+  inflating: ExcaliburGenerator/.git/objects/b6/56459b44e706704d6842ff06f61063fa53d295
+   creating: ExcaliburGenerator/.git/objects/b7/
+  inflating: ExcaliburGenerator/.git/objects/b7/206b6d691f8183b2b423fa6baf117e02681ea4
+  inflating: ExcaliburGenerator/.git/objects/b7/8f18bb8133e3f33a2738a15318a1f14aaf1147
+  inflating: ExcaliburGenerator/.git/objects/b7/ed099c2d8375fc180eb1f6acf6f024e8c58b12
+   creating: ExcaliburGenerator/.git/objects/b8/
+  inflating: ExcaliburGenerator/.git/objects/b8/eba6ac35c7da21afeff439ca7e57be9c08e950
+  inflating: ExcaliburGenerator/.git/objects/b8/f331eb9c1e0c9989f3aad0bc92f4e3c14c57a6
+   creating: ExcaliburGenerator/.git/objects/b9/
+  inflating: ExcaliburGenerator/.git/objects/b9/1befc52ad278673abfda6ade1bc77f8daa594a
+  inflating: ExcaliburGenerator/.git/objects/b9/e68731d6e1dca87f3b8a61151ac7c9710471e3
+  inflating: ExcaliburGenerator/.git/objects/b9/edd425a25bd8535f9df486d3d791ed6b5d9c66
+   creating: ExcaliburGenerator/.git/objects/ba/
+  inflating: ExcaliburGenerator/.git/objects/ba/afb3fa1ff5455c56a33f46e370065190d801a4
+  inflating: ExcaliburGenerator/.git/objects/ba/be7461306ebe90b61da222a12ac36d566876cf
+   creating: ExcaliburGenerator/.git/objects/bb/
+  inflating: ExcaliburGenerator/.git/objects/bb/02d4a8afb92f9231334b8fd0a5398660d675ab
+  inflating: ExcaliburGenerator/.git/objects/bb/3a4f080b465325a36e99b5c5c3a0ce4aa78450
+  inflating: ExcaliburGenerator/.git/objects/bb/49378ab34e8d38d1174401579bfdfec813b98e
+  inflating: ExcaliburGenerator/.git/objects/bb/7f64b32b743fa7719e6db9cd18d8e39828beeb
+  inflating: ExcaliburGenerator/.git/objects/bb/a9a3d1bf5a44f108f343b1a1b8d9f9e89df557
+  inflating: ExcaliburGenerator/.git/objects/bb/c820fd6943a5692afea62104c4242123aa9d48
+  inflating: ExcaliburGenerator/.git/objects/bb/ed19844df6f7bc235d84d4fecac4d47b3abcdf
+   creating: ExcaliburGenerator/.git/objects/bc/
+  inflating: ExcaliburGenerator/.git/objects/bc/113cdfac9ecd352b68ffbdc9c65f3e8bc61ff4
+  inflating: ExcaliburGenerator/.git/objects/bc/3faac64523867cc7df3be8dc40cc9bb00d56e2
+  inflating: ExcaliburGenerator/.git/objects/bc/ffba0563662488d1633317d0d284b19a715b78
+   creating: ExcaliburGenerator/.git/objects/bd/
+  inflating: ExcaliburGenerator/.git/objects/bd/0c391ddd1088e9067844c48835bf4abcd61783
+  inflating: ExcaliburGenerator/.git/objects/bd/eb588c79f68c2439a0ac329a74e97e47cd2cd6
+  inflating: ExcaliburGenerator/.git/objects/bd/ec034ad19973a18747ea97585db6bd1cdc6409
+   creating: ExcaliburGenerator/.git/objects/be/
+  inflating: ExcaliburGenerator/.git/objects/be/2102b22062d105b8cf56e815e11a8d21d3836e
+  inflating: ExcaliburGenerator/.git/objects/be/3d15e46c10f88ad45a23cac67373e52986a876
+  inflating: ExcaliburGenerator/.git/objects/be/4877dd9e96c12e91146dc27a6b00cc3c77b5e8
+  inflating: ExcaliburGenerator/.git/objects/be/a496fd345825eaf909e2f67c9888648506daff
+   creating: ExcaliburGenerator/.git/objects/c0/
+  inflating: ExcaliburGenerator/.git/objects/c0/998ee5502465932b5fffea987870240ae52941
+   creating: ExcaliburGenerator/.git/objects/c1/
+  inflating: ExcaliburGenerator/.git/objects/c1/031c68c7a0661eeb2e10ef1158f3ce366195ca
+  inflating: ExcaliburGenerator/.git/objects/c1/40ec2871dfbcc7c218caaa5159f2bc89310819
+  inflating: ExcaliburGenerator/.git/objects/c1/7fd02a63369877a28c83fc1cb88cd2eeb31e90
+  inflating: ExcaliburGenerator/.git/objects/c1/d5c0d97c41437c7d6bd453573139558850c3f3
+   creating: ExcaliburGenerator/.git/objects/c2/
+  inflating: ExcaliburGenerator/.git/objects/c2/ad8e79a63534188914d453bec2688c61f12f9e
+   creating: ExcaliburGenerator/.git/objects/c3/
+  inflating: ExcaliburGenerator/.git/objects/c3/31e839af4ddadcdcdb65e548c26599de587c4e
+  inflating: ExcaliburGenerator/.git/objects/c3/7d7c307799873ca90b756f2c7f5724e1e67075
+   creating: ExcaliburGenerator/.git/objects/c4/
+  inflating: ExcaliburGenerator/.git/objects/c4/15acc90df59fd079c70bdfb59069ba39800458
+  inflating: ExcaliburGenerator/.git/objects/c4/8e7729a37cd84fb4061485fad74e32e79ba79f
+  inflating: ExcaliburGenerator/.git/objects/c4/abbf37f217c715a0eaade7f45ac78600df419f
+  inflating: ExcaliburGenerator/.git/objects/c4/dae111234312cdac5b905bfdd06ba5967c6aa0
+  inflating: ExcaliburGenerator/.git/objects/c4/f6d30cbb4f27277392b38dbd3292b0bbf49b57
+   creating: ExcaliburGenerator/.git/objects/c5/
+  inflating: ExcaliburGenerator/.git/objects/c5/22a65b654cd2021aebd1709e4675c6477bdfc8
+  inflating: ExcaliburGenerator/.git/objects/c5/4c40557f6120080eb6c2efd9c258feeaeb5248
+  inflating: ExcaliburGenerator/.git/objects/c5/76c8c934f8cc915e137a75ef85555cd7c01929
+  inflating: ExcaliburGenerator/.git/objects/c5/cb11618ac19afa73f6be1b6560086cac3941b1
+   creating: ExcaliburGenerator/.git/objects/c6/
+  inflating: ExcaliburGenerator/.git/objects/c6/b322ac7a66565232df03e9f5492465d9c3b36c
+  inflating: ExcaliburGenerator/.git/objects/c6/e730de417084bb5b96a7d99e9e904a4bc87d5a
+   creating: ExcaliburGenerator/.git/objects/c8/
+  inflating: ExcaliburGenerator/.git/objects/c8/057d5e05abdb2b2eaac7455cc64f4a71b717fc
+  inflating: ExcaliburGenerator/.git/objects/c8/78f463cd232ed1540ef5323603f6c3bed6678d
+   creating: ExcaliburGenerator/.git/objects/c9/
+  inflating: ExcaliburGenerator/.git/objects/c9/9362baf6beb0c960e63374aeac985a8d7f2ad7
+   creating: ExcaliburGenerator/.git/objects/ca/
+  inflating: ExcaliburGenerator/.git/objects/ca/037cd76ac1df5b9d77202db4e83c4fc9933aaa
+  inflating: ExcaliburGenerator/.git/objects/ca/8e039d53b786ca946bc5c8bb2e685b23b7c195
+  inflating: ExcaliburGenerator/.git/objects/ca/f69afe47359e20faaf900122b8c17253c797cc
+   creating: ExcaliburGenerator/.git/objects/cc/
+  inflating: ExcaliburGenerator/.git/objects/cc/6aa631a5d9a319ee4652388e1b2f307e4365f7
+  inflating: ExcaliburGenerator/.git/objects/cc/804b7c8d9d9e572401aa93b18668eb31021aad
+   creating: ExcaliburGenerator/.git/objects/cd/
+  inflating: ExcaliburGenerator/.git/objects/cd/cff1361e5913e79e6cd42b673c734980a8881e
+   creating: ExcaliburGenerator/.git/objects/ce/
+  inflating: ExcaliburGenerator/.git/objects/ce/3e3d1f6b15a33e4ae097b4cfff0f42b3309380
+  inflating: ExcaliburGenerator/.git/objects/ce/87899a64bf168105e3edc5f3b37ec4f0eb04d8
+  inflating: ExcaliburGenerator/.git/objects/ce/ab4661fef2aa08f6330b8b6351b81f0ed5b2aa
+  inflating: ExcaliburGenerator/.git/objects/ce/b286674d4b9d7f6e675c2420a20b09fa9f1255
+   creating: ExcaliburGenerator/.git/objects/cf/
+  inflating: ExcaliburGenerator/.git/objects/cf/253cf17056ce04827219643e484ea99c77cf6b
+   creating: ExcaliburGenerator/.git/objects/d1/
+  inflating: ExcaliburGenerator/.git/objects/d1/115034c4f29d09e993c4b1653d17e15ce5301a
+  inflating: ExcaliburGenerator/.git/objects/d1/7b4a3678b89abe995f6dc1a12a7034a293232e
+   creating: ExcaliburGenerator/.git/objects/d2/
+  inflating: ExcaliburGenerator/.git/objects/d2/45945174b3b44b4e4f8bea3763ff7adcd38762
+  inflating: ExcaliburGenerator/.git/objects/d2/87153a391afe8e33f49f5541821a7559e9d4d2
+  inflating: ExcaliburGenerator/.git/objects/d2/b0d0b6ff002f9e9df54b43b63129c9bb6ddb1f
+   creating: ExcaliburGenerator/.git/objects/d3/
+  inflating: ExcaliburGenerator/.git/objects/d3/b7a8c0379257b77c4fbf0cbf0306caca54331a
+   creating: ExcaliburGenerator/.git/objects/d4/
+  inflating: ExcaliburGenerator/.git/objects/d4/439ec0c66fb8de39bff1a72d9f815dff17a7ad
+   creating: ExcaliburGenerator/.git/objects/d5/
+  inflating: ExcaliburGenerator/.git/objects/d5/5a9c62f42c0f0db61ea33370e1e13292189a0d
+  inflating: ExcaliburGenerator/.git/objects/d5/74857d4b05a45bf06ac65b92f1c0f1100abba1
+   creating: ExcaliburGenerator/.git/objects/d6/
+  inflating: ExcaliburGenerator/.git/objects/d6/5db8350f11032ba56926533e051eaab18327b1
+  inflating: ExcaliburGenerator/.git/objects/d6/5e7e2f3e4d26155b7469dd03de25ab185e0a9b
+  inflating: ExcaliburGenerator/.git/objects/d6/8fd7f20e53ec3b839a7075123824e06d0de8ed
+   creating: ExcaliburGenerator/.git/objects/d7/
+  inflating: ExcaliburGenerator/.git/objects/d7/288d802dc3ea012479831586385aa534faa4fb
+  inflating: ExcaliburGenerator/.git/objects/d7/3b596ec2a93b19935e43265f7abbfac9f14201
+  inflating: ExcaliburGenerator/.git/objects/d7/5c48219d7e5ba22dcfe0b6153034c89fb86c3d
+  inflating: ExcaliburGenerator/.git/objects/d7/7412127e23a61760b3368aa4d7210a5fff5336
+  inflating: ExcaliburGenerator/.git/objects/d7/9fae68f728b7fbe5ebfc1e68086a600eb75412
+  inflating: ExcaliburGenerator/.git/objects/d7/cb426a20634ac0251d0c3786794d9e3a8392a0
+   creating: ExcaliburGenerator/.git/objects/d8/
+  inflating: ExcaliburGenerator/.git/objects/d8/26e3275ea7f89f03e02f609aaaf850adb71c93
+  inflating: ExcaliburGenerator/.git/objects/d8/57357a2db581caeaaddd3ad707eb6c71e32c20
+  inflating: ExcaliburGenerator/.git/objects/d8/76efa8af109697b29b437eb85f475d932788d1
+  inflating: ExcaliburGenerator/.git/objects/d8/8f4520785326e84b5d7d96fb23609794fc22fd
+   creating: ExcaliburGenerator/.git/objects/d9/
+  inflating: ExcaliburGenerator/.git/objects/d9/4b3bd2bd2a0f287a40a2cfcef6b525a1e26081
+  inflating: ExcaliburGenerator/.git/objects/d9/cbf73d72367ab302979217009c008612467425
+  inflating: ExcaliburGenerator/.git/objects/d9/d0ab85be816dc2938b5441be6d486bad4bf1db
+   creating: ExcaliburGenerator/.git/objects/da/
+  inflating: ExcaliburGenerator/.git/objects/da/989a3485188c7f187896df45d21affcc0ec5e3
+  inflating: ExcaliburGenerator/.git/objects/da/ba9c77436076faeeac86a219013806be5cd98c
+   creating: ExcaliburGenerator/.git/objects/db/
+  inflating: ExcaliburGenerator/.git/objects/db/9594bdfb70bc3737c53535373b477ad06e6f39
+  inflating: ExcaliburGenerator/.git/objects/db/a7350c306e8b024e12ebce505597b9e5dcafa2
+  inflating: ExcaliburGenerator/.git/objects/db/a9f8316f8e796e2808090c4f6cf770e6b90c4a
+   creating: ExcaliburGenerator/.git/objects/dd/
+  inflating: ExcaliburGenerator/.git/objects/dd/10be431630c876ce28f7b75d9d8a44c8cd45f6
+  inflating: ExcaliburGenerator/.git/objects/dd/351eb70f1d01aaa64e30b507d7ae26ae4d48ff
+  inflating: ExcaliburGenerator/.git/objects/dd/514aa38160ccba4e4fab10951849cad14549cc
+  inflating: ExcaliburGenerator/.git/objects/dd/8225aa61e66ebe256b8dd76cf07e64e9046276
+  inflating: ExcaliburGenerator/.git/objects/dd/bdd01d8d1491ab772790db8d40c5ac0a2630f3
+  inflating: ExcaliburGenerator/.git/objects/dd/edaffb7d3faab3b675ef7f4c973ea1bce17d34
+   creating: ExcaliburGenerator/.git/objects/de/
+  inflating: ExcaliburGenerator/.git/objects/de/b309bc9a9ba92d0a034de53b11def08893cb12
+  inflating: ExcaliburGenerator/.git/objects/de/bbc1c6edb6cf6a5cfa207f3614944b3f29614a
+  inflating: ExcaliburGenerator/.git/objects/de/dfa5d1119b49d54b217502c9c3a7ddafe7fa6d
+   creating: ExcaliburGenerator/.git/objects/df/
+  inflating: ExcaliburGenerator/.git/objects/df/61ff032cb1457c8b72f4020bf1a92b9e2e9d57
+  inflating: ExcaliburGenerator/.git/objects/df/8943a0e371dac522d646430590f05897d42c9b
+   creating: ExcaliburGenerator/.git/objects/e0/
+  inflating: ExcaliburGenerator/.git/objects/e0/36a964127bf57cc30e3da7afdbc8f5b88fac88
+  inflating: ExcaliburGenerator/.git/objects/e0/7b811c96f0eee1a55dc3742fa9d77b86efb721
+  inflating: ExcaliburGenerator/.git/objects/e0/f0321aac5229fdf855900d2466606e5bee66ab
+  inflating: ExcaliburGenerator/.git/objects/e0/f54f04e8dd86594a85fdef520320978ad6cc8b
+   creating: ExcaliburGenerator/.git/objects/e1/
+  inflating: ExcaliburGenerator/.git/objects/e1/2cc3cd8c9b47c0e3f22a657c36a15ffda37c9d
+  inflating: ExcaliburGenerator/.git/objects/e1/59c5395ff6b77cff095167660559b2f783fa43
+  inflating: ExcaliburGenerator/.git/objects/e1/61daec03130190dcfb597c8632f9df4ba407f5
+  inflating: ExcaliburGenerator/.git/objects/e1/ae87b9db8d9a636b8185da4ca6868c3b024d63
+   creating: ExcaliburGenerator/.git/objects/e2/
+  inflating: ExcaliburGenerator/.git/objects/e2/079160cfbfab372bab78bbb690f0c2c27f4e8c
+  inflating: ExcaliburGenerator/.git/objects/e2/32e05c8b8c9238f5695d990851fa18d13e65aa
+  inflating: ExcaliburGenerator/.git/objects/e2/a85516a1ab50aa35a063986095a30744537865
+   creating: ExcaliburGenerator/.git/objects/e3/
+  inflating: ExcaliburGenerator/.git/objects/e3/2e4d0502ec9d069fba544363f3b4342cdb5e67
+   creating: ExcaliburGenerator/.git/objects/e4/
+  inflating: ExcaliburGenerator/.git/objects/e4/2ea7891c5ae4b2b03f0f9e81921709179f487c
+  inflating: ExcaliburGenerator/.git/objects/e4/c23de5de6a0cf4a4ae14670477a8dbb82bdaca
+  inflating: ExcaliburGenerator/.git/objects/e4/d31cf3137c29ebe99efba4f73ca3ed24a2fce3
+  inflating: ExcaliburGenerator/.git/objects/e4/e29bb32d7cdc98ff25879f3202b040b0bf85ba
+   creating: ExcaliburGenerator/.git/objects/e6/
+  inflating: ExcaliburGenerator/.git/objects/e6/48cfa91cbd258a63a30f384e89a5cc92497c8d
+  inflating: ExcaliburGenerator/.git/objects/e6/5d9973b6d847b8753bd05d8abbe845bd9a2096
+  inflating: ExcaliburGenerator/.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391
+  inflating: ExcaliburGenerator/.git/objects/e6/a723d06574ee5cec8b00759b98f3fbe1ac7cc9
+   creating: ExcaliburGenerator/.git/objects/e7/
+  inflating: ExcaliburGenerator/.git/objects/e7/3d715a5d0b4e24d6f807b02c5f14b53e843154
+  inflating: ExcaliburGenerator/.git/objects/e7/461cd58c31bc8ccb886c2a6112cfcf4f55a8ab
+   creating: ExcaliburGenerator/.git/objects/e8/
+  inflating: ExcaliburGenerator/.git/objects/e8/dc178217dabcef94cc646d3326693aea39153e
+   creating: ExcaliburGenerator/.git/objects/e9/
+  inflating: ExcaliburGenerator/.git/objects/e9/6f805b69dd936349c0a4d43fe92fc5662dd23c
+  inflating: ExcaliburGenerator/.git/objects/e9/941f824ca799557e106a069e1de529ac492a3c
+  inflating: ExcaliburGenerator/.git/objects/e9/c55dabe83e8c7bfb0f48e2e9becfde6bf3fb62
+  inflating: ExcaliburGenerator/.git/objects/e9/d0593bc78e3b8795dc7d0ff52f47a9d640eac1
+   creating: ExcaliburGenerator/.git/objects/ea/
+  inflating: ExcaliburGenerator/.git/objects/ea/24b6866395901801fd71106aff1facb0529256
+  inflating: ExcaliburGenerator/.git/objects/ea/40d196dc72673f36c4084bf56457385edc855e
+  inflating: ExcaliburGenerator/.git/objects/ea/799c952063de0e328a21b928ae74fdcb5c1428
+  inflating: ExcaliburGenerator/.git/objects/ea/ae572dac3edd6c4da81c69a18a65adf5be47bb
+  inflating: ExcaliburGenerator/.git/objects/ea/bdc7ef00f8b793a933e9b781e97288e50e1fc5
+  inflating: ExcaliburGenerator/.git/objects/ea/d91f346a7670d31874905f627ced669917d55d
+   creating: ExcaliburGenerator/.git/objects/eb/
+  inflating: ExcaliburGenerator/.git/objects/eb/f5c281ee7fbbf86462b33b7b9955d884d57580
+  inflating: ExcaliburGenerator/.git/objects/eb/fae8839e96817cd986c671e870f52c0e687e92
+   creating: ExcaliburGenerator/.git/objects/ec/
+  inflating: ExcaliburGenerator/.git/objects/ec/388a9208b511cf9ebdb0be458118436d9b9eb9
+  inflating: ExcaliburGenerator/.git/objects/ec/7d5711a3b8cbdc12a0057ea234555cec0cc8ea
+  inflating: ExcaliburGenerator/.git/objects/ec/89c2d274b6919c1ade0d0e9cf76661cb3c31ed
+   creating: ExcaliburGenerator/.git/objects/ed/
+  inflating: ExcaliburGenerator/.git/objects/ed/1257361757fd06379007c384c3711952bbba05
+  inflating: ExcaliburGenerator/.git/objects/ed/860e68ea9411546cb49637dd5c3a2d2e4c9a98
+  inflating: ExcaliburGenerator/.git/objects/ed/c5826ad7b015547b09c31de062b88da2185ca4
+  inflating: ExcaliburGenerator/.git/objects/ed/ea6537bc21f48d94e000d1ea75498d57399ba8
+   creating: ExcaliburGenerator/.git/objects/ee/
+  inflating: ExcaliburGenerator/.git/objects/ee/13523ba6ff84f614d85c1c226470480d60d153
+  inflating: ExcaliburGenerator/.git/objects/ee/19493a018551e79d857ac01f03411eb2fd7383
+  inflating: ExcaliburGenerator/.git/objects/ee/313b2e38db2d6cf35d5ab8360df05dfb2f227b
+  inflating: ExcaliburGenerator/.git/objects/ee/459ac0586bd4dec980ec0909f8560ed6cd8638
+  inflating: ExcaliburGenerator/.git/objects/ee/69e9c0757a342c8fad33006190f9e4e95a7114
+   creating: ExcaliburGenerator/.git/objects/ef/
+  inflating: ExcaliburGenerator/.git/objects/ef/2bd80f636559e09258840cad7f19022cb6461c
+  inflating: ExcaliburGenerator/.git/objects/ef/88ef09d03002c942015a052cf0aa4b08b244f4
+  inflating: ExcaliburGenerator/.git/objects/ef/a3db484de4b2f63746acfebd7eeb018f2814b3
+  inflating: ExcaliburGenerator/.git/objects/ef/ad2d9b1593deba240ad414470d3694f580e9c4
+  inflating: ExcaliburGenerator/.git/objects/ef/bfaea01e352e61f2af9f0f2b50e37819f8d323
+   creating: ExcaliburGenerator/.git/objects/f0/
+  inflating: ExcaliburGenerator/.git/objects/f0/00e3ef5176395b067dfc3f3e1256a80c450015
+  inflating: ExcaliburGenerator/.git/objects/f0/29dfe761cd2c7fed2a51e5e8217eba407b9b9a
+  inflating: ExcaliburGenerator/.git/objects/f0/917bab8af7960411a60719541f09dcba14f1ca
+  inflating: ExcaliburGenerator/.git/objects/f0/e4e3fb6407b9184a7e1087fb5bebe96a980bdf
+   creating: ExcaliburGenerator/.git/objects/f2/
+  inflating: ExcaliburGenerator/.git/objects/f2/6061806df8e6c46bf046bc463ff371e91b7e47
+  inflating: ExcaliburGenerator/.git/objects/f2/9066a43651b82839b837f1805df9a929614a3d
+  inflating: ExcaliburGenerator/.git/objects/f2/b5bc0b13b0b2e93fc6dd7355dfaae4ecb471a0
+  inflating: ExcaliburGenerator/.git/objects/f2/f81921688f64de4ed8b3020548cf2a4cef293f
+   creating: ExcaliburGenerator/.git/objects/f3/
+  inflating: ExcaliburGenerator/.git/objects/f3/0caf67380344af0a7d4dd51ac25f572549f9a0
+  inflating: ExcaliburGenerator/.git/objects/f3/71b4cdfa7ce8ab2d95c47fcb4a71d1099d302c
+  inflating: ExcaliburGenerator/.git/objects/f3/8593bdcc2e700cd5a24d0b96640ca9ad474476
+  inflating: ExcaliburGenerator/.git/objects/f3/f1b1b5c02ffb84805fa8ac435e1564e4343f72
+   creating: ExcaliburGenerator/.git/objects/f4/
+  inflating: ExcaliburGenerator/.git/objects/f4/72f39328d24daecf4b7c57c13d48e2472dd526
+  inflating: ExcaliburGenerator/.git/objects/f4/77c07716337d0cdb6cadf29096c22fc9d551ce
+  inflating: ExcaliburGenerator/.git/objects/f4/acf4488ceb5db88237504b010e71ced0f2ec98
+  inflating: ExcaliburGenerator/.git/objects/f4/bc5586b67f45d3cc35f228e8bac2e4bc2cea16
+   creating: ExcaliburGenerator/.git/objects/f5/
+  inflating: ExcaliburGenerator/.git/objects/f5/49cbaa4a8407ab3bba5308b7ea221eb9006736
+  inflating: ExcaliburGenerator/.git/objects/f5/7fffdb5a07cd21b12f8c014513475a6980a469
+  inflating: ExcaliburGenerator/.git/objects/f5/933309b055acc037c72409c3cf96a0eb4d6814
+   creating: ExcaliburGenerator/.git/objects/f6/
+  inflating: ExcaliburGenerator/.git/objects/f6/266bdb7c895dcb36aba8f724aa2b09dd451235
+  inflating: ExcaliburGenerator/.git/objects/f6/2edea578d50058bef5e6bcc178b88d145564e9
+  inflating: ExcaliburGenerator/.git/objects/f6/b7ae345f7f145650f46d3d96b638bfbd83bf71
+  inflating: ExcaliburGenerator/.git/objects/f6/c643509ade98eca1a84f21d3d3bca7cf791505
+   creating: ExcaliburGenerator/.git/objects/f7/
+  inflating: ExcaliburGenerator/.git/objects/f7/06ae0914606b11c59f9f463eda81c10813f2cc
+  inflating: ExcaliburGenerator/.git/objects/f7/476b038c0fe70c517b754abe70ed8eb0b69a7e
+  inflating: ExcaliburGenerator/.git/objects/f7/58112e4e5c83619618c62d50792f359b4b5607
+   creating: ExcaliburGenerator/.git/objects/f8/
+  inflating: ExcaliburGenerator/.git/objects/f8/7762cf4cc3e799df265f890a0ca1ceffa72d5e
+   creating: ExcaliburGenerator/.git/objects/f9/
+  inflating: ExcaliburGenerator/.git/objects/f9/2a3892bda8441c8916833502f1323d06c5dc59
+  inflating: ExcaliburGenerator/.git/objects/f9/6a5238a86827a2fb10d87b2e715e9f0f790b2d
+  inflating: ExcaliburGenerator/.git/objects/f9/ba7f8b4901d059a522d76272612aa2a8321bc3
+  inflating: ExcaliburGenerator/.git/objects/f9/c86eff1145a7bf2b40a8e6222a3234754fbe81
+   creating: ExcaliburGenerator/.git/objects/fa/
+  inflating: ExcaliburGenerator/.git/objects/fa/c74e1fae87b5926c3c988f815b236808538b21
+   creating: ExcaliburGenerator/.git/objects/fb/
+  inflating: ExcaliburGenerator/.git/objects/fb/783c9b1472eec5ac21cc95e6d052acd499058e
+  inflating: ExcaliburGenerator/.git/objects/fb/d0631dc228e3db8e758c03433bc590fce8a618
+   creating: ExcaliburGenerator/.git/objects/fc/
+  inflating: ExcaliburGenerator/.git/objects/fc/790a80308832379e59b63381cfd5054364f5dc
+  inflating: ExcaliburGenerator/.git/objects/fc/df3a1c51b1255015e9b5ede494c5f3d7489822
+   creating: ExcaliburGenerator/.git/objects/fd/
+  inflating: ExcaliburGenerator/.git/objects/fd/050724502565ae4e9aca83914cfc15c55e816e
+  inflating: ExcaliburGenerator/.git/objects/fd/5b52e6311522a3c5f789ad639a5f9dffefc478
+  inflating: ExcaliburGenerator/.git/objects/fd/9c28e4e00d0fd1be0aef93397ef4226aff72eb
+   creating: ExcaliburGenerator/.git/objects/fe/
+  inflating: ExcaliburGenerator/.git/objects/fe/06b2210580595108aa2b890018c9403f0af675
+  inflating: ExcaliburGenerator/.git/objects/fe/177af5b47dc5b59ca01bf6644b8d0f773baf8e
+  inflating: ExcaliburGenerator/.git/objects/fe/18ab3b91d778b6f188fe811e05c12e4d15d907
+  inflating: ExcaliburGenerator/.git/objects/fe/71c104b595c1dcdb0e75ce4894bf179fd0c56b
+  inflating: ExcaliburGenerator/.git/objects/fe/988c3a8dc05051f18b4bfa587173625e4f3bfb
+  inflating: ExcaliburGenerator/.git/objects/fe/a4b867a98cf45bcc1a5f56d7cd521b4a5d9b0a
+  inflating: ExcaliburGenerator/.git/objects/fe/a7dcf1946ef83ba804a5dd9a8854ca97b25692
+  inflating: ExcaliburGenerator/.git/objects/fe/f4f1518fd043ffb3f0895e3bde28037b411230
+   creating: ExcaliburGenerator/.git/objects/ff/
+  inflating: ExcaliburGenerator/.git/objects/ff/47c413c396a68c40bae76d51a23432cbeb9698
+  inflating: ExcaliburGenerator/.git/objects/ff/cd660da18dda0845cfe7ae5aad5805e80a4c1e
+   creating: ExcaliburGenerator/.git/objects/info/
+   creating: ExcaliburGenerator/.git/objects/pack/
+   creating: ExcaliburGenerator/.git/refs/
+   creating: ExcaliburGenerator/.git/refs/heads/
+  inflating: ExcaliburGenerator/.git/refs/heads/main
+  inflating: ExcaliburGenerator/.git/refs/heads/replit-agent
+   creating: ExcaliburGenerator/.git/refs/notes/
+  inflating: ExcaliburGenerator/.git/refs/notes/commits
+   creating: ExcaliburGenerator/.git/refs/replit/
+  inflating: ExcaliburGenerator/.git/refs/replit/agent-ledger
+   creating: ExcaliburGenerator/.git/refs/tags/
+  inflating: ExcaliburGenerator/.gitignore
+  inflating: ExcaliburGenerator/.replit
+  inflating: ExcaliburGenerator/PROJECT_SPECIFICATION.md
+  inflating: ExcaliburGenerator/SCHNELLSTART_DEPLOYMENT.md
+  inflating: ExcaliburGenerator/UPDATE_WORKFLOW.md
+  inflating: ExcaliburGenerator/VPS_DEPLOYMENT_GUIDE.md
+   creating: ExcaliburGenerator/attached_assets/
+  inflating: ExcaliburGenerator/attached_assets/Beschreibung EXCALIBUR CUBA Website (1)_1751579634842.pdf
+  inflating: ExcaliburGenerator/attached_assets/EXCALIBUR_1751739234819.png
+  inflating: ExcaliburGenerator/attached_assets/Pasted-Jetzt-erstelle-mir-ca-die-gleiche-Seite-aber-nur-f-r-Generatoren-die-anderen-Produkte-k-nnen-raus-b-1751471737576_1751471737576.txt
+  inflating: ExcaliburGenerator/attached_assets/SOLAR PREISLISTE 1-7-25 und REVOLICO SOLAR & GENERATOREN_1751726598793.pdf
+  inflating: ExcaliburGenerator/attached_assets/content-1751471669928.md
+  inflating: ExcaliburGenerator/attached_assets/excalibur logo kuba_1751740039428.png
+  inflating: ExcaliburGenerator/attached_assets/excalibur-logo-kuba_1751740117013.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751581263049.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751617626202.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751617682206.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751620994267.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751728872974.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751729135415.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751732458888.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751734481404.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751736760598.png
+  inflating: ExcaliburGenerator/attached_assets/image_1751736933159.png
+  inflating: ExcaliburGenerator/attached_assets/screenshot-1751471668419.png
+   creating: ExcaliburGenerator/client/
+  inflating: ExcaliburGenerator/client/index.html
+   creating: ExcaliburGenerator/client/public/
+  inflating: ExcaliburGenerator/client/public/excalibur-logo.png
+   creating: ExcaliburGenerator/client/src/
+  inflating: ExcaliburGenerator/client/src/App.tsx
+   creating: ExcaliburGenerator/client/src/components/
+  inflating: ExcaliburGenerator/client/src/components/CookieBanner.tsx
+  inflating: ExcaliburGenerator/client/src/components/Footer.tsx
+  inflating: ExcaliburGenerator/client/src/components/Header.tsx
+  inflating: ExcaliburGenerator/client/src/components/HeroSlider.tsx
+  inflating: ExcaliburGenerator/client/src/components/ImageUpload.tsx
+  inflating: ExcaliburGenerator/client/src/components/LanguageSwitcher.tsx
+  inflating: ExcaliburGenerator/client/src/components/Layout.tsx
+  inflating: ExcaliburGenerator/client/src/components/ProductCard.tsx
+  inflating: ExcaliburGenerator/client/src/components/ProductComparison.tsx
+  inflating: ExcaliburGenerator/client/src/components/SearchBox.tsx
+  inflating: ExcaliburGenerator/client/src/components/WhatsAppButton.tsx
+   creating: ExcaliburGenerator/client/src/components/ui/
+  inflating: ExcaliburGenerator/client/src/components/ui/accordion.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/alert-dialog.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/alert.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/aspect-ratio.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/avatar.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/badge.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/breadcrumb.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/button.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/calendar.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/card.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/carousel.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/chart.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/checkbox.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/collapsible.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/command.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/context-menu.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/dialog.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/drawer.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/dropdown-menu.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/form.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/hover-card.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/input-otp.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/input.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/label.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/menubar.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/navigation-menu.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/pagination.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/popover.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/progress.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/radio-group.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/resizable.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/scroll-area.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/select.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/separator.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/sheet.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/sidebar.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/skeleton.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/slider.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/switch.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/table.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/tabs.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/textarea.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/toast.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/toaster.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/toggle-group.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/toggle.tsx
+  inflating: ExcaliburGenerator/client/src/components/ui/tooltip.tsx
+   creating: ExcaliburGenerator/client/src/data/
+  inflating: ExcaliburGenerator/client/src/data/products.ts
+  inflating: ExcaliburGenerator/client/src/data/translations.ts
+   creating: ExcaliburGenerator/client/src/hooks/
+  inflating: ExcaliburGenerator/client/src/hooks/use-mobile.tsx
+  inflating: ExcaliburGenerator/client/src/hooks/use-toast.ts
+  inflating: ExcaliburGenerator/client/src/hooks/useLanguage.ts
+  inflating: ExcaliburGenerator/client/src/index.css
+   creating: ExcaliburGenerator/client/src/lib/
+  inflating: ExcaliburGenerator/client/src/lib/geolocation.ts
+  inflating: ExcaliburGenerator/client/src/lib/i18n.ts
+  inflating: ExcaliburGenerator/client/src/lib/queryClient.ts
+  inflating: ExcaliburGenerator/client/src/lib/utils.ts
+  inflating: ExcaliburGenerator/client/src/main.tsx
+   creating: ExcaliburGenerator/client/src/pages/
+  inflating: ExcaliburGenerator/client/src/pages/About.tsx
+  inflating: ExcaliburGenerator/client/src/pages/AdminAnalytics.tsx
+  inflating: ExcaliburGenerator/client/src/pages/AdminCategoryForm.tsx
+  inflating: ExcaliburGenerator/client/src/pages/AdminDashboard.tsx
+  inflating: ExcaliburGenerator/client/src/pages/AdminImageManager.tsx
+  inflating: ExcaliburGenerator/client/src/pages/AdminLogin.tsx
+  inflating: ExcaliburGenerator/client/src/pages/AdminProductForm.tsx
+  inflating: ExcaliburGenerator/client/src/pages/AdminSiteImages.tsx
+  inflating: ExcaliburGenerator/client/src/pages/AdminSubcategoryForm.tsx
+  inflating: ExcaliburGenerator/client/src/pages/Contact.tsx
+  inflating: ExcaliburGenerator/client/src/pages/Home.tsx
+  inflating: ExcaliburGenerator/client/src/pages/Legal.tsx
+  inflating: ExcaliburGenerator/client/src/pages/ProductDetail.tsx
+  inflating: ExcaliburGenerator/client/src/pages/Products.tsx
+  inflating: ExcaliburGenerator/client/src/pages/not-found.tsx
+  inflating: ExcaliburGenerator/components.json
+  inflating: ExcaliburGenerator/deploy.sh
+  inflating: ExcaliburGenerator/drizzle.config.ts
+  inflating: ExcaliburGenerator/package-lock.json
+  inflating: ExcaliburGenerator/package.json
+  inflating: ExcaliburGenerator/postcss.config.js
+  inflating: ExcaliburGenerator/replit.md
+   creating: ExcaliburGenerator/server/
+  inflating: ExcaliburGenerator/server/auth.ts
+  inflating: ExcaliburGenerator/server/db.ts
+  inflating: ExcaliburGenerator/server/index.ts
+  inflating: ExcaliburGenerator/server/routes.ts
+  inflating: ExcaliburGenerator/server/seed.ts
+  inflating: ExcaliburGenerator/server/seo.ts
+  inflating: ExcaliburGenerator/server/storage.ts
+  inflating: ExcaliburGenerator/server/vite.ts
+   creating: ExcaliburGenerator/shared/
+  inflating: ExcaliburGenerator/shared/schema.ts
+  inflating: ExcaliburGenerator/tailwind.config.ts
+  inflating: ExcaliburGenerator/tsconfig.json
+   creating: ExcaliburGenerator/uploads/
+  inflating: ExcaliburGenerator/uploads/1751719044031-222165367.webp
+  inflating: ExcaliburGenerator/uploads/1751732260548-d41d7c0b-40e0-4cc4-93e8-79ccccf3d214.jpg
+  inflating: ExcaliburGenerator/uploads/1751739133485-ad90a234-a67e-4ba3-b38e-5dc3533b4c2b.jpg
+  inflating: ExcaliburGenerator/uploads/1751739133593-0db035c0-d214-4d63-8905-3372058bc939.jpg
+  inflating: ExcaliburGenerator/vite.config.ts
+root@srv896300:/var/www/excalibur-cuba# ls -la
+total 14856
+drwxr-xr-x 3 root root     4096 Jul  5 20:54 .
+drwxr-xr-x 4 root root     4096 Jul  5 20:53 ..
+drwxr-xr-x 8 root root     4096 Jul  5 20:54 ExcaliburGenerator
+-rw-r--r-- 1 root root 15199754 Jul  5 20:54 excalibur.zip
+root@srv896300:/var/www/excalibur-cuba# cd ExcaliburGenerator/
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# ls -la
+total 476
+drwxr-xr-x 8 root root   4096 Jul  5 20:54 .
+drwxr-xr-x 3 root root   4096 Jul  5 20:54 ..
+-rw-r--r-- 1 root root    573 Jul  5 17:52 .env.example
+drwxr-xr-x 8 root root   4096 Jul  5 18:29 .git
+-rw-r--r-- 1 root root     67 Jul  2 16:05 .gitignore
+-rw-r--r-- 1 root root    676 Jul  2 16:12 .replit
+-rw-r--r-- 1 root root  16223 Jul  4 08:50 PROJECT_SPECIFICATION.md
+-rw-r--r-- 1 root root   4170 Jul  5 17:53 SCHNELLSTART_DEPLOYMENT.md
+-rw-r--r-- 1 root root   3506 Jul  5 18:12 UPDATE_WORKFLOW.md
+-rw-r--r-- 1 root root   7812 Jul  5 17:51 VPS_DEPLOYMENT_GUIDE.md
+drwxr-xr-x 2 root root   4096 Jul  5 18:28 attached_assets
+drwxr-xr-x 4 root root   4096 Jul  5 18:14 client
+-rw-r--r-- 1 root root    459 Jul  2 16:05 components.json
+-rw-r--r-- 1 root root   5627 Jul  5 17:52 deploy.sh
+-rw-r--r-- 1 root root    325 Jul  2 16:05 drizzle.config.ts
+-rw-r--r-- 1 root root 349696 Jul  5 13:37 package-lock.json
+-rw-r--r-- 1 root root   3788 Jul  5 13:37 package.json
+-rw-r--r-- 1 root root     80 Jul  2 16:05 postcss.config.js
+-rw-r--r-- 1 root root  14294 Jul  5 17:53 replit.md
+drwxr-xr-x 2 root root   4096 Jul  5 16:50 server
+drwxr-xr-x 2 root root   4096 Jul  5 14:45 shared
+-rw-r--r-- 1 root root   2627 Jul  2 16:05 tailwind.config.ts
+-rw-r--r-- 1 root root    657 Jul  2 16:05 tsconfig.json
+drwxr-xr-x 2 root root   4096 Jul  5 18:12 uploads
+-rw-r--r-- 1 root root    971 Jul  2 16:05 vite.config.ts
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# ls package.json
+package.json
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# npm install
+npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+
+added 523 packages, and audited 524 packages in 14s
+
+74 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (1 low, 8 moderate)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.4.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.4.2
+npm notice To update run: npm install -g npm@11.4.2
+npm notice
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# npm install -g typescript tsx
+
+added 6 packages in 3s
+
+2 packages are looking for funding
+  run `npm fund` for details
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# cat > .env << 'EOF'
+NODE_ENV=production
+DATABASE_URL=postgresql://excalibur_user:SecurePass2025@localhost:5432/excalibur_cuba
+SESSION_SECRET=ExcaliburCuba2025SecureSessionKeyVeryLongAndSecure
+PORT=5000
+EOF
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# cat .env
+NODE_ENV=production
+DATABASE_URL=postgresql://excalibur_user:SecurePass2025@localhost:5432/excalibur_cuba
+SESSION_SECRET=ExcaliburCuba2025SecureSessionKeyVeryLongAndSecure
+PORT=5000
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# npm run build
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.19 building for production...
+transforming (3) src/main.tsxBrowserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 2549 modules transformed.
+../dist/public/index.html                     6.80 kB │ gzip:   2.00 kB
+../dist/public/assets/index-BnNToIff.css     92.37 kB │ gzip:  14.82 kB
+../dist/public/assets/index-_NFTae5s.js   1,047.31 kB │ gzip: 295.37 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 9.58s
+
+  dist/index.js  49.0kb
+
+⚡ Done in 10ms
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# npm run db:push
+
+> rest-express@1.0.0 db:push
+> drizzle-kit push
+
+No config path provided, using default 'drizzle.config.ts'
+Reading config file '/var/www/excalibur-cuba/ExcaliburGenerator/drizzle.config.ts'
+Using 'pg' driver for database querying
+[✓] Pulling schema from database...
+[✓] Changes applied
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# node dist/server/seed.js
+node:internal/modules/cjs/loader:1215
+  throw err;
+  ^
+
+Error: Cannot find module '/var/www/excalibur-cuba/ExcaliburGenerator/dist/server/seed.js'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1212:15)
+    at Module._load (node:internal/modules/cjs/loader:1043:27)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
+    at node:internal/main/run_main_module:28:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v20.19.3
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# ls -la dist/
+total 64
+drwxr-xr-x  3 root root  4096 Jul  5 20:55 .
+drwxr-xr-x 10 root root  4096 Jul  5 20:55 ..
+-rw-r--r--  1 root root 50203 Jul  5 20:55 index.js
+drwxr-xr-x  3 root root  4096 Jul  5 20:55 public
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# ls -la server/
+total 72
+drwxr-xr-x  2 root root  4096 Jul  5 16:50 .
+drwxr-xr-x 10 root root  4096 Jul  5 20:55 ..
+-rw-r--r--  1 root root  1686 Jul  3 21:58 auth.ts
+-rw-r--r--  1 root root   482 Jul  3 21:55 db.ts
+-rw-r--r--  1 root root  1921 Jul  2 16:05 index.ts
+-rw-r--r--  1 root root 24275 Jul  5 15:55 routes.ts
+-rw-r--r--  1 root root  2096 Jul  5 16:50 seed.ts
+-rw-r--r--  1 root root  3965 Jul  4 14:30 seo.ts
+-rw-r--r--  1 root root 15632 Jul  5 15:12 storage.ts
+-rw-r--r--  1 root root  2254 Jul  2 16:05 vite.ts
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# ls -la package.json
+-rw-r--r-- 1 root root 3788 Jul  5 13:37 package.json
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# npm run build
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.19 building for production...
+transforming (5) ../node_modules/wouter/esm/index.jsBrowserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 2549 modules transformed.
+../dist/public/index.html                     6.80 kB │ gzip:   2.00 kB
+../dist/public/assets/index-BnNToIff.css     92.37 kB │ gzip:  14.82 kB
+../dist/public/assets/index-_NFTae5s.js   1,047.31 kB │ gzip: 295.37 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.65s
+
+  dist/index.js  49.0kb
+
+⚡ Done in 6ms
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# ls -la dist/server/
+ls: cannot access 'dist/server/': No such file or directory
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
