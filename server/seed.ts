@@ -5,25 +5,44 @@ export async function seedDatabase() {
   try {
     console.log("🌱 Starting database seeding...");
 
-    // Check for existing admin user by username or email
-    const existingAdminByUsername = await storage.getAdminUserByUsername("excalibur_admin");
-    const existingAdminByEmail = await storage.getAdminUserByUsername("admin"); // Check old username
+    // Deactivate old demo admin user if it exists
+    const oldAdminUser = await storage.getAdminUserByUsername("admin");
+    if (oldAdminUser) {
+      await storage.updateAdminUser(oldAdminUser.id, { isActive: false });
+      console.log("🔒 Old demo admin user deactivated");
+    }
+
+    // Check for existing secure admin user
+    let existingAdminByUsername = await storage.getAdminUserByUsername("excalibur_admin");
     
-    if (!existingAdminByUsername && !existingAdminByEmail) {
-      const adminUser: InsertAdminUser = {
-        username: "excalibur_admin",
-        email: "admin@excalibur-cuba.com",
-        password: "ExcaliburCuba@2025!",
-        firstName: "Excalibur",
-        lastName: "Admin",
-        role: "admin",
-        isActive: true,
-      };
+    if (!existingAdminByUsername) {
+      // Try to find admin by email in case username was different
+      const existingUsers = await storage.getAdminUserByEmail("admin@excalibur-cuba.com");
       
-      await storage.createAdminUser(adminUser);
-      console.log("✅ Admin user created for Excalibur Cuba");
+      if (!existingUsers) {
+        const adminUser: InsertAdminUser = {
+          username: "excalibur_admin",
+          email: "admin@excalibur-cuba.com",
+          password: "ExcaliburCuba@2025!SecureAdmin#9847",
+          firstName: "Excalibur",
+          lastName: "Admin",
+          role: "admin",
+          isActive: true,
+        };
+        
+        await storage.createAdminUser(adminUser);
+        console.log("✅ Secure admin user created for Excalibur Cuba");
+      } else {
+        // Update existing user to secure credentials
+        await storage.updateAdminUser(existingUsers.id, {
+          username: "excalibur_admin",
+          password: "ExcaliburCuba@2025!SecureAdmin#9847",
+          isActive: true
+        });
+        console.log("✅ Existing admin user updated with secure credentials");
+      }
     } else {
-      console.log("✅ Admin user already exists");
+      console.log("✅ Secure admin user already exists");
     }
 
     // Create categories based on PDF requirements

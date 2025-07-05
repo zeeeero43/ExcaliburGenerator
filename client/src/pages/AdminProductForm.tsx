@@ -16,38 +16,157 @@ import { ArrowLeft, Upload, X } from 'lucide-react';
 import type { Category, Subcategory, Product } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
 
-const productSchema = z.object({
-  nameEs: z.string().min(1, 'Produktname (Spanisch) ist erforderlich'),
-  nameDe: z.string().min(1, 'Produktname (Deutsch) ist erforderlich'),
-  nameEn: z.string().min(1, 'Produktname (Englisch) ist erforderlich'),
-  shortDescriptionEs: z.string().min(1, 'Kurzbeschreibung (Spanisch) ist erforderlich'),
-  shortDescriptionDe: z.string().min(1, 'Kurzbeschreibung (Deutsch) ist erforderlich'),
-  shortDescriptionEn: z.string().min(1, 'Kurzbeschreibung (Englisch) ist erforderlich'),
-  descriptionEs: z.string().optional(),
-  descriptionDe: z.string().optional(),
-  descriptionEn: z.string().optional(),
-  categoryId: z.coerce.number().min(1, 'Kategorie ist erforderlich'),
-  subcategoryId: z.coerce.number().optional(),
-  sku: z.string().optional(),
-  price: z.string().optional(),
-  priceNote: z.string().optional(),
-  mainImage: z.string().optional(),
-  isActive: z.boolean().default(true),
-  isFeatured: z.boolean().default(false),
-  stockStatus: z.enum(['in_stock', 'out_of_stock', 'limited']).default('in_stock'),
-  inStock: z.boolean().default(true),
-  availabilityTextEs: z.string().optional(),
-  availabilityTextDe: z.string().optional(),
-  availabilityTextEn: z.string().optional(),
-  specifications: z.record(z.string()).optional(),
-});
+// Admin Translation Hook
+function useAdminTranslation() {
+  const [adminLanguage] = useState(() => 
+    localStorage.getItem('admin-language') || 'de'
+  );
 
-type ProductForm = z.infer<typeof productSchema>;
+  const t = (key: string): string => {
+    const translations: Record<string, Record<string, string>> = {
+      de: {
+        // Form labels
+        productNameEs: 'Produktname (Spanisch)',
+        productNameDe: 'Produktname (Deutsch)', 
+        productNameEn: 'Produktname (Englisch)',
+        shortDescEs: 'Kurzbeschreibung (Spanisch)',
+        shortDescDe: 'Kurzbeschreibung (Deutsch)',
+        shortDescEn: 'Kurzbeschreibung (Englisch)',
+        descriptionEs: 'Beschreibung (Spanisch)',
+        descriptionDe: 'Beschreibung (Deutsch)',
+        descriptionEn: 'Beschreibung (Englisch)',
+        category: 'Kategorie',
+        subcategory: 'Unterkategorie',
+        sku: 'Artikelnummer',
+        price: 'Preis',
+        priceNote: 'Preishinweis',
+        mainImage: 'Hauptbild',
+        active: 'Aktiv',
+        featured: 'Empfohlen',
+        stockStatus: 'Lagerbestand',
+        inStock: 'Auf Lager',
+        availabilityEs: 'Verfügbarkeit (Spanisch)',
+        availabilityDe: 'Verfügbarkeit (Deutsch)',
+        availabilityEn: 'Verfügbarkeit (Englisch)',
+        specifications: 'Spezifikationen',
+        
+        // Stock status
+        in_stock: 'Auf Lager',
+        out_of_stock: 'Nicht verfügbar',
+        limited: 'Begrenzt verfügbar',
+        
+        // Actions
+        backToDashboard: 'Zurück zum Dashboard',
+        addProduct: 'Produkt hinzufügen',
+        editProduct: 'Produkt bearbeiten',
+        saveProduct: 'Produkt speichern',
+        selectCategory: 'Kategorie auswählen',
+        selectSubcategory: 'Unterkategorie auswählen',
+        selectImage: 'Bild auswählen',
+        
+        // Validation messages
+        nameRequired: 'Name ist erforderlich',
+        shortDescRequired: 'Kurzbeschreibung ist erforderlich',
+        categoryRequired: 'Kategorie ist erforderlich',
+        
+        // Success/Error
+        productSaved: 'Produkt erfolgreich gespeichert',
+        productError: 'Fehler beim Speichern des Produkts'
+      },
+      es: {
+        // Form labels
+        productNameEs: 'Nombre del Producto (Español)',
+        productNameDe: 'Nombre del Producto (Alemán)', 
+        productNameEn: 'Nombre del Producto (Inglés)',
+        shortDescEs: 'Descripción Corta (Español)',
+        shortDescDe: 'Descripción Corta (Alemán)',
+        shortDescEn: 'Descripción Corta (Inglés)',
+        descriptionEs: 'Descripción (Español)',
+        descriptionDe: 'Descripción (Alemán)',
+        descriptionEn: 'Descripción (Inglés)',
+        category: 'Categoría',
+        subcategory: 'Subcategoría',
+        sku: 'Código de Producto',
+        price: 'Precio',
+        priceNote: 'Nota de Precio',
+        mainImage: 'Imagen Principal',
+        active: 'Activo',
+        featured: 'Destacado',
+        stockStatus: 'Estado de Stock',
+        inStock: 'En Stock',
+        availabilityEs: 'Disponibilidad (Español)',
+        availabilityDe: 'Disponibilidad (Alemán)',
+        availabilityEn: 'Disponibilidad (Inglés)',
+        specifications: 'Especificaciones',
+        
+        // Stock status
+        in_stock: 'En Stock',
+        out_of_stock: 'Agotado',
+        limited: 'Stock Limitado',
+        
+        // Actions
+        backToDashboard: 'Volver al Panel',
+        addProduct: 'Agregar Producto',
+        editProduct: 'Editar Producto',
+        saveProduct: 'Guardar Producto',
+        selectCategory: 'Seleccionar categoría',
+        selectSubcategory: 'Seleccionar subcategoría',
+        selectImage: 'Seleccionar imagen',
+        
+        // Validation messages
+        nameRequired: 'El nombre es requerido',
+        shortDescRequired: 'La descripción corta es requerida',
+        categoryRequired: 'La categoría es requerida',
+        
+        // Success/Error
+        productSaved: 'Producto guardado exitosamente',
+        productError: 'Error al guardar el producto'
+      }
+    };
+    
+    return translations[adminLanguage]?.[key] || translations.de[key] || key;
+  };
+
+  return { t, currentLanguage: adminLanguage };
+}
+
+// Dynamic schema creation based on admin language
+function createProductSchema(t: (key: string) => string) {
+  return z.object({
+    nameEs: z.string().min(1, t('nameRequired')),
+    nameDe: z.string().min(1, t('nameRequired')),
+    nameEn: z.string().min(1, t('nameRequired')),
+    shortDescriptionEs: z.string().min(1, t('shortDescRequired')),
+    shortDescriptionDe: z.string().min(1, t('shortDescRequired')),
+    shortDescriptionEn: z.string().min(1, t('shortDescRequired')),
+    descriptionEs: z.string().optional(),
+    descriptionDe: z.string().optional(),
+    descriptionEn: z.string().optional(),
+    categoryId: z.coerce.number().min(1, t('categoryRequired')),
+    subcategoryId: z.coerce.number().optional(),
+    sku: z.string().optional(),
+    price: z.string().optional(),
+    priceNote: z.string().optional(),
+    mainImage: z.string().optional(),
+    isActive: z.boolean().default(true),
+    isFeatured: z.boolean().default(false),
+    stockStatus: z.enum(['in_stock', 'out_of_stock', 'limited']).default('in_stock'),
+    inStock: z.boolean().default(true),
+    availabilityTextEs: z.string().optional(),
+    availabilityTextDe: z.string().optional(),
+    availabilityTextEn: z.string().optional(),
+    specifications: z.record(z.string()).optional(),
+  });
+}
 
 export default function AdminProductForm() {
   const [, setLocation] = useLocation();
   const params = useParams();
   const { toast } = useToast();
+  const { t } = useAdminTranslation();
+  
+  const productSchema = createProductSchema(t);
+  type ProductForm = z.infer<typeof productSchema>;
   const queryClient = useQueryClient();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [specifications, setSpecifications] = useState<Array<{ key: string; value: string }>>([]);

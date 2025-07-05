@@ -32,7 +32,10 @@ export interface IStorage {
   // Admin Users
   getAdminUser(id: number): Promise<AdminUser | undefined>;
   getAdminUserByUsername(username: string): Promise<AdminUser | undefined>;
+  getAdminUserByEmail(email: string): Promise<AdminUser | undefined>;
   createAdminUser(user: InsertAdminUser): Promise<AdminUser>;
+  updateAdminUser(id: number, user: Partial<InsertAdminUser>): Promise<AdminUser>;
+  deleteAdminUser(id: number): Promise<void>;
   validateAdminUser(username: string, password: string): Promise<AdminUser | null>;
   
   // Categories
@@ -101,6 +104,11 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
+  async getAdminUserByEmail(email: string): Promise<AdminUser | undefined> {
+    const [user] = await db.select().from(adminUsers).where(eq(adminUsers.email, email));
+    return user;
+  }
+
   async createAdminUser(user: InsertAdminUser): Promise<AdminUser> {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     const [newUser] = await db
@@ -108,6 +116,23 @@ export class DatabaseStorage implements IStorage {
       .values({ ...user, password: hashedPassword })
       .returning();
     return newUser;
+  }
+
+  async updateAdminUser(id: number, user: Partial<InsertAdminUser>): Promise<AdminUser> {
+    const updateData = { ...user };
+    if (user.password) {
+      updateData.password = await bcrypt.hash(user.password, 10);
+    }
+    const [updated] = await db
+      .update(adminUsers)
+      .set({ ...updateData, updatedAt: new Date() })
+      .where(eq(adminUsers.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteAdminUser(id: number): Promise<void> {
+    await db.delete(adminUsers).where(eq(adminUsers.id, id));
   }
 
   async validateAdminUser(username: string, password: string): Promise<AdminUser | null> {
