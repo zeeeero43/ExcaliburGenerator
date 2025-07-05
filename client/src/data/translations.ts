@@ -88,7 +88,7 @@ export const translations = {
     emailAddresses: "Correos Electrónicos",
     requestQuote: "Solicitar Cotización",
     name: "Nombre",
-    phone: "Teléfono",
+    phone: "WhatsApp Número",
     email: "Email",
     systemType: "Tipo de Sistema",
     select: "Seleccionar...",
@@ -260,6 +260,9 @@ export const translations = {
       
       // Products
       products: "Productos",
+      productManagement: "Gestión de Productos",
+      currentProducts: "Productos Actuales",
+      newProduct: "Nuevo Producto",
       addProduct: "Agregar Producto",
       editProduct: "Editar Producto",
       productName: "Nombre del Producto",
@@ -515,7 +518,7 @@ export const translations = {
     emailAddresses: "E-Mail-Adressen",
     requestQuote: "Angebot anfordern",
     name: "Name",
-    phone: "Telefon",
+    phone: "WhatsApp Nummer",
     email: "E-Mail",
     systemType: "Systemtyp",
     select: "Auswählen...",
@@ -659,6 +662,124 @@ export const translations = {
     contactLocation: "Standort",
     contactLocationTitle: "Unser Standort",
     contactLocationDesc: "Hauptlager in Havanna del Este mit einfachem Zugang von ganz Kuba",
+    
+    // Admin Backend
+    admin: {
+      // Login
+      loginTitle: "Anmelden",
+      loginSubtitle: "Zugang zum Verwaltungsbereich",
+      username: "Benutzername",
+      password: "Passwort",
+      loginButton: "Anmelden",
+      loginError: "Falscher Benutzername oder Passwort",
+      
+      // Dashboard
+      dashboard: "Dashboard",
+      overview: "Übersicht",
+      totalProducts: "Gesamte Produkte",
+      totalCategories: "Gesamte Kategorien", 
+      pendingInquiries: "Ausstehende Anfragen",
+      activeProducts: "Aktive Produkte",
+      recentProducts: "Neueste Produkte",
+      recentCategories: "Neueste Kategorien",
+      recentInquiries: "Neueste Anfragen",
+      viewAll: "Alle anzeigen",
+      
+      // Products
+      products: "Produkte",
+      productManagement: "Produktverwaltung",
+      currentProducts: "Aktuelle Produkte",
+      newProduct: "Neues Produkt",
+      addProduct: "Produkt hinzufügen",
+      editProduct: "Produkt bearbeiten",
+      productName: "Produktname",
+      productDescription: "Beschreibung",
+      productSpecifications: "Spezifikationen",
+      productPrice: "Preis",
+      productStock: "Verfügbarkeit",
+      productImages: "Bilder",
+      productCategory: "Kategorie",
+      productSubcategory: "Unterkategorie",
+      selectCategory: "Kategorie auswählen",
+      selectSubcategory: "Unterkategorie auswählen",
+      inStock: "Auf Lager",
+      limitedStock: "Begrenzter Lagerbestand",
+      outOfStock: "Nicht verfügbar",
+      saveProduct: "Produkt speichern",
+      
+      // Categories
+      categories: "Kategorien",
+      addCategory: "Kategorie hinzufügen",
+      editCategory: "Kategorie bearbeiten",
+      categoryName: "Kategoriename",
+      categoryDescription: "Beschreibung",
+      categoryImage: "Bild",
+      saveCategory: "Kategorie speichern",
+      
+      // Subcategories  
+      subcategories: "Unterkategorien",
+      addSubcategory: "Unterkategorie hinzufügen",
+      editSubcategory: "Unterkategorie bearbeiten",
+      subcategoryName: "Unterkategoriename",
+      parentCategory: "Hauptkategorie",
+      saveSubcategory: "Unterkategorie speichern",
+      
+      // Inquiries
+      inquiries: "Anfragen",
+      inquiryName: "Name",
+      inquiryEmail: "E-Mail",
+      inquiryPhone: "Telefon",
+      inquirySubject: "Betreff",
+      inquiryMessage: "Nachricht",
+      inquiryStatus: "Status",
+      inquiryDate: "Datum",
+      statusNew: "Neu",
+      statusInProgress: "In Bearbeitung",
+      statusCompleted: "Abgeschlossen",
+      
+      // Images
+      images: "Bilder",
+      uploadImages: "Bilder hochladen",
+      selectImage: "Bild auswählen",
+      imageGallery: "Bildergalerie",
+      
+      // Analytics
+      analytics: "Statistiken",
+      totalViews: "Gesamte Aufrufe",
+      uniqueVisitors: "Eindeutige Besucher",
+      topPages: "Top Seiten",
+      topCountries: "Top Länder",
+      
+      // Common
+      actions: "Aktionen",
+      edit: "Bearbeiten",
+      delete: "Löschen",
+      cancel: "Abbrechen",
+      save: "Speichern",
+      back: "Zurück",
+      backToDashboard: "Zurück zum Dashboard",
+      search: "Suchen",
+      filter: "Filtern",
+      all: "Alle",
+      yes: "Ja",
+      no: "Nein",
+      loading: "Lade...",
+      success: "Erfolg",
+      error: "Fehler",
+      confirmation: "Bestätigung",
+      deleteConfirmation: "Sind Sie sicher, dass Sie dieses Element löschen möchten?",
+      
+      // Messages
+      productSaved: "Produkt erfolgreich gespeichert",
+      productDeleted: "Produkt erfolgreich gelöscht",
+      categorySaved: "Kategorie erfolgreich gespeichert",
+      categoryDeleted: "Kategorie erfolgreich gelöscht",
+      subcategorySaved: "Unterkategorie erfolgreich gespeichert",
+      subcategoryDeleted: "Unterkategorie erfolgreich gelöscht",
+      inquiryUpdated: "Anfrage erfolgreich aktualisiert",
+      imageSaved: "Bild erfolgreich gespeichert",
+      imageDeleted: "Bild erfolgreich gelöscht",
+    },
     
     // Legal page
     legal: {
@@ -823,7 +944,7 @@ export const translations = {
     emailAddresses: "Email Addresses",
     requestQuote: "Request Quote",
     name: "Name",
-    phone: "Phone",
+    phone: "WhatsApp Number",
     email: "Email",
     systemType: "System Type",
     select: "Select...",
@@ -949,6 +1070,124 @@ export const translations = {
     
     // About
     slogan: "We illuminate Cuba with solar energy",
+    
+    // Admin Backend
+    admin: {
+      // Login
+      loginTitle: "Login",
+      loginSubtitle: "Access the administration panel",
+      username: "Username",
+      password: "Password",
+      loginButton: "Login",
+      loginError: "Incorrect username or password",
+      
+      // Dashboard
+      dashboard: "Dashboard",
+      overview: "Overview",
+      totalProducts: "Total Products",
+      totalCategories: "Total Categories", 
+      pendingInquiries: "Pending Inquiries",
+      activeProducts: "Active Products",
+      recentProducts: "Recent Products",
+      recentCategories: "Recent Categories",
+      recentInquiries: "Recent Inquiries",
+      viewAll: "View All",
+      
+      // Products
+      products: "Products",
+      productManagement: "Product Management",
+      currentProducts: "Current Products",
+      newProduct: "New Product",
+      addProduct: "Add Product",
+      editProduct: "Edit Product",
+      productName: "Product Name",
+      productDescription: "Description",
+      productSpecifications: "Specifications",
+      productPrice: "Price",
+      productStock: "Availability",
+      productImages: "Images",
+      productCategory: "Category",
+      productSubcategory: "Subcategory",
+      selectCategory: "Select category",
+      selectSubcategory: "Select subcategory",
+      inStock: "In Stock",
+      limitedStock: "Limited Stock",
+      outOfStock: "Out of Stock",
+      saveProduct: "Save Product",
+      
+      // Categories
+      categories: "Categories",
+      addCategory: "Add Category",
+      editCategory: "Edit Category",
+      categoryName: "Category Name",
+      categoryDescription: "Description",
+      categoryImage: "Image",
+      saveCategory: "Save Category",
+      
+      // Subcategories  
+      subcategories: "Subcategories",
+      addSubcategory: "Add Subcategory",
+      editSubcategory: "Edit Subcategory",
+      subcategoryName: "Subcategory Name",
+      parentCategory: "Parent Category",
+      saveSubcategory: "Save Subcategory",
+      
+      // Inquiries
+      inquiries: "Inquiries",
+      inquiryName: "Name",
+      inquiryEmail: "Email",
+      inquiryPhone: "Phone",
+      inquirySubject: "Subject",
+      inquiryMessage: "Message",
+      inquiryStatus: "Status",
+      inquiryDate: "Date",
+      statusNew: "New",
+      statusInProgress: "In Progress",
+      statusCompleted: "Completed",
+      
+      // Images
+      images: "Images",
+      uploadImages: "Upload Images",
+      selectImage: "Select Image",
+      imageGallery: "Image Gallery",
+      
+      // Analytics
+      analytics: "Analytics",
+      totalViews: "Total Views",
+      uniqueVisitors: "Unique Visitors",
+      topPages: "Top Pages",
+      topCountries: "Top Countries",
+      
+      // Common
+      actions: "Actions",
+      edit: "Edit",
+      delete: "Delete",
+      cancel: "Cancel",
+      save: "Save",
+      back: "Back",
+      backToDashboard: "Back to Dashboard",
+      search: "Search",
+      filter: "Filter",
+      all: "All",
+      yes: "Yes",
+      no: "No",
+      loading: "Loading...",
+      success: "Success",
+      error: "Error",
+      confirmation: "Confirmation",
+      deleteConfirmation: "Are you sure you want to delete this item?",
+      
+      // Messages
+      productSaved: "Product saved successfully",
+      productDeleted: "Product deleted successfully",
+      categorySaved: "Category saved successfully",
+      categoryDeleted: "Category deleted successfully",
+      subcategorySaved: "Subcategory saved successfully",
+      subcategoryDeleted: "Subcategory deleted successfully",
+      inquiryUpdated: "Inquiry updated successfully",
+      imageSaved: "Image saved successfully",
+      imageDeleted: "Image deleted successfully",
+    },
     
     // Legal page
     legal: {

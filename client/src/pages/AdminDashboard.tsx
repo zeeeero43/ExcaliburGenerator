@@ -9,6 +9,7 @@ import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useLanguage } from '@/hooks/useLanguage';
 import type { Category, Product, Inquiry, AdminUser } from '@shared/schema';
 
 // Check if user is authenticated
@@ -35,131 +36,9 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [adminLanguage, setAdminLanguage] = useState(() => 
-    localStorage.getItem('admin-language') || 'de'
-  );
+  const { t, switchLanguage } = useLanguage();
 
-  const handleLanguageChange = (lang: string) => {
-    setAdminLanguage(lang);
-    localStorage.setItem('admin-language', lang);
-  };
 
-  const t = (key: string): string => {
-    const translations: Record<string, Record<string, string>> = {
-      de: {
-        dashboard: 'Excalibur Cuba Admin',
-        welcome: 'Willkommen',
-        analytics: 'Analytics',
-        websiteImages: 'Website-Bilder',
-        imageManager: 'Bildverwaltung',
-        viewWebsite: 'Website ansehen',
-        logout: 'Abmelden',
-        categories: 'Kategorien',
-        activeCategories: 'Aktive Kategorien',
-        products: 'Produkte',
-        activeProducts: 'Aktive Produkte',
-        inquiries: 'Anfragen',
-        newInquiries: 'Neue Anfragen',
-        settings: 'Einstellungen',
-        systemSettings: 'System-Einstellungen',
-        recentProducts: 'Aktuelle Produkte',
-        recentCategories: 'Aktuelle Kategorien',
-        recentInquiries: 'Aktuelle Anfragen',
-        addProduct: 'Produkt hinzufügen',
-        addCategory: 'Kategorie hinzufügen',
-        edit: 'Bearbeiten',
-        delete: 'Löschen',
-        view: 'Ansehen',
-        name: 'Name',
-        status: 'Status',
-        email: 'E-Mail',
-        message: 'Nachricht',
-        price: 'Preis',
-        category: 'Kategorie',
-        active: 'Aktiv',
-        inactive: 'Inaktiv',
-        new: 'Neu',
-        replied: 'Beantwortet',
-        total: 'insgesamt',
-        online: 'Online',
-        systemRunning: 'System läuft',
-        manageProducts: 'Produkte verwalten',
-        manageCategories: 'Kategorien verwalten',
-        customerInquiries: 'Kundenanfragen',
-        productManagement: 'Produktverwaltung',
-        productManagementDesc: 'Verwalten Sie Ihre Produkte einfach und schnell',
-        categoryManagement: 'Kategorienverwaltung',
-        categoryManagementDesc: 'Organisieren Sie Ihre Produktkategorien',
-        inquiryManagement: 'Anfragenverwaltung',
-        inquiryManagementDesc: 'Bearbeiten Sie Kundenanfragen',
-        noProductsAvailable: 'Keine Produkte verfügbar',
-        noCategoriesAvailable: 'Keine Kategorien verfügbar',
-        noInquiriesAvailable: 'Keine Anfragen verfügbar',
-        image: 'Bild',
-        stockStatus: 'Lagerbestand',
-        availability: 'Verfügbarkeit',
-        createdAt: 'Erstellt am',
-        actions: 'Aktionen'
-      },
-      es: {
-        dashboard: 'Admin Excalibur Cuba',
-        welcome: 'Bienvenido',
-        analytics: 'Análisis',
-        websiteImages: 'Imágenes del Sitio',
-        imageManager: 'Gestión de Imágenes',
-        viewWebsite: 'Ver Sitio Web',
-        logout: 'Cerrar Sesión',
-        categories: 'Categorías',
-        activeCategories: 'Categorías Activas',
-        products: 'Productos',
-        activeProducts: 'Productos Activos',
-        inquiries: 'Consultas',
-        newInquiries: 'Consultas Nuevas',
-        settings: 'Configuración',
-        systemSettings: 'Configuración del Sistema',
-        recentProducts: 'Productos Recientes',
-        recentCategories: 'Categorías Recientes',
-        recentInquiries: 'Consultas Recientes',
-        addProduct: 'Agregar Producto',
-        addCategory: 'Agregar Categoría',
-        edit: 'Editar',
-        delete: 'Eliminar',
-        view: 'Ver',
-        name: 'Nombre',
-        status: 'Estado',
-        email: 'Correo',
-        message: 'Mensaje',
-        price: 'Precio',
-        category: 'Categoría',
-        active: 'Activo',
-        inactive: 'Inactivo',
-        new: 'Nuevo',
-        replied: 'Respondido',
-        total: 'total',
-        online: 'En Línea',
-        systemRunning: 'Sistema funcionando',
-        manageProducts: 'Gestionar Productos',
-        manageCategories: 'Gestionar Categorías',
-        customerInquiries: 'Consultas de Clientes',
-        productManagement: 'Gestión de Productos',
-        productManagementDesc: 'Gestione sus productos de forma fácil y rápida',
-        categoryManagement: 'Gestión de Categorías',
-        categoryManagementDesc: 'Organice sus categorías de productos',
-        inquiryManagement: 'Gestión de Consultas',
-        inquiryManagementDesc: 'Procese consultas de clientes',
-        noProductsAvailable: 'No hay productos disponibles',
-        noCategoriesAvailable: 'No hay categorías disponibles',
-        noInquiriesAvailable: 'No hay consultas disponibles',
-        image: 'Imagen',
-        stockStatus: 'Estado de Stock',
-        availability: 'Disponibilidad',
-        createdAt: 'Creado el',
-        actions: 'Acciones'
-      }
-    };
-    
-    return translations[adminLanguage]?.[key] || translations.de[key] || key;
-  };
 
   // Fetch data
   const { data: categories = [] } = useQuery<Category[]>({
