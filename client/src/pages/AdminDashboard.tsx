@@ -156,6 +156,34 @@ export default function AdminDashboard() {
     },
   });
 
+  // Delete inquiry mutation
+  const deleteInquiryMutation = useMutation({
+    mutationFn: async (inquiryId: number) => {
+      const response = await fetch(`/api/admin/inquiries/${inquiryId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete inquiry');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/inquiries'] });
+      toast({
+        title: "Anfrage gelöscht",
+        description: "Die Anfrage wurde erfolgreich entfernt.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fehler beim Löschen",
+        description: "Die Anfrage konnte nicht gelöscht werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -432,7 +460,13 @@ export default function AdminDashboard() {
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
                           <h3 className="font-medium">{inquiry.name}</h3>
-                          <Badge variant={inquiry.status === 'new' ? 'default' : 'secondary'}>
+                          <Badge 
+                            className={`${
+                              inquiry.status === 'new' 
+                                ? 'bg-orange-500 text-white hover:bg-orange-600' 
+                                : 'bg-green-500 text-white hover:bg-green-600'
+                            }`}
+                          >
                             {inquiry.status === 'new' ? 'Neu' : 'Bearbeitet'}
                           </Badge>
                         </div>
@@ -463,6 +497,18 @@ export default function AdminDashboard() {
                           }}
                         >
                           E-Mail senden
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            if (confirm('Sind Sie sicher, dass Sie diese Anfrage löschen möchten?')) {
+                              deleteInquiryMutation.mutate(inquiry.id);
+                            }
+                          }}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                          Löschen
                         </Button>
                       </div>
                     </div>

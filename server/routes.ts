@@ -443,6 +443,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.delete("/api/admin/inquiries/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteInquiry(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting inquiry:", error);
+      res.status(500).json({ error: "Failed to delete inquiry" });
+    }
+  });
+
   // Geolocation endpoint for language detection
   app.get("/api/geolocation", async (req, res) => {
     // Simple geolocation simulation

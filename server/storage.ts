@@ -22,7 +22,7 @@ import {
   type InsertUploadedImage,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, or, ilike } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 
 export interface IStorage {
@@ -62,6 +62,7 @@ export interface IStorage {
   getInquiryById(id: number): Promise<Inquiry | undefined>;
   createInquiry(inquiry: InsertInquiry): Promise<Inquiry>;
   updateInquiry(id: number, inquiry: Partial<InsertInquiry>): Promise<Inquiry>;
+  deleteInquiry(id: number): Promise<void>;
   
   // Site Settings
   getSiteSettings(): Promise<SiteSetting[]>;
@@ -277,6 +278,10 @@ export class DatabaseStorage implements IStorage {
       .where(eq(inquiries.id, id))
       .returning();
     return updated;
+  }
+
+  async deleteInquiry(id: number): Promise<void> {
+    await db.delete(inquiries).where(eq(inquiries.id, id));
   }
 
   // Site Settings
