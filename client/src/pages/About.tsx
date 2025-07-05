@@ -1,9 +1,23 @@
 import { Shield, Users, Award, Globe } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { Card, CardContent } from '../components/ui/card';
+import type { SiteSetting } from '@shared/schema';
 
 export default function About() {
   const { t } = useLanguage();
+  
+  // Lade Site-Settings für dynamische Bilder
+  const { data: siteSettings = [] } = useQuery<SiteSetting[]>({
+    queryKey: ['/api/site-settings'],
+    retry: false,
+  });
+
+  // Helfer-Funktion um Bild-URL aus Settings zu holen
+  const getImageUrl = (key: string, fallback: string) => {
+    const setting = siteSettings.find(s => s.key === key);
+    return setting?.value || fallback;
+  };
 
   const stats = [
     { number: '35', label: t('yearsExperience') },
@@ -79,7 +93,7 @@ export default function About() {
 
           <div className="space-y-6">
             <img
-              src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500"
+              src={getImageUrl('about_team_image', 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500')}
               alt="Solar installation team"
               className="rounded-xl shadow-lg w-full"
               loading="lazy"

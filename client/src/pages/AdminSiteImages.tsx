@@ -6,10 +6,11 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { useToast } from '../hooks/use-toast';
-import { ArrowLeft, Image, Save, Upload, Check, ExternalLink, Plus } from 'lucide-react';
+import { ArrowLeft, Image, Save, Upload, Check, ExternalLink, Plus, FileImage } from 'lucide-react';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
 import type { UploadedImage, SiteSetting } from '@shared/schema';
+import { apiRequest } from '../lib/queryClient';
 
 interface WebsiteImageArea {
   id: string;
@@ -19,7 +20,7 @@ interface WebsiteImageArea {
   settingKey: string;
 }
 
-// Website-Bereiche die Bilder benötigen (nur tatsächlich verwendete Hero-Bilder)
+// Website-Bereiche die Bilder benötigen
 const websiteImageAreas: WebsiteImageArea[] = [
   {
     id: 'hero-1',
@@ -41,6 +42,13 @@ const websiteImageAreas: WebsiteImageArea[] = [
     description: 'Drittes Bild im Hero-Slider',
     location: 'Startseite - Hero Slider',
     settingKey: 'hero_image_3'
+  },
+  {
+    id: 'about-team',
+    name: 'Über Uns Team',
+    description: 'Team-Bild auf der Über Uns Seite',
+    location: 'Über Uns Seite',
+    settingKey: 'about_team_image'
   }
 ];
 
@@ -51,7 +59,7 @@ export default function AdminSiteImages() {
   const [selectedImageArea, setSelectedImageArea] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<UploadedImage | null>(null);
   const [customImageUrl, setCustomImageUrl] = useState<string>('');
-  const [selectedTab, setSelectedTab] = useState<'uploads' | 'url'>('uploads');
+  const [selectedTab, setSelectedTab] = useState<'uploads' | 'url' | 'upload'>('uploads');
 
   // Wenn ein Bereich ausgewählt wird, die aktuelle URL in das URL-Feld laden
   const handleAreaSelection = (areaId: string) => {
@@ -111,7 +119,9 @@ export default function AdminSiteImages() {
       setSelectedImageArea(null);
       setSelectedImage(null);
       setCustomImageUrl('');
+      // Invalidate both admin and public site-settings to ensure immediate update
       queryClient.invalidateQueries({ queryKey: ['/api/admin/site-settings'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/site-settings'] });
     },
     onError: (error: any) => {
       toast({
@@ -150,6 +160,47 @@ export default function AdminSiteImages() {
     const setting = siteSettings.find(s => s.key === settingKey);
     return setting?.value || null;
   };
+
+  // Upload-Mutation
+  const uploadMutation = useMutation({
+    mutationFn: async (files: FileList) => {
+      const formData = new FormData();
+      Array.from(files).forEach((file) => {
+        formData.append('images', file);
+      });
+      
+      const response = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error('Upload fehlgeschlagen');
+      }
+      
+      return response.json();
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Upload erfolgreich",
+        description: `${data.images.length} Bild(er) hochgeladen`,
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/uploaded-images'] });
+      
+      // Automatically select the first uploaded image
+      if (data.images && data.images.length > 0) {
+        setSelectedImage(data.images[0]);
+        setSelectedTab('uploads');
+      }
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Upload-Fehler",
+        description: error.message || "Bilder konnten nicht hochgeladen werden.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const canAssign = () => {
     if (!selectedImageArea) return false;
@@ -261,11 +312,15 @@ export default function AdminSiteImages() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Bild auswählen</h2>
           
-          <Tabs value={selectedTab} onValueChange={(value) => setSelectedTab(value as 'uploads' | 'url')} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+          <Tabs value={selectedTab} onValueChange={(value) => setSelectedTab(value as 'uploads' | 'url' | 'upload')} className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="uploads" className="flex items-center gap-2">
+                <Image className="w-4 h-4" />
+                Hochgeladen
+              </TabsTrigger>
+              <TabsTrigger value="upload" className="flex items-center gap-2">
                 <Upload className="w-4 h-4" />
-                Hochgeladene Bilder
+                Neu hochladen
               </TabsTrigger>
               <TabsTrigger value="url" className="flex items-center gap-2">
                 <ExternalLink className="w-4 h-4" />
@@ -319,6 +374,54 @@ export default function AdminSiteImages() {
                   })}
                 </div>
               )}
+            </TabsContent>
+            
+            <TabsContent value="upload" className="mt-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileImage className="w-5 h-5" />
+                    Neue Bilder hochladen
+                  </CardTitle>
+                  <CardDescription>
+                    Laden Sie neue Bilder hoch (maximal 5 Dateien, je 5MB). 
+                    Nach dem Upload können Sie das Bild sofort zuweisen.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="fileUpload">Bilder auswählen</Label>
+                      <Input
+                        id="fileUpload"
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="mt-1"
+                        onChange={(e) => {
+                          const files = e.target.files;
+                          if (files && files.length > 0) {
+                            uploadMutation.mutate(files);
+                          }
+                        }}
+                        disabled={uploadMutation.isPending}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        JPG, PNG, WebP - maximal 5MB pro Datei
+                      </p>
+                    </div>
+                    
+                    {uploadMutation.isPending && (
+                      <div className="text-center py-4">
+                        <div className="inline-flex items-center gap-2 text-blue-600">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                          Bilder werden hochgeladen...
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
             
             <TabsContent value="url" className="mt-4">
