@@ -1,0 +1,116 @@
+Preparing to unpack .../06-python3-zope.hookable_5.1.0-1build1_amd64.deb ...
+Unpacking python3-zope.hookable (5.1.0-1build1) ...
+Selecting previously unselected package python3-zope.event.
+Preparing to unpack .../07-python3-zope.event_4.4-3_all.deb ...
+Unpacking python3-zope.event (4.4-3) ...
+Selecting previously unselected package python3-zope.component.
+Preparing to unpack .../08-python3-zope.component_4.3.0-3_all.deb ...
+Unpacking python3-zope.component (4.3.0-3) ...
+Selecting previously unselected package python3-certbot.
+Preparing to unpack .../09-python3-certbot_1.21.0-1build1_all.deb ...
+Unpacking python3-certbot (1.21.0-1build1) ...
+Selecting previously unselected package certbot.
+Preparing to unpack .../10-certbot_1.21.0-1build1_all.deb ...
+Unpacking certbot (1.21.0-1build1) ...
+Selecting previously unselected package python3-certbot-nginx.
+Preparing to unpack .../11-python3-certbot-nginx_1.21.0-1_all.deb ...
+Unpacking python3-certbot-nginx (1.21.0-1) ...
+Selecting previously unselected package python3-icu.
+Preparing to unpack .../12-python3-icu_2.8.1-0ubuntu2_amd64.deb ...
+Unpacking python3-icu (2.8.1-0ubuntu2) ...
+Setting up python3-configargparse (1.5.3-1) ...
+Setting up python3-requests-toolbelt (0.9.1-1) ...
+Setting up python3-parsedatetime (2.6-2) ...
+Setting up python3-icu (2.8.1-0ubuntu2) ...
+Setting up python3-zope.event (4.4-3) ...
+Setting up python3-zope.hookable (5.1.0-1build1) ...
+Setting up python3-josepy (1.10.0-1) ...
+Setting up python3-rfc3339 (1.1-3) ...
+Setting up python3-zope.component (4.3.0-3) ...
+Setting up python3-acme (1.21.0-1ubuntu0.1) ...
+Setting up python3-certbot (1.21.0-1build1) ...
+Setting up certbot (1.21.0-1build1) ...
+Created symlink /etc/systemd/system/timers.target.wants/certbot.timer → /lib/systemd/system/certbot.timer.
+Setting up python3-certbot-nginx (1.21.0-1) ...
+Processing triggers for man-db (2.10.2-1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@srv896300:~# sudo certbot --nginx -d 31.97.77.135
+Requested name 31.97.77.135 is an IP address. The Let's Encrypt certificate authority will not issue certificates for a bare IP address.
+Ask for help or search for solutions at https://community.letsencrypt.org. See the logfile /tmp/tmpm3r477is/log or re-run Certbot with -v for more details.
+root@srv896300:~# sudo tee /etc/nginx/sites-available/excalibur-cuba > /dev/null << 'EOF'
+server {
+    listen 80;
+    server_name 31.97.77.135;
+    return 301 https://$server_name$request_uri;
+}
+server {
+    listen 443 ssl;
+    server_name 31.97.77.135;
+    ssl_certificate /etc/letsencrypt/live/31.97.77.135/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/31.97.77.135/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+EOF
+root@srv896300:~# cd /var/www/excalibur-cuba/ExcaliburGenerator
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sed -i 's/secure: false/secure: true/' server/auth.ts
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# npm run build
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.19 building for production...
+transforming (3) src/main.tsxBrowserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 2549 modules transformed.
+../dist/public/index.html                     6.80 kB │ gzip:   2.00 kB
+../dist/public/assets/index-BnNToIff.css     92.37 kB │ gzip:  14.82 kB
+../dist/public/assets/index-_NFTae5s.js   1,047.31 kB │ gzip: 295.37 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.82s
+
+  dist/index.js  51.2kb
+
+⚡ Done in 7ms
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# nginx -t && systemctl restart nginx
+nginx: [emerg] open() "/etc/letsencrypt/options-ssl-nginx.conf" failed (2: No such file or directory) in /etc/nginx/sites-enabled/excalibur-cuba:11
+nginx: configuration file /etc/nginx/nginx.conf test failed
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -k -X POST https://31.97.77.135/api/admin/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"excalibur_admin","password":"admin123"}' \
+  -c https_cookies.txt
+curl: (7) Failed to connect to 31.97.77.135 port 443 after 0 ms: Connection refused
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -k -X POST https://31.97.77.135/admin/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"excalibur_admin","password":"admin123"}' \
+  -c https_cookies.txt
+curl: (7) Failed to connect to 31.97.77.135 port 443 after 0 ms: Connection refused
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
