@@ -81,7 +81,7 @@ export default function AdminSiteImages() {
 
   // Hochgeladene Bilder aus der Datenbank laden
   const { data: uploadedImages = [], isLoading: imagesLoading } = useQuery<UploadedImage[]>({
-    queryKey: ['/api/admin/uploaded-images'],
+    queryKey: ['/api/admin/images'],
     retry: false,
   });
 
@@ -185,7 +185,7 @@ export default function AdminSiteImages() {
         title: "Upload erfolgreich",
         description: `${data.length} Bild(er) hochgeladen`,
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/uploaded-images'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/images'] });
       
       // Automatically select the first uploaded image
       if (data && data.length > 0) {
