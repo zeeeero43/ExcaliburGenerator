@@ -364,12 +364,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/admin/products/:id", isAuthenticated, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const productData = req.body;
       
-      const product = await storage.updateProduct(id, productData);
+      // Transform the request body to match the schema (same as create)
+      const transformedData = {
+        ...req.body,
+        name: req.body.nameEs, // Use Spanish name as main name
+        slug: req.body.slug || generateSlug(req.body.nameEs),
+        price: req.body.price ? req.body.price.toString() : null,
+        shortDescription: req.body.shortDescriptionEs,
+        description: req.body.descriptionEs,
+      };
+      
+      const product = await storage.updateProduct(id, transformedData);
       res.json(product);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating product:", error);
+      
+      if (error.name === 'ZodError') {
+        const validationErrors = error.errors.map((e: any) => {
+          const field = e.path.join('.');
+          return `${field}: ${e.message}`;
+        }).join(', ');
+        
+        return res.status(400).json({ 
+          error: "Validation error", 
+          details: validationErrors,
+          fields: error.errors.map((e: any) => e.path.join('.'))
+        });
+      }
+      
       res.status(500).json({ error: "Failed to update product" });
     }
   });
