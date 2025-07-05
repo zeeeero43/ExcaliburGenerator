@@ -74,6 +74,24 @@ export default function AdminSiteImages() {
   const [customImageUrl, setCustomImageUrl] = useState<string>('');
   const [selectedTab, setSelectedTab] = useState<'uploads' | 'url'>('uploads');
 
+  // Wenn ein Bereich ausgewählt wird, die aktuelle URL in das URL-Feld laden
+  const handleAreaSelection = (areaId: string) => {
+    setSelectedImageArea(areaId);
+    setSelectedImage(null);
+    
+    // Aktuelle URL des ausgewählten Bereichs laden
+    const area = websiteImageAreas.find(a => a.id === areaId);
+    if (area) {
+      const currentUrl = getCurrentImageForArea(area.settingKey);
+      setCustomImageUrl(currentUrl || '');
+      
+      // Wechsel zur URL-Tab wenn bereits ein Bild zugewiesen ist
+      if (currentUrl) {
+        setSelectedTab('url');
+      }
+    }
+  };
+
   // Hochgeladene Bilder aus der Datenbank laden
   const { data: uploadedImages = [], isLoading: imagesLoading } = useQuery<UploadedImage[]>({
     queryKey: ['/api/admin/uploaded-images'],
@@ -213,14 +231,21 @@ export default function AdminSiteImages() {
                 <Card 
                   key={area.id} 
                   className={`cursor-pointer transition-colors ${
-                    isSelected ? 'bg-blue-50 border-blue-500' : 'hover:bg-gray-50'
+                    isSelected ? 'bg-blue-50 border-blue-500 shadow-md' : 'hover:bg-gray-50'
                   }`}
-                  onClick={() => setSelectedImageArea(area.id)}
+                  onClick={() => handleAreaSelection(area.id)}
                 >
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg">{area.name}</CardTitle>
-                      {isSelected && <Check className="w-5 h-5 text-blue-500" />}
+                      {isSelected && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                            Wird bearbeitet
+                          </span>
+                          <Check className="w-5 h-5 text-blue-500" />
+                        </div>
+                      )}
                     </div>
                     <CardDescription>{area.description}</CardDescription>
                   </CardHeader>
