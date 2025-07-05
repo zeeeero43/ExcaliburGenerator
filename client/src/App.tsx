@@ -17,6 +17,7 @@ import AdminProductForm from "./pages/AdminProductForm";
 import AdminCategoryForm from "./pages/AdminCategoryForm";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminSiteImages from "./pages/AdminSiteImages";
+import AdminImageManager from "./pages/AdminImageManager";
 import Legal from "./pages/Legal";
 import NotFound from "./pages/not-found";
 
@@ -64,6 +65,7 @@ function Router() {
       </Route>
       <Route path="/admin/analytics" component={AdminAnalytics} />
       <Route path="/admin/site-images" component={AdminSiteImages} />
+      <Route path="/admin/images" component={AdminImageManager} />
       
       {/* Public Routes - With Layout */}
       <Route path="/">

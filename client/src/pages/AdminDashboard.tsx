@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
-import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages } from 'lucide-react';
+import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Category, Product, Inquiry, AdminUser } from '@shared/schema';
 
@@ -51,6 +51,7 @@ export default function AdminDashboard() {
         welcome: 'Willkommen',
         analytics: 'Analytics',
         websiteImages: 'Website-Bilder',
+        imageManager: 'Bildverwaltung',
         viewWebsite: 'Website ansehen',
         logout: 'Abmelden',
         categories: 'Kategorien',
@@ -105,6 +106,7 @@ export default function AdminDashboard() {
         welcome: 'Bienvenido',
         analytics: 'Análisis',
         websiteImages: 'Imágenes del Sitio',
+        imageManager: 'Gestión de Imágenes',
         viewWebsite: 'Ver Sitio Web',
         logout: 'Cerrar Sesión',
         categories: 'Categorías',
@@ -355,6 +357,13 @@ export default function AdminDashboard() {
               >
                 <Image className="w-4 h-4 mr-2" />
                 {t('websiteImages')}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setLocation('/admin/images')}
+              >
+                <FileImage className="w-4 h-4 mr-2" />
+                {t('imageManager')}
               </Button>
               <Button
                 variant="outline"
