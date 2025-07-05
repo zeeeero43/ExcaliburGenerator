@@ -161,6 +161,25 @@ cat .env
 npm install
 ```
 
+### Projekt für Production bauen
+```bash
+npm run build
+```
+
+### Build-Ergebnis prüfen
+```bash
+ls -la dist/
+ls -la dist/public/
+```
+
+### KRITISCHER WORKAROUND: Pfad-Problem lösen
+```bash
+# Das Projekt hat einen Bug - Server sucht nach "public/" aber Client ist in "dist/public/"
+# Workaround: Symbolischen Link erstellen
+ln -sf dist/public public
+ls -la public/
+```
+
 ### Datenbank-Schema erstellen
 ```bash
 npm run db:push
