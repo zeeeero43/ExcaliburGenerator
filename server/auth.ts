@@ -1,5 +1,6 @@
 import express from "express";
 import session from "express-session";
+import connectPg from "connect-pg-simple";
 import { storage } from "./storage";
 import type { AdminUser } from "@shared/schema";
 
@@ -11,15 +12,24 @@ declare module "express-session" {
 }
 
 export function setupSession(app: express.Application) {
+  const pgSession = connectPg(session);
+  
   app.use(
     session({
+      store: new pgSession({
+        conString: process.env.DATABASE_URL,
+        tableName: 'sessions',
+        createTableIfMissing: false,
+      }),
       secret: process.env.SESSION_SECRET || "your-secret-key-change-in-production",
       resave: false,
       saveUninitialized: false,
+      name: 'excalibur.sid',
       cookie: {
-        secure: false, // set to true only for HTTPS
+        secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        sameSite: 'lax',
       },
     })
   );
