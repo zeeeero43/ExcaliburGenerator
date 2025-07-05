@@ -1,0 +1,244 @@
+
+  System load:  0.04              Processes:             117
+  Usage of /:   3.6% of 96.73GB   Users logged in:       0
+  Memory usage: 5%                IPv4 address for eth0: 31.97.77.135
+  Swap usage:   0%                IPv6 address for eth0: 2a02:4780:41:945b::1
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+1 additional security update can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+New release '24.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+Last login: Sat Jul  5 23:37:39 2025 from 178.202.191.72
+root@srv896300:~# cd /var/www/excalibur-cuba/ExcaliburGenerator
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# grep -r "admin/dashboard" client/src/
+client/src/pages/AdminAnalytics.tsx:          <Link href="/admin/dashboard">
+client/src/pages/AdminImageManager.tsx:          <Link to="/admin/dashboard">
+client/src/pages/AdminSiteImages.tsx:        <Link href="/admin/dashboard">
+client/src/pages/AdminLogin.tsx:      setLocation('/admin/dashboard');
+client/src/App.tsx:      <Route path="/admin/dashboard" component={AdminDashboard} />
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# grep -r "MemoryStore" server/
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sudo -u postgres psql excalibur_cuba << 'EOF'
+CREATE TABLE IF NOT EXISTS sessions (
+  sid VARCHAR PRIMARY KEY,
+  sess JSON NOT NULL,
+  expire TIMESTAMP(6) NOT NULL
+);
+CREATE INDEX IF NOT EXISTS IDX_session_expire ON sessions (expire);
+EOF
+CREATE TABLE
+CREATE INDEX
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo 'SESSION_SECRET=excalibur-cuba-secret-2025-secure-key-production' >> .env
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sleep 3
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -c cookies.txt -k -X POST https://31.97.77.135/api/admin/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"excalibur_admin","password":"admin123"}'
+curl: (7) Failed to connect to 31.97.77.135 port 443 after 0 ms: Connection refused
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -b cookies.txt -k https://31.97.77.135/admin/dashboard
+curl: (7) Failed to connect to 31.97.77.135 port 443 after 0 ms: Connection refused
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo "🌐 Jetzt Browser-Test: https://31.97.77.135/admin/login"
+🌐 Jetzt Browser-Test: https://31.97.77.135/admin/login
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl status excalibur-cuba --no-pager
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2025-07-05 23:41:13 UTC; 1min 15s ago
+   Main PID: 6356 (npm run start)
+      Tasks: 23 (limit: 9477)
+     Memory: 51.5M
+        CPU: 971ms
+     CGroup: /system.slice/excalibur-cuba.service
+             ├─6356 "npm run start" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
+             ├─6367 sh -c "NODE_ENV=production node dist/index.js"
+             └─6368 node dist/index.js
+
+Jul 05 23:41:14 srv896300 npm[6368]: 🌱 Starting database seeding...
+Jul 05 23:41:14 srv896300 npm[6368]: ✅ Secure admin user already exists
+Jul 05 23:41:14 srv896300 npm[6368]: 🎉 Database seeding completed successfully!
+Jul 05 23:41:14 srv896300 npm[6368]: 11:41:14 PM [express] serving on port 5000
+Jul 05 23:41:25 srv896300 npm[6368]: 11:41:25 PM [express] GET /api/admin/user 401 in 2ms :: {"message":"Unauthorized"}
+Jul 05 23:41:26 srv896300 npm[6368]: 11:41:26 PM [express] GET /api/admin/user 401 in 1ms :: {"message":"Unauthorized"}
+Jul 05 23:41:28 srv896300 npm[6368]: 11:41:28 PM [express] GET /api/products/featured 200 in 4ms :: []
+Jul 05 23:41:28 srv896300 npm[6368]: 11:41:28 PM [express] GET /api/site-settings 200 in 4ms :: []
+Jul 05 23:41:28 srv896300 npm[6368]: 11:41:28 PM [express] GET /api/categories 200 in 2ms :: []
+Jul 05 23:41:29 srv896300 npm[6368]: 11:41:29 PM [express] GET /api/products 200 in 3ms :: []
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl status nginx --no-pager
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2025-07-05 23:38:56 UTC; 3min 37s ago
+       Docs: man:nginx(8)
+    Process: 6259 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 6260 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+   Main PID: 6261 (nginx)
+      Tasks: 3 (limit: 9477)
+     Memory: 3.4M
+        CPU: 21ms
+     CGroup: /system.slice/nginx.service
+             ├─6261 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+             ├─6262 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "…
+             └─6263 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "…
+
+Jul 05 23:38:56 srv896300 systemd[1]: Starting A high performance web server and a reverse proxy server...
+Jul 05 23:38:56 srv896300 systemd[1]: Started A high performance web server and a reverse proxy server.
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# ss -tulpn | grep -E ':80|:443|:5000'
+tcp   LISTEN 0      511          0.0.0.0:80        0.0.0.0:*    users:(("nginx",pid=6263,fd=6),("nginx",pid=6262,fd=6),("nginx",pid=6261,fd=6))
+tcp   LISTEN 0      511          0.0.0.0:5000      0.0.0.0:*    users:(("node",pid=6368,fd=18))                          
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl http://localhost:5000/
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Excalibur Cuba - Paneles Solares y Generadores | Solar Panels & Generators</title>
+    <meta name="description" content="Excalibur Power Cuba - Importador profesional de componentes solares y generadores en Cuba. Sistemas solares completos 1KW-20KW, paneles monocristalinos 300W-550W, inversores híbridos, baterías LiFePO4 y generadores silenciosos 2-10KVA. Mejor calidad al mejor precio con garantía internacional.">
+    <meta name="keywords" content="paneles solares Cuba, generadores Cuba, energia solar, componentes solares, inversores hibridos, baterias litio, sistemas solares completos, Excalibur Power, solar Cuba, generadores silenciosos">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Excalibur Power Cuba">
+    <meta name="revisit-after" content="7 days">
+    <meta name="geo.region" content="CU">
+    <meta name="geo.placename" content="Cuba">
+    <meta name="geo.position" content="21.521757;-77.781167">
+    <meta name="ICBM" content="21.521757, -77.781167">
+    <link rel="canonical" href="https://excalibur-cuba.com/">
+    <meta name="rating" content="general">
+    <meta name="distribution" content="global">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://excalibur-cuba.com/">
+    <meta property="og:title" content="Excalibur Cuba - Paneles Solares y Generadores | Sistemas Solares Completos">
+    <meta property="og:description" content="Importador profesional de componentes solares y generadores en Cuba. Sistemas solares completos 1KW-20KW, paneles monocristalinos, inversores híbridos, baterías LiFePO4. Mejor calidad al mejor precio con garantía internacional.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=630">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Excalibur Power Cuba">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:locale:alternate" content="de_DE">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://excalibur-cuba.com/">
+    <meta property="twitter:title" content="Excalibur Cuba - Paneles Solares y Generadores | Sistemas Solares Completos">
+    <meta property="twitter:description" content="Importador profesional de componentes solares y generadores en Cuba. Sistemas solares completos 1KW-20KW, paneles monocristalinos, inversores híbridos, baterías LiFePO4.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=630">
+    <meta name="twitter:image:alt" content="Instalación de paneles solares - Excalibur Power Cuba">
+    <meta name="twitter:site" content="@ExcaliburCuba">
+    <meta name="twitter:creator" content="@ExcaliburCuba">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3e%3ccircle cx='16' cy='16' r='14' fill='%23f59e0b'/%3e%3cpath d='M12 8h8v3h-8z' fill='%23fff'/%3e%3cpath d='M10 12h12v2h-12z' fill='%23fff'/%3e%3cpath d='M8 16h16v2h-16z' fill='%23fff'/%3e%3cpath d='M10 20h12v2h-12z' fill='%23fff'/%3e%3cpath d='M12 24h8v1h-8z' fill='%23fff'/%3e%3c/svg%3e">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Excalibur Power Cuba",
+      "url": "https://excalibur-cuba.com",
+      "logo": "https://excalibur-cuba.com/logo.png",
+      "description": "Importador profesional de componentes solares y generadores en Cuba. Sistemas solares completos, paneles monocristalinos, inversores híbridos, baterías LiFePO4 y generadores silenciosos.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "CU",
+        "addressLocality": "Havanna del Este",
+        "addressRegion": "La Habana"
+      },
+      "sameAs": [
+        "https://www.facebook.com/excalibur.power.cuba",
+        "https://wa.me/5355555555"
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+53-58-78-1416",
+          "contactType": "sales",
+          "availableLanguage": ["Spanish", "German", "English"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+49-160-323-9439",
+          "contactType": "technical support",
+          "availableLanguage": ["German", "English"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+53-5473-1490",
+          "contactType": "customer service",
+          "availableLanguage": ["Spanish"]
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Productos Solares y Generadores",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Sistemas Solares Completos",
+              "description": "Sistemas solares completos de 1KW a 20KW con garantía internacional"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Paneles Solares",
+              "description": "Paneles monocristalinos y policristalinos de 300W a 550W"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Generadores",
+              "description": "Generadores diesel y gasolina silenciosos de 2KVA a 10KVA"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+    <script type="module" crossorigin src="/assets/index-_NFTae5s.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BnNToIff.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+  </body>
+</html>
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl restart nginx
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl status nginx --no-pager
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2025-07-05 23:42:48 UTC; 2s ago
+       Docs: man:nginx(8)
+    Process: 6405 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 6406 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+   Main PID: 6407 (nginx)
+      Tasks: 3 (limit: 9477)
+     Memory: 3.3M
+        CPU: 21ms
+     CGroup: /system.slice/nginx.service
+             ├─6407 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+             ├─6408 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "…
+             └─6409 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "…
+
+Jul 05 23:42:48 srv896300 systemd[1]: Starting A high performance web server and a reverse proxy server...
+Jul 05 23:42:48 srv896300 systemd[1]: Started A high performance web server and a reverse proxy server.
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# ls -la /etc/letsencrypt/live/31.97.77.135/
+ls: cannot access '/etc/letsencrypt/live/31.97.77.135/': No such file or directory
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
