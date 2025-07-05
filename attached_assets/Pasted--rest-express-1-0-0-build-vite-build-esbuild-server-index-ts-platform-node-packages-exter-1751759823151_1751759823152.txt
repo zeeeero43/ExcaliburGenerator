@@ -1,0 +1,187 @@
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.19 building for production...
+transforming (4) src/App.tsxBrowserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 2549 modules transformed.
+../dist/public/index.html                     6.80 kB │ gzip:   2.00 kB
+../dist/public/assets/index-BnNToIff.css     92.37 kB │ gzip:  14.82 kB
+../dist/public/assets/index-_NFTae5s.js   1,047.31 kB │ gzip: 295.37 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.87s
+
+  dist/index.js  51.5kb
+
+⚡ Done in 7ms
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl stop excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sleep 2
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl start excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sleep 5
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo "=== LOGIN TEST ==="
+=== LOGIN TEST ===
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -k -X POST https://31.97.77.135/api/admin/login \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: Mozilla/5.0" \
+  -d '{"username":"excalibur_admin","password":"admin123"}' \
+  -c final_cookies.txt -v
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 31.97.77.135:443...
+* Connected to 31.97.77.135 (31.97.77.135) port 443 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* TLSv1.0 (OUT), TLS header, Certificate Status (22):
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.2 (IN), TLS header, Finished (20):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+* TLSv1.2 (OUT), TLS header, Finished (20):
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+* ALPN, server accepted to use http/1.1
+* Server certificate:
+*  subject: C=CU; ST=Havana; L=Havana; O=Excalibur Cuba; CN=31.97.77.135
+*  start date: Jul  5 23:50:36 2025 GMT
+*  expire date: Jul  5 23:50:36 2026 GMT
+*  issuer: C=CU; ST=Havana; L=Havana; O=Excalibur Cuba; CN=31.97.77.135
+*  SSL certificate verify result: self-signed certificate (18), continuing anyway.
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+> POST /api/admin/login HTTP/1.1
+> Host: 31.97.77.135
+> Accept: */*
+> Content-Type: application/json
+> User-Agent: Mozilla/5.0
+> Content-Length: 52
+>
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+* old SSL session ID is stale, removing
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 502 Bad Gateway
+< Server: nginx/1.18.0 (Ubuntu)
+< Date: Sat, 05 Jul 2025 23:56:41 GMT
+< Content-Type: text/html
+< Content-Length: 166
+< Connection: keep-alive
+<
+<html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.18.0 (Ubuntu)</center>
+</body>
+</html>
+* Connection #0 to host 31.97.77.135 left intact
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo -e "\n=== SESSION DEBUG ==="
+curl -k -b final_cookies.txt https://31.97.77.135/api/debug/session
+
+=== SESSION DEBUG ===
+<html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.18.0 (Ubuntu)</center>
+</body>
+</html>
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo -e "\n=== ADMIN USER TEST ==="
+curl -k -b final_cookies.txt https://31.97.77.135/api/admin/user -v
+
+=== ADMIN USER TEST ===
+*   Trying 31.97.77.135:443...
+* Connected to 31.97.77.135 (31.97.77.135) port 443 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* TLSv1.0 (OUT), TLS header, Certificate Status (22):
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.2 (IN), TLS header, Finished (20):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+* TLSv1.2 (OUT), TLS header, Finished (20):
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+* ALPN, server accepted to use http/1.1
+* Server certificate:
+*  subject: C=CU; ST=Havana; L=Havana; O=Excalibur Cuba; CN=31.97.77.135
+*  start date: Jul  5 23:50:36 2025 GMT
+*  expire date: Jul  5 23:50:36 2026 GMT
+*  issuer: C=CU; ST=Havana; L=Havana; O=Excalibur Cuba; CN=31.97.77.135
+*  SSL certificate verify result: self-signed certificate (18), continuing anyway.
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+> GET /api/admin/user HTTP/1.1
+> Host: 31.97.77.135
+> User-Agent: curl/7.81.0
+> Accept: */*
+>
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+* old SSL session ID is stale, removing
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 502 Bad Gateway
+< Server: nginx/1.18.0 (Ubuntu)
+< Date: Sat, 05 Jul 2025 23:56:49 GMT
+< Content-Type: text/html
+< Content-Length: 166
+< Connection: keep-alive
+<
+<html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.18.0 (Ubuntu)</center>
+</body>
+</html>
+* Connection #0 to host 31.97.77.135 left intact
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo -e "\n=== DASHBOARD HTML TEST ==="
+curl -k -b final_cookies.txt https://31.97.77.135/admin/dashboard \
+  -H "Accept: text/html" | head -20
+
+=== DASHBOARD HTML TEST ===
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   166  100   166    0     0  33386      0 --:--:-- --:--:-- --:--:-- 41500
+<html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.18.0 (Ubuntu)</center>
+</body>
+</html>
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo -e "\n🌐 FINAL TEST: Öffnen Sie https://31.97.77.135/admin/login"
+echo "👤 Username: excalibur_admin"
+echo "🔑 Password: admin123"
+
+🌐 FINAL TEST: Öffnen Sie https://31.97.77.135/admin/login
+👤 Username: excalibur_admin
+🔑 Password: admin123
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
