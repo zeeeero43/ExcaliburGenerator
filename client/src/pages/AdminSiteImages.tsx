@@ -169,7 +169,7 @@ export default function AdminSiteImages() {
         formData.append('images', file);
       });
       
-      const response = await fetch('/api/admin/upload', {
+      const response = await fetch('/api/admin/images/upload', {
         method: 'POST',
         body: formData,
       });
@@ -183,13 +183,13 @@ export default function AdminSiteImages() {
     onSuccess: (data) => {
       toast({
         title: "Upload erfolgreich",
-        description: `${data.images.length} Bild(er) hochgeladen`,
+        description: `${data.length} Bild(er) hochgeladen`,
       });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/uploaded-images'] });
       
       // Automatically select the first uploaded image
-      if (data.images && data.images.length > 0) {
-        setSelectedImage(data.images[0]);
+      if (data && data.length > 0) {
+        setSelectedImage(data[0]);
         setSelectedTab('uploads');
       }
     },

@@ -198,6 +198,11 @@ Changelog:
   * Created site-settings API for dynamic image URL management
   * System now allows Cuban team members to fully manage content in Spanish
   * All images on website can be replaced through admin panel without developer intervention
+  * Fixed critical JPEG upload issue - corrected endpoint URL from /api/admin/upload to /api/admin/images/upload
+  * Enhanced upload system with 3-tab interface: uploads, new upload, and URL input
+  * Fixed cache invalidation to ensure immediate image updates on website
+  * Made About page team image dynamic and admin-editable
+  * Upload system now supports direct file upload with automatic selection
 ```
 
 ## User Preferences
