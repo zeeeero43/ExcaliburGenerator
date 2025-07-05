@@ -36,9 +36,14 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { t, switchLanguage, currentLanguage } = useLanguage();
+  const { t, switchLanguage } = useLanguage();
+  const [adminLanguage, setAdminLanguage] = useState(() => 
+    localStorage.getItem('admin-language') || 'de'
+  );
 
   const handleLanguageChange = (lang: string) => {
+    setAdminLanguage(lang);
+    localStorage.setItem('admin-language', lang);
     switchLanguage(lang as 'es' | 'de' | 'en');
   };
 
@@ -215,7 +220,7 @@ export default function AdminDashboard() {
               <p className="text-sm text-gray-600">{t('welcome')}, {(user as AdminUser)?.firstName || (user as AdminUser)?.username || 'Admin'}!</p>
             </div>
             <div className="flex flex-col md:flex-row gap-3 md:items-center">
-              <Select value={currentLanguage} onValueChange={handleLanguageChange}>
+              <Select value={adminLanguage} onValueChange={handleLanguageChange}>
                 <SelectTrigger className="w-full md:w-auto min-w-[140px]">
                   <div className="flex items-center gap-2">
                     <Languages className="w-4 h-4" />
