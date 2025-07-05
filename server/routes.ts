@@ -27,7 +27,8 @@ if (!fs.existsSync(uploadsDir)) {
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB
+    fileSize: 5 * 1024 * 1024, // 5MB for faster uploads
+    files: 5, // Max 5 files per upload
   },
   fileFilter: (req, file, cb) => {
     const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
@@ -46,10 +47,10 @@ async function compressAndSaveImage(buffer: Buffer, originalName: string): Promi
   const filename = `${Date.now()}-${fileId}.jpg`; // Always save as jpg for better compression
   const filepath = path.join(uploadsDir, filename);
 
-  // Compress image with sharp
+  // Compress image with sharp - optimized for speed
   await sharp(buffer)
-    .resize(1200, 800, { fit: 'inside', withoutEnlargement: true })
-    .jpeg({ quality: 85, progressive: true })
+    .resize(800, 600, { fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: 78, progressive: true })
     .toFile(filepath);
 
   return filename;
@@ -57,23 +58,40 @@ async function compressAndSaveImage(buffer: Buffer, originalName: string): Promi
 
 // Simple IP to country mapping (in production, use a proper geolocation service)
 async function getCountryFromIP(ip: string): Promise<string | null> {
+  // In development, always return Cuba without network calls for fast loading
+  if (process.env.NODE_ENV === 'development') {
+    return 'CU';
+  }
+  
   try {
-    // For local development
+    // For local development - quick return without network calls
     if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip === 'unknown') {
       return 'CU'; // Default to Cuba for local testing
     }
     
-    // You could integrate with ipapi.co, ipinfo.io, or similar service here
-    // For now, we'll use a simple fallback
-    const response = await fetch(`http://ip-api.com/json/${ip}?fields=countryCode`);
-    if (response.ok) {
-      const data = await response.json();
-      return data.countryCode || null;
+    // Fast timeout to prevent blocking page loads
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 500); // 500ms timeout
+    
+    try {
+      const response = await fetch(`http://ip-api.com/json/${ip}?fields=countryCode`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      
+      if (response.ok) {
+        const data = await response.json();
+        return data.countryCode || 'CU';
+      }
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      return 'CU'; // Default fallback
     }
   } catch (error) {
-    console.error('Geolocation error:', error);
+    // Silent fail to avoid console spam
+    return 'CU';
   }
-  return null;
+  return 'CU';
 }
 
 // Helper function to generate slug from text
@@ -574,33 +592,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Analytics tracking middleware for all requests
-  app.use(async (req, res, next) => {
-    try {
+  // Analytics tracking middleware - only enabled in production for better dev performance
+  if (process.env.NODE_ENV === 'production') {
+    app.use((req, res, next) => {
       // Only track GET requests and ignore admin/api routes
       if (req.method === 'GET' && !req.path.startsWith('/api/') && !req.path.startsWith('/admin/')) {
-        const ipAddress = req.ip || req.connection.remoteAddress || 'unknown';
-        const userAgent = req.get('User-Agent') || '';
-        
-        // Simple country detection from IP (this would need a real geolocation service)
-        const country = await getCountryFromIP(ipAddress);
-        
-        await storage.createPageView({
-          ipAddress,
-          userAgent,
-          country,
-          city: null,
-          page: req.path,
-          referrer: req.get('Referer') || null,
-          language: req.get('Accept-Language')?.split(',')[0] || null,
+        // Run analytics in background without blocking the request
+        setImmediate(async () => {
+          try {
+            const ipAddress = req.ip || req.connection.remoteAddress || 'unknown';
+            const userAgent = req.get('User-Agent') || '';
+            
+            // Quick country detection with fallback
+            const country = await getCountryFromIP(ipAddress);
+            
+            await storage.createPageView({
+              ipAddress,
+              userAgent,
+              country,
+              city: null,
+              page: req.path,
+              referrer: req.get('Referer') || null,
+              language: req.get('Accept-Language')?.split(',')[0] || null,
+            });
+          } catch (error) {
+            // Silent fail for analytics to avoid console spam
+          }
         });
       }
-    } catch (error) {
-      // Don't let analytics errors break the app
-      console.error('Analytics tracking error:', error);
-    }
-    next();
-  });
+      next();
+    });
+  }
 
   // Analytics API routes
   app.get("/api/admin/analytics/:period", isAuthenticated, async (req, res) => {

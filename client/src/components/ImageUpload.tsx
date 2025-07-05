@@ -124,7 +124,11 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      uploadMutation.mutate(e.target.files);
+      // Limit to 5 files for better performance
+      const files = Array.from(e.target.files).slice(0, 5);
+      const fileList = new DataTransfer();
+      files.forEach(file => fileList.items.add(file));
+      uploadMutation.mutate(fileList.files);
     }
   };
 
