@@ -99,20 +99,14 @@ export default function ProductDetail() {
           {/* Product Image */}
           <div className="space-y-4">
             <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
-              {product.mainImage ? (
-                <img
-                  src={`http://localhost:5000${product.mainImage}`}
-                  alt={productName}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = '/api/placeholder/500/500';
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                  <span className="text-gray-500">No Image</span>
-                </div>
-              )}
+              <img
+                src={product.mainImage || '/api/placeholder/500/500'}
+                alt={productName}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = '/api/placeholder/500/500';
+                }}
+              />
             </div>
             
             {/* Trust Badges */}
@@ -141,8 +135,14 @@ export default function ProductDetail() {
               
               {/* Stock Status */}
               <div className="flex items-center gap-2 mb-4">
-                <Check className="w-5 h-5 text-green-600" />
-                <span className="text-green-600 font-semibold">
+                <Check className={`w-5 h-5 ${
+                  product.stockStatus === 'in_stock' ? 'text-green-600' : 
+                  product.stockStatus === 'limited' ? 'text-yellow-600' : 'text-red-600'
+                }`} />
+                <span className={`font-semibold ${
+                  product.stockStatus === 'in_stock' ? 'text-green-600' : 
+                  product.stockStatus === 'limited' ? 'text-yellow-600' : 'text-red-600'
+                }`}>
                   {product.stockStatus === 'in_stock' ? t('inStock') as string : 
                    product.stockStatus === 'limited' ? t('limitedStock') as string : 
                    t('outOfStock') as string}
@@ -160,13 +160,7 @@ export default function ProductDetail() {
               )}
             </div>
 
-            {/* Product Description */}
-            {productDescription && (
-              <div>
-                <h2 className="text-xl font-semibold mb-3">{String(t('description'))}</h2>
-                <p className="text-gray-700 leading-relaxed">{productDescription}</p>
-              </div>
-            )}
+
 
             {/* Specifications */}
             {product.specifications && Object.keys(product.specifications).length > 0 && (
@@ -183,6 +177,18 @@ export default function ProductDetail() {
                       </div>
                     ))}
                   </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Detailed Product Description */}
+            {productDescription && (
+              <Card className="mb-6">
+                <CardHeader>
+                  <CardTitle className="text-lg">{t('description') as string}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 leading-relaxed">{productDescription}</p>
                 </CardContent>
               </Card>
             )}

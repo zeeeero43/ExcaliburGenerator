@@ -193,14 +193,12 @@ export default function Contact() {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <MapPin className="w-5 h-5 text-excalibur-orange" />
-                  <span>Ubicación</span>
+                  <span>{t('contactLocationTitle')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-excalibur-gray">
-                  Nuestro almacén principal se encuentra en Havanna del Este, 
-                  centralmente ubicado para servir a toda Cuba con entregas 
-                  rápidas y eficientes.
+                  {t('contactLocationDesc')}
                 </p>
               </CardContent>
             </Card>

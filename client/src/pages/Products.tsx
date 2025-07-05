@@ -208,7 +208,7 @@ export default function Products() {
                 <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
                   <div className="relative overflow-hidden rounded-t-lg">
                     <img
-                      src={product.mainImage ? `http://localhost:5000${product.mainImage}` : '/api/placeholder/500/500'}
+                      src={product.mainImage || '/api/placeholder/500/500'}
                       alt={getLocalizedText(product, 'name')}
                       className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                       onError={(e) => {

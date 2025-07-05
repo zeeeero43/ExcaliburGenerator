@@ -208,6 +208,29 @@ export const translations = {
     warehouse: "Almacén y Entrega",
     havanaLocation: "Habana del Este",
     emailLabel: "Contacto por Email:",
+    
+    // Home page boxes
+    experience: "35 años de experiencia",
+    experienceDesc: "Experiencia comprobada en el mercado energético internacional",
+    directImport: "Importación directa",
+    directImportDesc: "Contenedores mensuales desde Alemania con productos frescos",
+    homeLocation: "Ubicación estratégica",
+    homeLocationDesc: "Almacén en Havanna del Este para entregas rápidas",
+    
+    // Services
+    components: "Componentes",
+    solarSystemsDesc: "Sistemas solares completos de 1KW a 20KW con componentes de alta calidad",
+    componentsDesc: "Componentes individuales: paneles, inversores, baterías y accesorios",
+    
+    // Product page translations
+    productCount: "productos",
+    backToCategories: "Volver a categorías",
+    inThisCategory: "en esta categoría",
+    
+    // Contact page
+    contactLocation: "Ubicación",
+    contactLocationTitle: "Nuestra Ubicación",
+    contactLocationDesc: "Almacén principal en Havanna del Este con fácil acceso desde toda Cuba"
 
   },
   
@@ -420,6 +443,29 @@ export const translations = {
     warehouse: "Lager & Warenausgabe",
     havanaLocation: "Havanna del Este",
     emailLabel: "E-Mail Kontakt:",
+    
+    // Home page boxes
+    experience: "35 Jahre Erfahrung",
+    experienceDesc: "Bewährte Erfahrung im internationalen Energiemarkt",
+    directImport: "Direktimport",
+    directImportDesc: "Monatliche Container aus Deutschland mit frischen Produkten",
+    homeLocation: "Strategische Lage",
+    homeLocationDesc: "Lager in Havanna del Este für schnelle Lieferungen",
+    
+    // Services
+    components: "Komponenten",
+    solarSystemsDesc: "Komplette Solarsysteme von 1KW bis 20KW mit hochwertigen Komponenten",
+    componentsDesc: "Einzelkomponenten: Panels, Wechselrichter, Batterien und Zubehör",
+    
+    // Product page translations
+    productCount: "Produkte",
+    backToCategories: "Zurück zu Kategorien",
+    inThisCategory: "in dieser Kategorie",
+    
+    // Contact page
+    contactLocation: "Standort",
+    contactLocationTitle: "Unser Standort",
+    contactLocationDesc: "Hauptlager in Havanna del Este mit einfachem Zugang von ganz Kuba"
 
   },
   
@@ -616,5 +662,23 @@ export const translations = {
     warehouse: "Warehouse & Delivery",
     havanaLocation: "Havana del Este",
     emailLabel: "Email Contact:",
+    
+    // Home page boxes
+    experience: "35 years of experience",
+    experienceDesc: "Proven experience in the international energy market",
+    directImport: "Direct import",
+    directImportDesc: "Monthly containers from Germany with fresh products",
+    homeLocation: "Strategic location",
+    homeLocationDesc: "Warehouse in Havana del Este for fast deliveries",
+    
+    // Services
+    components: "Components",
+    solarSystemsDesc: "Complete solar systems from 1KW to 20KW with high-quality components",
+    componentsDesc: "Individual components: panels, inverters, batteries and accessories",
+    
+    // Contact page
+    contactLocation: "Location",
+    contactLocationTitle: "Our Location",
+    contactLocationDesc: "Main warehouse in Havana del Este with easy access from all of Cuba"
   }
 };

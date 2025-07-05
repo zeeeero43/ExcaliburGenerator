@@ -160,8 +160,8 @@ export default function Home() {
               
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <Users className="w-12 h-12 mx-auto mb-4 text-excalibur-blue" />
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">{t('location') as string}</h3>
-                <p className="text-gray-600">{t('locationDesc') as string}</p>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">{t('homeLocation') as string}</h3>
+                <p className="text-gray-600">{t('homeLocationDesc') as string}</p>
               </div>
             </div>
           </div>
@@ -297,11 +297,11 @@ export default function Home() {
                     {t('solarAdvantagesTitle')}
                   </h3>
                   <ul className="text-gray-700 space-y-2">
-                    <li>✓ {t('solarAdvantage1')}</li>
-                    <li>✓ {t('solarAdvantage2')}</li>
-                    <li>✓ {t('solarAdvantage3')}</li>
-                    <li>✓ {t('solarAdvantage4')}</li>
-                    <li>✓ {t('solarAdvantage5')}</li>
+                    <li>{t('solarAdvantage1')}</li>
+                    <li>{t('solarAdvantage2')}</li>
+                    <li>{t('solarAdvantage3')}</li>
+                    <li>{t('solarAdvantage4')}</li>
+                    <li>{t('solarAdvantage5')}</li>
                   </ul>
                 </div>
                 
@@ -310,11 +310,11 @@ export default function Home() {
                     {t('ourSystemsTitle')}
                   </h3>
                   <ul className="text-gray-700 space-y-2">
-                    <li>• {t('systemFeature1')}</li>
-                    <li>• {t('systemFeature2')}</li>
-                    <li>• {t('systemFeature3')}</li>
-                    <li>• {t('systemFeature4')}</li>
-                    <li>• {t('systemFeature5')}</li>
+                    <li>{t('systemFeature1')}</li>
+                    <li>{t('systemFeature2')}</li>
+                    <li>{t('systemFeature3')}</li>
+                    <li>{t('systemFeature4')}</li>
+                    <li>{t('systemFeature5')}</li>
                   </ul>
                 </div>
               </div>

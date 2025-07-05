@@ -3,7 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X, MessageCircle, MapPin, Mail } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { SearchBox } from './SearchBox';
+
 import { Button } from './ui/button';
 
 export function Header() {
@@ -66,10 +66,7 @@ export function Header() {
             ))}
           </div>
 
-          {/* Search Box */}
-          <div className="hidden lg:block">
-            <SearchBox className="w-64" placeholder={t('searchProducts')} />
-          </div>
+
 
           {/* WhatsApp Button */}
           <a
