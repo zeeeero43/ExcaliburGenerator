@@ -331,9 +331,9 @@ export default function AdminDashboard() {
               <h1 className="text-2xl font-bold text-gray-900">{t('dashboard')}</h1>
               <p className="text-sm text-gray-600">{t('welcome')}, {(user as AdminUser)?.firstName || (user as AdminUser)?.username || 'Admin'}!</p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col md:flex-row gap-3 md:items-center">
               <Select value={adminLanguage} onValueChange={handleLanguageChange}>
-                <SelectTrigger className="w-auto min-w-[140px]">
+                <SelectTrigger className="w-full md:w-auto min-w-[140px]">
                   <div className="flex items-center gap-2">
                     <Languages className="w-4 h-4" />
                     <SelectValue />
@@ -344,42 +344,60 @@ export default function AdminDashboard() {
                   <SelectItem value="es">Español</SelectItem>
                 </SelectContent>
               </Select>
-              <Button
-                variant="outline"
-                onClick={() => setLocation('/admin/analytics')}
-              >
-                <BarChart className="w-4 h-4 mr-2" />
-                {t('analytics')}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setLocation('/admin/site-images')}
-              >
-                <Image className="w-4 h-4 mr-2" />
-                {t('websiteImages')}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setLocation('/admin/images')}
-              >
-                <FileImage className="w-4 h-4 mr-2" />
-                {t('imageManager')}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => window.open('/', '_blank')}
-              >
-                <Eye className="w-4 h-4 mr-2" />
-                {t('viewWebsite')}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => logoutMutation.mutate()}
-                disabled={logoutMutation.isPending}
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                {t('logout')}
-              </Button>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:flex gap-2 md:gap-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setLocation('/admin/analytics')}
+                  className="text-xs sm:text-sm"
+                >
+                  <BarChart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">{t('analytics')}</span>
+                  <span className="sm:hidden">Analytics</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setLocation('/admin/site-images')}
+                  className="text-xs sm:text-sm"
+                >
+                  <Image className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">{t('websiteImages')}</span>
+                  <span className="sm:hidden">Website</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setLocation('/admin/images')}
+                  className="text-xs sm:text-sm"
+                >
+                  <FileImage className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">{t('imageManager')}</span>
+                  <span className="sm:hidden">Bilder</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('/', '_blank')}
+                  className="text-xs sm:text-sm"
+                >
+                  <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">{t('viewWebsite')}</span>
+                  <span className="sm:hidden">Seite</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => logoutMutation.mutate()}
+                  disabled={logoutMutation.isPending}
+                  className="text-xs sm:text-sm col-span-2 sm:col-span-1"
+                >
+                  <LogOut className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">{t('logout')}</span>
+                  <span className="sm:hidden">Logout</span>
+                </Button>
+              </div>
             </div>
           </div>
         </div>

@@ -41,6 +41,9 @@ function useAdminTranslation() {
         price: 'Preis',
         priceNote: 'Preishinweis',
         mainImage: 'Hauptbild',
+        additionalImages: 'Zusätzliche Bilder',
+        addImage: 'Bild hinzufügen',
+        removeImage: 'Bild entfernen',
         active: 'Aktiv',
         featured: 'Empfohlen',
         stockStatus: 'Lagerbestand',
@@ -90,6 +93,9 @@ function useAdminTranslation() {
         price: 'Precio',
         priceNote: 'Nota de Precio',
         mainImage: 'Imagen Principal',
+        additionalImages: 'Imágenes Adicionales',
+        addImage: 'Agregar Imagen',
+        removeImage: 'Eliminar Imagen',
         active: 'Activo',
         featured: 'Destacado',
         stockStatus: 'Estado de Stock',
@@ -148,6 +154,7 @@ function createProductSchema(t: (key: string) => string) {
     price: z.string().optional(),
     priceNote: z.string().optional(),
     mainImage: z.string().optional(),
+    images: z.array(z.string()).optional(),
     isActive: z.boolean().default(true),
     isFeatured: z.boolean().default(false),
     stockStatus: z.enum(['in_stock', 'out_of_stock', 'limited']).default('in_stock'),
@@ -189,6 +196,7 @@ export default function AdminProductForm() {
       price: '',
       priceNote: '',
       mainImage: '',
+      images: [],
       isActive: true,
       isFeatured: false,
       stockStatus: 'in_stock',
@@ -261,6 +269,7 @@ export default function AdminProductForm() {
         categoryId: existingProduct.categoryId || undefined,
         subcategoryId: existingProduct.subcategoryId || undefined,
         mainImage: existingProduct.mainImage || '',
+        images: (existingProduct.images && Array.isArray(existingProduct.images)) ? existingProduct.images : [],
         sku: existingProduct.sku || '',
         priceNote: existingProduct.priceNote || '',
         isFeatured: existingProduct.isFeatured || false,
@@ -722,6 +731,92 @@ export default function AdminProductForm() {
                                 />
                               </div>
                             )}
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Additional Images */}
+                <Card className="bg-green-50 border-green-200">
+                  <CardHeader>
+                    <CardTitle className="text-lg text-green-800">🖼️ {t('additionalImages')}</CardTitle>
+                    <CardDescription className="text-green-600">
+                      Zusätzliche Bilder für die Produktgalerie. Diese werden auf der Produktdetailseite angezeigt.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <FormField
+                      control={form.control}
+                      name="images"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-base font-medium">{t('additionalImages')}</FormLabel>
+                          <div className="space-y-4">
+                            {/* Display existing images */}
+                            {field.value && field.value.length > 0 && (
+                              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                                {field.value.map((imageUrl: string, index: number) => (
+                                  <div key={index} className="relative group">
+                                    <img 
+                                      src={imageUrl} 
+                                      alt={`Zusätzliches Bild ${index + 1}`}
+                                      className="w-full h-20 sm:h-24 object-cover rounded border"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="destructive"
+                                      size="sm"
+                                      className="absolute top-1 right-1 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6"
+                                      onClick={() => {
+                                        const newImages = [...(field.value || [])];
+                                        newImages.splice(index, 1);
+                                        field.onChange(newImages);
+                                      }}
+                                    >
+                                      <X className="h-3 w-3" />
+                                    </Button>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                            
+                            {/* Add new image */}
+                            <div className="border-2 border-dashed border-green-300 rounded-lg p-4">
+                              <div className="text-center space-y-2">
+                                <ImageUpload 
+                                  onImageSelect={(imageUrl) => {
+                                    const currentImages = field.value || [];
+                                    field.onChange([...currentImages, imageUrl]);
+                                  }}
+                                />
+                                <p className="text-sm text-gray-600">oder URL eingeben:</p>
+                                <div className="flex flex-col sm:flex-row gap-2">
+                                  <Input 
+                                    placeholder="https://..." 
+                                    id="additional-image-url"
+                                    className="flex-1"
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="w-full sm:w-auto"
+                                    onClick={() => {
+                                      const input = document.getElementById('additional-image-url') as HTMLInputElement;
+                                      if (input?.value) {
+                                        const currentImages = field.value || [];
+                                        field.onChange([...currentImages, input.value]);
+                                        input.value = '';
+                                      }
+                                    }}
+                                  >
+                                    {t('addImage')}
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                           <FormMessage />
                         </FormItem>

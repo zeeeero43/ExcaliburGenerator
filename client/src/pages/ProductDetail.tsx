@@ -1,6 +1,7 @@
 import { useParams, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, Check, Phone, Mail, MessageCircle, Star, ShoppingCart, Shield, Zap } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, Check, Phone, Mail, MessageCircle, Star, ShoppingCart, Shield, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
 import { Button } from '../components/ui/button';
@@ -77,6 +78,26 @@ export default function ProductDetail() {
     window.location.href = `mailto:info@excalibur-cuba.com?subject=${encodeURIComponent(subject) as string}&body=${encodeURIComponent(body) as string}`;
   };
 
+  // Image Gallery Logic
+  const allImages = [
+    product.mainImage,
+    ...(product.images && Array.isArray(product.images) ? product.images : [])
+  ].filter(Boolean);
+  
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === allImages.length - 1 ? 0 : prev + 1
+    );
+  };
+  
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? allImages.length - 1 : prev - 1
+    );
+  };
+
 
 
   return (
@@ -96,18 +117,72 @@ export default function ProductDetail() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
-          {/* Product Image */}
+          {/* Product Image Gallery */}
           <div className="space-y-4">
+            {/* Main Image */}
             <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
               <img
-                src={product.mainImage || '/api/placeholder/500/500'}
-                alt={productName}
+                src={allImages[currentImageIndex] || '/api/placeholder/500/500'}
+                alt={`${productName} - Bild ${currentImageIndex + 1}`}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.currentTarget.src = '/api/placeholder/500/500';
                 }}
               />
+              
+              {/* Navigation arrows - only show if more than 1 image */}
+              {allImages.length > 1 && (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white"
+                    onClick={prevImage}
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white"
+                    onClick={nextImage}
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                  
+                  {/* Image counter */}
+                  <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
+                    {currentImageIndex + 1} / {allImages.length}
+                  </div>
+                </>
+              )}
             </div>
+            
+            {/* Thumbnail Gallery - only show if more than 1 image */}
+            {allImages.length > 1 && (
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-5 gap-2">
+                {allImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`aspect-square rounded border-2 overflow-hidden transition-all ${
+                      index === currentImageIndex 
+                        ? 'border-blue-500 shadow-md' 
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <img
+                      src={image}
+                      alt={`${productName} - Thumbnail ${index + 1}`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = '/api/placeholder/100/100';
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
             
             {/* Trust Badges */}
             <div className="flex flex-wrap gap-4 justify-center">
