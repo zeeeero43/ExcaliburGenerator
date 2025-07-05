@@ -4,8 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { useToast } from '../hooks/use-toast';
-import { ArrowLeft, Image, Save, Upload, Check } from 'lucide-react';
+import { ArrowLeft, Image, Save, Upload, Check, ExternalLink, Plus } from 'lucide-react';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
 import type { UploadedImage, SiteSetting } from '@shared/schema';
@@ -70,6 +71,8 @@ export default function AdminSiteImages() {
   const queryClient = useQueryClient();
   const [selectedImageArea, setSelectedImageArea] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<UploadedImage | null>(null);
+  const [customImageUrl, setCustomImageUrl] = useState<string>('');
+  const [selectedTab, setSelectedTab] = useState<'uploads' | 'url'>('uploads');
 
   // Hochgeladene Bilder aus der Datenbank laden
   const { data: uploadedImages = [], isLoading: imagesLoading } = useQuery<UploadedImage[]>({
@@ -110,6 +113,7 @@ export default function AdminSiteImages() {
       });
       setSelectedImageArea(null);
       setSelectedImage(null);
+      setCustomImageUrl('');
       queryClient.invalidateQueries({ queryKey: ['/api/admin/site-settings'] });
     },
     onError: (error: any) => {
@@ -121,7 +125,7 @@ export default function AdminSiteImages() {
     },
   });
 
-  const handleAssignImage = () => {
+  const handleAssignUploadedImage = () => {
     if (!selectedImageArea || !selectedImage) return;
     
     const area = websiteImageAreas.find(a => a.id === selectedImageArea);
@@ -133,9 +137,36 @@ export default function AdminSiteImages() {
     });
   };
 
+  const handleAssignCustomUrl = () => {
+    if (!selectedImageArea || !customImageUrl.trim()) return;
+    
+    const area = websiteImageAreas.find(a => a.id === selectedImageArea);
+    if (!area) return;
+
+    assignImageMutation.mutate({
+      settingKey: area.settingKey,
+      imageUrl: customImageUrl.trim()
+    });
+  };
+
   const getCurrentImageForArea = (settingKey: string): string | null => {
     const setting = siteSettings.find(s => s.key === settingKey);
     return setting?.value || null;
+  };
+
+  const canAssign = () => {
+    if (!selectedImageArea) return false;
+    if (selectedTab === 'uploads') return !!selectedImage;
+    if (selectedTab === 'url') return !!customImageUrl.trim();
+    return false;
+  };
+
+  const handleAssign = () => {
+    if (selectedTab === 'uploads') {
+      handleAssignUploadedImage();
+    } else {
+      handleAssignCustomUrl();
+    }
   };
 
   if (imagesLoading) {
@@ -163,7 +194,8 @@ export default function AdminSiteImages() {
 
       <div className="mb-6">
         <p className="text-gray-600">
-          Wählen Sie einen Website-Bereich aus und ordnen Sie dann ein hochgeladenes Bild zu.
+          Wählen Sie einen Website-Bereich aus und ordnen Sie dann ein Bild zu. 
+          Sie können entweder ein hochgeladenes Bild verwenden oder eine URL eingeben.
           Die Bilder werden sofort auf der Website aktualisiert.
         </p>
       </div>
@@ -196,12 +228,17 @@ export default function AdminSiteImages() {
                     <p className="text-sm text-gray-600 mb-2">Bereich: {area.location}</p>
                     {currentImage ? (
                       <div className="mt-2">
-                        <p className="text-sm font-medium text-green-600">Aktuelles Bild:</p>
+                        <p className="text-sm font-medium text-green-600 mb-1">Aktuelles Bild:</p>
                         <img 
                           src={currentImage} 
                           alt={area.name}
-                          className="w-full h-32 object-cover rounded-md mt-1"
+                          className="w-full h-32 object-cover rounded-md"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.nextElementSibling!.textContent = 'Bild konnte nicht geladen werden';
+                          }}
                         />
+                        <p className="text-xs text-gray-500 mt-1 break-all">{currentImage}</p>
                       </div>
                     ) : (
                       <p className="text-sm text-orange-600">Kein Bild zugewiesen</p>
@@ -213,68 +250,130 @@ export default function AdminSiteImages() {
           </div>
         </div>
 
-        {/* Hochgeladene Bilder */}
+        {/* Bild-Auswahl */}
         <div>
-          <h2 className="text-xl font-semibold mb-4">Hochgeladene Bilder</h2>
-          {uploadedImages.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center h-64">
-                <Image className="w-12 h-12 text-gray-400 mb-4" />
-                <p className="text-gray-600 text-center">
-                  Keine Bilder hochgeladen. Laden Sie zuerst Bilder über das Produktformular hoch.
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-2 gap-4">
-              {uploadedImages.map((image) => {
-                const isSelected = selectedImage?.id === image.id;
-                
-                return (
-                  <Card 
-                    key={image.id}
-                    className={`cursor-pointer transition-colors ${
-                      isSelected ? 'bg-green-50 border-green-500' : 'hover:bg-gray-50'
-                    }`}
-                    onClick={() => setSelectedImage(image)}
-                  >
-                    <CardContent className="p-3">
-                      <div className="relative">
-                        {isSelected && (
-                          <div className="absolute top-2 right-2 bg-green-500 text-white rounded-full p-1">
-                            <Check className="w-4 h-4" />
+          <h2 className="text-xl font-semibold mb-4">Bild auswählen</h2>
+          
+          <Tabs value={selectedTab} onValueChange={(value) => setSelectedTab(value as 'uploads' | 'url')} className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="uploads" className="flex items-center gap-2">
+                <Upload className="w-4 h-4" />
+                Hochgeladene Bilder
+              </TabsTrigger>
+              <TabsTrigger value="url" className="flex items-center gap-2">
+                <ExternalLink className="w-4 h-4" />
+                URL eingeben
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="uploads" className="mt-4">
+              {uploadedImages.length === 0 ? (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center h-64">
+                    <Image className="w-12 h-12 text-gray-400 mb-4" />
+                    <p className="text-gray-600 text-center">
+                      Keine Bilder hochgeladen. Laden Sie zuerst Bilder über das Produktformular hoch.
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  {uploadedImages.map((image) => {
+                    const isSelected = selectedImage?.id === image.id;
+                    
+                    return (
+                      <Card 
+                        key={image.id}
+                        className={`cursor-pointer transition-colors ${
+                          isSelected ? 'bg-green-50 border-green-500' : 'hover:bg-gray-50'
+                        }`}
+                        onClick={() => setSelectedImage(image)}
+                      >
+                        <CardContent className="p-3">
+                          <div className="relative">
+                            {isSelected && (
+                              <div className="absolute top-2 right-2 bg-green-500 text-white rounded-full p-1">
+                                <Check className="w-4 h-4" />
+                              </div>
+                            )}
+                            <img 
+                              src={image.url} 
+                              alt={image.filename}
+                              className="w-full h-32 object-cover rounded-md"
+                            />
                           </div>
-                        )}
+                          <p className="text-sm font-medium mt-2 truncate">{image.filename}</p>
+                          <p className="text-xs text-gray-500">
+                            {Math.round(image.size / 1024)} KB
+                          </p>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="url" className="mt-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <ExternalLink className="w-5 h-5" />
+                    Bild-URL eingeben
+                  </CardTitle>
+                  <CardDescription>
+                    Geben Sie die vollständige URL eines Bildes ein (z.B. https://unsplash.com/...)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <Label htmlFor="imageUrl">Bild-URL</Label>
+                    <Input
+                      id="imageUrl"
+                      type="url"
+                      placeholder="https://example.com/image.jpg"
+                      value={customImageUrl}
+                      onChange={(e) => setCustomImageUrl(e.target.value)}
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  {customImageUrl.trim() && (
+                    <div className="mt-4">
+                      <Label>Vorschau:</Label>
+                      <div className="mt-2 border rounded-md p-2">
                         <img 
-                          src={image.url} 
-                          alt={image.filename}
+                          src={customImageUrl.trim()} 
+                          alt="Vorschau"
                           className="w-full h-32 object-cover rounded-md"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.nextElementSibling!.textContent = 'Bild konnte nicht geladen werden. Überprüfen Sie die URL.';
+                            e.currentTarget.nextElementSibling!.className = 'text-red-500 text-sm text-center py-8';
+                          }}
                         />
+                        <div className="hidden"></div>
                       </div>
-                      <p className="text-sm font-medium mt-2 truncate">{image.filename}</p>
-                      <p className="text-xs text-gray-500">
-                        {Math.round(image.size / 1024)} KB
-                      </p>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
 
       {/* Zuweisungs-Button */}
-      {selectedImageArea && selectedImage && (
+      {selectedImageArea && canAssign() && (
         <div className="fixed bottom-6 right-6">
           <Button 
-            onClick={handleAssignImage}
+            onClick={handleAssign}
             disabled={assignImageMutation.isPending}
             size="lg"
             className="shadow-lg"
           >
             <Save className="w-4 h-4 mr-2" />
-            Bild zuweisen
+            {assignImageMutation.isPending ? 'Wird zugewiesen...' : 'Bild zuweisen'}
           </Button>
         </div>
       )}
