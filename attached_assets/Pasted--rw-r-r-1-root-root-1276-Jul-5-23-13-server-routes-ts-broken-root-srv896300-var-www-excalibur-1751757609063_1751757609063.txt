@@ -1,0 +1,63 @@
+-rw-r--r-- 1 root root  1276 Jul  5 23:13 server/routes.ts.broken
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# cat > api-server.js << 'EOF'
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const { Pool } = require('pg');
+const app = express();
+app.use(express.json());
+// CORS für HTTPS
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', 'POST');
+  next();
+});
+// WORKING LOGIN ENDPOINT
+app.post('/api/admin/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    console.log('🔐 Login-Versuch:', username);
+
+    const pool = new Pool({
+      connectionString: "postgresql://excalibur_user:SecurePass2025@localhost:5432/excalibur_cuba"
+    });
+
+    const client = await pool.connect();
+    const result = await client.query('SELECT * FROM admin_users WHERE username = $1', [username]);
+
+    if (result.rows.length > 0 && result.rows[0].is_active) {
+      const isValid = await bcrypt.compare(password, result.rows[0].password);
+      if (isValid) {
+EOFonsole.log('🚀 API Server läuft auf Port 5001');+ error.message });
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# nohup node api-server.js > api-server.log 2>&1 &
+[1] 9725
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sleep 2
+[1]+  Exit 1                  nohup node api-server.js > api-server.log 2>&1
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -k -X POST http://localhost:5001/api/admin/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"excalibur_admin","password":"admin123"}'
+curl: (7) Failed to connect to localhost port 5001 after 0 ms: Connection refused
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -k -X POST http://localhost:5001/api/admin/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"excalibur_admin","password":"admin123"}'
+curl: (7) Failed to connect to localhost port 5001 after 0 ms: Connection refused
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sed -i '/location \/ {/i\
+    location /api/admin/login {\
+        proxy_pass http://localhost:5001;\
+        proxy_http_version 1.1;\
+        proxy_set_header Host $host;\
+        proxy_set_header X-Real-IP $remote_addr;\
+    }\
+' /etc/nginx/sites-available/excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl reload nginx
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -k -X POST https://31.97.77.135/api/admin/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"excalibur_admin","password":"admin123"}'
+<html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.18.0 (Ubuntu)</center>
+</body>
+</html>
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
