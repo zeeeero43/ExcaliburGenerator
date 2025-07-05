@@ -6,6 +6,7 @@ import {
   inquiries,
   siteSettings,
   uploadedImages,
+  pageViews,
   type AdminUser,
   type InsertAdminUser,
   type Category,
@@ -20,9 +21,11 @@ import {
   type InsertSiteSetting,
   type UploadedImage,
   type InsertUploadedImage,
+  type PageView,
+  type InsertPageView,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and, or, ilike } from "drizzle-orm";
+import { eq, desc, and, or, ilike, count, countDistinct, sql, gte, isNotNull } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 
 export interface IStorage {
@@ -74,6 +77,16 @@ export interface IStorage {
   getUploadedImageById(id: number): Promise<UploadedImage | undefined>;
   createUploadedImage(image: InsertUploadedImage): Promise<UploadedImage>;
   deleteUploadedImage(id: number): Promise<void>;
+  
+  // Analytics
+  createPageView(pageView: InsertPageView): Promise<PageView>;
+  getAnalytics(period: 'day' | 'month' | 'year'): Promise<{
+    totalViews: number;
+    uniqueVisitors: number;
+    topPages: Array<{ page: string; views: number }>;
+    topCountries: Array<{ country: string; views: number }>;
+    viewsByPeriod: Array<{ period: string; views: number }>;
+  }>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -323,6 +336,95 @@ export class DatabaseStorage implements IStorage {
 
   async deleteUploadedImage(id: number): Promise<void> {
     await db.delete(uploadedImages).where(eq(uploadedImages.id, id));
+  }
+
+  // Analytics methods
+  async createPageView(pageView: InsertPageView): Promise<PageView> {
+    const [created] = await db.insert(pageViews).values(pageView).returning();
+    return created;
+  }
+
+  async getAnalytics(period: 'day' | 'month' | 'year'): Promise<{
+    totalViews: number;
+    uniqueVisitors: number;
+    topPages: Array<{ page: string; views: number }>;
+    topCountries: Array<{ country: string; views: number }>;
+    viewsByPeriod: Array<{ period: string; views: number }>;
+  }> {
+    const now = new Date();
+    let startDate: Date;
+    let groupByFormat: string;
+
+    switch (period) {
+      case 'day':
+        startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        groupByFormat = "TO_CHAR(viewed_at, 'HH24:00')";
+        break;
+      case 'month':
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        groupByFormat = "TO_CHAR(viewed_at, 'MM-DD')";
+        break;
+      case 'year':
+        startDate = new Date(now.getFullYear(), 0, 1);
+        groupByFormat = "TO_CHAR(viewed_at, 'MM')";
+        break;
+    }
+
+    // Total views
+    const [totalViewsResult] = await db
+      .select({ count: count() })
+      .from(pageViews)
+      .where(gte(pageViews.viewedAt, startDate));
+
+    // Unique visitors (based on IP)
+    const [uniqueVisitorsResult] = await db
+      .select({ count: countDistinct(pageViews.ipAddress) })
+      .from(pageViews)
+      .where(gte(pageViews.viewedAt, startDate));
+
+    // Top pages
+    const topPagesResult = await db
+      .select({
+        page: pageViews.page,
+        views: count()
+      })
+      .from(pageViews)
+      .where(gte(pageViews.viewedAt, startDate))
+      .groupBy(pageViews.page)
+      .orderBy(desc(count()))
+      .limit(10);
+
+    // Top countries
+    const topCountriesResult = await db
+      .select({
+        country: pageViews.country,
+        views: count()
+      })
+      .from(pageViews)
+      .where(and(gte(pageViews.viewedAt, startDate), isNotNull(pageViews.country)))
+      .groupBy(pageViews.country)
+      .orderBy(desc(count()))
+      .limit(10);
+
+    // Views by period (using raw SQL for date formatting)
+    const viewsByPeriodResult = await db.execute(sql`
+      SELECT ${sql.raw(groupByFormat)} as period, COUNT(*) as views
+      FROM page_views 
+      WHERE viewed_at >= ${startDate}
+      GROUP BY ${sql.raw(groupByFormat)}
+      ORDER BY period
+    `);
+
+    return {
+      totalViews: totalViewsResult.count || 0,
+      uniqueVisitors: uniqueVisitorsResult.count || 0,
+      topPages: topPagesResult.map(p => ({ page: p.page, views: Number(p.views) })),
+      topCountries: topCountriesResult.map(c => ({ country: c.country || 'Unknown', views: Number(c.views) })),
+      viewsByPeriod: viewsByPeriodResult.rows.map((row: any) => ({ 
+        period: row.period, 
+        views: Number(row.views) 
+      }))
+    };
   }
 }
 

@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
-import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart } from 'lucide-react';
 import type { Category, Product, Inquiry, AdminUser } from '@shared/schema';
 
 // Check if user is authenticated
@@ -214,6 +214,13 @@ export default function AdminDashboard() {
               <p className="text-sm text-gray-600">Willkommen, {(user as AdminUser)?.firstName || (user as AdminUser)?.username || 'Admin'}!</p>
             </div>
             <div className="flex items-center space-x-4">
+              <Button
+                variant="outline"
+                onClick={() => setLocation('/admin/analytics')}
+              >
+                <BarChart className="w-4 h-4 mr-2" />
+                Analytics
+              </Button>
               <Button
                 variant="outline"
                 onClick={() => window.open('/', '_blank')}

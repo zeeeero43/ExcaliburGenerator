@@ -76,6 +76,11 @@ export function Footer() {
                   {t('contact')}
                 </Link>
               </li>
+              <li>
+                <Link href="/legal" className="hover:text-white transition-colors">
+                  Rechtliches
+                </Link>
+              </li>
             </ul>
           </div>
 

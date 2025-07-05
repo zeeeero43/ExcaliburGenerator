@@ -15,6 +15,8 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProductForm from "./pages/AdminProductForm";
 import AdminCategoryForm from "./pages/AdminCategoryForm";
+import AdminAnalytics from "./pages/AdminAnalytics";
+import Legal from "./pages/Legal";
 import NotFound from "./pages/not-found";
 
 function Router() {
@@ -58,6 +60,7 @@ function Router() {
           return <AdminCategoryForm />;
         }}
       </Route>
+      <Route path="/admin/analytics" component={AdminAnalytics} />
       
       {/* Public Routes - With Layout */}
       <Route path="/">
@@ -92,6 +95,13 @@ function Router() {
         {() => (
           <Layout>
             <Contact />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/legal">
+        {() => (
+          <Layout>
+            <Legal />
           </Layout>
         )}
       </Route>

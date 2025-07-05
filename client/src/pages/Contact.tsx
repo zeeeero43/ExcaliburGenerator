@@ -20,20 +20,10 @@ const createInquirySchema = (language: string) => z.object({
     language === 'en' ? 'Name must be at least 2 characters' :
     'El nombre debe tener al menos 2 caracteres'
   ),
-  email: z.string().email(
-    language === 'de' ? 'Ungültige E-Mail' :
-    language === 'en' ? 'Invalid email' :
-    'Email inválido'
-  ),
   phone: z.string().min(8, 
     language === 'de' ? 'Ungültige Telefonnummer' :
     language === 'en' ? 'Invalid phone number' :
     'Teléfono inválido'
-  ),
-  systemType: z.string().min(1, 
-    language === 'de' ? 'Bitte wählen Sie einen Systemtyp' :
-    language === 'en' ? 'Please select a system type' :
-    'Seleccione un tipo de sistema'
   ),
   message: z.string().min(10, 
     language === 'de' ? 'Die Nachricht muss mindestens 10 Zeichen haben' :
@@ -53,9 +43,7 @@ export default function Contact() {
     resolver: zodResolver(inquirySchema),
     defaultValues: {
       name: '',
-      email: '',
       phone: '',
-      systemType: '',
       message: '',
     },
   });
@@ -263,42 +251,6 @@ export default function Contact() {
                     />
                   </div>
                   
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t('email')}</FormLabel>
-                        <FormControl>
-                          <Input {...field} type="email" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="systemType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t('systemType')}</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder={t('select')} />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="complete-solar">{t('completeSolarSystem')}</SelectItem>
-                            <SelectItem value="generator-only">{t('generatorOnly')}</SelectItem>
-                            <SelectItem value="individual-components">{t('individualComponents')}</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   
                   <FormField
                     control={form.control}

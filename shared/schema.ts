@@ -140,6 +140,19 @@ export const uploadedImages = pgTable("uploaded_images", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Analytics tracking table
+export const pageViews = pgTable("page_views", {
+  id: serial("id").primaryKey(),
+  ipAddress: varchar("ip_address", { length: 45 }).notNull(), // IPv6 compatible
+  userAgent: text("user_agent"),
+  country: varchar("country", { length: 2 }), // ISO country code
+  city: varchar("city", { length: 100 }),
+  page: varchar("page", { length: 500 }).notNull(),
+  referrer: varchar("referrer", { length: 1000 }),
+  language: varchar("language", { length: 10 }),
+  viewedAt: timestamp("viewed_at").defaultNow(),
+});
+
 // Relations
 export const categoriesRelations = relations(categories, ({ many }) => ({
   subcategories: many(subcategories),
@@ -225,3 +238,6 @@ export type InsertSiteSetting = z.infer<typeof insertSiteSettingSchema>;
 
 export type UploadedImage = typeof uploadedImages.$inferSelect;
 export type InsertUploadedImage = typeof uploadedImages.$inferInsert;
+
+export type PageView = typeof pageViews.$inferSelect;
+export type InsertPageView = typeof pageViews.$inferInsert;

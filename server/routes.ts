@@ -11,6 +11,8 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import sharp from "sharp";
+import { v4 as uuidv4 } from "uuid";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,17 +23,9 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Configure multer for image uploads
+// Configure multer for image uploads with memory storage (for sharp processing)
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, uploadsDir);
-    },
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
-  }),
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB
   },
@@ -44,6 +38,43 @@ const upload = multer({
     }
   }
 });
+
+// Function to compress and save image
+async function compressAndSaveImage(buffer: Buffer, originalName: string): Promise<string> {
+  const fileId = uuidv4();
+  const extension = path.extname(originalName);
+  const filename = `${Date.now()}-${fileId}.jpg`; // Always save as jpg for better compression
+  const filepath = path.join(uploadsDir, filename);
+
+  // Compress image with sharp
+  await sharp(buffer)
+    .resize(1200, 800, { fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: 85, progressive: true })
+    .toFile(filepath);
+
+  return filename;
+}
+
+// Simple IP to country mapping (in production, use a proper geolocation service)
+async function getCountryFromIP(ip: string): Promise<string | null> {
+  try {
+    // For local development
+    if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip === 'unknown') {
+      return 'CU'; // Default to Cuba for local testing
+    }
+    
+    // You could integrate with ipapi.co, ipinfo.io, or similar service here
+    // For now, we'll use a simple fallback
+    const response = await fetch(`http://ip-api.com/json/${ip}?fields=countryCode`);
+    if (response.ok) {
+      const data = await response.json();
+      return data.countryCode || null;
+    }
+  } catch (error) {
+    console.error('Geolocation error:', error);
+  }
+  return null;
+}
 
 // Helper function to generate slug from text
 function generateSlug(text: string): string {
@@ -493,12 +524,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const uploadedImages = [];
       for (const file of files) {
+        // Compress and save the image
+        const compressedFilename = await compressAndSaveImage(file.buffer, file.originalname);
+        
+        // Get file stats for size
+        const filepath = path.join(uploadsDir, compressedFilename);
+        const stats = fs.statSync(filepath);
+        
         const imageData = {
-          filename: file.filename,
+          filename: compressedFilename,
           originalName: file.originalname,
-          mimetype: file.mimetype,
-          size: file.size,
-          url: `/uploads/${file.filename}`,
+          mimetype: 'image/jpeg', // All compressed images are JPEG
+          size: stats.size,
+          url: `/uploads/${compressedFilename}`,
           uploadedBy: (req as any).session.userId,
         };
 
@@ -533,6 +571,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting image:", error);
       res.status(500).json({ error: "Failed to delete image" });
+    }
+  });
+
+  // Analytics tracking middleware for all requests
+  app.use(async (req, res, next) => {
+    try {
+      // Only track GET requests and ignore admin/api routes
+      if (req.method === 'GET' && !req.path.startsWith('/api/') && !req.path.startsWith('/admin/')) {
+        const ipAddress = req.ip || req.connection.remoteAddress || 'unknown';
+        const userAgent = req.get('User-Agent') || '';
+        
+        // Simple country detection from IP (this would need a real geolocation service)
+        const country = await getCountryFromIP(ipAddress);
+        
+        await storage.createPageView({
+          ipAddress,
+          userAgent,
+          country,
+          city: null,
+          page: req.path,
+          referrer: req.get('Referer') || null,
+          language: req.get('Accept-Language')?.split(',')[0] || null,
+        });
+      }
+    } catch (error) {
+      // Don't let analytics errors break the app
+      console.error('Analytics tracking error:', error);
+    }
+    next();
+  });
+
+  // Analytics API routes
+  app.get("/api/admin/analytics/:period", isAuthenticated, async (req, res) => {
+    try {
+      const period = req.params.period as 'day' | 'month' | 'year';
+      if (!['day', 'month', 'year'].includes(period)) {
+        return res.status(400).json({ error: 'Invalid period. Use day, month, or year.' });
+      }
+      
+      const analytics = await storage.getAnalytics(period);
+      res.json(analytics);
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      res.status(500).json({ error: "Failed to fetch analytics" });
     }
   });
 
