@@ -670,6 +670,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Public endpoint for site settings (for hero images on public pages)
+  app.get("/api/site-settings", async (req, res) => {
+    try {
+      const settings = await storage.getSiteSettings();
+      // Only return image-related settings for public access
+      const publicSettings = settings.filter(setting => 
+        setting.key.includes('hero_image_') || 
+        setting.key.includes('product_fallback_image') ||
+        setting.type === 'image'
+      );
+      res.json(publicSettings);
+    } catch (error) {
+      console.error("Error fetching public site settings:", error);
+      res.status(500).json({ error: "Failed to fetch site settings" });
+    }
+  });
+
   // Analytics API routes
   app.get("/api/admin/analytics/:period", isAuthenticated, async (req, res) => {
     try {

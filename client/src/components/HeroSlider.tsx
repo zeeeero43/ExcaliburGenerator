@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { Button } from './ui/button';
+import type { SiteSetting } from '@shared/schema';
 
 interface Slide {
   id: number;
@@ -16,10 +18,22 @@ export function HeroSlider() {
   const { t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Lade Site-Settings für die Hero-Bilder (öffentlicher Endpoint)
+  const { data: siteSettings = [] } = useQuery<SiteSetting[]>({
+    queryKey: ['/api/site-settings'],
+    retry: false,
+  });
+
+  // Helfer-Funktion um Bild-URL aus Settings zu holen
+  const getImageUrl = (key: string, fallback: string) => {
+    const setting = siteSettings.find(s => s.key === key);
+    return setting?.value || fallback;
+  };
+
   const slides: Slide[] = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080',
+      image: getImageUrl('hero_image_1', 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080'),
       title: t('heroTitle1'),
       subtitle: t('heroSubtitle1'),
       buttonText: t('viewProducts'),
@@ -27,7 +41,7 @@ export function HeroSlider() {
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080',
+      image: getImageUrl('hero_image_2', 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080'),
       title: t('heroTitle2'),
       subtitle: t('heroSubtitle2'),
       buttonText: t('inquireNow'),
@@ -35,7 +49,7 @@ export function HeroSlider() {
     },
     {
       id: 3,
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080',
+      image: getImageUrl('hero_image_3', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080'),
       title: t('heroTitle3'),
       subtitle: t('heroSubtitle3'),
       buttonText: t('customizeSystem'),

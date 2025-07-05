@@ -19,7 +19,7 @@ interface WebsiteImageArea {
   settingKey: string;
 }
 
-// Website-Bereiche die Bilder benötigen
+// Website-Bereiche die Bilder benötigen (nur tatsächlich verwendete Hero-Bilder)
 const websiteImageAreas: WebsiteImageArea[] = [
   {
     id: 'hero-1',
@@ -41,27 +41,6 @@ const websiteImageAreas: WebsiteImageArea[] = [
     description: 'Drittes Bild im Hero-Slider',
     location: 'Startseite - Hero Slider',
     settingKey: 'hero_image_3'
-  },
-  {
-    id: 'solar-systems',
-    name: 'Solarsysteme Bereich',
-    description: 'Bild für Solarsysteme Produktkarte',
-    location: 'Startseite - Produktbereich',
-    settingKey: 'product_solar_systems'
-  },
-  {
-    id: 'solar-panels',
-    name: 'Solarpaneele Bereich',
-    description: 'Bild für Solarpaneele Produktkarte',
-    location: 'Startseite - Produktbereich',
-    settingKey: 'product_solar_panels'
-  },
-  {
-    id: 'generators',
-    name: 'Generatoren Bereich',
-    description: 'Bild für Generatoren Produktkarte',
-    location: 'Startseite - Produktbereich',
-    settingKey: 'product_generators'
   }
 ];
 
@@ -211,8 +190,11 @@ export default function AdminSiteImages() {
       </div>
 
       <div className="mb-6">
-        <p className="text-gray-600">
-          Wählen Sie einen Website-Bereich aus und ordnen Sie dann ein Bild zu. 
+        <p className="text-gray-600 mb-2">
+          Hier können Sie die drei Hero-Bilder auf der Startseite bearbeiten. 
+          Diese Bilder werden im großen Slider ganz oben auf der Homepage angezeigt.
+        </p>
+        <p className="text-sm text-blue-600">
           Sie können entweder ein hochgeladenes Bild verwenden oder eine URL eingeben.
           Die Bilder werden sofort auf der Website aktualisiert.
         </p>
