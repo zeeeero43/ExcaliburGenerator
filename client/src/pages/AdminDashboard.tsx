@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
-import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image } from 'lucide-react';
+import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Category, Product, Inquiry, AdminUser } from '@shared/schema';
 
 // Check if user is authenticated
@@ -34,6 +35,89 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [adminLanguage, setAdminLanguage] = useState(() => 
+    localStorage.getItem('admin-language') || 'de'
+  );
+
+  const handleLanguageChange = (lang: string) => {
+    setAdminLanguage(lang);
+    localStorage.setItem('admin-language', lang);
+  };
+
+  const t = (key: string): string => {
+    const translations: Record<string, Record<string, string>> = {
+      de: {
+        dashboard: 'Excalibur Cuba Admin',
+        welcome: 'Willkommen',
+        analytics: 'Analytics',
+        websiteImages: 'Website-Bilder',
+        viewWebsite: 'Website ansehen',
+        logout: 'Abmelden',
+        categories: 'Kategorien',
+        activeCategories: 'Aktive Kategorien',
+        products: 'Produkte',
+        activeProducts: 'Aktive Produkte',
+        inquiries: 'Anfragen',
+        newInquiries: 'Neue Anfragen',
+        settings: 'Einstellungen',
+        systemSettings: 'System-Einstellungen',
+        recentProducts: 'Aktuelle Produkte',
+        recentCategories: 'Aktuelle Kategorien',
+        recentInquiries: 'Aktuelle Anfragen',
+        addProduct: 'Produkt hinzufügen',
+        addCategory: 'Kategorie hinzufügen',
+        edit: 'Bearbeiten',
+        delete: 'Löschen',
+        view: 'Ansehen',
+        name: 'Name',
+        status: 'Status',
+        email: 'E-Mail',
+        message: 'Nachricht',
+        price: 'Preis',
+        category: 'Kategorie',
+        active: 'Aktiv',
+        inactive: 'Inaktiv',
+        new: 'Neu',
+        replied: 'Beantwortet'
+      },
+      es: {
+        dashboard: 'Admin Excalibur Cuba',
+        welcome: 'Bienvenido',
+        analytics: 'Análisis',
+        websiteImages: 'Imágenes del Sitio',
+        viewWebsite: 'Ver Sitio Web',
+        logout: 'Cerrar Sesión',
+        categories: 'Categorías',
+        activeCategories: 'Categorías Activas',
+        products: 'Productos',
+        activeProducts: 'Productos Activos',
+        inquiries: 'Consultas',
+        newInquiries: 'Consultas Nuevas',
+        settings: 'Configuración',
+        systemSettings: 'Configuración del Sistema',
+        recentProducts: 'Productos Recientes',
+        recentCategories: 'Categorías Recientes',
+        recentInquiries: 'Consultas Recientes',
+        addProduct: 'Agregar Producto',
+        addCategory: 'Agregar Categoría',
+        edit: 'Editar',
+        delete: 'Eliminar',
+        view: 'Ver',
+        name: 'Nombre',
+        status: 'Estado',
+        email: 'Correo',
+        message: 'Mensaje',
+        price: 'Precio',
+        category: 'Categoría',
+        active: 'Activo',
+        inactive: 'Inactivo',
+        new: 'Nuevo',
+        replied: 'Respondido'
+      }
+    };
+    
+    return translations[adminLanguage]?.[key] || translations.de[key] || key;
+  };
 
   // Fetch data
   const { data: categories = [] } = useQuery<Category[]>({
@@ -202,10 +286,22 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Excalibur Cuba Admin</h1>
-              <p className="text-sm text-gray-600">Willkommen, {(user as AdminUser)?.firstName || (user as AdminUser)?.username || 'Admin'}!</p>
+              <h1 className="text-2xl font-bold text-gray-900">{t('dashboard')}</h1>
+              <p className="text-sm text-gray-600">{t('welcome')}, {(user as AdminUser)?.firstName || (user as AdminUser)?.username || 'Admin'}!</p>
             </div>
             <div className="flex items-center space-x-4">
+              <Select value={adminLanguage} onValueChange={handleLanguageChange}>
+                <SelectTrigger className="w-auto min-w-[140px]">
+                  <div className="flex items-center gap-2">
+                    <Languages className="w-4 h-4" />
+                    <SelectValue />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="de">Deutsch</SelectItem>
+                  <SelectItem value="es">Español</SelectItem>
+                </SelectContent>
+              </Select>
               <Button
                 variant="outline"
                 onClick={() => setLocation('/admin/analytics')}

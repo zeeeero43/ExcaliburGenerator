@@ -5,108 +5,62 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useToast } from '../hooks/use-toast';
-import { ArrowLeft, Image, Save, Upload } from 'lucide-react';
+import { ArrowLeft, Image, Save, Upload, Check } from 'lucide-react';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
+import type { UploadedImage, SiteSetting } from '@shared/schema';
 
-interface SiteImage {
+interface WebsiteImageArea {
   id: string;
   name: string;
   description: string;
-  currentUrl: string;
   location: string;
-  usage: string;
+  settingKey: string;
 }
 
-// Alle verwendeten Bilder auf der Website
-const siteImages: SiteImage[] = [
+// Website-Bereiche die Bilder benötigen
+const websiteImageAreas: WebsiteImageArea[] = [
   {
-    id: 'hero-solar-1',
-    name: 'Hero Bild 1 - Solarenergie',
-    description: 'Hauptbild im Hero-Slider für Solarenergie',
-    currentUrl: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=2000&q=80',
+    id: 'hero-1',
+    name: 'Hero Bild 1',
+    description: 'Erstes Bild im Hero-Slider',
     location: 'Startseite - Hero Slider',
-    usage: 'Hero-Slider Position 1'
+    settingKey: 'hero_image_1'
   },
   {
-    id: 'hero-generator-2',
-    name: 'Hero Bild 2 - Generatoren',
-    description: 'Hauptbild im Hero-Slider für Generatoren',
-    currentUrl: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=2000&q=80',
+    id: 'hero-2',
+    name: 'Hero Bild 2',
+    description: 'Zweites Bild im Hero-Slider',
     location: 'Startseite - Hero Slider',
-    usage: 'Hero-Slider Position 2'
+    settingKey: 'hero_image_2'
   },
   {
-    id: 'hero-solutions-3',
-    name: 'Hero Bild 3 - Komplettlösungen',
-    description: 'Hauptbild im Hero-Slider für Komplettlösungen',
-    currentUrl: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2000&q=80',
+    id: 'hero-3',
+    name: 'Hero Bild 3',
+    description: 'Drittes Bild im Hero-Slider',
     location: 'Startseite - Hero Slider',
-    usage: 'Hero-Slider Position 3'
+    settingKey: 'hero_image_3'
   },
   {
-    id: 'products-solar-systems',
-    name: 'Produktbereich - Solarsysteme',
-    description: 'Bild für den Solarsysteme-Bereich',
-    currentUrl: 'https://images.unsplash.com/photo-1558618047-fbd1774bf9f5?auto=format&fit=crop&w=800&q=80',
+    id: 'solar-systems',
+    name: 'Solarsysteme Bereich',
+    description: 'Bild für Solarsysteme Produktkarte',
     location: 'Startseite - Produktbereich',
-    usage: 'Solarsysteme Karte'
+    settingKey: 'product_solar_systems'
   },
   {
-    id: 'products-solar-panels',
-    name: 'Produktbereich - Solarpaneele',
-    description: 'Bild für den Solarpaneele-Bereich',
-    currentUrl: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=80',
+    id: 'solar-panels',
+    name: 'Solarpaneele Bereich',
+    description: 'Bild für Solarpaneele Produktkarte',
     location: 'Startseite - Produktbereich',
-    usage: 'Solarpaneele Karte'
+    settingKey: 'product_solar_panels'
   },
   {
-    id: 'products-inverters',
-    name: 'Produktbereich - Wechselrichter',
-    description: 'Bild für den Wechselrichter-Bereich',
-    currentUrl: 'https://images.unsplash.com/photo-1621905513920-b750d2a7ac0d?auto=format&fit=crop&w=800&q=80',
+    id: 'generators',
+    name: 'Generatoren Bereich',
+    description: 'Bild für Generatoren Produktkarte',
     location: 'Startseite - Produktbereich',
-    usage: 'Wechselrichter Karte'
-  },
-  {
-    id: 'products-batteries',
-    name: 'Produktbereich - Batterien',
-    description: 'Bild für den Batterien-Bereich',
-    currentUrl: 'https://images.unsplash.com/photo-1562123037-9b0e26f2e7d3?auto=format&fit=crop&w=800&q=80',
-    location: 'Startseite - Produktbereich',
-    usage: 'Batterien Karte'
-  },
-  {
-    id: 'products-generators',
-    name: 'Produktbereich - Generatoren',
-    description: 'Bild für den Generatoren-Bereich',
-    currentUrl: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=800&q=80',
-    location: 'Startseite - Produktbereich',
-    usage: 'Generatoren Karte'
-  },
-  {
-    id: 'products-accessories',
-    name: 'Produktbereich - Zubehör',
-    description: 'Bild für den Zubehör-Bereich',
-    currentUrl: 'https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=800&q=80',
-    location: 'Startseite - Produktbereich',
-    usage: 'Zubehör Karte'
-  },
-  {
-    id: 'about-warehouse',
-    name: 'Über uns - Lager',
-    description: 'Bild für den Lager-Bereich',
-    currentUrl: 'https://images.unsplash.com/photo-1566139142475-0ceb49395ac7?auto=format&fit=crop&w=800&q=80',
-    location: 'Startseite - Über uns',
-    usage: 'Lager-Sektion'
-  },
-  {
-    id: 'about-company',
-    name: 'Über uns - Firmengebäude',
-    description: 'Bild für die Firmen-Darstellung',
-    currentUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
-    location: 'Über uns Seite',
-    usage: 'Hauptbild der Über uns Seite'
+    settingKey: 'product_generators'
   }
 ];
 
@@ -114,66 +68,86 @@ export default function AdminSiteImages() {
   const { t } = useLanguage();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [editingImage, setEditingImage] = useState<string | null>(null);
-  const [newUrl, setNewUrl] = useState('');
+  const [selectedImageArea, setSelectedImageArea] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<UploadedImage | null>(null);
 
-  // Mutation zum Aktualisieren der Site-Settings (für Bild-URLs)
-  const updateImageMutation = useMutation({
-    mutationFn: async ({ imageId, url }: { imageId: string; url: string }) => {
+  // Hochgeladene Bilder aus der Datenbank laden
+  const { data: uploadedImages = [], isLoading: imagesLoading } = useQuery<UploadedImage[]>({
+    queryKey: ['/api/admin/uploaded-images'],
+    retry: false,
+  });
+
+  // Aktuelle Site-Settings laden
+  const { data: siteSettings = [] } = useQuery<SiteSetting[]>({
+    queryKey: ['/api/admin/site-settings'],
+    retry: false,
+  });
+
+  // Mutation zum Zuweisen eines Bildes zu einem Website-Bereich
+  const assignImageMutation = useMutation({
+    mutationFn: async ({ settingKey, imageUrl }: { settingKey: string; imageUrl: string }) => {
       const response = await fetch('/api/admin/site-settings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          key: `site_image_${imageId}`,
-          value: url,
+          key: settingKey,
+          value: imageUrl,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Fehler beim Speichern des Bildes');
+        throw new Error('Fehler beim Zuweisen des Bildes');
       }
 
       return response.json();
     },
-    onSuccess: (_, { imageId }) => {
+    onSuccess: () => {
       toast({
-        title: "Bild aktualisiert",
-        description: "Das Website-Bild wurde erfolgreich aktualisiert.",
+        title: "Bild zugewiesen",
+        description: "Das Bild wurde erfolgreich dem Website-Bereich zugewiesen.",
       });
-      setEditingImage(null);
-      setNewUrl('');
-      
-      // Invalidate queries to refresh any cached data
+      setSelectedImageArea(null);
+      setSelectedImage(null);
       queryClient.invalidateQueries({ queryKey: ['/api/admin/site-settings'] });
     },
     onError: (error: any) => {
       toast({
         title: "Fehler",
-        description: error.message || "Das Bild konnte nicht aktualisiert werden.",
+        description: error.message || "Das Bild konnte nicht zugewiesen werden.",
         variant: "destructive",
       });
     },
   });
 
-  const handleSaveImage = (imageId: string) => {
-    if (!newUrl.trim()) {
-      toast({
-        title: "Fehler",
-        description: "Bitte geben Sie eine gültige Bild-URL ein.",
-        variant: "destructive",
-      });
-      return;
-    }
+  const handleAssignImage = () => {
+    if (!selectedImageArea || !selectedImage) return;
+    
+    const area = websiteImageAreas.find(a => a.id === selectedImageArea);
+    if (!area) return;
 
-    updateImageMutation.mutate({ imageId, url: newUrl });
+    assignImageMutation.mutate({
+      settingKey: area.settingKey,
+      imageUrl: selectedImage.url
+    });
   };
 
-  const startEditing = (imageId: string, currentUrl: string) => {
-    setEditingImage(imageId);
-    setNewUrl(currentUrl);
+  const getCurrentImageForArea = (settingKey: string): string | null => {
+    const setting = siteSettings.find(s => s.key === settingKey);
+    return setting?.value || null;
   };
+
+  if (imagesLoading) {
+    return (
+      <div className="container mx-auto p-6">
+        <h1 className="text-3xl font-bold mb-6">Website-Bilder verwalten</h1>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-lg">Lade Bilder...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-6">
@@ -189,106 +163,121 @@ export default function AdminSiteImages() {
 
       <div className="mb-6">
         <p className="text-gray-600">
-          Hier können Sie alle Bilder verwalten, die auf der Website verwendet werden. 
-          Klicken Sie auf "Bearbeiten" um die Bild-URL zu ändern.
+          Wählen Sie einen Website-Bereich aus und ordnen Sie dann ein hochgeladenes Bild zu.
+          Die Bilder werden sofort auf der Website aktualisiert.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {siteImages.map((image) => (
-          <Card key={image.id}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Image size={20} />
-                {image.name}
-              </CardTitle>
-              <CardDescription>
-                <div className="space-y-1">
-                  <p><strong>Beschreibung:</strong> {image.description}</p>
-                  <p><strong>Verwendet in:</strong> {image.location}</p>
-                  <p><strong>Zweck:</strong> {image.usage}</p>
-                </div>
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {/* Aktuelles Bild anzeigen */}
-                <div>
-                  <Label>Aktuelles Bild:</Label>
-                  <div className="mt-2 border rounded-lg overflow-hidden">
-                    <img 
-                      src={image.currentUrl} 
-                      alt={image.name}
-                      className="w-full h-48 object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://via.placeholder.com/400x300?text=Bild+nicht+verfügbar';
-                      }}
-                    />
-                  </div>
-                </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Website-Bereiche */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Website-Bereiche</h2>
+          <div className="space-y-4">
+            {websiteImageAreas.map((area) => {
+              const currentImage = getCurrentImageForArea(area.settingKey);
+              const isSelected = selectedImageArea === area.id;
+              
+              return (
+                <Card 
+                  key={area.id} 
+                  className={`cursor-pointer transition-colors ${
+                    isSelected ? 'bg-blue-50 border-blue-500' : 'hover:bg-gray-50'
+                  }`}
+                  onClick={() => setSelectedImageArea(area.id)}
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">{area.name}</CardTitle>
+                      {isSelected && <Check className="w-5 h-5 text-blue-500" />}
+                    </div>
+                    <CardDescription>{area.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-gray-600 mb-2">Bereich: {area.location}</p>
+                    {currentImage ? (
+                      <div className="mt-2">
+                        <p className="text-sm font-medium text-green-600">Aktuelles Bild:</p>
+                        <img 
+                          src={currentImage} 
+                          alt={area.name}
+                          className="w-full h-32 object-cover rounded-md mt-1"
+                        />
+                      </div>
+                    ) : (
+                      <p className="text-sm text-orange-600">Kein Bild zugewiesen</p>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
 
-                {/* URL bearbeiten */}
-                {editingImage === image.id ? (
-                  <div className="space-y-2">
-                    <Label htmlFor={`url-${image.id}`}>Neue Bild-URL:</Label>
-                    <Input
-                      id={`url-${image.id}`}
-                      value={newUrl}
-                      onChange={(e) => setNewUrl(e.target.value)}
-                      placeholder="https://beispiel.com/bild.jpg"
-                    />
-                    <div className="flex gap-2">
-                      <Button 
-                        onClick={() => handleSaveImage(image.id)}
-                        disabled={updateImageMutation.isPending}
-                        className="flex items-center gap-2"
-                      >
-                        <Save size={16} />
-                        {updateImageMutation.isPending ? 'Speichern...' : 'Speichern'}
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        onClick={() => {
-                          setEditingImage(null);
-                          setNewUrl('');
-                        }}
-                      >
-                        Abbrechen
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <Label>Aktuelle URL:</Label>
-                    <div className="p-2 bg-gray-50 rounded text-sm break-all">
-                      {image.currentUrl}
-                    </div>
-                    <Button 
-                      onClick={() => startEditing(image.id, image.currentUrl)}
-                      className="flex items-center gap-2"
-                    >
-                      <Upload size={16} />
-                      Bild bearbeiten
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        {/* Hochgeladene Bilder */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Hochgeladene Bilder</h2>
+          {uploadedImages.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center h-64">
+                <Image className="w-12 h-12 text-gray-400 mb-4" />
+                <p className="text-gray-600 text-center">
+                  Keine Bilder hochgeladen. Laden Sie zuerst Bilder über das Produktformular hoch.
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-2 gap-4">
+              {uploadedImages.map((image) => {
+                const isSelected = selectedImage?.id === image.id;
+                
+                return (
+                  <Card 
+                    key={image.id}
+                    className={`cursor-pointer transition-colors ${
+                      isSelected ? 'bg-green-50 border-green-500' : 'hover:bg-gray-50'
+                    }`}
+                    onClick={() => setSelectedImage(image)}
+                  >
+                    <CardContent className="p-3">
+                      <div className="relative">
+                        {isSelected && (
+                          <div className="absolute top-2 right-2 bg-green-500 text-white rounded-full p-1">
+                            <Check className="w-4 h-4" />
+                          </div>
+                        )}
+                        <img 
+                          src={image.url} 
+                          alt={image.filename}
+                          className="w-full h-32 object-cover rounded-md"
+                        />
+                      </div>
+                      <p className="text-sm font-medium mt-2 truncate">{image.filename}</p>
+                      <p className="text-xs text-gray-500">
+                        {Math.round(image.size / 1024)} KB
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-        <h3 className="font-semibold mb-2">💡 Tipps für Website-Bilder:</h3>
-        <ul className="text-sm space-y-1 text-gray-700">
-          <li>• Verwenden Sie hochauflösende Bilder (mindestens 800x600 Pixel)</li>
-          <li>• Optimale Formate: JPG für Fotos, PNG für Grafiken mit Transparenz</li>
-          <li>• Achten Sie auf schnelle Ladezeiten - komprimierte Bilder bevorzugen</li>
-          <li>• Unsplash.com bietet kostenlose, hochwertige Bilder</li>
-          <li>• Verwenden Sie aussagekräftige Bilder, die zu Ihren Produkten passen</li>
-        </ul>
-      </div>
+      {/* Zuweisungs-Button */}
+      {selectedImageArea && selectedImage && (
+        <div className="fixed bottom-6 right-6">
+          <Button 
+            onClick={handleAssignImage}
+            disabled={assignImageMutation.isPending}
+            size="lg"
+            className="shadow-lg"
+          >
+            <Save className="w-4 h-4 mr-2" />
+            Bild zuweisen
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

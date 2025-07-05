@@ -35,6 +35,10 @@ const productSchema = z.object({
   isActive: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   stockStatus: z.enum(['in_stock', 'out_of_stock', 'limited']).default('in_stock'),
+  inStock: z.boolean().default(true),
+  availabilityTextEs: z.string().optional(),
+  availabilityTextDe: z.string().optional(),
+  availabilityTextEn: z.string().optional(),
   specifications: z.record(z.string()).optional(),
 });
 
@@ -69,6 +73,10 @@ export default function AdminProductForm() {
       isActive: true,
       isFeatured: false,
       stockStatus: 'in_stock',
+      inStock: true,
+      availabilityTextEs: '',
+      availabilityTextDe: '',
+      availabilityTextEn: '',
     },
   });
 
@@ -139,6 +147,10 @@ export default function AdminProductForm() {
         isFeatured: existingProduct.isFeatured || false,
         isActive: existingProduct.isActive !== false,
         stockStatus: (existingProduct.stockStatus as 'in_stock' | 'out_of_stock' | 'limited') || 'in_stock',
+        inStock: existingProduct.inStock !== false,
+        availabilityTextEs: existingProduct.availabilityTextEs || '',
+        availabilityTextDe: existingProduct.availabilityTextDe || '',
+        availabilityTextEn: existingProduct.availabilityTextEn || '',
       });
 
       // Set category for subcategories
@@ -700,26 +712,72 @@ export default function AdminProductForm() {
 
                   <FormField
                     control={form.control}
-                    name="stockStatus"
+                    name="inStock"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Lagerstatus</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="in_stock">Auf Lager</SelectItem>
-                            <SelectItem value="limited">Begrenzt verfügbar</SelectItem>
-                            <SelectItem value="out_of_stock">Nicht verfügbar</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <FormLabel className="text-base">Auf Lager</FormLabel>
+                          <div className="text-sm text-muted-foreground">
+                            Produkt ist verfügbar
+                          </div>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
                       </FormItem>
                     )}
                   />
+                </div>
+
+                {/* Verfügbarkeit */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Verfügbarkeit (wenn nicht auf Lager)</h3>
+                  <div className="grid grid-cols-1 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="availabilityTextEs"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Verfügbarkeit (Spanisch)</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="z.B. 2-3 semanas, 1-2 meses" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="availabilityTextDe"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Verfügbarkeit (Deutsch)</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="z.B. 2-3 Wochen, 1-2 Monate" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="availabilityTextEn"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Verfügbarkeit (Englisch)</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="e.g. 2-3 weeks, 1-2 months" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>
