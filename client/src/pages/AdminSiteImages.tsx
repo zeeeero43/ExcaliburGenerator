@@ -359,9 +359,17 @@ export default function AdminSiteImages() {
                               </div>
                             )}
                             <img 
-                              src={image.url.startsWith('http') ? image.url : `http://localhost:5000${image.url}`} 
+                              src={image.url} 
                               alt={image.filename}
                               className="w-full h-32 object-cover rounded-md"
+                              onError={(e) => {
+                                console.error('Image load error for:', image.url);
+                                // Fallback: try with explicit localhost construction
+                                const target = e.target as HTMLImageElement;
+                                if (!target.src.includes('localhost:5000')) {
+                                  target.src = `http://localhost:5000${image.url}`;
+                                }
+                              }}
                             />
                           </div>
                           <p className="text-sm font-medium mt-2 truncate">{image.filename}</p>
