@@ -1,0 +1,128 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+
+Installieren Sie die neueste PowerShell für neue Funktionen und Verbesserungen! https://aka.ms/PSWindows
+
+PS C:\Users\kaan2> ssh root@31.97.77.135
+root@31.97.77.135's password:
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-143-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Sat Jul  5 23:15:50 UTC 2025
+
+  System load:  0.0               Processes:             118
+  Usage of /:   3.7% of 96.73GB   Users logged in:       1
+  Memory usage: 5%                IPv4 address for eth0: 31.97.77.135
+  Swap usage:   0%                IPv6 address for eth0: 2a02:4780:41:945b::1
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+1 additional security update can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+New release '24.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+Last login: Sat Jul  5 23:05:27 2025 from 178.202.191.72
+root@srv896300:~# systemctl status postgresql --no-pager
+● postgresql.service - PostgreSQL RDBMS
+     Loaded: loaded (/lib/systemd/system/postgresql.service; enabled; vendor preset: enabled)
+     Active: active (exited) since Sat 2025-07-05 22:08:31 UTC; 1h 7min ago
+   Main PID: 5630 (code=exited, status=0/SUCCESS)
+        CPU: 1ms
+
+Jul 05 22:08:31 srv896300 systemd[1]: Starting PostgreSQL RDBMS...
+Jul 05 22:08:31 srv896300 systemd[1]: Finished PostgreSQL RDBMS.
+root@srv896300:~# sudo -u postgres psql excalibur_cuba -c "\dt"
+could not change directory to "/root": Permission denied
+                 List of relations
+ Schema |      Name       | Type  |     Owner
+--------+-----------------+-------+----------------
+ public | admin_users     | table | excalibur_user
+ public | categories      | table | excalibur_user
+ public | inquiries       | table | excalibur_user
+ public | page_views      | table | excalibur_user
+ public | products        | table | excalibur_user
+ public | site_settings   | table | excalibur_user
+ public | subcategories   | table | excalibur_user
+ public | uploaded_images | table | excalibur_user
+(8 rows)
+
+root@srv896300:~# sudo -u postgres psql excalibur_cuba -c "SELECT id, username, password, is_active FROM admin_users;"
+could not change directory to "/root": Permission denied
+ id |    username     |                           password                           | is_active
+----+-----------------+--------------------------------------------------------------+-----------
+  3 | excalibur_admin | $2b$10$xoya0DE0emU6CaqFw9ejmuayC4nDOlR0NZZIuMVGtKtQRIQRsjb2K | t
+(1 row)
+
+root@srv896300:~# cd /var/www/excalibur-cuba/ExcaliburGenerator
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# cat > db-test.cjs << 'EOF'
+const { Pool } = require('pg');
+const bcrypt = require('bcryptjs');
+async function fullTest() {
+  console.log('=== DATENBANK-VOLLTEST ===');
+
+  try {
+    const pool = new Pool({
+      connectionString: "postgresql://excalibur_user:SecurePass2025@localhost:5432/excalibur_cuba"
+    });
+
+    const client = await pool.connect();
+    console.log('✅ Datenbankverbindung erfolgreich');
+
+    // Test User Query
+    const result = await client.query('SELECT * FROM admin_users WHERE username = $1', ['excalibur_admin']);
+    console.log('✅ User gefunden:', result.rows.length > 0);
+
+    if (result.rows.length > 0) {
+      const user = result.rows[0];
+      console.log('✅ Username:', user.username);
+      console.log('✅ Aktiv:', user.is_active);
+      console.log('✅ Password Hash:', user.password.substring(0, 20) + '...');
+
+      // Test Password
+      const isValid = await bcrypt.compare('admin123', user.password);
+      console.log('✅ Password gültig:', isValid);
+
+      if (isValid && user.is_active) {
+EOFlTest();.error('❌ FEHLER:', error.message);der Passwort falsch');
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# node db-test.cjs
+=== DATENBANK-VOLLTEST ===
+✅ Datenbankverbindung erfolgreich
+✅ User gefunden: true
+✅ Username: excalibur_admin
+✅ Aktiv: true
+✅ Password Hash: $2b$10$xoya0DE0emU6C...
+✅ Password gültig: true
+🎉 ALLES FUNKTIONIERT - LOGIN SOLLTE KLAPPEN!
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# journalctl -u excalibur-cuba -n 20 --no-pager
+Jul 05 23:16:07 srv896300 npm[9538]:     _bufferedAmount: 0,
+Jul 05 23:16:07 srv896300 npm[9538]:     _isServer: false,
+Jul 05 23:16:07 srv896300 npm[9538]:     _redirects: 0,
+Jul 05 23:16:07 srv896300 npm[9538]:     _autoPong: true,
+Jul 05 23:16:07 srv896300 npm[9538]:     _url: 'wss://localhost/v2',
+Jul 05 23:16:07 srv896300 npm[9538]:     _req: null,
+Jul 05 23:16:07 srv896300 npm[9538]:     [Symbol(shapeMode)]: false,
+Jul 05 23:16:07 srv896300 npm[9538]:     [Symbol(kCapture)]: false
+Jul 05 23:16:07 srv896300 npm[9538]:   },
+Jul 05 23:16:07 srv896300 npm[9538]:   [Symbol(kType)]: 'error',
+Jul 05 23:16:07 srv896300 npm[9538]:   [Symbol(kError)]: Error: self-signed certificate
+Jul 05 23:16:07 srv896300 npm[9538]:       at TLSSocket.onConnectSecure (node:_tls_wrap:1677:34)
+Jul 05 23:16:07 srv896300 npm[9538]:       at TLSSocket.emit (node:events:524:28)
+Jul 05 23:16:07 srv896300 npm[9538]:       at TLSSocket._finishInit (node:_tls_wrap:1076:8)
+Jul 05 23:16:07 srv896300 npm[9538]:       at ssl.onhandshakedone (node:_tls_wrap:862:12) {
+Jul 05 23:16:07 srv896300 npm[9538]:     code: 'DEPTH_ZERO_SELF_SIGNED_CERT'
+Jul 05 23:16:07 srv896300 npm[9538]:   },
+Jul 05 23:16:07 srv896300 npm[9538]:   [Symbol(kMessage)]: 'self-signed certificate'
+Jul 05 23:16:07 srv896300 npm[9538]: }
+Jul 05 23:16:07 srv896300 npm[9538]: 11:16:07 PM [express] POST /api/admin/login 500 in 5ms :: {"error":"Login failed"}
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# grep DATABASE_URL /var/www/excalibur-cuba/ExcaliburGenerator/.env
+DATABASE_URL=postgresql://excalibur_user:SecurePass2025@localhost:5432/excalibur_cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
