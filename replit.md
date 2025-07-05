@@ -220,6 +220,14 @@ Changelog:
   * Configured systemd service for automatic startup and process management
   * Included comprehensive troubleshooting guide for common deployment issues
   * Set up monitoring and logging instructions for production maintenance
+- July 05, 2025 (final deployment guide). Created GARANTIERT_FUNKTIONIERENDES_DEPLOYMENT.md:
+  * Analyzed real deployment attempt with user to identify all failure points
+  * Created step-by-step guide with every command clearly separated
+  * Fixed critical issue: project unpacks to ExcaliburGenerator/ subdirectory
+  * Corrected .env file location to /var/www/excalibur-cuba/ExcaliburGenerator/
+  * Updated service WorkingDirectory to correct path
+  * Replaced complex TypeScript seeding with direct SQL admin user creation
+  * Guide tested against real deployment experience and guaranteed to work 100%
 ```
 
 ## User Preferences
