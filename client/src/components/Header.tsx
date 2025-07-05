@@ -4,6 +4,7 @@ import { Menu, X, MessageCircle, MapPin, Mail } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
+
 import { Button } from './ui/button';
 
 export function Header() {
@@ -41,14 +42,12 @@ export function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-excalibur-blue rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">E</span>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold excalibur-blue">EXCALIBUR</h1>
-              <p className="text-sm excalibur-gray">CUBA</p>
-            </div>
+          <Link href="/" className="flex items-center">
+            <img 
+              src="/excalibur-logo.png" 
+              alt="Excalibur Cuba" 
+              className="h-12 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}
