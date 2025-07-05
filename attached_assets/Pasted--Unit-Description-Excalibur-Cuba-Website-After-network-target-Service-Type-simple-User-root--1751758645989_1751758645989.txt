@@ -1,0 +1,63 @@
+[Unit]
+Description=Excalibur Cuba Website
+After=network.target
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/excalibur-cuba/ExcaliburGenerator
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npm run start
+Restart=always
+RestartSec=5
+[Install]
+WantedBy=multi-user.target
+EOF
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl daemon-reload
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl enable excalibur-cuba
+Created symlink /etc/systemd/system/multi-user.target.wants/excalibur-cuba.service → /etc/systemd/system/excalibur-cuba.service.
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl start excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl status excalibur-cuba
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: activating (auto-restart) (Result: exit-code) since Sat 2025-07-05 23:36:23 UTC; 1s ago
+    Process: 5690 ExecStart=/usr/bin/npm run start (code=exited, status=1/FAILURE)
+   Main PID: 5690 (code=exited, status=1/FAILURE)
+        CPU: 533ms
+
+Jul 05 23:36:23 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 23:36:23 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# journalctl -u excalibur-cuba -n 20 --no-pager
+Jul 05 23:37:02 srv896300 npm[5867]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 23:37:02 srv896300 npm[5867]: Node.js v20.19.3
+Jul 05 23:37:02 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 23:37:02 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 23:37:07 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 8.
+Jul 05 23:37:07 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 23:37:07 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 23:37:07 srv896300 npm[5878]: > rest-express@1.0.0 start
+Jul 05 23:37:07 srv896300 npm[5878]: > NODE_ENV=production node dist/index.js
+Jul 05 23:37:07 srv896300 npm[5890]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:242
+Jul 05 23:37:07 srv896300 npm[5890]:   throw new Error(
+Jul 05 23:37:07 srv896300 npm[5890]:         ^
+Jul 05 23:37:07 srv896300 npm[5890]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 23:37:07 srv896300 npm[5890]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:242:9
+Jul 05 23:37:07 srv896300 npm[5890]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 23:37:07 srv896300 npm[5890]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 23:37:07 srv896300 npm[5890]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 23:37:07 srv896300 npm[5890]: Node.js v20.19.3
+Jul 05 23:37:07 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 23:37:07 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# cd /var/www/excalibur-cuba/ExcaliburGenerator
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# export DATABASE_URL=postgresql://excalibur_user:SecurePass2025@localhost:5432/excalibur_cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# npm run start
+
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.js
+
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+🌱 Starting database seeding...
+✅ Secure admin user already exists
+🎉 Database seeding completed successfully!
+11:37:19 PM [express] serving on port 5000
