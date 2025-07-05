@@ -14,20 +14,41 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../components/ui/form';
 import { useToast } from '../hooks/use-toast';
 
-const inquirySchema = z.object({
-  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  email: z.string().email('Email inválido'),
-  phone: z.string().min(8, 'Teléfono inválido'),
-  systemType: z.string().min(1, 'Seleccione un tipo de sistema'),
-  message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
+const createInquirySchema = (language: string) => z.object({
+  name: z.string().min(2, 
+    language === 'de' ? 'Der Name muss mindestens 2 Zeichen haben' :
+    language === 'en' ? 'Name must be at least 2 characters' :
+    'El nombre debe tener al menos 2 caracteres'
+  ),
+  email: z.string().email(
+    language === 'de' ? 'Ungültige E-Mail' :
+    language === 'en' ? 'Invalid email' :
+    'Email inválido'
+  ),
+  phone: z.string().min(8, 
+    language === 'de' ? 'Ungültige Telefonnummer' :
+    language === 'en' ? 'Invalid phone number' :
+    'Teléfono inválido'
+  ),
+  systemType: z.string().min(1, 
+    language === 'de' ? 'Bitte wählen Sie einen Systemtyp' :
+    language === 'en' ? 'Please select a system type' :
+    'Seleccione un tipo de sistema'
+  ),
+  message: z.string().min(10, 
+    language === 'de' ? 'Die Nachricht muss mindestens 10 Zeichen haben' :
+    language === 'en' ? 'Message must be at least 10 characters' :
+    'El mensaje debe tener al menos 10 caracteres'
+  ),
 });
 
-type InquiryForm = z.infer<typeof inquirySchema>;
+type InquiryForm = z.infer<ReturnType<typeof createInquirySchema>>;
 
 export default function Contact() {
   const { t, currentLanguage } = useLanguage();
   const { toast } = useToast();
 
+  const inquirySchema = createInquirySchema(currentLanguage);
   const form = useForm<InquiryForm>({
     resolver: zodResolver(inquirySchema),
     defaultValues: {

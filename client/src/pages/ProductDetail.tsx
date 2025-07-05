@@ -131,7 +131,6 @@ export default function ProductDetail() {
             {/* Product Header */}
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{productName}</h1>
-              <p className="text-lg text-gray-600 mb-4">{productShortDescription}</p>
               
               {/* Stock Status */}
               <div className="flex items-center gap-2 mb-4">
@@ -153,14 +152,32 @@ export default function ProductDetail() {
               {product.price && (
                 <div className="text-3xl font-bold text-blue-600 mb-4">
                   ${product.price}
-                  {product.priceNote && (
-                    <span className="text-sm text-gray-500 ml-2">{product.priceNote}</span>
+                  {product.priceNote && product.priceNote.trim() && (
+                    <span className="text-sm text-gray-500 ml-2">({product.priceNote})</span>
                   )}
                 </div>
               )}
             </div>
 
 
+
+            {/* Product Short Description */}
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="text-lg">{String(t('description'))}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {productShortDescription ? (
+                  <p className="text-gray-700 leading-relaxed">{productShortDescription}</p>
+                ) : (
+                  <p className="text-gray-500 italic">
+                    {currentLanguage === 'es' ? 'Descripción disponible próximamente.' :
+                     currentLanguage === 'de' ? 'Beschreibung demnächst verfügbar.' :
+                     'Description coming soon.'}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
 
             {/* Specifications */}
             {product.specifications && Object.keys(product.specifications).length > 0 && (
@@ -180,24 +197,6 @@ export default function ProductDetail() {
                 </CardContent>
               </Card>
             )}
-
-            {/* Product Short Description */}
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg">{String(t('description'))}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {productShortDescription ? (
-                  <p className="text-gray-700 leading-relaxed">{productShortDescription}</p>
-                ) : (
-                  <p className="text-gray-500 italic">
-                    {currentLanguage === 'es' ? 'Descripción disponible próximamente.' :
-                     currentLanguage === 'de' ? 'Beschreibung demnächst verfügbar.' :
-                     'Description coming soon.'}
-                  </p>
-                )}
-              </CardContent>
-            </Card>
 
             {/* Contact Actions */}
             <div className="space-y-4">

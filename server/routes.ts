@@ -409,7 +409,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Inquiries API
-  app.post("/api/contact", async (req, res) => {
+  app.post("/api/inquiries", async (req, res) => {
     try {
       const inquiryData = insertInquirySchema.parse(req.body);
       const inquiry = await storage.createInquiry(inquiryData);

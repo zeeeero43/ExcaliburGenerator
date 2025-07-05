@@ -195,6 +195,9 @@ export default function AdminProductForm() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
+      if (isEdit) {
+        queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${params.id}`] });
+      }
       toast({
         title: isEdit ? "Produkt aktualisiert" : "Produkt erstellt",
         description: "Das Produkt wurde erfolgreich gespeichert.",
