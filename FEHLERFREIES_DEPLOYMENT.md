@@ -73,14 +73,31 @@ EOF
 
 ### Phase 4: Projekt-Upload (Fehlerfreie Methode)
 
+#### Schritt 1: ZIP-Datei vorbereiten
 ```bash
-# Du bist jetzt in /var/www/excalibur-cuba
+# Auf deinem Computer:
+# 1. Projekt hier als ZIP herunterladen
+# 2. ZIP-Datei umbenennen (WICHTIG: keine Leerzeichen!)
+#    Von: "rest-express (2).zip" 
+#    Zu:   "excalibur-project.zip"
+```
 
+#### Schritt 2: ZIP hochladen
+```bash
 # Von deinem Computer (PowerShell/CMD):
-# scp excalibur-project.zip root@DEINE_VPS_IP:/var/www/excalibur-cuba/
+scp C:\Downloads\excalibur-project.zip root@DEINE_VPS_IP:/var/www/excalibur-cuba/
 
-# Zurück auf VPS - ZIP entpacken
+# Oder für Linux/Mac:
+scp ~/Downloads/excalibur-project.zip root@DEINE_VPS_IP:/var/www/excalibur-cuba/
+```
+
+#### Schritt 3: Auf VPS entpacken
+```bash
+# Zurück auf VPS
+ssh root@DEINE_VPS_IP
 cd /var/www/excalibur-cuba
+
+# ZIP entpacken
 unzip excalibur-project.zip
 
 # WICHTIG: In das entpackte Verzeichnis wechseln (Fehler #4 vermeiden)
