@@ -359,7 +359,7 @@ export default function AdminSiteImages() {
                               </div>
                             )}
                             <img 
-                              src={image.url} 
+                              src={image.url.startsWith('http') ? image.url : `http://localhost:5000${image.url}`} 
                               alt={image.filename}
                               className="w-full h-32 object-cover rounded-md"
                             />
@@ -372,6 +372,29 @@ export default function AdminSiteImages() {
                       </Card>
                     );
                   })}
+                </div>
+              )}
+              
+              {/* Button direkt unter uploads Tab */}
+              {selectedTab === 'uploads' && selectedImage && selectedImageArea && (
+                <div className="mt-4">
+                  <Button
+                    onClick={handleAssignUploadedImage}
+                    disabled={assignImageMutation.isPending}
+                    className="w-full"
+                  >
+                    {assignImageMutation.isPending ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Wird zugewiesen...
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-4 h-4 mr-2" />
+                        Bild zuweisen
+                      </>
+                    )}
+                  </Button>
                 </div>
               )}
             </TabsContent>
@@ -422,6 +445,29 @@ export default function AdminSiteImages() {
                   </div>
                 </CardContent>
               </Card>
+              
+              {/* Button direkt unter upload Tab */}
+              {selectedTab === 'upload' && selectedImage && selectedImageArea && (
+                <div className="mt-4">
+                  <Button
+                    onClick={handleAssignUploadedImage}
+                    disabled={assignImageMutation.isPending}
+                    className="w-full"
+                  >
+                    {assignImageMutation.isPending ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Wird zugewiesen...
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-4 h-4 mr-2" />
+                        Bild zuweisen
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
             </TabsContent>
             
             <TabsContent value="url" className="mt-4">
@@ -468,25 +514,35 @@ export default function AdminSiteImages() {
                   )}
                 </CardContent>
               </Card>
+              
+              {/* Button direkt unter URL Tab */}
+              {selectedTab === 'url' && customImageUrl.trim() && selectedImageArea && (
+                <div className="mt-4">
+                  <Button
+                    onClick={handleAssignCustomUrl}
+                    disabled={assignImageMutation.isPending}
+                    className="w-full"
+                  >
+                    {assignImageMutation.isPending ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Wird zugewiesen...
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-4 h-4 mr-2" />
+                        Bild zuweisen
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </div>
       </div>
 
-      {/* Zuweisungs-Button */}
-      {selectedImageArea && canAssign() && (
-        <div className="fixed bottom-6 right-6">
-          <Button 
-            onClick={handleAssign}
-            disabled={assignImageMutation.isPending}
-            size="lg"
-            className="shadow-lg"
-          >
-            <Save className="w-4 h-4 mr-2" />
-            {assignImageMutation.isPending ? 'Wird zugewiesen...' : 'Bild zuweisen'}
-          </Button>
-        </div>
-      )}
+
     </div>
   );
 }
