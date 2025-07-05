@@ -710,6 +710,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // DIRECT LOGIN OVERRIDE - WORKING VERSION
+  app.post("/api/admin/login", (req, res) => {
+    import('bcryptjs').then(bcryptModule => {
+      import('pg').then(pgModule => {
+        const bcrypt = bcryptModule.default;
+        const { Pool } = pgModule.default;
+        
+        (async () => {
+          try {
+            const { username, password } = req.body;
+            console.log("🔐 LOGIN ATTEMPT:", username);
+            
+            const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+            const client = await pool.connect();
+            const result = await client.query("SELECT * FROM admin_users WHERE username = $1", [username]);
+            
+            if (result.rows.length > 0 && result.rows[0].is_active) {
+              const isValid = await bcrypt.compare(password, result.rows[0].password);
+              console.log("✅ Password valid:", isValid);
+              
+              if (isValid) {
+                client.release();
+                console.log("🎉 LOGIN SUCCESS!");
+                return res.json({ 
+                  success: true, 
+                  user: { 
+                    id: result.rows[0].id, 
+                    username: result.rows[0].username 
+                  } 
+                });
+              }
+            }
+            
+            client.release();
+            console.log("❌ Invalid credentials");
+            res.status(401).json({ error: "Invalid credentials" });
+          } catch (error) {
+            console.error("💥 Login error:", error);
+            res.status(500).json({ error: "Login failed: " + error.message });
+          }
+        })();
+      });
+    });
+  });
+
   // Setup SEO routes (robots.txt, sitemap.xml, structured data)
   setupSEO(app);
 
