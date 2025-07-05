@@ -231,7 +231,10 @@ export const translations = {
     // Contact page
     contactLocation: "Ubicación",
     contactLocationTitle: "Nuestra Ubicación",
-    contactLocationDesc: "Almacén principal en Havanna del Este con fácil acceso desde toda Cuba"
+    contactLocationDesc: "Almacén principal en Havanna del Este con fácil acceso desde toda Cuba",
+    
+    // About
+    slogan: "Iluminamos Cuba con energía solar"
 
   },
   
@@ -288,6 +291,7 @@ export const translations = {
     aboutTitle: "EXCALIBUR POWER: WIR ERHELLEN KUBA",
     aboutText1: "Wir sind KKMU Harry Lag Constructions aus Matanzas und vertreten die Excalibur Power Group in Kuba. Excalibur gehört zu den weltweit führenden Herstellern von Generatoren, Solarenergie und vielen anderen Komponenten.",
     aboutText2: "Wir garantieren beste Qualitaet zum besten Preis dank unserem Joint Venture Partner, Sponsor und Hauptlieferanten AFDL IMPORT & EXPORT (aus Deutschland) mit 35 Jahren Erfahrung.",
+    slogan: "Wir erhellen Kuba mit Solarenergie",
     yearsExperience: "Jahre Erfahrung",
     solarSystems: "Solarsysteme",
     ourWarehouse: "Unser Lager in Kuba",
@@ -682,6 +686,9 @@ export const translations = {
     // Contact page
     contactLocation: "Location",
     contactLocationTitle: "Our Location",
-    contactLocationDesc: "Main warehouse in Havana del Este with easy access from all of Cuba"
+    contactLocationDesc: "Main warehouse in Havana del Este with easy access from all of Cuba",
+    
+    // About
+    slogan: "We illuminate Cuba with solar energy"
   }
 };
