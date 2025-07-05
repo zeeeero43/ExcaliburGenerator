@@ -14,6 +14,9 @@ export default function ProductDetail() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
   
+  // Image Gallery State - moved to top to avoid conditional hooks
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
   // Get product by slug from URL params
   const { data: product, isLoading, error } = useQuery<Product>({
     queryKey: [`/api/products/${params.slug}`],
@@ -78,13 +81,11 @@ export default function ProductDetail() {
     window.location.href = `mailto:info@excalibur-cuba.com?subject=${encodeURIComponent(subject) as string}&body=${encodeURIComponent(body) as string}`;
   };
 
-  // Image Gallery Logic
-  const allImages = [
+  // Image Gallery Logic - only create functions if product exists
+  const allImages = product ? [
     product.mainImage,
     ...(product.images && Array.isArray(product.images) ? product.images : [])
-  ].filter(Boolean);
-  
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  ].filter(Boolean) : [];
   
   const nextImage = () => {
     setCurrentImageIndex((prev) => 

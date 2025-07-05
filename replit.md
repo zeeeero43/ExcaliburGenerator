@@ -203,6 +203,12 @@ Changelog:
   * Fixed cache invalidation to ensure immediate image updates on website
   * Made About page team image dynamic and admin-editable
   * Upload system now supports direct file upload with automatic selection
+- July 05, 2025 (critical bug fixes). Resolved automatic category recreation and React hooks error:
+  * Completely removed automatic category and subcategory seeding from server startup
+  * Fixed React hooks error in ProductDetail component by moving useState to top level
+  * Categories and subcategories are now purely admin-managed without auto-recreation
+  * Product detail page image gallery now works without conditional hooks errors
+  * System performance improved by eliminating unnecessary seeding operations on every server restart
 ```
 
 ## User Preferences
