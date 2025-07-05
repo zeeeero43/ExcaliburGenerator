@@ -136,10 +136,19 @@ export class DatabaseStorage implements IStorage {
   }
 
   async validateAdminUser(username: string, password: string): Promise<AdminUser | null> {
+    console.log("validateAdminUser called with username:", username);
     const user = await this.getAdminUserByUsername(username);
-    if (!user || !user.isActive) return null;
+    console.log("User found:", user ? "YES" : "NO");
     
+    if (!user || !user.isActive) {
+      console.log("User not found or not active");
+      return null;
+    }
+    
+    console.log("User is active, comparing password...");
     const isValid = await bcrypt.compare(password, user.password);
+    console.log("Password comparison result:", isValid);
+    
     return isValid ? user : null;
   }
 
