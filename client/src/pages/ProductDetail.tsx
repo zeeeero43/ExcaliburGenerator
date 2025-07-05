@@ -15,7 +15,7 @@ export default function ProductDetail() {
   
   // Get product by slug from URL params
   const { data: product, isLoading, error } = useQuery<Product>({
-    queryKey: ['/api/products', params.slug],
+    queryKey: [`/api/products/${params.slug}`],
     enabled: !!params.slug,
     retry: false,
   });
@@ -99,35 +99,14 @@ export default function ProductDetail() {
           {/* Product Image */}
           <div className="space-y-4">
             <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
-              {product.mainImage ? (
-                <img
-                  src={product.mainImage.startsWith('http') ? product.mainImage : `http://localhost:5000${product.mainImage}`}
-                  alt={productName}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Try different fallback images based on product category
-                    const fallbackImages = [
-                      'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop',
-                      'https://images.unsplash.com/photo-1624397640148-949b1732bb4a?w=500&h=500&fit=crop',
-                      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=500&fit=crop'
-                    ];
-                    const randomFallback = fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
-                    e.currentTarget.src = randomFallback;
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100">
-                  <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-3 bg-blue-100 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    </div>
-                    <p className="text-gray-600 font-medium">{productName}</p>
-                    <p className="text-sm text-gray-500 mt-1">Solar-Produkt</p>
-                  </div>
-                </div>
-              )}
+              <img
+                src={product.mainImage || '/api/placeholder/500/500'}
+                alt={productName}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = '/api/placeholder/500/500';
+                }}
+              />
             </div>
             
             {/* Trust Badges */}
@@ -164,24 +143,9 @@ export default function ProductDetail() {
                   product.stockStatus === 'in_stock' ? 'text-green-600' : 
                   product.stockStatus === 'limited' ? 'text-yellow-600' : 'text-red-600'
                 }`}>
-                  {(() => {
-                    console.log('Stock Status Debug:', { 
-                      stockStatus: product.stockStatus, 
-                      typeof: typeof product.stockStatus,
-                      isInStock: product.stockStatus === 'in_stock',
-                      currentLang: currentLanguage,
-                      inStockTranslation: String(t('inStock')),
-                      outOfStockTranslation: String(t('outOfStock'))
-                    });
-                    
-                    if (product.stockStatus === 'in_stock') {
-                      return String(t('inStock'));
-                    } else if (product.stockStatus === 'limited') {
-                      return String(t('limitedStock'));
-                    } else {
-                      return String(t('outOfStock'));
-                    }
-                  })()}
+                  {product.stockStatus === 'in_stock' ? String(t('inStock')) : 
+                   product.stockStatus === 'limited' ? String(t('limitedStock')) : 
+                   String(t('outOfStock'))}
                 </span>
               </div>
 
@@ -217,19 +181,19 @@ export default function ProductDetail() {
               </Card>
             )}
 
-            {/* Detailed Product Description */}
+            {/* Product Short Description */}
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle className="text-lg">{String(t('description'))}</CardTitle>
               </CardHeader>
               <CardContent>
-                {productDescription ? (
-                  <p className="text-gray-700 leading-relaxed">{productDescription}</p>
+                {productShortDescription ? (
+                  <p className="text-gray-700 leading-relaxed">{productShortDescription}</p>
                 ) : (
                   <p className="text-gray-500 italic">
-                    {currentLanguage === 'es' ? 'Descripción detallada disponible próximamente.' :
-                     currentLanguage === 'de' ? 'Detaillierte Beschreibung demnächst verfügbar.' :
-                     'Detailed description coming soon.'}
+                    {currentLanguage === 'es' ? 'Descripción disponible próximamente.' :
+                     currentLanguage === 'de' ? 'Beschreibung demnächst verfügbar.' :
+                     'Description coming soon.'}
                   </p>
                 )}
               </CardContent>

@@ -80,7 +80,7 @@ export default function AdminProductForm() {
 
   // Fetch existing product if editing
   const { data: existingProduct, isLoading: productLoading } = useQuery<Product>({
-    queryKey: ['/api/admin/products', params.id],
+    queryKey: [`/api/admin/products/${params.id}`],
     enabled: Boolean(isEdit && params.id && user),
     retry: false,
   });
