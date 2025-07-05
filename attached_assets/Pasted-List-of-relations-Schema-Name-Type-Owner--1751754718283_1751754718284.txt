@@ -1,0 +1,33 @@
+List of relations
+ Schema |      Name       | Type  |     Owner
+--------+-----------------+-------+----------------
+ public | admin_users     | table | excalibur_user
+ public | categories      | table | excalibur_user
+ public | inquiries       | table | excalibur_user
+ public | page_views      | table | excalibur_user
+ public | products        | table | excalibur_user
+ public | site_settings   | table | excalibur_user
+ public | subcategories   | table | excalibur_user
+ public | uploaded_images | table | excalibur_user
+(8 rows)
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sudo -u postgres psql excalibur_cuba -c "\d admin_users"
+                                        Table "public.admin_users"
+   Column   |            Type             | Collation | Nullable |                 Default
+------------+-----------------------------+-----------+----------+-----------------------------------------
+ id         | integer                     |           | not null | nextval('admin_users_id_seq'::regclass)
+ username   | character varying(50)       |           | not null |
+ email      | character varying(100)      |           | not null |
+ password   | character varying(255)      |           | not null |
+ first_name | character varying(50)       |           |          |
+ last_name  | character varying(50)       |           |          |
+ role       | character varying(20)       |           |          | 'admin'::character varying
+ is_active  | boolean                     |           |          | true
+ created_at | timestamp without time zone |           |          | now()
+ updated_at | timestamp without time zone |           |          | now()
+Indexes:
+    "admin_users_pkey" PRIMARY KEY, btree (id)
+    "admin_users_email_unique" UNIQUE CONSTRAINT, btree (email)
+    "admin_users_username_unique" UNIQUE CONSTRAINT, btree (username)
+Referenced by:
+    TABLE "uploaded_images" CONSTRAINT "uploaded_images_uploaded_by_admin_users_id_fk" FOREIGN KEY (uploaded_by) REFERENCES admin_users(id)
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
