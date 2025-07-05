@@ -1,0 +1,75 @@
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# # Mit dem Output vom Node-Befehl:
+sudo -u postgres psql excalibur_cuba << 'EOF'
+UPDATE admin_users
+SET password = 'HIER_DEN_GENERIERTEN_HASH_EINFÜGEN'
+WHERE username = 'admin';
+EOF
+UPDATE 1
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# # Alten User löschen und neuen erstellen
+sudo -u postgres psql excalibur_cuba << 'EOF'
+DELETE FROM admin_users WHERE username = 'admin';
+INSERT INTO admin_users (username, email, password, first_name, last_name)
+VALUES ('testadmin', 'test@example.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Test', 'Admin');
+EOF
+DELETE 1
+INSERT 0 1
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sudo -u postgres psql excalibur_cuba -c "DELETE FROM admin_users;"
+DELETE 1
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sudo -u postgres psql excalibur_cuba -c "\d admin_users"
+                                        Table "public.admin_users"
+   Column   |            Type             | Collation | Nullable |                 Default
+------------+-----------------------------+-----------+----------+-----------------------------------------
+ id         | integer                     |           | not null | nextval('admin_users_id_seq'::regclass)
+ username   | character varying(50)       |           | not null |
+ email      | character varying(100)      |           | not null |
+ password   | character varying(255)      |           | not null |
+ first_name | character varying(50)       |           |          |
+ last_name  | character varying(50)       |           |          |
+ role       | character varying(20)       |           |          | 'admin'::character varying
+ is_active  | boolean                     |           |          | true
+ created_at | timestamp without time zone |           |          | now()
+ updated_at | timestamp without time zone |           |          | now()
+Indexes:
+    "admin_users_pkey" PRIMARY KEY, btree (id)
+    "admin_users_email_unique" UNIQUE CONSTRAINT, btree (email)
+    "admin_users_username_unique" UNIQUE CONSTRAINT, btree (username)
+Referenced by:
+    TABLE "uploaded_images" CONSTRAINT "uploaded_images_uploaded_by_admin_users_id_fk" FOREIGN KEY (uploaded_by) REFERENCES admin_users(id)
+
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sudo -u postgres psql excalibur_cuba << 'EOF'
+INSERT INTO admin_users (username, email, password, first_name, last_name, role, is_active)
+VALUES ('excalibur_admin', 'admin@excalibur-cuba.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin', 'User', 'admin', true);
+EOF
+INSERT 0 1
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sudo -u postgres psql excalibur_cuba -c "SELECT id, username, email, role FROM admin_users;"
+ id |    username     |          email           | role
+----+-----------------+--------------------------+-------
+  3 | excalibur_admin | admin@excalibur-cuba.com | admin
+(1 row)
+
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl status excalibur-cuba
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2025-07-05 22:37:39 UTC; 2s ago
+   Main PID: 8535 (npm run start)
+      Tasks: 23 (limit: 9477)
+     Memory: 68.2M
+        CPU: 579ms
+     CGroup: /system.slice/excalibur-cuba.service
+             ├─8535 "npm run start" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
+             ├─8547 sh -c "NODE_ENV=production node dist/index.js"
+             └─8548 node dist/index.js
+
+Jul 05 22:37:39 srv896300 npm[8548]:   [Symbol(kError)]: Error: self-signed certificate
+Jul 05 22:37:39 srv896300 npm[8548]:       at TLSSocket.onConnectSecure (node:_tls_wrap:1677:34)
+Jul 05 22:37:39 srv896300 npm[8548]:       at TLSSocket.emit (node:events:524:28)
+Jul 05 22:37:39 srv896300 npm[8548]:       at TLSSocket._finishInit (node:_tls_wrap:1076:8)
+Jul 05 22:37:39 srv896300 npm[8548]:       at ssl.onhandshakedone (node:_tls_wrap:862:12) {
+Jul 05 22:37:39 srv896300 npm[8548]:     code: 'DEPTH_ZERO_SELF_SIGNED_CERT'
+Jul 05 22:37:39 srv896300 npm[8548]:   },
+Jul 05 22:37:39 srv896300 npm[8548]:   [Symbol(kMessage)]: 'self-signed certificate'
+Jul 05 22:37:39 srv896300 npm[8548]: }
+Jul 05 22:37:39 srv896300 npm[8548]: 10:37:39 PM [express] serving on port 5000
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
