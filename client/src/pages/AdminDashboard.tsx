@@ -37,6 +37,15 @@ export default function AdminDashboard() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { t, switchLanguage } = useLanguage();
+  const [adminLanguage, setAdminLanguage] = useState(() => 
+    localStorage.getItem('admin-language') || 'de'
+  );
+
+  const handleLanguageChange = (lang: string) => {
+    setAdminLanguage(lang);
+    localStorage.setItem('admin-language', lang);
+    switchLanguage(lang as 'es' | 'de' | 'en');
+  };
 
 
 
