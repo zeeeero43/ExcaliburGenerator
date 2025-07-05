@@ -1,0 +1,42 @@
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+1 additional security update can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+New release '24.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+Last login: Sat Jul  5 23:37:39 2025 from 178.202.191.72
+root@srv896300:~# cd /var/www/excalibur-cuba/ExcaliburGenerator
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# grep -r "admin/dashboard" client/src/
+client/src/pages/AdminAnalytics.tsx:          <Link href="/admin/dashboard">
+client/src/pages/AdminImageManager.tsx:          <Link to="/admin/dashboard">
+client/src/pages/AdminSiteImages.tsx:        <Link href="/admin/dashboard">
+client/src/pages/AdminLogin.tsx:      setLocation('/admin/dashboard');
+client/src/App.tsx:      <Route path="/admin/dashboard" component={AdminDashboard} />
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# grep -r "MemoryStore" server/
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sudo -u postgres psql excalibur_cuba << 'EOF'
+CREATE TABLE IF NOT EXISTS sessions (
+  sid VARCHAR PRIMARY KEY,
+  sess JSON NOT NULL,
+  expire TIMESTAMP(6) NOT NULL
+);
+CREATE INDEX IF NOT EXISTS IDX_session_expire ON sessions (expire);
+EOF
+CREATE TABLE
+CREATE INDEX
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo 'SESSION_SECRET=excalibur-cuba-secret-2025-secure-key-production' >> .env
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sleep 3
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -c cookies.txt -k -X POST https://31.97.77.135/api/admin/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"excalibur_admin","password":"admin123"}'
+curl: (7) Failed to connect to 31.97.77.135 port 443 after 0 ms: Connection refused
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -b cookies.txt -k https://31.97.77.135/admin/dashboard
+curl: (7) Failed to connect to 31.97.77.135 port 443 after 0 ms: Connection refused
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# echo "🌐 Jetzt Browser-Test: https://31.97.77.135/admin/login"
+🌐 Jetzt Browser-Test: https://31.97.77.135/admin/login
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
