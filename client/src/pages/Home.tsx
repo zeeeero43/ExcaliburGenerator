@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { HeroSlider } from '../components/HeroSlider';
 import { ProductCard } from '../components/ProductCard';
+import { Button } from '../components/ui/button';
+import { Link } from 'wouter';
 import type { Product, Category } from '@shared/schema';
 
 export default function Home() {
@@ -102,22 +104,23 @@ export default function Home() {
                 );
               })
             ) : (
-              /* Show empty state - admin must create and feature products */
+              /* Show fallback products when no featured products are available */
               <div className="col-span-full text-center py-16">
-                <div className="bg-gray-50 rounded-lg p-8 max-w-md mx-auto">
-                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="w-8 h-8 text-gray-400" />
+                <div className="bg-blue-50 rounded-lg p-8 max-w-md mx-auto">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="w-8 h-8 text-blue-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    Keine Produkte verfügbar
+                    {t('ourProducts')}
                   </h3>
                   <p className="text-gray-600 mb-4">
-                    Erstellen Sie Produkte im Admin-Panel und markieren Sie sie als "Empfohlen", 
-                    damit sie auf der Startseite angezeigt werden.
+                    {t('productsSubtitle')}
                   </p>
-                  <p className="text-sm text-gray-500">
-                    Login: /admin/login (admin/admin123)
-                  </p>
+                  <Link href="/products">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                      {t('viewProducts')}
+                    </Button>
+                  </Link>
                 </div>
               </div>
             )}

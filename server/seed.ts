@@ -5,21 +5,25 @@ export async function seedDatabase() {
   try {
     console.log("🌱 Starting database seeding...");
 
-    // Create default admin user
-    const existingAdmin = await storage.getAdminUserByUsername("admin");
-    if (!existingAdmin) {
+    // Check for existing admin user by username or email
+    const existingAdminByUsername = await storage.getAdminUserByUsername("excalibur_admin");
+    const existingAdminByEmail = await storage.getAdminUserByUsername("admin"); // Check old username
+    
+    if (!existingAdminByUsername && !existingAdminByEmail) {
       const adminUser: InsertAdminUser = {
-        username: "admin",
+        username: "excalibur_admin",
         email: "admin@excalibur-cuba.com",
-        password: "admin123", // This will be hashed
-        firstName: "Admin",
-        lastName: "User",
+        password: "ExcaliburCuba@2025!",
+        firstName: "Excalibur",
+        lastName: "Admin",
         role: "admin",
         isActive: true,
       };
       
       await storage.createAdminUser(adminUser);
-      console.log("✅ Default admin user created (username: admin, password: admin123)");
+      console.log("✅ Admin user created for Excalibur Cuba");
+    } else {
+      console.log("✅ Admin user already exists");
     }
 
     // Create categories based on PDF requirements

@@ -78,7 +78,27 @@ export default function AdminDashboard() {
         active: 'Aktiv',
         inactive: 'Inaktiv',
         new: 'Neu',
-        replied: 'Beantwortet'
+        replied: 'Beantwortet',
+        total: 'insgesamt',
+        online: 'Online',
+        systemRunning: 'System läuft',
+        manageProducts: 'Produkte verwalten',
+        manageCategories: 'Kategorien verwalten',
+        customerInquiries: 'Kundenanfragen',
+        productManagement: 'Produktverwaltung',
+        productManagementDesc: 'Verwalten Sie Ihre Produkte einfach und schnell',
+        categoryManagement: 'Kategorienverwaltung',
+        categoryManagementDesc: 'Organisieren Sie Ihre Produktkategorien',
+        inquiryManagement: 'Anfragenverwaltung',
+        inquiryManagementDesc: 'Bearbeiten Sie Kundenanfragen',
+        noProductsAvailable: 'Keine Produkte verfügbar',
+        noCategoriesAvailable: 'Keine Kategorien verfügbar',
+        noInquiriesAvailable: 'Keine Anfragen verfügbar',
+        image: 'Bild',
+        stockStatus: 'Lagerbestand',
+        availability: 'Verfügbarkeit',
+        createdAt: 'Erstellt am',
+        actions: 'Aktionen'
       },
       es: {
         dashboard: 'Admin Excalibur Cuba',
@@ -112,7 +132,27 @@ export default function AdminDashboard() {
         active: 'Activo',
         inactive: 'Inactivo',
         new: 'Nuevo',
-        replied: 'Respondido'
+        replied: 'Respondido',
+        total: 'total',
+        online: 'En Línea',
+        systemRunning: 'Sistema funcionando',
+        manageProducts: 'Gestionar Productos',
+        manageCategories: 'Gestionar Categorías',
+        customerInquiries: 'Consultas de Clientes',
+        productManagement: 'Gestión de Productos',
+        productManagementDesc: 'Gestione sus productos de forma fácil y rápida',
+        categoryManagement: 'Gestión de Categorías',
+        categoryManagementDesc: 'Organice sus categorías de productos',
+        inquiryManagement: 'Gestión de Consultas',
+        inquiryManagementDesc: 'Procese consultas de clientes',
+        noProductsAvailable: 'No hay productos disponibles',
+        noCategoriesAvailable: 'No hay categorías disponibles',
+        noInquiriesAvailable: 'No hay consultas disponibles',
+        image: 'Imagen',
+        stockStatus: 'Estado de Stock',
+        availability: 'Disponibilidad',
+        createdAt: 'Creado el',
+        actions: 'Acciones'
       }
     };
     
@@ -307,21 +347,21 @@ export default function AdminDashboard() {
                 onClick={() => setLocation('/admin/analytics')}
               >
                 <BarChart className="w-4 h-4 mr-2" />
-                Analytics
+                {t('analytics')}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => setLocation('/admin/site-images')}
               >
                 <Image className="w-4 h-4 mr-2" />
-                Website-Bilder
+                {t('websiteImages')}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => window.open('/', '_blank')}
               >
                 <Eye className="w-4 h-4 mr-2" />
-                Website ansehen
+                {t('viewWebsite')}
               </Button>
               <Button
                 variant="outline"
@@ -329,7 +369,7 @@ export default function AdminDashboard() {
                 disabled={logoutMutation.isPending}
               >
                 <LogOut className="w-4 h-4 mr-2" />
-                Abmelden
+                {t('logout')}
               </Button>
             </div>
           </div>
@@ -341,44 +381,44 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Kategorien</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('categories')}</CardTitle>
               <Grid3X3 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{categories.length}</div>
-              <p className="text-xs text-muted-foreground">Aktive Kategorien</p>
+              <p className="text-xs text-muted-foreground">{t('activeCategories')}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Produkte</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('products')}</CardTitle>
               <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{activeProducts}</div>
-              <p className="text-xs text-muted-foreground">{totalProducts} insgesamt</p>
+              <p className="text-xs text-muted-foreground">{totalProducts} {t('total')}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Neue Anfragen</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('newInquiries')}</CardTitle>
               <MessageSquare className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{pendingInquiries}</div>
-              <p className="text-xs text-muted-foreground">{inquiries.length} insgesamt</p>
+              <p className="text-xs text-muted-foreground">{inquiries.length} {t('total')}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Status</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('status')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">Online</div>
-              <p className="text-xs text-muted-foreground">System läuft</p>
+              <div className="text-2xl font-bold text-green-600">{t('online')}</div>
+              <p className="text-xs text-muted-foreground">{t('systemRunning')}</p>
             </CardContent>
           </Card>
         </div>
@@ -386,9 +426,9 @@ export default function AdminDashboard() {
         {/* Main Content */}
         <Tabs defaultValue="products" className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="products">Produkte verwalten</TabsTrigger>
-            <TabsTrigger value="categories">Kategorien verwalten</TabsTrigger>
-            <TabsTrigger value="inquiries">Kundenanfragen</TabsTrigger>
+            <TabsTrigger value="products">{t('manageProducts')}</TabsTrigger>
+            <TabsTrigger value="categories">{t('manageCategories')}</TabsTrigger>
+            <TabsTrigger value="inquiries">{t('customerInquiries')}</TabsTrigger>
           </TabsList>
 
           {/* Products Tab */}

@@ -404,6 +404,24 @@ export const translations = {
       contactForPrivacyText: "Para preguntas sobre privacidad, contáctenos:",
       lastUpdated: "Última Actualización",
     },
+    
+    // Cookie Banner
+    cookieBanner: {
+      title: "Usamos Cookies",
+      description: "Utilizamos cookies para mejorar su experiencia y optimizar nuestro sitio web. Al usar nuestro sitio web, acepta nuestra política de cookies.",
+      acceptAll: "Aceptar Todas las Cookies",
+      rejectAll: "Rechazar Todas",
+      settings: "Configuración",
+      settingsTitle: "Configuración de Cookies",
+      acceptSelected: "Aceptar Selección",
+      necessary: "Cookies Necesarias",
+      necessaryDesc: "Estas cookies son necesarias para las funciones básicas del sitio web.",
+      analytics: "Cookies de Análisis",
+      analyticsDesc: "Nos ayudan a entender cómo usa nuestro sitio web.",
+      marketing: "Cookies de Marketing",
+      marketingDesc: "Se utilizan para mostrar publicidad relevante.",
+      required: "Requerido"
+    }
 
   },
   
@@ -695,6 +713,24 @@ export const translations = {
       contactForPrivacyText: "Bei Fragen zum Datenschutz kontaktieren Sie uns:",
       lastUpdated: "Letzte Aktualisierung",
     },
+    
+    // Cookie Banner
+    cookieBanner: {
+      title: "Wir verwenden Cookies",
+      description: "Wir nutzen Cookies, um Ihre Erfahrung zu verbessern und unsere Website zu optimieren. Durch die Nutzung unserer Website stimmen Sie unserer Cookie-Richtlinie zu.",
+      acceptAll: "Alle Cookies akzeptieren",
+      rejectAll: "Alle ablehnen",
+      settings: "Einstellungen",
+      settingsTitle: "Cookie-Einstellungen",
+      acceptSelected: "Auswahl akzeptieren",
+      necessary: "Notwendige Cookies",
+      necessaryDesc: "Diese Cookies sind für die Grundfunktionen der Website erforderlich.",
+      analytics: "Analyse-Cookies",
+      analyticsDesc: "Helfen uns zu verstehen, wie Sie unsere Website nutzen.",
+      marketing: "Marketing-Cookies",
+      marketingDesc: "Werden verwendet, um relevante Werbung anzuzeigen.",
+      required: "Erforderlich"
+    }
 
   },
   
@@ -967,5 +1003,23 @@ export const translations = {
       contactForPrivacyText: "For privacy questions, contact us:",
       lastUpdated: "Last Updated",
     },
+    
+    // Cookie Banner
+    cookieBanner: {
+      title: "We Use Cookies",
+      description: "We use cookies to improve your experience and optimize our website. By using our website, you agree to our cookie policy.",
+      acceptAll: "Accept All Cookies",
+      rejectAll: "Reject All",
+      settings: "Settings",
+      settingsTitle: "Cookie Settings",
+      acceptSelected: "Accept Selected",
+      necessary: "Necessary Cookies",
+      necessaryDesc: "These cookies are required for basic website functions.",
+      analytics: "Analytics Cookies",
+      analyticsDesc: "Help us understand how you use our website.",
+      marketing: "Marketing Cookies",
+      marketingDesc: "Used to display relevant advertising.",
+      required: "Required"
+    }
   }
 };
