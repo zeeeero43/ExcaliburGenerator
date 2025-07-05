@@ -1,0 +1,51 @@
+Last login: Sat Jul  5 22:44:14 2025 from 178.202.191.72
+root@srv896300:~# journalctl -u excalibur-cuba -n 20
+Jul 05 22:50:30 srv896300 npm[9013]:       [Symbol(kError)]: undefined
+Jul 05 22:50:30 srv896300 npm[9013]:     },
+Jul 05 22:50:30 srv896300 npm[9013]:     [Symbol(shapeMode)]: false,
+Jul 05 22:50:30 srv896300 npm[9013]:     [Symbol(kCapture)]: false
+Jul 05 22:50:30 srv896300 npm[9013]:   },
+Jul 05 22:50:30 srv896300 npm[9013]:   [Symbol(kType)]: 'error',
+Jul 05 22:50:30 srv896300 npm[9013]:   [Symbol(kError)]: Error: Unexpected server response: 200
+Jul 05 22:50:30 srv896300 npm[9013]:       at ClientRequest.<anonymous> (/var/www/excalibur-cuba/ExcaliburGenerator/node>
+Jul 05 22:50:30 srv896300 npm[9013]:       at ClientRequest.emit (node:events:524:28)
+Jul 05 22:50:30 srv896300 npm[9013]:       at HTTPParser.parserOnIncomingClient (node:_http_client:702:27)
+Jul 05 22:50:30 srv896300 npm[9013]:       at HTTPParser.parserOnHeadersComplete (node:_http_common:118:17)
+Jul 05 22:50:30 srv896300 npm[9013]:       at TLSSocket.socketOnData (node:_http_client:544:22)
+Jul 05 22:50:30 srv896300 npm[9013]:       at TLSSocket.emit (node:events:524:28)
+Jul 05 22:50:30 srv896300 npm[9013]:       at addChunk (node:internal/streams/readable:561:12)
+Jul 05 22:50:30 srv896300 npm[9013]:       at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+Jul 05 22:50:30 srv896300 npm[9013]:       at Readable.push (node:internal/streams/readable:392:5)
+Jul 05 22:50:30 srv896300 npm[9013]:       at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23),
+Jul 05 22:50:30 srv896300 npm[9013]:   [Symbol(kMessage)]: 'Unexpected server response: 200'
+Jul 05 22:50:30 srv896300 npm[9013]: }
+Jul 05 22:50:30 srv896300 npm[9013]: 10:50:30 PM [express] POST /api/admin/login 500 in 14ms :: {"error":"Login failed"}
+...skipping...
+Jul 05 22:50:30 srv896300 npm[9013]:       [Symbol(kError)]: undefined
+Jul 05 22:50:30 srv896300 npm[9013]:     },
+Jul 05 22:50:30 srv896300 npm[9013]:     [Symbol(shapeMode)]: false,
+Jul 05 22:50:30 srv896300 npm[9013]:     [Symbol(kCapture)]: false
+Jul 05 22:50:30 srv896300 npm[9013]:   },
+Jul 05 22:50:30 srv896300 npm[9013]:   [Symbol(kType)]: 'error',
+Jul 05 22:50:30 srv896300 npm[9013]:   [Symbol(kError)]: Error: Unexpected server response: 200
+Jul 05 22:50:30 srv896300 npm[9013]:       at ClientRequest.<anonymous> (/var/www/excalibur-cuba/ExcaliburGenerator/node>
+Jul 05 22:50:30 srv896300 npm[9013]:       at ClientRequest.emit (node:events:524:28)
+Jul 05 22:50:30 srv896300 npm[9013]:       at HTTPParser.parserOnIncomingClient (node:_http_client:702:27)
+Jul 05 22:50:30 srv896300 npm[9013]:       at HTTPParser.parserOnHeadersComplete (node:_http_common:118:17)
+Jul 05 22:50:30 srv896300 npm[9013]:       at TLSSocket.socketOnData (node:_http_client:544:22)
+Jul 05 22:50:30 srv896300 npm[9013]:       at TLSSocket.emit (node:events:524:28)
+Jul 05 22:50:30 srv896300 npm[9013]:       at addChunk (node:internal/streams/readable:561:12)
+Jul 05 22:50:30 srv896300 npm[9013]:       at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+Jul 05 22:50:30 srv896300 npm[9013]:       at Readable.push (node:internal/streams/readable:392:5)
+Jul 05 22:50:30 srv896300 npm[9013]:       at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23),
+Jul 05 22:50:30 srv896300 npm[9013]:   [Symbol(kMessage)]: 'Unexpected server response: 200'
+Jul 05 22:50:30 srv896300 npm[9013]: }
+Jul 05 22:50:30 srv896300 npm[9013]: 10:50:30 PM [express] POST /api/admin/login 500 in 14ms :: {"error":"Login failed"}
+~
+~
+~
+~
+~
+~
+~
+lines 1-20/20 (END)
