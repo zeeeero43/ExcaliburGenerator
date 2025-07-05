@@ -1,0 +1,553 @@
+root@srv896300:~# systemctl status excalibur-cuba
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: activating (auto-restart) (Result: exit-code) since Sat 2025-07-05 22:17:47 UTC; 4s ago
+    Process: 6885 ExecStart=/usr/bin/npm run start (code=exited, status=1/FAILURE)
+   Main PID: 6885 (code=exited, status=1/FAILURE)
+        CPU: 497ms
+
+Jul 05 22:17:47 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:47 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+root@srv896300:~# journalctl -u excalibur-cuba --no-pager
+Jul 05 22:16:02 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:02 srv896300 npm[6366]: > rest-express@1.0.0 start
+Jul 05 22:16:02 srv896300 npm[6366]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:03 srv896300 npm[6378]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:03 srv896300 npm[6378]:   throw new Error(
+Jul 05 22:16:03 srv896300 npm[6378]:         ^
+Jul 05 22:16:03 srv896300 npm[6378]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:03 srv896300 npm[6378]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:03 srv896300 npm[6378]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:03 srv896300 npm[6378]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:03 srv896300 npm[6378]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:03 srv896300 npm[6378]: Node.js v20.19.3
+Jul 05 22:16:03 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:03 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:08 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 1.
+Jul 05 22:16:08 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:08 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:08 srv896300 npm[6392]: > rest-express@1.0.0 start
+Jul 05 22:16:08 srv896300 npm[6392]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:08 srv896300 npm[6404]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:08 srv896300 npm[6404]:   throw new Error(
+Jul 05 22:16:08 srv896300 npm[6404]:         ^
+Jul 05 22:16:08 srv896300 npm[6404]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:08 srv896300 npm[6404]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:08 srv896300 npm[6404]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:08 srv896300 npm[6404]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:08 srv896300 npm[6404]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:08 srv896300 npm[6404]: Node.js v20.19.3
+Jul 05 22:16:08 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:08 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:13 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 2.
+Jul 05 22:16:13 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:13 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:13 srv896300 npm[6417]: > rest-express@1.0.0 start
+Jul 05 22:16:13 srv896300 npm[6417]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:14 srv896300 npm[6429]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:14 srv896300 npm[6429]:   throw new Error(
+Jul 05 22:16:14 srv896300 npm[6429]:         ^
+Jul 05 22:16:14 srv896300 npm[6429]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:14 srv896300 npm[6429]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:14 srv896300 npm[6429]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:14 srv896300 npm[6429]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:14 srv896300 npm[6429]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:14 srv896300 npm[6429]: Node.js v20.19.3
+Jul 05 22:16:14 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:14 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:19 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 3.
+Jul 05 22:16:19 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:19 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:19 srv896300 npm[6441]: > rest-express@1.0.0 start
+Jul 05 22:16:19 srv896300 npm[6441]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:19 srv896300 npm[6453]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:19 srv896300 npm[6453]:   throw new Error(
+Jul 05 22:16:19 srv896300 npm[6453]:         ^
+Jul 05 22:16:19 srv896300 npm[6453]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:19 srv896300 npm[6453]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:19 srv896300 npm[6453]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:19 srv896300 npm[6453]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:19 srv896300 npm[6453]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:19 srv896300 npm[6453]: Node.js v20.19.3
+Jul 05 22:16:19 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:19 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:24 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 4.
+Jul 05 22:16:24 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:24 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:24 srv896300 npm[6464]: > rest-express@1.0.0 start
+Jul 05 22:16:24 srv896300 npm[6464]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:25 srv896300 npm[6476]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:25 srv896300 npm[6476]:   throw new Error(
+Jul 05 22:16:25 srv896300 npm[6476]:         ^
+Jul 05 22:16:25 srv896300 npm[6476]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:25 srv896300 npm[6476]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:25 srv896300 npm[6476]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:25 srv896300 npm[6476]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:25 srv896300 npm[6476]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:25 srv896300 npm[6476]: Node.js v20.19.3
+Jul 05 22:16:25 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:25 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:30 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 5.
+Jul 05 22:16:30 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:30 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:30 srv896300 npm[6489]: > rest-express@1.0.0 start
+Jul 05 22:16:30 srv896300 npm[6489]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:30 srv896300 npm[6501]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:30 srv896300 npm[6501]:   throw new Error(
+Jul 05 22:16:30 srv896300 npm[6501]:         ^
+Jul 05 22:16:30 srv896300 npm[6501]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:30 srv896300 npm[6501]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:30 srv896300 npm[6501]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:30 srv896300 npm[6501]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:30 srv896300 npm[6501]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:30 srv896300 npm[6501]: Node.js v20.19.3
+Jul 05 22:16:30 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:30 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:35 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 6.
+Jul 05 22:16:35 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:35 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:35 srv896300 npm[6512]: > rest-express@1.0.0 start
+Jul 05 22:16:35 srv896300 npm[6512]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:36 srv896300 npm[6524]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:36 srv896300 npm[6524]:   throw new Error(
+Jul 05 22:16:36 srv896300 npm[6524]:         ^
+Jul 05 22:16:36 srv896300 npm[6524]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:36 srv896300 npm[6524]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:36 srv896300 npm[6524]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:36 srv896300 npm[6524]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:36 srv896300 npm[6524]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:36 srv896300 npm[6524]: Node.js v20.19.3
+Jul 05 22:16:36 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:36 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:41 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 7.
+Jul 05 22:16:41 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:41 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:41 srv896300 npm[6535]: > rest-express@1.0.0 start
+Jul 05 22:16:41 srv896300 npm[6535]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:41 srv896300 npm[6547]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:41 srv896300 npm[6547]:   throw new Error(
+Jul 05 22:16:41 srv896300 npm[6547]:         ^
+Jul 05 22:16:41 srv896300 npm[6547]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:41 srv896300 npm[6547]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:41 srv896300 npm[6547]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:41 srv896300 npm[6547]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:41 srv896300 npm[6547]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:41 srv896300 npm[6547]: Node.js v20.19.3
+Jul 05 22:16:41 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:41 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:46 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 8.
+Jul 05 22:16:46 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:46 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:46 srv896300 npm[6558]: > rest-express@1.0.0 start
+Jul 05 22:16:46 srv896300 npm[6558]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:47 srv896300 npm[6570]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:47 srv896300 npm[6570]:   throw new Error(
+Jul 05 22:16:47 srv896300 npm[6570]:         ^
+Jul 05 22:16:47 srv896300 npm[6570]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:47 srv896300 npm[6570]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:47 srv896300 npm[6570]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:47 srv896300 npm[6570]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:47 srv896300 npm[6570]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:47 srv896300 npm[6570]: Node.js v20.19.3
+Jul 05 22:16:47 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:47 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:52 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 9.
+Jul 05 22:16:52 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:52 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:52 srv896300 npm[6583]: > rest-express@1.0.0 start
+Jul 05 22:16:52 srv896300 npm[6583]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:52 srv896300 npm[6595]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:52 srv896300 npm[6595]:   throw new Error(
+Jul 05 22:16:52 srv896300 npm[6595]:         ^
+Jul 05 22:16:52 srv896300 npm[6595]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:52 srv896300 npm[6595]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:52 srv896300 npm[6595]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:52 srv896300 npm[6595]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:52 srv896300 npm[6595]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:52 srv896300 npm[6595]: Node.js v20.19.3
+Jul 05 22:16:52 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:52 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:16:57 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 10.
+Jul 05 22:16:57 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:16:57 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:16:57 srv896300 npm[6606]: > rest-express@1.0.0 start
+Jul 05 22:16:57 srv896300 npm[6606]: > NODE_ENV=production node dist/index.js
+Jul 05 22:16:58 srv896300 npm[6618]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:16:58 srv896300 npm[6618]:   throw new Error(
+Jul 05 22:16:58 srv896300 npm[6618]:         ^
+Jul 05 22:16:58 srv896300 npm[6618]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:16:58 srv896300 npm[6618]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:16:58 srv896300 npm[6618]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:16:58 srv896300 npm[6618]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:16:58 srv896300 npm[6618]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:16:58 srv896300 npm[6618]: Node.js v20.19.3
+Jul 05 22:16:58 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:16:58 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:03 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 11.
+Jul 05 22:17:03 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:03 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:03 srv896300 npm[6632]: > rest-express@1.0.0 start
+Jul 05 22:17:03 srv896300 npm[6632]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:03 srv896300 npm[6644]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:03 srv896300 npm[6644]:   throw new Error(
+Jul 05 22:17:03 srv896300 npm[6644]:         ^
+Jul 05 22:17:03 srv896300 npm[6644]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:03 srv896300 npm[6644]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:03 srv896300 npm[6644]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:03 srv896300 npm[6644]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:03 srv896300 npm[6644]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:03 srv896300 npm[6644]: Node.js v20.19.3
+Jul 05 22:17:03 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:03 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:08 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 12.
+Jul 05 22:17:08 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:08 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:08 srv896300 npm[6655]: > rest-express@1.0.0 start
+Jul 05 22:17:08 srv896300 npm[6655]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:09 srv896300 npm[6667]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:09 srv896300 npm[6667]:   throw new Error(
+Jul 05 22:17:09 srv896300 npm[6667]:         ^
+Jul 05 22:17:09 srv896300 npm[6667]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:09 srv896300 npm[6667]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:09 srv896300 npm[6667]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:09 srv896300 npm[6667]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:09 srv896300 npm[6667]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:09 srv896300 npm[6667]: Node.js v20.19.3
+Jul 05 22:17:09 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:09 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:14 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 13.
+Jul 05 22:17:14 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:14 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:14 srv896300 npm[6679]: > rest-express@1.0.0 start
+Jul 05 22:17:14 srv896300 npm[6679]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:14 srv896300 npm[6691]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:14 srv896300 npm[6691]:   throw new Error(
+Jul 05 22:17:14 srv896300 npm[6691]:         ^
+Jul 05 22:17:14 srv896300 npm[6691]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:14 srv896300 npm[6691]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:14 srv896300 npm[6691]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:14 srv896300 npm[6691]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:14 srv896300 npm[6691]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:14 srv896300 npm[6691]: Node.js v20.19.3
+Jul 05 22:17:14 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:14 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:19 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 14.
+Jul 05 22:17:19 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:19 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:19 srv896300 npm[6702]: > rest-express@1.0.0 start
+Jul 05 22:17:19 srv896300 npm[6702]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:20 srv896300 npm[6714]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:20 srv896300 npm[6714]:   throw new Error(
+Jul 05 22:17:20 srv896300 npm[6714]:         ^
+Jul 05 22:17:20 srv896300 npm[6714]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:20 srv896300 npm[6714]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:20 srv896300 npm[6714]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:20 srv896300 npm[6714]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:20 srv896300 npm[6714]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:20 srv896300 npm[6714]: Node.js v20.19.3
+Jul 05 22:17:20 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:20 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:25 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 15.
+Jul 05 22:17:25 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:25 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:25 srv896300 npm[6725]: > rest-express@1.0.0 start
+Jul 05 22:17:25 srv896300 npm[6725]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:25 srv896300 npm[6737]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:25 srv896300 npm[6737]:   throw new Error(
+Jul 05 22:17:25 srv896300 npm[6737]:         ^
+Jul 05 22:17:25 srv896300 npm[6737]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:25 srv896300 npm[6737]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:25 srv896300 npm[6737]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:25 srv896300 npm[6737]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:25 srv896300 npm[6737]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:25 srv896300 npm[6737]: Node.js v20.19.3
+Jul 05 22:17:25 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:25 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:30 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 16.
+Jul 05 22:17:30 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:30 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:30 srv896300 npm[6749]: > rest-express@1.0.0 start
+Jul 05 22:17:30 srv896300 npm[6749]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:31 srv896300 npm[6761]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:31 srv896300 npm[6761]:   throw new Error(
+Jul 05 22:17:31 srv896300 npm[6761]:         ^
+Jul 05 22:17:31 srv896300 npm[6761]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:31 srv896300 npm[6761]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:31 srv896300 npm[6761]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:31 srv896300 npm[6761]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:31 srv896300 npm[6761]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:31 srv896300 npm[6761]: Node.js v20.19.3
+Jul 05 22:17:31 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:31 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:36 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 17.
+Jul 05 22:17:36 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:36 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:36 srv896300 npm[6772]: > rest-express@1.0.0 start
+Jul 05 22:17:36 srv896300 npm[6772]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:36 srv896300 npm[6784]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:36 srv896300 npm[6784]:   throw new Error(
+Jul 05 22:17:36 srv896300 npm[6784]:         ^
+Jul 05 22:17:36 srv896300 npm[6784]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:36 srv896300 npm[6784]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:36 srv896300 npm[6784]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:36 srv896300 npm[6784]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:36 srv896300 npm[6784]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:36 srv896300 npm[6784]: Node.js v20.19.3
+Jul 05 22:17:36 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:36 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:41 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 18.
+Jul 05 22:17:41 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:41 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:41 srv896300 npm[6797]: > rest-express@1.0.0 start
+Jul 05 22:17:41 srv896300 npm[6797]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:42 srv896300 npm[6809]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:42 srv896300 npm[6809]:   throw new Error(
+Jul 05 22:17:42 srv896300 npm[6809]:         ^
+Jul 05 22:17:42 srv896300 npm[6809]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:42 srv896300 npm[6809]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:42 srv896300 npm[6809]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:42 srv896300 npm[6809]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:42 srv896300 npm[6809]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:42 srv896300 npm[6809]: Node.js v20.19.3
+Jul 05 22:17:42 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:42 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:47 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 19.
+Jul 05 22:17:47 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:47 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:47 srv896300 npm[6885]: > rest-express@1.0.0 start
+Jul 05 22:17:47 srv896300 npm[6885]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:47 srv896300 npm[6897]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:47 srv896300 npm[6897]:   throw new Error(
+Jul 05 22:17:47 srv896300 npm[6897]:         ^
+Jul 05 22:17:47 srv896300 npm[6897]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:47 srv896300 npm[6897]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:47 srv896300 npm[6897]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:47 srv896300 npm[6897]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:47 srv896300 npm[6897]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:47 srv896300 npm[6897]: Node.js v20.19.3
+Jul 05 22:17:47 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:47 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:52 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 20.
+Jul 05 22:17:52 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:52 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:52 srv896300 npm[6911]: > rest-express@1.0.0 start
+Jul 05 22:17:52 srv896300 npm[6911]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:53 srv896300 npm[6923]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:53 srv896300 npm[6923]:   throw new Error(
+Jul 05 22:17:53 srv896300 npm[6923]:         ^
+Jul 05 22:17:53 srv896300 npm[6923]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:53 srv896300 npm[6923]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:53 srv896300 npm[6923]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:53 srv896300 npm[6923]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:53 srv896300 npm[6923]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:53 srv896300 npm[6923]: Node.js v20.19.3
+Jul 05 22:17:53 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:53 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:17:58 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 21.
+Jul 05 22:17:58 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:17:58 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:17:58 srv896300 npm[6934]: > rest-express@1.0.0 start
+Jul 05 22:17:58 srv896300 npm[6934]: > NODE_ENV=production node dist/index.js
+Jul 05 22:17:58 srv896300 npm[6946]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:17:58 srv896300 npm[6946]:   throw new Error(
+Jul 05 22:17:58 srv896300 npm[6946]:         ^
+Jul 05 22:17:58 srv896300 npm[6946]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:17:58 srv896300 npm[6946]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:17:58 srv896300 npm[6946]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:17:58 srv896300 npm[6946]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:17:58 srv896300 npm[6946]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:17:58 srv896300 npm[6946]: Node.js v20.19.3
+Jul 05 22:17:58 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:17:58 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:03 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 22.
+Jul 05 22:18:03 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:03 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:03 srv896300 npm[6957]: > rest-express@1.0.0 start
+Jul 05 22:18:03 srv896300 npm[6957]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:04 srv896300 npm[6969]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:04 srv896300 npm[6969]:   throw new Error(
+Jul 05 22:18:04 srv896300 npm[6969]:         ^
+Jul 05 22:18:04 srv896300 npm[6969]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:04 srv896300 npm[6969]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:04 srv896300 npm[6969]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:04 srv896300 npm[6969]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:04 srv896300 npm[6969]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:04 srv896300 npm[6969]: Node.js v20.19.3
+Jul 05 22:18:04 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:04 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:09 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 23.
+Jul 05 22:18:09 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:09 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:09 srv896300 npm[6980]: > rest-express@1.0.0 start
+Jul 05 22:18:09 srv896300 npm[6980]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:09 srv896300 npm[6992]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:09 srv896300 npm[6992]:   throw new Error(
+Jul 05 22:18:09 srv896300 npm[6992]:         ^
+Jul 05 22:18:09 srv896300 npm[6992]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:09 srv896300 npm[6992]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:09 srv896300 npm[6992]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:09 srv896300 npm[6992]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:09 srv896300 npm[6992]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:09 srv896300 npm[6992]: Node.js v20.19.3
+Jul 05 22:18:09 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:09 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:14 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 24.
+Jul 05 22:18:14 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:14 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:14 srv896300 npm[7005]: > rest-express@1.0.0 start
+Jul 05 22:18:14 srv896300 npm[7005]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:15 srv896300 npm[7017]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:15 srv896300 npm[7017]:   throw new Error(
+Jul 05 22:18:15 srv896300 npm[7017]:         ^
+Jul 05 22:18:15 srv896300 npm[7017]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:15 srv896300 npm[7017]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:15 srv896300 npm[7017]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:15 srv896300 npm[7017]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:15 srv896300 npm[7017]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:15 srv896300 npm[7017]: Node.js v20.19.3
+Jul 05 22:18:15 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:15 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:20 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 25.
+Jul 05 22:18:20 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:20 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:20 srv896300 npm[7028]: > rest-express@1.0.0 start
+Jul 05 22:18:20 srv896300 npm[7028]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:20 srv896300 npm[7040]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:20 srv896300 npm[7040]:   throw new Error(
+Jul 05 22:18:20 srv896300 npm[7040]:         ^
+Jul 05 22:18:20 srv896300 npm[7040]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:20 srv896300 npm[7040]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:20 srv896300 npm[7040]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:20 srv896300 npm[7040]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:20 srv896300 npm[7040]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:20 srv896300 npm[7040]: Node.js v20.19.3
+Jul 05 22:18:20 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:20 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:25 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 26.
+Jul 05 22:18:25 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:25 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:25 srv896300 npm[7051]: > rest-express@1.0.0 start
+Jul 05 22:18:25 srv896300 npm[7051]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:26 srv896300 npm[7063]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:26 srv896300 npm[7063]:   throw new Error(
+Jul 05 22:18:26 srv896300 npm[7063]:         ^
+Jul 05 22:18:26 srv896300 npm[7063]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:26 srv896300 npm[7063]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:26 srv896300 npm[7063]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:26 srv896300 npm[7063]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:26 srv896300 npm[7063]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:26 srv896300 npm[7063]: Node.js v20.19.3
+Jul 05 22:18:26 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:26 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:31 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 27.
+Jul 05 22:18:31 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:31 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:31 srv896300 npm[7075]: > rest-express@1.0.0 start
+Jul 05 22:18:31 srv896300 npm[7075]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:31 srv896300 npm[7087]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:31 srv896300 npm[7087]:   throw new Error(
+Jul 05 22:18:31 srv896300 npm[7087]:         ^
+Jul 05 22:18:31 srv896300 npm[7087]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:31 srv896300 npm[7087]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:31 srv896300 npm[7087]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:31 srv896300 npm[7087]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:31 srv896300 npm[7087]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:31 srv896300 npm[7087]: Node.js v20.19.3
+Jul 05 22:18:31 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:31 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:36 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 28.
+Jul 05 22:18:36 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:36 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:36 srv896300 npm[7098]: > rest-express@1.0.0 start
+Jul 05 22:18:36 srv896300 npm[7098]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:37 srv896300 npm[7110]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:37 srv896300 npm[7110]:   throw new Error(
+Jul 05 22:18:37 srv896300 npm[7110]:         ^
+Jul 05 22:18:37 srv896300 npm[7110]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:37 srv896300 npm[7110]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:37 srv896300 npm[7110]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:37 srv896300 npm[7110]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:37 srv896300 npm[7110]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:37 srv896300 npm[7110]: Node.js v20.19.3
+Jul 05 22:18:37 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:37 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:42 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 29.
+Jul 05 22:18:42 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:42 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:42 srv896300 npm[7121]: > rest-express@1.0.0 start
+Jul 05 22:18:42 srv896300 npm[7121]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:42 srv896300 npm[7133]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:42 srv896300 npm[7133]:   throw new Error(
+Jul 05 22:18:42 srv896300 npm[7133]:         ^
+Jul 05 22:18:42 srv896300 npm[7133]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:42 srv896300 npm[7133]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:42 srv896300 npm[7133]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:42 srv896300 npm[7133]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:42 srv896300 npm[7133]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:42 srv896300 npm[7133]: Node.js v20.19.3
+Jul 05 22:18:42 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:42 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:47 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 30.
+Jul 05 22:18:47 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:47 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:47 srv896300 npm[7144]: > rest-express@1.0.0 start
+Jul 05 22:18:47 srv896300 npm[7144]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:48 srv896300 npm[7156]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:48 srv896300 npm[7156]:   throw new Error(
+Jul 05 22:18:48 srv896300 npm[7156]:         ^
+Jul 05 22:18:48 srv896300 npm[7156]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:48 srv896300 npm[7156]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:48 srv896300 npm[7156]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:48 srv896300 npm[7156]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:48 srv896300 npm[7156]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:48 srv896300 npm[7156]: Node.js v20.19.3
+Jul 05 22:18:48 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:48 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:53 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 31.
+Jul 05 22:18:53 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:53 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:53 srv896300 npm[7168]: > rest-express@1.0.0 start
+Jul 05 22:18:53 srv896300 npm[7168]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:53 srv896300 npm[7180]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:53 srv896300 npm[7180]:   throw new Error(
+Jul 05 22:18:53 srv896300 npm[7180]:         ^
+Jul 05 22:18:53 srv896300 npm[7180]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:53 srv896300 npm[7180]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:53 srv896300 npm[7180]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:53 srv896300 npm[7180]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:53 srv896300 npm[7180]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:53 srv896300 npm[7180]: Node.js v20.19.3
+Jul 05 22:18:53 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:53 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:18:58 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 32.
+Jul 05 22:18:58 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:18:58 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:18:59 srv896300 npm[7191]: > rest-express@1.0.0 start
+Jul 05 22:18:59 srv896300 npm[7191]: > NODE_ENV=production node dist/index.js
+Jul 05 22:18:59 srv896300 npm[7203]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:18:59 srv896300 npm[7203]:   throw new Error(
+Jul 05 22:18:59 srv896300 npm[7203]:         ^
+Jul 05 22:18:59 srv896300 npm[7203]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:18:59 srv896300 npm[7203]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:18:59 srv896300 npm[7203]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:18:59 srv896300 npm[7203]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:18:59 srv896300 npm[7203]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:18:59 srv896300 npm[7203]: Node.js v20.19.3
+Jul 05 22:18:59 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:18:59 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 05 22:19:04 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 33.
+Jul 05 22:19:04 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 05 22:19:04 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 05 22:19:04 srv896300 npm[7214]: > rest-express@1.0.0 start
+Jul 05 22:19:04 srv896300 npm[7214]: > NODE_ENV=production node dist/index.js
+Jul 05 22:19:04 srv896300 npm[7226]: file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243
+Jul 05 22:19:04 srv896300 npm[7226]:   throw new Error(
+Jul 05 22:19:04 srv896300 npm[7226]:         ^
+Jul 05 22:19:04 srv896300 npm[7226]: Error: DATABASE_URL must be set. Did you forget to provision a database?
+Jul 05 22:19:04 srv896300 npm[7226]:     at file:///var/www/excalibur-cuba/ExcaliburGenerator/dist/index.js:243:9
+Jul 05 22:19:04 srv896300 npm[7226]:     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+Jul 05 22:19:04 srv896300 npm[7226]:     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+Jul 05 22:19:04 srv896300 npm[7226]:     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+Jul 05 22:19:04 srv896300 npm[7226]: Node.js v20.19.3
+Jul 05 22:19:04 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 05 22:19:04 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
