@@ -1,0 +1,144 @@
+    <meta name="author" content="Excalibur Power Cuba">
+    <meta name="revisit-after" content="7 days">
+    <meta name="geo.region" content="CU">
+    <meta name="geo.placename" content="Cuba">
+    <meta name="geo.position" content="21.521757;-77.781167">
+    <meta name="ICBM" content="21.521757, -77.781167">
+    <link rel="canonical" href="https://excalibur-cuba.com/">
+    <meta name="rating" content="general">
+    <meta name="distribution" content="global">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://excalibur-cuba.com/">
+    <meta property="og:title" content="Excalibur Cuba - Paneles Solares y Generadores | Sistemas Solares Completos">
+    <meta property="og:description" content="Importador profesional de componentes solares y generadores en Cuba. Sistemas solares completos 1KW-20KW, paneles monocristalinos, inversores híbridos, baterías LiFePO4. Mejor calidad al mejor precio con garantía internacional.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=630">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Excalibur Power Cuba">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:locale:alternate" content="de_DE">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://excalibur-cuba.com/">
+    <meta property="twitter:title" content="Excalibur Cuba - Paneles Solares y Generadores | Sistemas Solares Completos">
+    <meta property="twitter:description" content="Importador profesional de componentes solares y generadores en Cuba. Sistemas solares completos 1KW-20KW, paneles monocristalinos, inversores híbridos, baterías LiFePO4.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=630">
+    <meta name="twitter:image:alt" content="Instalación de paneles solares - Excalibur Power Cuba">
+    <meta name="twitter:site" content="@ExcaliburCuba">
+    <meta name="twitter:creator" content="@ExcaliburCuba">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3e%3ccircle cx='16' cy='16' r='14' fill='%23f59e0b'/%3e%3cpath d='M12 8h8v3h-8z' fill='%23fff'/%3e%3cpath d='M10 12h12v2h-12z' fill='%23fff'/%3e%3cpath d='M8 16h16v2h-16z' fill='%23fff'/%3e%3cpath d='M10 20h12v2h-12z' fill='%23fff'/%3e%3cpath d='M12 24h8v1h-8z' fill='%23fff'/%3e%3c/svg%3e">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Excalibur Power Cuba",
+      "url": "https://excalibur-cuba.com",
+      "logo": "https://excalibur-cuba.com/logo.png",
+      "description": "Importador profesional de componentes solares y generadores en Cuba. Sistemas solares completos, paneles monocristalinos, inversores híbridos, baterías LiFePO4 y generadores silenciosos.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "CU",
+        "addressLocality": "Havanna del Este",
+        "addressRegion": "La Habana"
+      },
+      "sameAs": [
+        "https://www.facebook.com/excalibur.power.cuba",
+        "https://wa.me/5355555555"
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+53-58-78-1416",
+          "contactType": "sales",
+          "availableLanguage": ["Spanish", "German", "English"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+49-160-323-9439",
+          "contactType": "technical support",
+          "availableLanguage": ["German", "English"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+53-5473-1490",
+          "contactType": "customer service",
+          "availableLanguage": ["Spanish"]
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Productos Solares y Generadores",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Sistemas Solares Completos",
+              "description": "Sistemas solares completos de 1KW a 20KW con garantía internacional"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Paneles Solares",
+              "description": "Paneles monocristalinos y policristalinos de 300W a 550W"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Generadores",
+              "description": "Generadores diesel y gasolina silenciosos de 2KVA a 10KVA"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+    <script type="module" crossorigin src="/assets/index-_NFTae5s.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BnNToIff.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+  </body>
+</html>
+root@srv896300:~# cd /var/www/excalibur-cuba/ExcaliburGenerator
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# grep -A 10 -B 5 "secure.*false" server/auth.ts
+    session({
+      secret: process.env.SESSION_SECRET || "your-secret-key-change-in-production",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: false, // set to true in production with HTTPS
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      },
+    })
+  );
+}
+
+export async function isAuthenticated(
+  req: express.Request,
+  res: express.Response,
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# sed -i 's/secure: false/secure: true/' /var/www/excalibur-cuba/ExcaliburGenerator/server/auth.ts
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator# curl -k -X POST https://31.97.77.135/api/admin/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"excalibur_admin","password":"admin123"}'
+{"error":"Login failed"}root@srv896300:/var/www/excalibur-cuba/ExcaliburGenerator#
