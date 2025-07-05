@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
-import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart } from 'lucide-react';
+import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image } from 'lucide-react';
 import type { Category, Product, Inquiry, AdminUser } from '@shared/schema';
 
 // Check if user is authenticated
@@ -113,19 +113,11 @@ export default function AdminDashboard() {
       });
     },
     onError: (error: any) => {
-      if (error.message.includes('Cannot delete category with existing products')) {
-        toast({
-          title: "Kategorie hat Produkte",
-          description: "Diese Kategorie kann nicht gelöscht werden, da sie noch Produkte enthält. Löschen Sie erst alle Produkte in dieser Kategorie.",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Fehler beim Löschen",
-          description: "Die Kategorie konnte nicht gelöscht werden.",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Fehler beim Löschen",
+        description: "Die Kategorie konnte nicht gelöscht werden.",
+        variant: "destructive",
+      });
     },
   });
 
@@ -220,6 +212,13 @@ export default function AdminDashboard() {
               >
                 <BarChart className="w-4 h-4 mr-2" />
                 Analytics
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setLocation('/admin/site-images')}
+              >
+                <Image className="w-4 h-4 mr-2" />
+                Website-Bilder
               </Button>
               <Button
                 variant="outline"

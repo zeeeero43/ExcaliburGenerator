@@ -225,17 +225,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const categoryId = parseInt(req.params.id);
       
-      // Check if category has products
+      // First delete all products in this category to avoid foreign key constraints
       const products = await storage.getProducts({ categoryId });
-      
-      if (products.length > 0) {
-        return res.status(400).json({ 
-          error: "Cannot delete category with existing products", 
-          productCount: products.length,
-          products: products.map(p => ({ id: p.id, name: p.name }))
-        });
+      for (const product of products) {
+        await storage.deleteProduct(product.id);
       }
       
+      // Delete all subcategories in this category
+      const subcategories = await storage.getSubcategories(categoryId);
+      for (const subcategory of subcategories) {
+        await storage.deleteSubcategory(subcategory.id);
+      }
+      
+      // Now delete the category
       await storage.deleteCategory(categoryId);
       res.json({ success: true });
     } catch (error) {
@@ -592,37 +594,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Analytics tracking middleware - only enabled in production for better dev performance
-  if (process.env.NODE_ENV === 'production') {
-    app.use((req, res, next) => {
-      // Only track GET requests and ignore admin/api routes
-      if (req.method === 'GET' && !req.path.startsWith('/api/') && !req.path.startsWith('/admin/')) {
-        // Run analytics in background without blocking the request
-        setImmediate(async () => {
-          try {
-            const ipAddress = req.ip || req.connection.remoteAddress || 'unknown';
-            const userAgent = req.get('User-Agent') || '';
-            
-            // Quick country detection with fallback
-            const country = await getCountryFromIP(ipAddress);
-            
-            await storage.createPageView({
-              ipAddress,
-              userAgent,
-              country,
-              city: null,
-              page: req.path,
-              referrer: req.get('Referer') || null,
-              language: req.get('Accept-Language')?.split(',')[0] || null,
-            });
-          } catch (error) {
-            // Silent fail for analytics to avoid console spam
+  // Ultra-fast analytics tracking - works in all environments
+  app.use((req, res, next) => {
+    // Continue request immediately without waiting
+    next();
+    
+    // Only track GET requests and ignore admin/api routes
+    if (req.method === 'GET' && !req.path.startsWith('/api/') && !req.path.startsWith('/admin/')) {
+      // Run analytics completely asynchronously after response is sent
+      process.nextTick(async () => {
+        try {
+          const ipAddress = req.ip || req.connection.remoteAddress || 'unknown';
+          const userAgent = req.get('User-Agent') || '';
+          
+          // Ultra-fast country detection for Cuba
+          let country = 'CU'; // Default for Cuban users
+          if (process.env.NODE_ENV === 'production' && !ipAddress.startsWith('192.168.') && ipAddress !== '127.0.0.1') {
+            try {
+              const controller = new AbortController();
+              setTimeout(() => controller.abort(), 300); // Ultra-fast 300ms timeout
+              
+              const response = await fetch(`http://ip-api.com/json/${ipAddress}?fields=countryCode`, {
+                signal: controller.signal
+              });
+              
+              if (response.ok) {
+                const data = await response.json();
+                country = data.countryCode || 'CU';
+              }
+            } catch {
+              // Silent fail, keep default
+            }
           }
-        });
+          
+          await storage.createPageView({
+            ipAddress,
+            userAgent,
+            country,
+            city: null,
+            page: req.path,
+            referrer: req.get('Referer') || null,
+            language: req.get('Accept-Language')?.split(',')[0] || null,
+          });
+        } catch (error) {
+          // Silent fail to avoid any issues
+        }
+      });
+    }
+  });
+
+  // Site Settings API routes
+  app.post("/api/admin/site-settings", isAuthenticated, async (req, res) => {
+    try {
+      const { key, value } = req.body;
+      
+      if (!key || !value) {
+        return res.status(400).json({ error: "Key and value are required" });
       }
-      next();
-    });
-  }
+      
+      const setting = await storage.updateSiteSetting(key, value);
+      res.json(setting);
+    } catch (error) {
+      console.error("Error updating site setting:", error);
+      res.status(500).json({ error: "Failed to update site setting" });
+    }
+  });
+
+  app.get("/api/admin/site-settings", isAuthenticated, async (req, res) => {
+    try {
+      const settings = await storage.getSiteSettings();
+      res.json(settings);
+    } catch (error) {
+      console.error("Error fetching site settings:", error);
+      res.status(500).json({ error: "Failed to fetch site settings" });
+    }
+  });
 
   // Analytics API routes
   app.get("/api/admin/analytics/:period", isAuthenticated, async (req, res) => {

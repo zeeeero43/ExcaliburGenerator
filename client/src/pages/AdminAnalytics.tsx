@@ -4,7 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Badge } from '../components/ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Eye, Users, Globe, TrendingUp } from 'lucide-react';
+import { Eye, Users, Globe, TrendingUp, ArrowLeft } from 'lucide-react';
+import { Button } from '../components/ui/button';
+import { Link } from 'wouter';
 
 interface AnalyticsData {
   totalViews: number;
@@ -89,7 +91,15 @@ export default function AdminAnalytics() {
   return (
     <div className="container mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Website Analytics</h1>
+        <div className="flex items-center gap-4">
+          <Link href="/admin/dashboard">
+            <Button variant="outline" className="flex items-center gap-2">
+              <ArrowLeft size={16} />
+              Zurück zum Dashboard
+            </Button>
+          </Link>
+          <h1 className="text-3xl font-bold">Website Analytics</h1>
+        </div>
         <Tabs value={selectedPeriod} onValueChange={handlePeriodChange}>
           <TabsList>
             <TabsTrigger value="day">24 Stunden</TabsTrigger>

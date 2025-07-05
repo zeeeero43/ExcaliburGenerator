@@ -236,6 +236,121 @@ export const translations = {
     // About
     slogan: "Iluminamos Cuba con energía solar",
     
+    // Admin Backend
+    admin: {
+      // Login
+      loginTitle: "Iniciar Sesión",
+      loginSubtitle: "Acceda al panel de administración",
+      username: "Usuario",
+      password: "Contraseña",
+      loginButton: "Iniciar Sesión",
+      loginError: "Usuario o contraseña incorrectos",
+      
+      // Dashboard
+      dashboard: "Panel de Control",
+      overview: "Resumen",
+      totalProducts: "Productos Totales",
+      totalCategories: "Categorías Totales", 
+      pendingInquiries: "Consultas Pendientes",
+      activeProducts: "Productos Activos",
+      recentProducts: "Productos Recientes",
+      recentCategories: "Categorías Recientes",
+      recentInquiries: "Consultas Recientes",
+      viewAll: "Ver Todos",
+      
+      // Products
+      products: "Productos",
+      addProduct: "Agregar Producto",
+      editProduct: "Editar Producto",
+      productName: "Nombre del Producto",
+      productDescription: "Descripción",
+      productSpecifications: "Especificaciones",
+      productPrice: "Precio",
+      productStock: "Disponibilidad",
+      productImages: "Imágenes",
+      productCategory: "Categoría",
+      productSubcategory: "Subcategoría",
+      selectCategory: "Seleccionar categoría",
+      selectSubcategory: "Seleccionar subcategoría",
+      inStock: "En Stock",
+      limitedStock: "Stock Limitado",
+      outOfStock: "Agotado",
+      saveProduct: "Guardar Producto",
+      
+      // Categories
+      categories: "Categorías",
+      addCategory: "Agregar Categoría",
+      editCategory: "Editar Categoría",
+      categoryName: "Nombre de Categoría",
+      categoryDescription: "Descripción",
+      categoryImage: "Imagen",
+      saveCategory: "Guardar Categoría",
+      
+      // Subcategories  
+      subcategories: "Subcategorías",
+      addSubcategory: "Agregar Subcategoría",
+      editSubcategory: "Editar Subcategoría",
+      subcategoryName: "Nombre de Subcategoría",
+      parentCategory: "Categoría Principal",
+      saveSubcategory: "Guardar Subcategoría",
+      
+      // Inquiries
+      inquiries: "Consultas",
+      inquiryName: "Nombre",
+      inquiryEmail: "Email",
+      inquiryPhone: "Teléfono",
+      inquirySubject: "Asunto",
+      inquiryMessage: "Mensaje",
+      inquiryStatus: "Estado",
+      inquiryDate: "Fecha",
+      statusNew: "Nueva",
+      statusInProgress: "En Progreso",
+      statusCompleted: "Completada",
+      
+      // Images
+      images: "Imágenes",
+      uploadImages: "Subir Imágenes",
+      selectImage: "Seleccionar Imagen",
+      imageGallery: "Galería de Imágenes",
+      
+      // Analytics
+      analytics: "Analíticas",
+      totalViews: "Vistas Totales",
+      uniqueVisitors: "Visitantes Únicos",
+      topPages: "Páginas Principales",
+      topCountries: "Países Principales",
+      
+      // Common
+      actions: "Acciones",
+      edit: "Editar",
+      delete: "Eliminar",
+      cancel: "Cancelar",
+      save: "Guardar",
+      back: "Volver",
+      backToDashboard: "Volver al Panel",
+      search: "Buscar",
+      filter: "Filtrar",
+      all: "Todos",
+      yes: "Sí",
+      no: "No",
+      loading: "Cargando...",
+      success: "Éxito",
+      error: "Error",
+      confirmation: "Confirmación",
+      deleteConfirmation: "¿Está seguro de que desea eliminar este elemento?",
+      
+      // Messages
+      productSaved: "Producto guardado exitosamente",
+      productDeleted: "Producto eliminado exitosamente",
+      categorySaved: "Categoría guardada exitosamente",
+      categoryDeleted: "Categoría eliminada exitosamente",
+      subcategorySaved: "Subcategoría guardada exitosamente",
+      subcategoryDeleted: "Subcategoría eliminada exitosamente",
+      inquiryUpdated: "Consulta actualizada exitosamente",
+      imageSaved: "Imagen guardada exitosamente",
+      imageDeleted: "Imagen eliminada exitosamente",
+    },
+    
     // Legal page
     legal: {
       title: "Información Legal",
