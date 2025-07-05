@@ -47,6 +47,7 @@ function Router() {
       {/* Admin Routes - No Layout */}
       <Route path="/admin/login" component={AdminLogin} />
       <Route path="/admin" component={AdminDashboard} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/admin/products/new" component={AdminProductForm} />
       <Route path="/admin/products/:id/edit" component={AdminProductForm} />
       <Route path="/admin/categories/new">
