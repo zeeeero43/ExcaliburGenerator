@@ -392,12 +392,11 @@ export default function AdminProductForm() {
 
       console.log('🔄 DEBUG: Setting form data:', formData);
       
-      // CRITICAL FIX: Set each field individually to ensure proper loading
-      Object.entries(formData).forEach(([key, value]) => {
-        form.setValue(key as any, value);
-      });
+      // CRITICAL FIX: Use form.reset() like in AdminCategoryForm
+      form.reset(formData);
       
-      console.log('✅ DEBUG: Form data set individually, current values:', form.getValues());
+      console.log('✅ DEBUG: Form reset with data:', formData);
+      console.log('✅ DEBUG: Current form values after reset:', form.getValues());
       setFormInitialized(true);
 
 

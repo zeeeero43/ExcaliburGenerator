@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { HeroSlider } from '../components/HeroSlider';
 import { ProductCard } from '../components/ProductCard';
+import { FormattedText } from '../components/FormattedText';
 import { Button } from '../components/ui/button';
 import { Link } from 'wouter';
 import type { Product, Category } from '@shared/schema';

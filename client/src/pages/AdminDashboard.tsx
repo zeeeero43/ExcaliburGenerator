@@ -41,6 +41,15 @@ export default function AdminDashboard() {
     localStorage.getItem('admin-language') || 'de'
   );
 
+  // Force admin dashboard to German on load
+  useEffect(() => {
+    if (adminLanguage !== 'de') {
+      setAdminLanguage('de');
+      localStorage.setItem('admin-language', 'de');
+      switchLanguage('de');
+    }
+  }, []);
+
   const handleLanguageChange = (lang: string) => {
     setAdminLanguage(lang);
     localStorage.setItem('admin-language', lang);

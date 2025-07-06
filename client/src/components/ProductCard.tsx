@@ -30,7 +30,7 @@ export function ProductCard({ title, description, image, linkText, category, cla
           </h3>
           <div className="text-excalibur-gray mb-4 leading-relaxed">
             <FormattedText 
-              text={description || ''} 
+              text={typeof description === 'string' ? description : ''} 
               maxLength={150}
               className="text-excalibur-gray"
             />

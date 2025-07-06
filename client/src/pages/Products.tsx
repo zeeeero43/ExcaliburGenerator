@@ -262,7 +262,7 @@ export default function Products() {
                   <CardContent>
                     <div className="text-gray-600 mb-4 line-clamp-3">
                       <FormattedText 
-                        text={getLocalizedText(product, 'shortDescription') || ''} 
+                        text={getLocalizedText(product, 'shortDescription')} 
                         maxLength={150}
                         className="text-gray-600"
                       />
