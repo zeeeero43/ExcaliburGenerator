@@ -1,124 +1,92 @@
-# 🔧 ÜBERSETZUNG AUF PRODUKTIONSSERVER BEHEBEN
+# 🔧 LibreTranslate Connection Fix
 
-## Problem: Übersetzung funktioniert in Replit, aber nicht auf dem produktiven Server
+## Problem: Container läuft, aber Connection Reset
 
-### Mögliche Ursachen:
-1. **Firewall blockiert externe API-Aufrufe**
-2. **DNS-Probleme auf dem Server**
-3. **Systemd Service läuft ohne Netzwerkzugriff**
-4. **MyMemory API ist vom Server nicht erreichbar**
+Das ist normal beim ersten Start - LibreTranslate braucht Zeit zum Initialisieren.
 
-## 🚀 SOFORTIGE LÖSUNG - SCHRITT FÜR SCHRITT
+## SOFORT-LÖSUNG:
 
-### Schritt 1: Server-Zugriff testen
 ```bash
-# SSH zum Server
-ssh root@[IHRE-SERVER-IP]
+# 1. Container Status prüfen
+docker ps -a
 
-# API-Zugriff testen
-curl -v "https://api.mymemory.translated.net/get?q=test&langpair=de|es"
+# 2. Logs anschauen
+docker logs libretranslate
+
+# 3. Container neu starten (falls nötig)
+docker restart libretranslate
+
+# 4. 30-60 Sekunden warten, dann testen
+sleep 30
+curl -X POST "http://localhost:5001/translate" -H "Content-Type: application/json" -d '{"q": "Hallo", "source": "de", "target": "es"}'
 ```
 
-**Erwartetes Ergebnis:** JSON mit übersetztem Text
-**Wenn Fehler:** Firewall oder DNS-Problem
+## Falls weiterhin Problems:
 
-### Schritt 2: Systemd Service mit Netzwerk-Zugriff konfigurieren
+### Option A: Container mit mehr Memory starten
 ```bash
-# Service bearbeiten
-sudo nano /etc/systemd/system/excalibur-cuba.service
+# Alten Container stoppen und löschen
+docker stop libretranslate
+docker rm libretranslate
+
+# Neu starten mit mehr Ressourcen
+docker run -d \
+  --name libretranslate \
+  --restart unless-stopped \
+  -p 5001:5000 \
+  --memory=1g \
+  libretranslate/libretranslate
 ```
 
-**Konfiguration aktualisieren:**
-```ini
-[Unit]
-Description=Excalibur Cuba Website
-After=network-online.target
-Wants=network-online.target
-
-[Service]
-Type=simple
-User=root
-WorkingDirectory=/var/www/excalibur-cuba/ExcaliburGenerator
-Environment=NODE_ENV=production
-Environment=DATABASE_URL=postgresql://excalibur_user:ExcaliburCuba@2025!SecureDB#9847@localhost:5432/excalibur_cuba
-Environment=SESSION_SECRET=ExcaliburCuba@2025!SecureSession#9847VeryLongSecretKey
-Environment=PORT=5000
-ExecStart=/usr/bin/node dist/index.js
-Restart=always
-RestartSec=3
-# KRITISCH: Netzwerkzugriff sicherstellen
-RemainAfterExit=no
-StandardOutput=journal
-StandardError=journal
-
-[Install]
-WantedBy=multi-user.target
-```
-
-### Schritt 3: Service neu starten
+### Option B: Spezifische Konfiguration
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl restart excalibur-cuba
-sudo systemctl status excalibur-cuba
+# Container mit CPU Architektur Fix
+docker stop libretranslate
+docker rm libretranslate
+
+docker run -d \
+  --name libretranslate \
+  --restart unless-stopped \
+  -p 5001:5000 \
+  -e LT_API_KEYS=true \
+  libretranslate/libretranslate
 ```
 
-### Schritt 4: Real-time Debugging aktivieren
+### Option C: Web Interface testen
 ```bash
-# Live-Logs anschauen
-sudo journalctl -u excalibur-cuba -f
-
-# In einem anderen Terminal:
-# Ein Produkt im Admin Panel erstellen und die Logs beobachten
+# Browser Test - sollte funktionieren:
+curl http://localhost:5001/
 ```
 
-### Schritt 5: Manuelle API-Test über Server
+## Container Monitoring:
 ```bash
-# Server-Terminal: API direkt testen
-curl -X POST http://localhost:5000/api/translate \
-  -H "Content-Type: application/json" \
-  -d '{"text":"Test auf Deutsch","fromLang":"de","toLang":"es"}'
+# Kontinuierlich Logs anschauen
+docker logs -f libretranslate
+
+# Container Ressourcen prüfen
+docker stats libretranslate
+
+# Port Status prüfen  
+netstat -tulpn | grep 5001
 ```
 
-**Erwartetes Ergebnis:** `{"translatedText":"Prueba en español"}`
+## Typische Startup-Zeit:
+- **Normal**: 30-60 Sekunden
+- **Erster Start**: 1-2 Minuten (Downloads models)
+- **Schwacher Server**: bis zu 5 Minuten
 
-### Schritt 6: DNS und Firewall prüfen
+## Test-Sequence:
 ```bash
-# DNS-Auflösung testen
-nslookup api.mymemory.translated.net
+# 1. Warten
+sleep 60
 
-# Port 443 (HTTPS) testen
-telnet api.mymemory.translated.net 443
+# 2. Simple GET test
+curl http://localhost:5001/languages
 
-# Firewall-Regeln prüfen
-sudo ufw status
-sudo iptables -L
+# 3. Translation test
+curl -X POST "http://localhost:5001/translate" \
+     -H "Content-Type: application/json" \
+     -d '{"q": "test", "source": "en", "target": "es"}'
 ```
 
-## 🔥 WENN NICHTS FUNKTIONIERT - OFFLINE-FALLBACK
-
-### Alternative 1: Basis-Übersetzungen vordefinieren
-Die häufigsten Übersetzungen können fest codiert werden.
-
-### Alternative 2: Lokale Übersetzungs-API
-Docker-Container mit lokaler Übersetzung installieren.
-
-## 📋 DEBUGGING-CHECKLIST
-
-- [ ] `curl api.mymemory.translated.net` funktioniert
-- [ ] Service hat Netzwerk-Zugriff nach `network-online.target`
-- [ ] Logs zeigen API-Anfragen in `journalctl -u excalibur-cuba -f`
-- [ ] Port 443 ist erreichbar
-- [ ] DNS löst die API-Domain auf
-- [ ] Firewall blockiert nicht den Ausgang
-
-## 🎯 HÄUFIGE LÖSUNG
-
-**80% der Fälle:** Service startet zu früh, bevor Netzwerk verfügbar ist.
-**Lösung:** `After=network-online.target` in systemd service.
-
-## 📞 SUPPORT
-
-Bei weiteren Problemen:
-1. Logs aus `journalctl -u excalibur-cuba -f` während Übersetzungsversuch sammeln
-2. Ergebnis von `curl api.mymemory.translated.net` teilen
-3. Output von `systemctl status excalibur-cuba` senden
+**Sobald LibreTranslate antwortet: Website neu starten und unbegrenzte Übersetzungen genießen!**
