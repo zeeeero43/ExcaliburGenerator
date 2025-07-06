@@ -115,7 +115,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.error("Failed to seed database:", error);
   }
 
-  // Translation API with comprehensive debugging for production
+  // Multi-API Translation system with LibreTranslate and MyMemory fallback
   app.post("/api/translate", async (req, res) => {
     try {
       const { text, fromLang, toLang } = req.body;
@@ -132,22 +132,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ translatedText: text });
       }
 
-      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromLang}|${toLang}`;
-      console.log(`🌐 Making request to: ${url.substring(0, 100)}...`);
+      // Try LibreTranslate first (unlimited, local)
+      try {
+        console.log(`🚀 Trying LibreTranslate first...`);
+        const libreResponse = await fetch('http://localhost:5001/translate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            q: text,
+            source: fromLang,
+            target: toLang
+          }),
+          signal: AbortSignal.timeout(8000) // 8 second timeout
+        });
 
-      // Add timeout and proper error handling for production
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        if (libreResponse.ok) {
+          const libreData = await libreResponse.json();
+          if (libreData.translatedText && libreData.translatedText !== text) {
+            console.log(`✅ LibreTranslate success: "${text.substring(0, 30)}..." -> "${libreData.translatedText.substring(0, 30)}..."`);
+            return res.json({ translatedText: libreData.translatedText, provider: 'LibreTranslate' });
+          }
+        }
+      } catch (libreError: any) {
+        console.log(`⚠️ LibreTranslate failed: ${libreError.message}, falling back to MyMemory...`);
+      }
+
+      // Fallback to MyMemory API
+      console.log(`🔄 Using MyMemory API as fallback...`);
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromLang}|${toLang}`;
 
       try {
         const response = await fetch(url, {
-          signal: controller.signal,
           headers: {
             'User-Agent': 'ExcaliburCuba/1.0 (+info@excalibur-cuba.com)'
-          }
+          },
+          signal: AbortSignal.timeout(10000) // 10 second timeout
         });
-        
-        clearTimeout(timeoutId);
         
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -155,26 +177,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const data = await response.json();
         
-        console.log(`📡 API Response: status=${data.responseStatus}, hasData=${!!data.responseData}`);
+        console.log(`📡 MyMemory Response: status=${data.responseStatus}, hasData=${!!data.responseData}`);
         
         if (data.responseStatus === 200 && data.responseData?.translatedText) {
           const translatedText = data.responseData.translatedText;
-          console.log(`✅ Translation success: "${text.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
-          res.json({ translatedText });
-        } else {
-          console.log(`⚠️ API returned error status: ${data.responseStatus} - ${data.responseDetails || 'Unknown'}`);
-          res.json({ translatedText: text, error: 'API_ERROR', details: data.responseDetails });
+          // Check if it's not just an error message
+          if (!translatedText.includes('MYMEMORY WARNING')) {
+            console.log(`✅ MyMemory success: "${text.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
+            return res.json({ translatedText, provider: 'MyMemory' });
+          } else {
+            console.log(`⚠️ MyMemory quota exceeded: ${data.responseDetails || 'Daily limit reached'}`);
+          }
         }
-      } catch (fetchError: any) {
-        clearTimeout(timeoutId);
         
-        if (fetchError.name === 'AbortError') {
-          console.error('❌ Translation timeout (10s exceeded)');
-          res.json({ translatedText: text, error: 'TIMEOUT' });
-        } else {
-          console.error('❌ Network/fetch error:', fetchError.message);
-          res.json({ translatedText: text, error: 'NETWORK_ERROR', details: fetchError.message });
-        }
+        // If we get here, both APIs failed or returned errors
+        console.log(`❌ All translation APIs failed, returning original text`);
+        res.json({ 
+          translatedText: text, 
+          error: 'ALL_APIS_FAILED', 
+          details: 'LibreTranslate and MyMemory both unavailable. Install LibreTranslate for unlimited translations!' 
+        });
+        
+      } catch (fetchError: any) {
+        console.error('❌ MyMemory API error:', fetchError.message);
+        res.json({ 
+          translatedText: text, 
+          error: 'NETWORK_ERROR', 
+          details: 'Translation services unavailable. Consider installing LibreTranslate locally.' 
+        });
       }
     } catch (error: any) {
       console.error('❌ Translation system error:', error);
