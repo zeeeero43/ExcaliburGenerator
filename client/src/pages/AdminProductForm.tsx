@@ -320,18 +320,35 @@ export default function AdminProductForm() {
       const url = isEdit ? `/api/admin/products/${params.id}` : '/api/admin/products';
       const method = isEdit ? 'PUT' : 'POST';
 
+      console.log('📤 Sende Produktdaten:', productData);
+      console.log('🌐 URL:', url, 'Method:', method);
+
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(productData),
       });
 
+      console.log('📥 Server Response Status:', response.status);
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to save product');
+        const errorData = await response.json();
+        console.error('📛 Server-Fehler-Details:', errorData);
+        
+        let errorMessage = errorData.error || 'Failed to save product';
+        if (errorData.details) {
+          errorMessage += ` - Details: ${errorData.details}`;
+        }
+        if (errorData.fields) {
+          errorMessage += ` - Betroffene Felder: ${errorData.fields.join(', ')}`;
+        }
+        
+        throw new Error(errorMessage);
       }
 
-      return response.json();
+      const result = await response.json();
+      console.log('✅ Erfolgreich gespeichert:', result);
+      return result;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
@@ -345,35 +362,62 @@ export default function AdminProductForm() {
       setLocation('/admin');
     },
     onError: (error: any) => {
-      console.error('Product save error:', error);
+      console.error('🚨 PRODUKTERSTELLUNG FEHLGESCHLAGEN:', error);
       
       let errorMessage = "Unbekannter Fehler beim Speichern des Produkts.";
+      let debugInfo = "";
       
+      // Detaillierte Fehleranalyse
       if (error.message) {
+        console.log('📋 Fehlermeldung:', error.message);
+        
         if (error.message.includes('Validation error')) {
-          errorMessage = `Validierungsfehler: ${error.message.split('details: ')[1] || error.message}`;
+          errorMessage = `❌ Validierungsfehler: ${error.message.split('details: ')[1] || error.message}`;
+          debugInfo = "Überprüfen Sie alle Pflichtfelder (rot markiert)";
         } else if (error.message.includes('Required')) {
-          errorMessage = "Pflichtfelder fehlen. Bitte überprüfen Sie alle erforderlichen Felder.";
+          errorMessage = "📍 Pflichtfelder fehlen. Bitte überprüfen Sie alle erforderlichen Felder.";
+          debugInfo = "Spanischer Name, Spanische Beschreibung und Kategorie sind erforderlich";
         } else if (error.message.includes('unique constraint')) {
-          errorMessage = "Ein Produkt mit diesem Namen oder SKU existiert bereits.";
+          errorMessage = "⚠️ Ein Produkt mit diesem Namen oder SKU existiert bereits.";
+          debugInfo = "Verwenden Sie einen anderen Produktnamen oder SKU";
+        } else if (error.message.includes('401')) {
+          errorMessage = "🔒 Nicht autorisiert. Bitte melden Sie sich neu an.";
+          debugInfo = "Ihre Sitzung ist abgelaufen";
+        } else if (error.message.includes('500')) {
+          errorMessage = "🔧 Server-Fehler. Wenden Sie sich an den Administrator.";
+          debugInfo = "Datenbankproblem oder Server-Konfigurationsfehler";
         } else {
-          errorMessage = error.message;
+          errorMessage = `🔍 Unbekannter Fehler: ${error.message}`;
         }
       }
       
+      // Ausführliche Konsolen-Logs für Debugging
+      console.group('🔍 DEBUGGING INFORMATIONEN:');
+      console.log('📊 Formulardaten:', form.getValues());
+      console.log('⚙️ Spezifikationen:', specifications);
+      console.log('🌐 Netzwerk-Fehler:', error);
+      console.log('📍 Debug-Tipp:', debugInfo);
+      
+      // Formular-Validierungsfehler prüfen
+      const formErrors = form.formState.errors;
+      if (Object.keys(formErrors).length > 0) {
+        console.log('📝 Formular-Validierungsfehler:', formErrors);
+        console.log('❗ Fehlende Felder:', Object.keys(formErrors).join(', '));
+      }
+      console.groupEnd();
+      
       toast({
-        title: "Produkterstellung fehlgeschlagen",
-        description: errorMessage,
+        title: "❌ Produkterstellung fehlgeschlagen",
+        description: `${errorMessage}\n\n💡 Debug-Tipp: ${debugInfo}`,
         variant: "destructive",
+        duration: 8000, // Länger anzeigen für besseres Debugging
       });
       
-      // Show detailed error in console for debugging
+      // Alert mit noch mehr Details für Debugging
       if (process.env.NODE_ENV === 'development') {
-        console.log('Detailed error information:', {
-          error,
-          formData: form.getValues(),
-          specifications
-        });
+        setTimeout(() => {
+          alert(`🔍 ENTWICKLER-DEBUG INFO:\n\nFehler: ${error.message}\n\nFormulardaten: ${JSON.stringify(form.getValues(), null, 2)}\n\nSpezifikationen: ${JSON.stringify(specifications, null, 2)}`);
+        }, 1000);
       }
     },
   });
