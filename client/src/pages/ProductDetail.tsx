@@ -244,7 +244,7 @@ export default function ProductDetail() {
               </CardHeader>
               <CardContent>
                 {productShortDescription ? (
-                  <p className="text-gray-700 leading-relaxed">{productShortDescription}</p>
+                  <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">{productShortDescription}</div>
                 ) : (
                   <p className="text-gray-500 italic">
                     {currentLanguage === 'es' ? 'Descripción disponible próximamente.' :
