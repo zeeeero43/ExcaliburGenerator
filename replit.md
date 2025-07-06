@@ -257,6 +257,12 @@ Changelog:
   * Created clear instructions to upgrade from v12.x to v20.x with version validation
   * Added prominent warnings to stop deployment until Node.js v20.x is confirmed
   * Fixed the primary blocker preventing application deployment on Ubuntu 22.04 LTS
+- July 06, 2025 (database permissions fix). Resolved PostgreSQL permissions error:
+  * Fixed "permission denied for table sessions" error during npm run db:push
+  * Added proper GRANT ALL PRIVILEGES commands for excalibur_user on sessions table
+  * Added default privileges for future tables and sequences
+  * Updated deployment guide with correct PostgreSQL permissions setup
+  * Drizzle migrations now work properly with correct database user permissions
 ```
 
 ## User Preferences

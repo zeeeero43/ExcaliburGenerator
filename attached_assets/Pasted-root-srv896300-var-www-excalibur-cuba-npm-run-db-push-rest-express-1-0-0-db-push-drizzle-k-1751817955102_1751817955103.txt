@@ -1,0 +1,142 @@
+root@srv896300:/var/www/excalibur-cuba# npm run db:push
+
+> rest-express@1.0.0 db:push
+> drizzle-kit push
+
+No config path provided, using default 'drizzle.config.ts'
+Reading config file '/var/www/excalibur-cuba/drizzle.config.ts'
+Using 'pg' driver for database querying
+[✓] Pulling schema from database...
++ admin_users table will be created
++ categories table will be created
++ inquiries table will be created
++ page_views table will be created
++ products table will be created
++ site_settings table will be created
++ subcategories table will be created
++ uploaded_images table will be created
+--- all table conflicts resolved ---
+
+error: permission denied for table sessions
+    at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.query (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:66575:26)
+    at async pgSuggestions (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:67682:23)
+    at async pgPush (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:70074:15)
+    at async Object.handler (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:79124:9)
+    at async run (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:78381:7) {
+  length: 96,
+  severity: 'ERROR',
+  code: '42501',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'aclchk.c',
+  line: '3452',
+  routine: 'aclcheck_error'
+}
+root@srv896300:/var/www/excalibur-cuba#
+root@srv896300:/var/www/excalibur-cuba# sudo -u postgres psql -d excalibur_cuba << EOF
+INSERT INTO admin_users (username, email, password, first_name, last_name, role, is_active, created_at, updated_at)
+VALUES ('excalibur_admin', 'admin@excalibur-cuba.com', '\$2b\$10\$K8vW9mXOjF2nP5qL7cR8s.xY3zV1bA4mH6jK9nL2pQ5rT8uW0vX3', 'Excalibur', 'Admin', 'admin', true, NOW(), NOW())
+ON CONFLICT (username) DO NOTHING;
+\q
+EOF
+ERROR:  relation "admin_users" does not exist
+LINE 1: INSERT INTO admin_users (username, email, password, first_na...
+                    ^
+root@srv896300:/var/www/excalibur-cuba# sudo -u postgres psql -d excalibur_cuba << EOF
+INSERT INTO admin_users (username, email, password, first_name, last_name, role, is_active, created_at, updated_at)
+VALUES ('excalibur_admin', 'admin@excalibur-cuba.com', '\$2b\$10\$K8vW9mXOjF2nP5qL7cR8s.xY3zV1bA4mH6jK9nL2pQ5rT8uW0vX3', 'Excalibur', 'Admin', 'admin', true, NOW(), NOW())
+ON CONFLICT (username) DO NOTHING;
+\q
+EOF
+ERROR:  relation "admin_users" does not exist
+LINE 1: INSERT INTO admin_users (username, email, password, first_na...
+                    ^
+root@srv896300:/var/www/excalibur-cuba# npm run db:push
+
+> rest-express@1.0.0 db:push
+> drizzle-kit push
+
+No config path provided, using default 'drizzle.config.ts'
+Reading config file '/var/www/excalibur-cuba/drizzle.config.ts'
+Using 'pg' driver for database querying
+[✓] Pulling schema from database...
+~ sessions › admin_users table will be renamed/moved
++ categories table will be created
++ inquiries table will be created
++ page_views table will be created
++ products table will be created
++ site_settings table will be created
++ subcategories table will be created
++ uploaded_images table will be created
+--- all table conflicts resolved ---
+
+
++ id column will be created
+
++ username column will be created
+
++ email column will be created
+
++ password column will be created
+
++ first_name column will be created
+
++ last_name column will be created
+
++ role column will be created
+
++ is_active column will be created
+
++ created_at column will be created
+
++ updated_at column will be created
+--- all columns conflicts in admin_users table resolved ---
+
+error: permission denied for table sessions
+    at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.query (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:66575:26)
+    at async pgSuggestions (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:67770:25)
+    at async pgPush (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:70074:15)
+    at async Object.handler (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:79124:9)
+    at async run (/var/www/excalibur-cuba/node_modules/drizzle-kit/bin.cjs:78381:7) {
+  length: 96,
+  severity: 'ERROR',
+  code: '42501',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'aclchk.c',
+  line: '3452',
+  routine: 'aclcheck_error'
+}
+root@srv896300:/var/www/excalibur-cuba#
+root@srv896300:/var/www/excalibur-cuba# sudo -u postgres psql -d excalibur_cuba << EOF
+INSERT INTO admin_users (username, email, password, first_name, last_name, role, is_active, created_at, updated_at)
+VALUES ('excalibur_admin', 'admin@excalibur-cuba.com', '\$2b\$10\$K8vW9mXOjF2nP5qL7cR8s.xY3zV1bA4mH6jK9nL2pQ5rT8uW0vX3', 'Excalibur', 'Admin', 'admin', true, NOW(), NOW())
+ON CONFLICT (username) DO NOTHING;
+\q
+EOF
+ERROR:  relation "admin_users" does not exist
+LINE 1: INSERT INTO admin_users (username, email, password, first_na...
+                    ^
+root@srv896300:/var/www/excalibur-cuba#
