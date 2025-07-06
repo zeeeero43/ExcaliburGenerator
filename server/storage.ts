@@ -263,7 +263,8 @@ export class DatabaseStorage implements IStorage {
       query = query.where(and(...conditions));
     }
 
-    return await query.orderBy(products.sortOrder, desc(products.createdAt));
+    const result = await query.orderBy(products.sortOrder, desc(products.createdAt));
+    return result;
   }
 
   async getProductById(id: number): Promise<Product | undefined> {

@@ -2,7 +2,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupSession, isAuthenticated, loginUser, logoutUser } from "./auth";
+import { setupSession, isAuthenticated, loginUser, logoutUser } from "./simpleAuth";
 import { seedDatabase } from "./seed";
 import { setupSEO } from "./seo";
 import { z } from "zod";

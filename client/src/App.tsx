@@ -12,7 +12,7 @@ import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
+import SimpleAdminDashboard from "./pages/SimpleAdminDashboard";
 import AdminProductForm from "./pages/AdminProductForm";
 import AdminCategoryForm from "./pages/AdminCategoryForm";
 import AdminAnalytics from "./pages/AdminAnalytics";
@@ -47,8 +47,8 @@ function Router() {
     <Switch>
       {/* Admin Routes - No Layout */}
       <Route path="/admin/login" component={AdminLogin} />
-      <Route path="/admin" component={AdminDashboard} />
-      <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/admin" component={SimpleAdminDashboard} />
+      <Route path="/admin/dashboard" component={SimpleAdminDashboard} />
       <Route path="/admin/products/new" component={AdminProductForm} />
       <Route path="/admin/products/:id/edit" component={AdminProductForm} />
       <Route path="/admin/categories/new">
