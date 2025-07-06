@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation, useParams } from 'wouter';
-import { ArrowLeft, Upload, X, Languages } from 'lucide-react';
+import { ArrowLeft, Upload, X } from 'lucide-react';
 import type { Category, Subcategory, Product } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
 import { ExpandableTextarea } from '@/components/ExpandableTextarea';
@@ -77,7 +77,6 @@ function useAdminTranslation() {
         // Success/Error
         productSaved: 'Produkt erfolgreich gespeichert',
         productError: 'Fehler beim Speichern des Produkts',
-        translateButton: 'Automatisch übersetzen',
         translating: 'Übersetze...',
         translationComplete: 'Übersetzung abgeschlossen!',
         translationError: 'Fehler bei der Übersetzung'
@@ -183,58 +182,11 @@ export default function AdminProductForm() {
   const queryClient = useQueryClient();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [specifications, setSpecifications] = useState<Array<{ key: string; value: string }>>([]);
-  const [isTranslating, setIsTranslating] = useState(false);
+
 
   const isEdit = params.id && params.id !== 'new';
 
-  // Translation function
-  const handleAutoTranslate = async () => {
-    if (isTranslating) return;
-    
-    const currentValues = form.getValues();
-    const germanData = {
-      name: currentValues.nameDe,
-      shortDescription: currentValues.shortDescriptionDe,
-      description: currentValues.descriptionDe,
-    };
 
-    // Only translate if German fields have content
-    if (!germanData.name && !germanData.shortDescription && !germanData.description) {
-      toast({
-        title: "Keine deutschen Inhalte",
-        description: "Bitte geben Sie zunächst deutsche Inhalte ein.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsTranslating(true);
-    try {
-      const { spanish, english } = await translateProductData(germanData);
-      
-      // Update form with translations
-      if (spanish.name) form.setValue('nameEs', spanish.name);
-      if (spanish.shortDescription) form.setValue('shortDescriptionEs', spanish.shortDescription);
-      if (spanish.description) form.setValue('descriptionEs', spanish.description);
-      
-      if (english.name) form.setValue('nameEn', english.name);
-      if (english.shortDescription) form.setValue('shortDescriptionEn', english.shortDescription);
-      if (english.description) form.setValue('descriptionEn', english.description);
-
-      toast({
-        title: t('translationComplete'),
-        description: "Deutsche Inhalte wurden automatisch übersetzt.",
-      });
-    } catch (error) {
-      toast({
-        title: t('translationError'),
-        description: "Fehler bei der automatischen Übersetzung.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsTranslating(false);
-    }
-  };
 
   // Real-time translation function
   const handleRealTimeTranslation = async (germanValue: string, fieldType: 'name' | 'shortDescription' | 'description') => {
@@ -536,7 +488,7 @@ export default function AdminProductForm() {
     setSpecifications([...specifications, { key: '', value: '' }]);
   };
 
-  const addSolarSpecifications = () => {
+  const addSolarSpecifications = async () => {
     const solarSpecs = [
       { key: 'Leistung', value: '' },
       { key: 'Spannung', value: '' },
@@ -592,10 +544,28 @@ export default function AdminProductForm() {
     setSpecifications(specifications.filter((_, i) => i !== index));
   };
 
-  const updateSpecification = (index: number, field: 'key' | 'value', value: string) => {
+  const updateSpecification = async (index: number, field: 'key' | 'value', value: string) => {
     const updated = [...specifications];
     updated[index][field] = value;
     setSpecifications(updated);
+
+    // Auto-translate specification keys if they are entered in German
+    if (field === 'key' && value.trim()) {
+      try {
+        const { spanish, english } = await translateProductData({
+          name: '',
+          shortDescription: value, // Use shortDescription field for single words
+          description: ''
+        });
+        
+        // Update the form specifications with translations if available
+        if (spanish.shortDescription && spanish.shortDescription !== value) {
+          console.log(`Spezifikation übersetzt: ${value} → ${spanish.shortDescription} (ES)`);
+        }
+      } catch (error) {
+        console.error('Specification translation failed:', error);
+      }
+    }
   };
 
   return (
@@ -774,19 +744,7 @@ export default function AdminProductForm() {
 
                 {/* Short Descriptions */}
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-medium">Kurzbeschreibung</h3>
-                    <Button 
-                      type="button" 
-                      onClick={handleAutoTranslate}
-                      disabled={isTranslating}
-                      className="flex items-center gap-2"
-                      variant="outline"
-                    >
-                      <Languages className="h-4 w-4" />
-                      {isTranslating ? t('translating') : t('translateButton')}
-                    </Button>
-                  </div>
+                  <h3 className="text-lg font-medium">Kurzbeschreibung</h3>
                   <div className="space-y-4">
                     <FormField
                       control={form.control}
@@ -856,78 +814,7 @@ export default function AdminProductForm() {
                     </div>
                   </div>
 
-                  {/* Long Descriptions */}
-                  <div className="space-y-4 mt-8">
-                    <h3 className="text-lg font-medium">Detaillierte Beschreibung (Optional)</h3>
-                    
-                    <FormField
-                      control={form.control}
-                      name="descriptionDe"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700">Detaillierte Beschreibung (Deutsch)</FormLabel>
-                          <FormControl>
-                            <ExpandableTextarea 
-                              value={field.value || ''}
-                              onChange={(value) => {
-                                field.onChange(value);
-                                debounceTranslation(value, 'description');
-                              }}
-                              placeholder="Ausführliche Produktbeschreibung mit technischen Details, Vorteilen, Anwendungen..."
-                              className="min-h-[120px] border-gray-300 focus:border-gray-600"
-                              label="Detaillierte Beschreibung (Deutsch)"
-                              rows={6}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
-                      <FormField
-                        control={form.control}
-                        name="descriptionEs"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-600">→ Automatisch übersetzt (Spanisch)</FormLabel>
-                            <FormControl>
-                              <ExpandableTextarea 
-                                value={field.value || ''}
-                                onChange={field.onChange}
-                                placeholder="Wird automatisch übersetzt..."
-                                className="bg-gray-100 border-gray-200 min-h-[120px]"
-                                label="Detaillierte Beschreibung (Spanisch)"
-                                rows={6}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="descriptionEn"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-600">→ Automatisch übersetzt (Englisch)</FormLabel>
-                            <FormControl>
-                              <ExpandableTextarea 
-                                value={field.value || ''}
-                                onChange={field.onChange}
-                                placeholder="Wird automatisch übersetzt..."
-                                className="bg-gray-100 border-gray-200 min-h-[120px]"
-                                label="Detaillierte Beschreibung (Englisch)"
-                                rows={6}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
                 </div>
               </CardContent>
             </Card>
