@@ -181,7 +181,14 @@ export default function AdminProductForm() {
   type ProductForm = z.infer<typeof productSchema>;
   const queryClient = useQueryClient();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
-  const [specifications, setSpecifications] = useState<Array<{ key: string; value: string }>>([]);
+  const [specifications, setSpecifications] = useState<Array<{ 
+    key: string; 
+    value: string;
+    keyEs?: string;
+    keyEn?: string;
+    valueEs?: string;
+    valueEn?: string;
+  }>>([]);
 
 
   const isEdit = params.id && params.id !== 'new';
@@ -310,47 +317,57 @@ export default function AdminProductForm() {
   // Populate form with existing product data
   useEffect(() => {
     if (existingProduct && isEdit) {
-      console.log('Populating form with existing product:', existingProduct);
+      console.log('🔄 Populating form with existing product:', existingProduct);
       
-      // Reset form with existing product data
-      form.reset({
-        nameEs: existingProduct.nameEs || '',
-        nameDe: existingProduct.nameDe || '',
-        nameEn: existingProduct.nameEn || '',
-        shortDescriptionEs: existingProduct.shortDescriptionEs || '',
-        shortDescriptionDe: existingProduct.shortDescriptionDe || '',
-        shortDescriptionEn: existingProduct.shortDescriptionEn || '',
-        descriptionEs: existingProduct.descriptionEs || '',
-        descriptionDe: existingProduct.descriptionDe || '',
-        descriptionEn: existingProduct.descriptionEn || '',
-        price: existingProduct.price || '',
-        categoryId: existingProduct.categoryId || undefined,
-        subcategoryId: existingProduct.subcategoryId || undefined,
-        mainImage: existingProduct.mainImage || '',
-        images: (existingProduct.images && Array.isArray(existingProduct.images)) ? existingProduct.images : [],
-        sku: existingProduct.sku || '',
-        priceNote: existingProduct.priceNote || '',
-        isFeatured: existingProduct.isFeatured || false,
-        isActive: existingProduct.isActive !== false,
-        stockStatus: (existingProduct.stockStatus as 'in_stock' | 'out_of_stock' | 'limited') || 'in_stock',
-        inStock: existingProduct.inStock !== false,
-        availabilityTextEs: existingProduct.availabilityTextEs || '',
-        availabilityTextDe: existingProduct.availabilityTextDe || '',
-        availabilityTextEn: existingProduct.availabilityTextEn || '',
-      });
+      // CRITICAL: Use setTimeout to ensure form is ready for reset
+      setTimeout(() => {
+        // Reset form with existing product data with proper type handling
+        form.reset({
+          nameEs: existingProduct.nameEs || '',
+          nameDe: existingProduct.nameDe || existingProduct.name || '',
+          nameEn: existingProduct.nameEn || '',
+          shortDescriptionEs: existingProduct.shortDescriptionEs || '',
+          shortDescriptionDe: existingProduct.shortDescriptionDe || existingProduct.shortDescription || '',
+          shortDescriptionEn: existingProduct.shortDescriptionEn || '',
+          descriptionEs: existingProduct.descriptionEs || '',
+          descriptionDe: existingProduct.descriptionDe || existingProduct.description || '',
+          descriptionEn: existingProduct.descriptionEn || '',
+          price: existingProduct.price ? String(existingProduct.price) : '',
+          categoryId: existingProduct.categoryId || undefined,
+          subcategoryId: existingProduct.subcategoryId || undefined,
+          mainImage: existingProduct.mainImage || '',
+          images: (existingProduct.images && Array.isArray(existingProduct.images)) ? existingProduct.images : [],
+          sku: existingProduct.sku || '',
+          priceNote: existingProduct.priceNote || '',
+          isFeatured: Boolean(existingProduct.isFeatured),
+          isActive: existingProduct.isActive !== false,
+          stockStatus: (existingProduct.stockStatus as 'in_stock' | 'out_of_stock' | 'limited') || 'in_stock',
+          inStock: existingProduct.inStock !== false,
+          availabilityTextEs: existingProduct.availabilityTextEs || '',
+          availabilityTextDe: existingProduct.availabilityTextDe || '',
+          availabilityTextEn: existingProduct.availabilityTextEn || '',
+        });
+
+        console.log('✅ Form reset completed with values:', form.getValues());
+      }, 100); // Small delay to ensure form is ready
 
       // Set category for subcategories
       if (existingProduct.categoryId) {
         setSelectedCategoryId(existingProduct.categoryId);
       }
 
-      // Parse specifications
+      // Parse specifications with translations
       if (existingProduct.specifications && typeof existingProduct.specifications === 'object') {
         const specsArray = Object.entries(existingProduct.specifications).map(([key, value]) => ({
           key,
           value: value as string,
+          keyEs: existingProduct.specificationsEs?.[key] || undefined,
+          keyEn: existingProduct.specificationsEn?.[key] || undefined,
+          valueEs: existingProduct.specificationsValuesEs?.[key] || undefined,
+          valueEn: existingProduct.specificationsValuesEn?.[key] || undefined,
         }));
         setSpecifications(specsArray);
+        console.log('✅ Specifications loaded:', specsArray);
       }
     }
   }, [existingProduct, isEdit, form]);
@@ -371,6 +388,19 @@ export default function AdminProductForm() {
         ...data,
         specifications: specifications.length > 0 
           ? Object.fromEntries(specifications.map(spec => [spec.key, spec.value]))
+          : undefined,
+        // Store translated specifications separately
+        specificationsEs: specifications.length > 0 
+          ? Object.fromEntries(specifications.map(spec => [spec.key, spec.keyEs || spec.key]))
+          : undefined,
+        specificationsEn: specifications.length > 0 
+          ? Object.fromEntries(specifications.map(spec => [spec.key, spec.keyEn || spec.key]))
+          : undefined,
+        specificationsValuesEs: specifications.length > 0 
+          ? Object.fromEntries(specifications.map(spec => [spec.key, spec.valueEs || spec.value]))
+          : undefined,
+        specificationsValuesEn: specifications.length > 0 
+          ? Object.fromEntries(specifications.map(spec => [spec.key, spec.valueEn || spec.value]))
           : undefined,
         price: data.price ? data.price.toString() : undefined,
       };
@@ -490,16 +520,16 @@ export default function AdminProductForm() {
 
   const addSolarSpecifications = async () => {
     const solarSpecs = [
-      { key: 'Leistung', value: '' },
-      { key: 'Spannung', value: '' },
-      { key: 'Strom', value: '' },
-      { key: 'Wirkungsgrad', value: '' },
-      { key: 'Garantie', value: '' },
-      { key: 'Abmessungen', value: '' },
-      { key: 'Gewicht', value: '' },
-      { key: 'Zertifizierungen', value: '' },
-      { key: 'Betriebstemperatur', value: '' },
-      { key: 'Schutzklasse', value: '' }
+      { key: 'Leistung', value: '', keyEs: 'Potencia', keyEn: 'Power' },
+      { key: 'Spannung', value: '', keyEs: 'Voltaje', keyEn: 'Voltage' },
+      { key: 'Strom', value: '', keyEs: 'Corriente', keyEn: 'Current' },
+      { key: 'Wirkungsgrad', value: '', keyEs: 'Eficiencia', keyEn: 'Efficiency' },
+      { key: 'Garantie', value: '', keyEs: 'Garantía', keyEn: 'Warranty' },
+      { key: 'Abmessungen', value: '', keyEs: 'Dimensiones', keyEn: 'Dimensions' },
+      { key: 'Gewicht', value: '', keyEs: 'Peso', keyEn: 'Weight' },
+      { key: 'Zertifizierungen', value: '', keyEs: 'Certificaciones', keyEn: 'Certifications' },
+      { key: 'Betriebstemperatur', value: '', keyEs: 'Temperatura de operación', keyEn: 'Operating Temperature' },
+      { key: 'Schutzklasse', value: '', keyEs: 'Clase de protección', keyEn: 'Protection Class' }
     ];
     
     // Add only those that don't already exist
@@ -510,22 +540,22 @@ export default function AdminProductForm() {
     
     toast({
       title: "Solar-Spezifikationen hinzugefügt",
-      description: `${newSpecs.length} neue technische Felder wurden hinzugefügt.`,
+      description: `${newSpecs.length} neue technische Felder wurden hinzugefügt (bereits übersetzt).`,
     });
   };
 
   const addGeneratorSpecifications = () => {
     const generatorSpecs = [
-      { key: 'Leistung', value: '' },
-      { key: 'Kraftstofftyp', value: '' },
-      { key: 'Tankvolumen', value: '' },
-      { key: 'Laufzeit', value: '' },
-      { key: 'Spannung', value: '' },
-      { key: 'Frequenz', value: '' },
-      { key: 'Lautstärke', value: '' },
-      { key: 'Abmessungen', value: '' },
-      { key: 'Gewicht', value: '' },
-      { key: 'Garantie', value: '' }
+      { key: 'Leistung', value: '', keyEs: 'Potencia', keyEn: 'Power' },
+      { key: 'Kraftstofftyp', value: '', keyEs: 'Tipo de combustible', keyEn: 'Fuel Type' },
+      { key: 'Tankvolumen', value: '', keyEs: 'Capacidad del tanque', keyEn: 'Tank Capacity' },
+      { key: 'Laufzeit', value: '', keyEs: 'Tiempo de funcionamiento', keyEn: 'Runtime' },
+      { key: 'Spannung', value: '', keyEs: 'Voltaje', keyEn: 'Voltage' },
+      { key: 'Frequenz', value: '', keyEs: 'Frecuencia', keyEn: 'Frequency' },
+      { key: 'Lautstärke', value: '', keyEs: 'Nivel de ruido', keyEn: 'Noise Level' },
+      { key: 'Abmessungen', value: '', keyEs: 'Dimensiones', keyEn: 'Dimensions' },
+      { key: 'Gewicht', value: '', keyEs: 'Peso', keyEn: 'Weight' },
+      { key: 'Garantie', value: '', keyEs: 'Garantía', keyEn: 'Warranty' }
     ];
     
     // Add only those that don't already exist
@@ -536,7 +566,7 @@ export default function AdminProductForm() {
     
     toast({
       title: "Generator-Spezifikationen hinzugefügt",
-      description: `${newSpecs.length} neue technische Felder wurden hinzugefügt.`,
+      description: `${newSpecs.length} neue technische Felder wurden hinzugefügt (bereits übersetzt).`,
     });
   };
 
@@ -562,6 +592,16 @@ export default function AdminProductForm() {
           
           if (field === 'key' && spanish.name && spanish.name !== value) {
             console.log(`🔄 Spezifikation-Schlüssel übersetzt: ${value} → ${spanish.name}`);
+            
+            // CRITICAL: Actually update the specifications with Spanish translation
+            const translatedSpecs = [...specifications];
+            translatedSpecs[index] = {
+              ...translatedSpecs[index],
+              keyEs: spanish.name,
+              keyEn: english.name || spanish.name
+            };
+            setSpecifications(translatedSpecs);
+            
             toast({
               title: "Spezifikation übersetzt",
               description: `${value} → ${spanish.name}`,
@@ -569,6 +609,16 @@ export default function AdminProductForm() {
             });
           } else if (field === 'value' && spanish.shortDescription && spanish.shortDescription !== value) {
             console.log(`🔄 Spezifikation-Wert übersetzt: ${value} → ${spanish.shortDescription}`);
+            
+            // CRITICAL: Actually update the specifications with Spanish translation
+            const translatedSpecs = [...specifications];
+            translatedSpecs[index] = {
+              ...translatedSpecs[index],
+              valueEs: spanish.shortDescription,
+              valueEn: english.shortDescription || spanish.shortDescription
+            };
+            setSpecifications(translatedSpecs);
+            
             toast({
               title: "Spezifikation übersetzt", 
               description: `${value} → ${spanish.shortDescription}`,
