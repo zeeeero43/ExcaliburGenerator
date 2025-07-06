@@ -143,6 +143,14 @@ npm run build
 # Datenbank-Schema anwenden
 npm run db:push
 
+# ⚠️ KRITISCHE ABFRAGE: Wenn drizzle-kit fragt:
+# "Is admin_users table created or renamed from another table?"
+# ❯ + admin_users            create table
+#   ~ sessions › admin_users rename table
+#
+# WÄHLEN SIE: "+ admin_users create table" (ERSTE Option)
+# Drücken Sie ENTER - NICHT die Umbenennung wählen!
+
 # WICHTIG: Admin-Benutzer direkt in der Datenbank erstellen
 sudo -u postgres psql -d excalibur_cuba << EOF
 INSERT INTO admin_users (username, email, password, first_name, last_name, role, is_active, created_at, updated_at)
