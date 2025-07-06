@@ -91,6 +91,11 @@ export default function Home() {
                     title = product.nameEs || '';
                     description = product.shortDescriptionEs || '';
                 }
+                
+                // Limit description length for better display
+                if (description && description.length > 120) {
+                  description = `${description.substring(0, 120)}...`;
+                }
 
                 return (
                   <ProductCard

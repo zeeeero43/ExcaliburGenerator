@@ -28,7 +28,10 @@ export function ProductCard({ title, description, image, linkText, category, cla
             {title}
           </h3>
           <p className="text-excalibur-gray mb-4 leading-relaxed">
-            {description}
+            {description && description.length > 150 
+              ? `${description.substring(0, 150)}...` 
+              : description
+            }
           </p>
           <div className="flex items-center text-excalibur-blue font-semibold group-hover:text-excalibur-orange transition-colors">
             <span>{linkText}</span>

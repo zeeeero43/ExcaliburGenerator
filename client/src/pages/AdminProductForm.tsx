@@ -461,16 +461,26 @@ export default function AdminProductForm() {
       console.log('✅ Erfolgreich gespeichert:', result);
       return result;
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
+      // Success feedback
+      const actionText = isEdit ? 'aktualisiert' : 'erstellt';
+      toast({
+        title: `✅ Produkt erfolgreich ${actionText}!`,
+        description: `Das Produkt wurde erfolgreich gespeichert und ist jetzt verfügbar.`,
+        variant: "default",
+        duration: 4000,
+      });
+      
+      // Invalidate and refresh queries
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
       if (isEdit) {
         queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${params.id}`] });
       }
-      toast({
-        title: isEdit ? "Produkt aktualisiert" : "Produkt erstellt",
-        description: "Das Produkt wurde erfolgreich gespeichert.",
-      });
-      setLocation('/admin');
+      
+      // Navigate back to admin dashboard after brief delay
+      setTimeout(() => {
+        setLocation('/admin');
+      }, 1500);
     },
     onError: (error: any) => {
       console.error('🚨 PRODUKTERSTELLUNG FEHLGESCHLAGEN:', error);
@@ -501,7 +511,7 @@ export default function AdminProductForm() {
       }
       
       toast({
-        title: "Produkterstellung fehlgeschlagen",
+        title: "❌ Produkterstellung fehlgeschlagen",
         description: errorMessage,
         variant: "destructive",
         duration: 5000,
@@ -580,7 +590,7 @@ export default function AdminProductForm() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             {/* Basic Information */}
-            <Card>
+            <Card className={`${(form.formState.errors.nameDe || form.formState.errors.categoryId || form.formState.errors.shortDescriptionDe) ? 'border-red-500 border-2' : ''}`}>
               <CardHeader>
                 <CardTitle>Grundinformationen</CardTitle>
                 <CardDescription>
@@ -595,7 +605,7 @@ export default function AdminProductForm() {
                     name="nameDe"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-800 font-bold text-lg">1. Produktname (Deutsch) - PFLICHTFELD</FormLabel>
+                        <FormLabel className="text-gray-800 font-bold text-lg">1. Produktname <span className="text-red-500">*</span></FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
@@ -660,7 +670,7 @@ export default function AdminProductForm() {
                     name="categoryId"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-800 font-bold text-lg">2. Kategorie - PFLICHTFELD</FormLabel>
+                        <FormLabel className="text-gray-800 font-bold text-lg">2. Kategorie <span className="text-red-500">*</span></FormLabel>
                         <Select 
                           onValueChange={field.onChange} 
                           value={field.value?.toString()}
@@ -728,7 +738,7 @@ export default function AdminProductForm() {
                       name="shortDescriptionDe"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-800 font-bold text-lg">3. Kurzbeschreibung (Deutsch) - PFLICHTFELD</FormLabel>
+                          <FormLabel className="text-gray-800 font-bold text-lg">3. Beschreibung <span className="text-red-500">*</span></FormLabel>
                           <FormControl>
                             <ExpandableTextarea 
                               value={field.value || ''}

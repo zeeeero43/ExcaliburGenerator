@@ -116,7 +116,10 @@ export default function Products() {
                       {getLocalizedText(category, 'name')}
                     </h3>
                     <p className="text-gray-600 mb-4">
-                      {getLocalizedText(category, 'description') || 'Kategorie anzeigen'}
+                      {(() => {
+                        const desc = getLocalizedText(category, 'description') || 'Kategorie anzeigen';
+                        return desc.length > 100 ? `${desc.substring(0, 100)}...` : desc;
+                      })()}
                     </p>
                     
                     {/* Product Count */}
