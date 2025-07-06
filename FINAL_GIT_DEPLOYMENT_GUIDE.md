@@ -76,7 +76,8 @@ CREATE TABLE IF NOT EXISTS "sessions" (
 ALTER TABLE "sessions" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 CREATE INDEX "IDX_session_expire" ON "sessions" ("expire");
 
--- KRITISCH: Berechtigungen für excalibur_user setzen
+-- KRITISCH: Berechtigungen und Ownership für excalibur_user setzen
+ALTER TABLE "sessions" OWNER TO excalibur_user;
 GRANT ALL PRIVILEGES ON TABLE "sessions" TO excalibur_user;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO excalibur_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO excalibur_user;

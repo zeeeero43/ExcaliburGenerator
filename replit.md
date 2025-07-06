@@ -263,6 +263,11 @@ Changelog:
   * Added default privileges for future tables and sequences
   * Updated deployment guide with correct PostgreSQL permissions setup
   * Drizzle migrations now work properly with correct database user permissions
+- July 06, 2025 (database ownership fix). Resolved PostgreSQL ownership error:
+  * Fixed "must be owner of table sessions" error during npm run db:push
+  * Added ALTER TABLE sessions OWNER TO excalibur_user command to deployment guide
+  * Drizzle-kit requires table ownership to modify schemas properly
+  * Updated deployment guide with proper ownership transfer commands
 ```
 
 ## User Preferences
