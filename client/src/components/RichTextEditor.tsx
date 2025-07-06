@@ -1,55 +1,137 @@
 import { useState, useEffect } from 'react';
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
 
-// Dynamic import for ReactQuill to avoid SSR issues
-const ReactQuillComponent = ({ value, onChange, placeholder = '', ...props }: any) => {
-  const [ReactQuill, setReactQuill] = useState<any>(null);
+// Simple Rich Text Component using buttons for formatting
+const SimpleRichTextComponent = ({ value, onChange, placeholder = '', ...props }: any) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [textValue, setTextValue] = useState(value || '');
 
   useEffect(() => {
-    // Dynamic import to avoid SSR issues
-    import('react-quill').then((module) => {
-      setReactQuill(module.default);
-    });
-  }, []);
+    setTextValue(value || '');
+  }, [value]);
 
-  // Toolbar configuration
-  const modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote'],
-      [{ 'header': 1 }, { 'header': 2 }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      ['clean']
-    ],
+  const handleChange = (newValue: string) => {
+    setTextValue(newValue);
+    onChange(newValue);
   };
 
-  const formats = [
-    'bold', 'italic', 'underline', 'strike',
-    'blockquote', 'header', 'list', 'bullet'
-  ];
+  const insertFormat = (startTag: string, endTag: string = '') => {
+    const textarea = document.getElementById('rich-textarea') as HTMLTextAreaElement;
+    if (!textarea) return;
 
-  // Show loading state while ReactQuill is loading
-  if (!ReactQuill) {
-    return (
-      <div className="h-32 bg-gray-100 border border-gray-300 rounded-md flex items-center justify-center">
-        <span className="text-gray-500">Editor wird geladen...</span>
-      </div>
-    );
-  }
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textValue.substring(start, end);
+    
+    const beforeText = textValue.substring(0, start);
+    const afterText = textValue.substring(end);
+    
+    const newText = beforeText + startTag + selectedText + endTag + afterText;
+    handleChange(newText);
+    
+    // Set cursor position after the inserted tag
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + startTag.length, start + startTag.length + selectedText.length);
+    }, 0);
+  };
 
   return (
-    <div className="rich-text-editor">
-      <ReactQuill
-        value={value}
-        onChange={onChange}
-        modules={modules}
-        formats={formats}
-        placeholder={placeholder}
-        theme="snow"
-        className="bg-white"
-        style={{ height: '200px', marginBottom: '50px' }}
+    <div className="rich-text-editor border border-gray-300 rounded-md">
+      {/* Toolbar */}
+      <div className="border-b border-gray-300 p-2 bg-gray-50 flex gap-2 flex-wrap">
+        <button
+          type="button"
+          onClick={() => insertFormat('**', '**')}
+          className="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
+          title="Fett"
+        >
+          <strong>B</strong>
+        </button>
+        <button
+          type="button"
+          onClick={() => insertFormat('*', '*')}
+          className="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
+          title="Kursiv"
+        >
+          <em>I</em>
+        </button>
+        <button
+          type="button"
+          onClick={() => insertFormat('_', '_')}
+          className="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
+          title="Unterstrichen"
+        >
+          <u>U</u>
+        </button>
+        <div className="border-l border-gray-300 mx-1"></div>
+        <button
+          type="button"
+          onClick={() => insertFormat('## ', '')}
+          className="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
+          title="Überschrift"
+        >
+          H2
+        </button>
+        <button
+          type="button"
+          onClick={() => insertFormat('### ', '')}
+          className="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
+          title="Kleine Überschrift"
+        >
+          H3
+        </button>
+        <div className="border-l border-gray-300 mx-1"></div>
+        <button
+          type="button"
+          onClick={() => insertFormat('- ', '')}
+          className="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
+          title="Liste"
+        >
+          •
+        </button>
+        <button
+          type="button"
+          onClick={() => insertFormat('1. ', '')}
+          className="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
+          title="Nummerierte Liste"
+        >
+          1.
+        </button>
+      </div>
+      
+      {/* Text Area */}
+      <Textarea
+        id="rich-textarea"
+        value={textValue}
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder={placeholder + " (Mit Formatierung: **fett**, *kursiv*, _unterstrichen_, ## Überschrift)"}
+        className="border-0 rounded-none rounded-b-md resize-vertical"
+        rows={8}
         {...props}
       />
+      
+      {/* Preview (optional) */}
+      {textValue && (
+        <div className="border-t border-gray-300 p-3 bg-gray-50">
+          <div className="text-xs text-gray-600 mb-2">Vorschau:</div>
+          <div 
+            className="prose prose-sm max-w-none"
+            dangerouslySetInnerHTML={{
+              __html: textValue
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/_(.*?)_/g, '<u>$1</u>')
+                .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                .replace(/^- (.*$)/gm, '• $1')
+                .replace(/^(\d+)\. (.*$)/gm, '$1. $2')
+                .replace(/\n/g, '<br>')
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -75,12 +157,14 @@ export const RichTextEditor = ({
 }: RichTextEditorProps) => {
   return (
     <FormItem>
-      <FormLabel className="text-sm font-medium text-gray-700">
-        {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
-      </FormLabel>
+      {label && (
+        <FormLabel className="text-sm font-medium text-gray-700">
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </FormLabel>
+      )}
       <FormControl>
-        <ReactQuillComponent
+        <SimpleRichTextComponent
           value={value}
           onChange={onChange}
           placeholder={placeholder}
