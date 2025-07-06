@@ -35,7 +35,7 @@ export default function Legal() {
                 <div>
                   <h3 className="font-semibold mb-2">{t('legal.company')}</h3>
                   <p className="text-gray-700">
-                    EXCALIBUR POWER SOLUTIONS S.L.<br />
+                    HARRY LAG CONSTRUCCIONES SRL<br />
                     Importación y Distribución de Equipos Solares y Generadores
                   </p>
                 </div>
@@ -45,8 +45,8 @@ export default function Legal() {
                   <div className="flex items-start gap-2 text-gray-700">
                     <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
                     <div>
-                      Calle 23 #456, entre A y B<br />
-                      Vedado, La Habana 10400<br />
+                      CALLE 1ra e/28 y 286, #28413<br />
+                      Pueblo Nuevo, Matanzas<br />
                       Cuba
                     </div>
                   </div>
@@ -55,17 +55,17 @@ export default function Legal() {
                 <div>
                   <h3 className="font-semibold mb-2">{t('legal.contact')}</h3>
                   <div className="space-y-2 text-gray-700">
-                    <div className="flex items-center gap-2">
-                      <Phone className="h-4 w-4" />
-                      <span>+53 7 123 4567 (Cuba)</span>
+                    <div>
+                      <p className="font-medium text-gray-800">YISELL BONACHEA ALDAZABAL</p>
+                      <p className="text-sm text-gray-600">Persona a Contactar</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <Phone className="h-4 w-4" />
-                      <span>+49 30 123 4567 (Deutschland)</span>
+                      <span>+53 58781416</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4" />
-                      <span>info@excalibur-cuba.com</span>
+                      <span>YisellBonachea@Gmail.com</span>
                     </div>
                   </div>
                 </div>
@@ -82,8 +82,8 @@ export default function Legal() {
                 <div>
                   <h3 className="font-semibold mb-2">{t('legal.responsiblePerson')}</h3>
                   <p className="text-gray-700">
-                    {t('legal.responsiblePersonName')}: Max Mustermann<br />
-                    {t('legal.position')}: Geschäftsführer / Director General
+                    {t('legal.responsiblePersonName')}: YISELL BONACHEA ALDAZABAL<br />
+                    {t('legal.position')}: Representante Legal / Persona de Contacto
                   </p>
                 </div>
 

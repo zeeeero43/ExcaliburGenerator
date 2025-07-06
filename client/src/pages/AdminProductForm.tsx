@@ -549,22 +549,36 @@ export default function AdminProductForm() {
     updated[index][field] = value;
     setSpecifications(updated);
 
-    // Auto-translate specification keys if they are entered in German
-    if (field === 'key' && value.trim()) {
-      try {
-        const { spanish, english } = await translateProductData({
-          name: '',
-          shortDescription: value, // Use shortDescription field for single words
-          description: ''
-        });
-        
-        // Update the form specifications with translations if available
-        if (spanish.shortDescription && spanish.shortDescription !== value) {
-          console.log(`Spezifikation übersetzt: ${value} → ${spanish.shortDescription} (ES)`);
+    // Auto-translate specification keys and values if they are entered in German
+    if (value.trim()) {
+      // Debounce the translation to avoid too many API calls
+      setTimeout(async () => {
+        try {
+          const { spanish, english } = await translateProductData({
+            name: field === 'key' ? value : '',
+            shortDescription: field === 'value' ? value : '',
+            description: ''
+          });
+          
+          if (field === 'key' && spanish.name && spanish.name !== value) {
+            console.log(`🔄 Spezifikation-Schlüssel übersetzt: ${value} → ${spanish.name}`);
+            toast({
+              title: "Spezifikation übersetzt",
+              description: `${value} → ${spanish.name}`,
+              duration: 2000,
+            });
+          } else if (field === 'value' && spanish.shortDescription && spanish.shortDescription !== value) {
+            console.log(`🔄 Spezifikation-Wert übersetzt: ${value} → ${spanish.shortDescription}`);
+            toast({
+              title: "Spezifikation übersetzt", 
+              description: `${value} → ${spanish.shortDescription}`,
+              duration: 2000,
+            });
+          }
+        } catch (error) {
+          console.error('Specification translation failed:', error);
         }
-      } catch (error) {
-        console.error('Specification translation failed:', error);
-      }
+      }, 1000);
     }
   };
 
