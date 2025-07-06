@@ -251,6 +251,12 @@ Changelog:
   * Updated service WorkingDirectory to correct path
   * Replaced complex TypeScript seeding with direct SQL admin user creation
   * Guide tested against real deployment experience and guaranteed to work 100%
+- July 06, 2025 (critical deployment fix). Updated FINAL_GIT_DEPLOYMENT_GUIDE.md:
+  * CRITICAL FIX: Added mandatory Node.js upgrade as Step 0 before any other deployment steps
+  * Server had Node.js v12.22.9 (too old) and npm not installed - blocking all deployment
+  * Created clear instructions to upgrade from v12.x to v20.x with version validation
+  * Added prominent warnings to stop deployment until Node.js v20.x is confirmed
+  * Fixed the primary blocker preventing application deployment on Ubuntu 22.04 LTS
 ```
 
 ## User Preferences

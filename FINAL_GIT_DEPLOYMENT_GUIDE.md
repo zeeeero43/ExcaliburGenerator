@@ -2,6 +2,37 @@
 
 > **WICHTIG**: Dieser Guide ist basierend auf allen aufgetretenen Fehlern getestet und funktioniert garantiert. Befolgen Sie jeden Schritt exakt.
 
+## 🔥 KRITISCHE ANFORDERUNG - ZUERST PRÜFEN!
+
+**SCHRITT 0 - SYSTEM-CHECK**: Prüfen Sie zuerst die Node.js-Version:
+```bash
+node --version
+npm --version
+```
+
+**⚠️ FALLS Node.js UNTER v20.x ODER npm NICHT INSTALLIERT IST:**
+
+### 🚨 SOFORTIGER NODE.JS-UPGRADE (PFLICHT!)
+```bash
+# Alte Node.js-Version entfernen (falls vorhanden)
+sudo apt remove --purge nodejs npm -y
+sudo apt autoremove -y
+
+# Node.js 20.x Repository hinzufügen
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+
+# Node.js 20.x installieren
+sudo apt-get install -y nodejs
+
+# PRÜFEN DER INSTALLATION
+node --version    # MUSS v20.x.x zeigen!
+npm --version     # MUSS eine Version anzeigen!
+```
+
+**❌ STOP: Fahren Sie NICHT fort, bis Node.js v20.x erfolgreich installiert ist!**
+
+---
+
 ## 🚀 Schnellstart - 5 Minuten Setup
 
 ### 1. Grundsystem vorbereiten (Ubuntu 22.04 LTS)
@@ -10,16 +41,12 @@
 # System aktualisieren
 sudo apt update && sudo apt upgrade -y
 
-# Node.js 20 installieren (WICHTIG: Version 20!)
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
 # Git und weitere Tools installieren
 sudo apt install -y git nginx postgresql postgresql-contrib
 
 # Versionen prüfen
-node --version   # Sollte v20.x.x zeigen
-npm --version    # Sollte 10.x.x zeigen
+node --version   # MUSS v20.x.x zeigen
+npm --version    # MUSS 10.x.x zeigen
 git --version    # Sollte 2.x.x zeigen
 ```
 
