@@ -7,7 +7,7 @@ export async function detectLanguageFromLocation(): Promise<string> {
   try {
     const response = await fetch('/api/geolocation');
     const data: GeolocationResult = await response.json();
-    return data.language || 'de'; // Default to German instead of Spanish
+    return data.language || 'es'; // Default to Spanish for Cuban market
   } catch (error) {
     console.error('Geolocation detection failed:', error);
     
@@ -16,8 +16,8 @@ export async function detectLanguageFromLocation(): Promise<string> {
     console.log('Browser language detected:', browserLang);
     const supportedLangs = ['es', 'de', 'en'];
     
-    // Priority: German for German speakers, then browser language, then Spanish
+    // Priority: Spanish for Cuban market, then browser language if supported
     if (browserLang === 'de') return 'de';
-    return supportedLangs.includes(browserLang) ? browserLang : 'de';
+    return supportedLangs.includes(browserLang) ? browserLang : 'es';
   }
 }

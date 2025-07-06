@@ -44,7 +44,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <img 
-              src="/excalibur-logo.png" 
+              src="/uploads/excalibur-logo-kuba.png" 
               alt="Excalibur Cuba" 
               className="h-12 w-auto object-contain"
             />

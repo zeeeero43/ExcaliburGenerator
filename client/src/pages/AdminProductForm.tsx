@@ -142,14 +142,14 @@ function useAdminTranslation() {
   return { t, currentLanguage: adminLanguage };
 }
 
-// Simplified schema - only Spanish required for easy product creation
+// German-first workflow - only German required for creation
 function createProductSchema(t: (key: string) => string) {
   return z.object({
-    nameEs: z.string().min(1, 'Produktname (Spanisch) ist erforderlich'),
-    nameDe: z.string().optional(),
+    nameEs: z.string().optional(),
+    nameDe: z.string().min(1, 'Produktname (Deutsch) ist erforderlich'),
     nameEn: z.string().optional(),
-    shortDescriptionEs: z.string().min(1, 'Kurzbeschreibung (Spanisch) ist erforderlich'),
-    shortDescriptionDe: z.string().optional(),
+    shortDescriptionEs: z.string().optional(),
+    shortDescriptionDe: z.string().min(1, 'Kurzbeschreibung (Deutsch) ist erforderlich'),
     shortDescriptionEn: z.string().optional(),
     descriptionEs: z.string().optional(),
     descriptionDe: z.string().optional(),
@@ -234,6 +234,56 @@ export default function AdminProductForm() {
     } finally {
       setIsTranslating(false);
     }
+  };
+
+  // Real-time translation function
+  const handleRealTimeTranslation = async (germanValue: string, fieldType: 'name' | 'shortDescription' | 'description') => {
+    if (!germanValue.trim()) return;
+    
+    try {
+      const germanData = {
+        [fieldType]: germanValue,
+        name: fieldType === 'name' ? germanValue : '',
+        shortDescription: fieldType === 'shortDescription' ? germanValue : '',
+        description: fieldType === 'description' ? germanValue : '',
+      };
+      
+      const { spanish, english } = await translateProductData(germanData);
+      
+      // Update form with translations based on field type
+      if (fieldType === 'name') {
+        if (spanish.name) form.setValue('nameEs', spanish.name);
+        if (english.name) form.setValue('nameEn', english.name);
+      } else if (fieldType === 'shortDescription') {
+        if (spanish.shortDescription) form.setValue('shortDescriptionEs', spanish.shortDescription);
+        if (english.shortDescription) form.setValue('shortDescriptionEn', english.shortDescription);
+      } else if (fieldType === 'description') {
+        if (spanish.description) form.setValue('descriptionEs', spanish.description);
+        if (english.description) form.setValue('descriptionEn', english.description);
+      }
+    } catch (error) {
+      console.error('Real-time translation failed:', error);
+    }
+  };
+
+  // Debounced translation
+  const [translationTimeouts, setTranslationTimeouts] = useState<Record<string, NodeJS.Timeout>>({});
+
+  const debounceTranslation = (value: string, fieldType: 'name' | 'shortDescription' | 'description') => {
+    // Clear existing timeout
+    if (translationTimeouts[fieldType]) {
+      clearTimeout(translationTimeouts[fieldType]);
+    }
+    
+    // Set new timeout
+    const timeoutId = setTimeout(() => {
+      handleRealTimeTranslation(value, fieldType);
+    }, 1000); // 1 second delay
+    
+    setTranslationTimeouts(prev => ({
+      ...prev,
+      [fieldType]: timeoutId
+    }));
   };
 
   const form = useForm<ProductForm>({
@@ -564,18 +614,18 @@ export default function AdminProductForm() {
           <h1 className="text-3xl font-bold text-gray-900">
             {isEdit ? 'Produkt bearbeiten' : 'Neues Produkt erstellen'}
           </h1>
-          <div className="bg-blue-100 border border-blue-300 rounded-lg p-4 mt-4">
-            <h2 className="text-lg font-semibold text-blue-800 mb-2">Vereinfachte Produkterstellung</h2>
-            <p className="text-blue-700 text-sm">
-              Nur 3 Felder sind erforderlich:
+          <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 mt-4">
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">Deutsch-zu-Spanisch Workflow</h2>
+            <p className="text-gray-700 text-sm">
+              Nur 3 deutsche Eingaben erforderlich:
             </p>
-            <ul className="text-blue-700 text-sm mt-2 list-disc ml-5">
-              <li>Produktname (Spanisch) - für den kubanischen Markt</li>
-              <li>Kurzbeschreibung (Spanisch)</li>
+            <ul className="text-gray-700 text-sm mt-2 list-disc ml-5">
+              <li>Produktname (Deutsch) - wird automatisch übersetzt</li>
+              <li>Kurzbeschreibung (Deutsch) - wird automatisch übersetzt</li>
               <li>Kategorie auswählen</li>
             </ul>
-            <p className="text-blue-700 text-sm mt-2">
-              Alle anderen Felder sind optional und können später ergänzt werden.
+            <p className="text-gray-700 text-sm mt-2">
+              Spanische und englische Versionen werden automatisch generiert.
             </p>
           </div>
         </div>
@@ -592,18 +642,22 @@ export default function AdminProductForm() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Product Names */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <FormField
                     control={form.control}
-                    name="nameEs"
+                    name="nameDe"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-red-600 font-bold text-lg">1. Produktname (Spanisch) - PFLICHTFELD</FormLabel>
+                        <FormLabel className="text-gray-800 font-bold text-lg">1. Produktname (Deutsch) - PFLICHTFELD</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
-                            placeholder="z.B. Panel Solar 300W Monocristalino" 
-                            className="text-lg p-3 border-2 border-red-300 focus:border-red-500"
+                            placeholder="z.B. 300W Monokristallines Solarpanel" 
+                            className="text-lg p-3 border-2 border-gray-300 focus:border-gray-600"
+                            onChange={(e) => {
+                              field.onChange(e);
+                              debounceTranslation(e.target.value, 'name');
+                            }}
                           />
                         </FormControl>
                         <FormMessage />
@@ -611,33 +665,45 @@ export default function AdminProductForm() {
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="nameDe"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Produktname (Deutsch) - Optional</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="Produktname" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                    <FormField
+                      control={form.control}
+                      name="nameEs"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-600">→ Automatisch übersetzt (Spanisch)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              placeholder="Wird automatisch übersetzt..." 
+                              className="bg-gray-100 border-gray-200"
+                              readOnly
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <FormField
-                    control={form.control}
-                    name="nameEn"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Produktname (Englisch) - Optional</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="Product name" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <FormField
+                      control={form.control}
+                      name="nameEn"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-600">→ Automatisch übersetzt (Englisch)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              placeholder="Wird automatisch übersetzt..." 
+                              className="bg-gray-100 border-gray-200"
+                              readOnly
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
 
                 {/* Category Selection */}
@@ -647,13 +713,13 @@ export default function AdminProductForm() {
                     name="categoryId"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-red-600 font-bold text-lg">3. Kategorie - PFLICHTFELD</FormLabel>
+                        <FormLabel className="text-gray-800 font-bold text-lg">2. Kategorie - PFLICHTFELD</FormLabel>
                         <Select 
                           onValueChange={field.onChange} 
                           value={field.value?.toString()}
                         >
                           <FormControl>
-                            <SelectTrigger className="text-lg p-3 border-2 border-red-300 focus:border-red-500">
+                            <SelectTrigger className="text-lg p-3 border-2 border-gray-300 focus:border-gray-600">
                               <SelectValue placeholder="Kategorie wählen..." />
                             </SelectTrigger>
                           </FormControl>
@@ -721,19 +787,22 @@ export default function AdminProductForm() {
                       {isTranslating ? t('translating') : t('translateButton')}
                     </Button>
                   </div>
-                  <div className="grid grid-cols-1 gap-4">
+                  <div className="space-y-4">
                     <FormField
                       control={form.control}
                       name="shortDescriptionDe"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-green-600 font-bold text-lg">Kurzbeschreibung (Deutsch) - HAUPTEINGABE</FormLabel>
+                          <FormLabel className="text-gray-800 font-bold text-lg">3. Kurzbeschreibung (Deutsch) - PFLICHTFELD</FormLabel>
                           <FormControl>
                             <ExpandableTextarea 
                               value={field.value || ''}
-                              onChange={field.onChange}
+                              onChange={(value) => {
+                                field.onChange(value);
+                                debounceTranslation(value, 'shortDescription');
+                              }}
                               placeholder="Kurze Produktbeschreibung auf Deutsch eingeben..."
-                              className="text-lg p-3 border-2 border-green-300 focus:border-green-500"
+                              className="text-lg p-3 border-2 border-gray-300 focus:border-gray-600"
                               label="Kurzbeschreibung (Deutsch)"
                             />
                           </FormControl>
@@ -742,19 +811,72 @@ export default function AdminProductForm() {
                       )}
                     />
 
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                      <FormField
+                        control={form.control}
+                        name="shortDescriptionEs"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-600">→ Automatisch übersetzt (Spanisch)</FormLabel>
+                            <FormControl>
+                              <ExpandableTextarea 
+                                value={field.value || ''}
+                                onChange={field.onChange}
+                                placeholder="Wird automatisch übersetzt..." 
+                                className="bg-gray-100 border-gray-200"
+                                label="Kurzbeschreibung (Spanisch)"
+                                rows={3}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="shortDescriptionEn"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-600">→ Automatisch übersetzt (Englisch)</FormLabel>
+                            <FormControl>
+                              <ExpandableTextarea 
+                                value={field.value || ''}
+                                onChange={field.onChange}
+                                placeholder="Wird automatisch übersetzt..."
+                                className="bg-gray-100 border-gray-200"
+                                label="Kurzbeschreibung (Englisch)"
+                                rows={3}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Long Descriptions */}
+                  <div className="space-y-4 mt-8">
+                    <h3 className="text-lg font-medium">Detaillierte Beschreibung (Optional)</h3>
+                    
                     <FormField
                       control={form.control}
-                      name="shortDescriptionEs"
+                      name="descriptionDe"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-red-600 font-bold text-lg">2. Kurzbeschreibung (Spanisch) - PFLICHTFELD</FormLabel>
+                          <FormLabel className="text-gray-700">Detaillierte Beschreibung (Deutsch)</FormLabel>
                           <FormControl>
                             <ExpandableTextarea 
                               value={field.value || ''}
-                              onChange={field.onChange}
-                              placeholder="z.B. Panel de alta eficiencia para sistemas solares domésticos" 
-                              className="text-lg p-3 border-2 border-red-300 focus:border-red-500"
-                              label="Kurzbeschreibung (Spanisch)"
+                              onChange={(value) => {
+                                field.onChange(value);
+                                debounceTranslation(value, 'description');
+                              }}
+                              placeholder="Ausführliche Produktbeschreibung mit technischen Details, Vorteilen, Anwendungen..."
+                              className="min-h-[120px] border-gray-300 focus:border-gray-600"
+                              label="Detaillierte Beschreibung (Deutsch)"
+                              rows={6}
                             />
                           </FormControl>
                           <FormMessage />
@@ -762,24 +884,49 @@ export default function AdminProductForm() {
                       )}
                     />
 
-                    <FormField
-                      control={form.control}
-                      name="shortDescriptionEn"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Kurzbeschreibung (Englisch) - automatisch übersetzt</FormLabel>
-                          <FormControl>
-                            <ExpandableTextarea 
-                              value={field.value || ''}
-                              onChange={field.onChange}
-                              placeholder="Short product description"
-                              label="Kurzbeschreibung (Englisch)"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                      <FormField
+                        control={form.control}
+                        name="descriptionEs"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-600">→ Automatisch übersetzt (Spanisch)</FormLabel>
+                            <FormControl>
+                              <ExpandableTextarea 
+                                value={field.value || ''}
+                                onChange={field.onChange}
+                                placeholder="Wird automatisch übersetzt..."
+                                className="bg-gray-100 border-gray-200 min-h-[120px]"
+                                label="Detaillierte Beschreibung (Spanisch)"
+                                rows={6}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="descriptionEn"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-600">→ Automatisch übersetzt (Englisch)</FormLabel>
+                            <FormControl>
+                              <ExpandableTextarea 
+                                value={field.value || ''}
+                                onChange={field.onChange}
+                                placeholder="Wird automatisch übersetzt..."
+                                className="bg-gray-100 border-gray-200 min-h-[120px]"
+                                label="Detaillierte Beschreibung (Englisch)"
+                                rows={6}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -1154,7 +1301,7 @@ export default function AdminProductForm() {
               <Button
                 type="submit"
                 disabled={saveProductMutation.isPending}
-                className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg font-bold"
+                className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3 text-lg font-bold"
               >
                 {saveProductMutation.isPending 
                   ? 'Speichern...' 
