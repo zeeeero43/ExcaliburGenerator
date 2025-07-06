@@ -115,6 +115,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.error("Failed to seed database:", error);
   }
 
+  // Translation API
+  app.post("/api/translate", async (req, res) => {
+    try {
+      const { text, fromLang, toLang } = req.body;
+      
+      if (!text || !fromLang || !toLang) {
+        return res.status(400).json({ error: "Missing required parameters" });
+      }
+
+      // Use MyMemory translation API
+      const response = await fetch(
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromLang}|${toLang}`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Translation API request failed');
+      }
+      
+      const data = await response.json();
+      
+      if (data.responseStatus === 200 && data.responseData) {
+        res.json({ translatedText: data.responseData.translatedText });
+      } else {
+        // Return original text if translation fails
+        res.json({ translatedText: text });
+      }
+    } catch (error) {
+      console.error('Translation error:', error);
+      // Return original text on error
+      res.json({ translatedText: req.body.text });
+    }
+  });
+
   // Authentication routes
   app.post("/api/admin/login", async (req, res) => {
     try {

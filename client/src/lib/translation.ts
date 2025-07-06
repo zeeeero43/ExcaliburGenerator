@@ -7,21 +7,25 @@ export async function translateText(text: string, fromLang: string, toLang: stri
   }
 
   try {
-    const response = await fetch(
-      `${TRANSLATION_API_BASE}?q=${encodeURIComponent(text)}&langpair=${fromLang}|${toLang}`
-    );
+    // Use the backend API for translation
+    const response = await fetch('/api/translate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text,
+        fromLang,
+        toLang
+      })
+    });
     
     if (!response.ok) {
       throw new Error('Translation API request failed');
     }
     
     const data = await response.json();
-    
-    if (data.responseStatus === 200 && data.responseData) {
-      return data.responseData.translatedText;
-    } else {
-      throw new Error('Translation failed');
-    }
+    return data.translatedText || text;
   } catch (error) {
     console.error('Translation error:', error);
     return text; // Return original text if translation fails

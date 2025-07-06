@@ -317,12 +317,17 @@ export default function AdminProductForm() {
   // Populate form with existing product data
   useEffect(() => {
     if (existingProduct && isEdit) {
-      console.log('🔄 Populating form with existing product:', existingProduct);
+      console.log('🔄 DEBUG: Populating form with existing product:', {
+        id: existingProduct.id,
+        nameEs: existingProduct.nameEs,
+        nameDe: existingProduct.nameDe,
+        price: existingProduct.price,
+        categoryId: existingProduct.categoryId
+      });
       
-      // CRITICAL: Use setTimeout to ensure form is ready for reset
-      setTimeout(() => {
-        // Reset form with existing product data with proper type handling
-        form.reset({
+      // CRITICAL: Multiple attempts to ensure form reset works
+      const resetForm = () => {
+        const formData = {
           nameEs: existingProduct.nameEs || '',
           nameDe: existingProduct.nameDe || existingProduct.name || '',
           nameEn: existingProduct.nameEn || '',
@@ -346,10 +351,26 @@ export default function AdminProductForm() {
           availabilityTextEs: existingProduct.availabilityTextEs || '',
           availabilityTextDe: existingProduct.availabilityTextDe || '',
           availabilityTextEn: existingProduct.availabilityTextEn || '',
-        });
+        };
 
-        console.log('✅ Form reset completed with values:', form.getValues());
-      }, 100); // Small delay to ensure form is ready
+        console.log('🔄 DEBUG: Resetting form with data:', formData);
+        form.reset(formData);
+        
+        // Force setValue for critical fields
+        setTimeout(() => {
+          if (existingProduct.nameEs) form.setValue('nameEs', existingProduct.nameEs);
+          if (existingProduct.nameDe) form.setValue('nameDe', existingProduct.nameDe);
+          if (existingProduct.price) form.setValue('price', String(existingProduct.price));
+          if (existingProduct.categoryId) form.setValue('categoryId', existingProduct.categoryId);
+          
+          console.log('✅ DEBUG: Final form values after force setValue:', form.getValues());
+        }, 50);
+      };
+
+      // Multiple reset attempts
+      resetForm();
+      setTimeout(resetForm, 100);
+      setTimeout(resetForm, 300);
 
       // Set category for subcategories
       if (existingProduct.categoryId) {
@@ -367,7 +388,7 @@ export default function AdminProductForm() {
           valueEn: existingProduct.specificationsValuesEn?.[key] || undefined,
         }));
         setSpecifications(specsArray);
-        console.log('✅ Specifications loaded:', specsArray);
+        console.log('✅ DEBUG: Specifications loaded:', specsArray);
       }
     }
   }, [existingProduct, isEdit, form]);
