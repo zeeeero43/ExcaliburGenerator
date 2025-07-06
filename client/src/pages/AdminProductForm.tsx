@@ -16,6 +16,7 @@ import { ArrowLeft, Upload, X } from 'lucide-react';
 import type { Category, Subcategory, Product } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
 import { ExpandableTextarea } from '@/components/ExpandableTextarea';
+import { RichTextEditor } from '@/components/RichTextEditor';
 import { translateProductData } from '@/lib/translation';
 
 // Admin Translation Hook
@@ -184,7 +185,9 @@ export default function AdminProductForm() {
 
 
 
-  const isEdit = params.id && params.id !== 'new';
+  // Extract product ID from URL properly
+  const productId = params.id && params.id !== 'new' ? parseInt(params.id) : null;
+  const isEdit = Boolean(productId);
 
 
 
@@ -200,7 +203,6 @@ export default function AdminProductForm() {
         toast({
           title: "🔄 Übersetzung läuft...",
           description: `Langer Text wird übersetzt (${germanValue.length} Zeichen)...`,
-          duration: 3000,
         });
       }
       
@@ -237,7 +239,6 @@ export default function AdminProductForm() {
       toast({
         title: "🌍 Automatische Übersetzung abgeschlossen",
         description: `${fieldType} wurde ins Spanische und Englische übersetzt${charInfo}.`,
-        duration: 3000,
       });
       
     } catch (error) {
@@ -246,7 +247,6 @@ export default function AdminProductForm() {
         title: "⚠️ Übersetzung fehlgeschlagen",
         description: "Die automatische Übersetzung ist vorübergehend nicht verfügbar. Versuchen Sie es erneut oder geben Sie die Übersetzungen manuell ein.",
         variant: "destructive",
-        duration: 5000,
       });
     }
   };
@@ -310,8 +310,8 @@ export default function AdminProductForm() {
 
   // Fetch existing product if editing
   const { data: existingProduct, isLoading: productLoading } = useQuery<Product>({
-    queryKey: [`/api/admin/products/${params.id}`],
-    enabled: Boolean(isEdit && params.id && user),
+    queryKey: [`/api/admin/products/${productId}`],
+    enabled: Boolean(isEdit && productId && user),
     retry: false,
   });
 
@@ -326,7 +326,7 @@ export default function AdminProductForm() {
   useEffect(() => {
     console.log('Form data:', { 
       isEdit,
-      productId: params.id,
+      productId,
       existingProduct,
       productLoading,
       categories, 
@@ -336,7 +336,7 @@ export default function AdminProductForm() {
       user: !!user,
       errorMessage: categoriesError?.message
     });
-  }, [isEdit, params.id, existingProduct, productLoading, categories, categoriesLoading, categoriesError, user]);
+  }, [isEdit, productId, existingProduct, productLoading, categories, categoriesLoading, categoriesError, user]);
 
   // Fetch subcategories based on selected category
   const { data: subcategories = [] } = useQuery<Subcategory[]>({
@@ -355,57 +355,45 @@ export default function AdminProductForm() {
         categoryId: existingProduct.categoryId
       });
       
-      // CRITICAL: Multiple attempts to ensure form reset works
-      const resetForm = () => {
-        const formData = {
-          nameEs: existingProduct.nameEs || '',
-          nameDe: existingProduct.nameDe || existingProduct.name || '',
-          nameEn: existingProduct.nameEn || '',
-          shortDescriptionEs: existingProduct.shortDescriptionEs || '',
-          shortDescriptionDe: existingProduct.shortDescriptionDe || existingProduct.shortDescription || '',
-          shortDescriptionEn: existingProduct.shortDescriptionEn || '',
-          descriptionEs: existingProduct.descriptionEs || '',
-          descriptionDe: existingProduct.descriptionDe || existingProduct.description || '',
-          descriptionEn: existingProduct.descriptionEn || '',
-          price: existingProduct.price ? String(existingProduct.price) : '',
-          categoryId: existingProduct.categoryId || undefined,
-          subcategoryId: existingProduct.subcategoryId || undefined,
-          mainImage: existingProduct.mainImage || '',
-          images: (existingProduct.images && Array.isArray(existingProduct.images)) ? existingProduct.images : [],
-          sku: existingProduct.sku || '',
-          priceNote: existingProduct.priceNote || '',
-          isFeatured: Boolean(existingProduct.isFeatured),
-          isActive: existingProduct.isActive !== false,
-          stockStatus: (existingProduct.stockStatus as 'in_stock' | 'out_of_stock' | 'limited') || 'in_stock',
-          inStock: existingProduct.inStock !== false,
-          availabilityTextEs: existingProduct.availabilityTextEs || '',
-          availabilityTextDe: existingProduct.availabilityTextDe || '',
-          availabilityTextEn: existingProduct.availabilityTextEn || '',
-        };
-
-        console.log('🔄 DEBUG: Resetting form with data:', formData);
-        form.reset(formData);
-        
-        // Force setValue for critical fields
-        setTimeout(() => {
-          if (existingProduct.nameEs) form.setValue('nameEs', existingProduct.nameEs);
-          if (existingProduct.nameDe) form.setValue('nameDe', existingProduct.nameDe);
-          if (existingProduct.price) form.setValue('price', String(existingProduct.price));
-          if (existingProduct.categoryId) form.setValue('categoryId', existingProduct.categoryId);
-          
-          console.log('✅ DEBUG: Final form values after force setValue:', form.getValues());
-        }, 50);
-      };
-
-      // Multiple reset attempts
-      resetForm();
-      setTimeout(resetForm, 100);
-      setTimeout(resetForm, 300);
-
-      // Set category for subcategories
+      // Set the category first for subcategory loading
       if (existingProduct.categoryId) {
         setSelectedCategoryId(existingProduct.categoryId);
       }
+      
+      // CRITICAL: Ensure form reset works with correct data mapping
+      const formData = {
+        nameEs: existingProduct.nameEs || '',
+        nameDe: existingProduct.nameDe || existingProduct.name || '',
+        nameEn: existingProduct.nameEn || '',
+        shortDescriptionEs: existingProduct.shortDescriptionEs || '',
+        shortDescriptionDe: existingProduct.shortDescriptionDe || existingProduct.shortDescription || '',
+        shortDescriptionEn: existingProduct.shortDescriptionEn || '',
+        descriptionEs: existingProduct.descriptionEs || '',
+        descriptionDe: existingProduct.descriptionDe || existingProduct.description || '',
+        descriptionEn: existingProduct.descriptionEn || '',
+        price: existingProduct.price ? String(existingProduct.price) : '',
+        categoryId: existingProduct.categoryId || undefined,
+        subcategoryId: existingProduct.subcategoryId || undefined,
+        mainImage: existingProduct.mainImage || '',
+        images: (existingProduct.images && Array.isArray(existingProduct.images)) ? existingProduct.images : [],
+        sku: existingProduct.sku || '',
+        priceNote: existingProduct.priceNote || '',
+        isFeatured: Boolean(existingProduct.isFeatured),
+        isActive: existingProduct.isActive !== false,
+        stockStatus: (existingProduct.stockStatus as 'in_stock' | 'out_of_stock' | 'limited') || 'in_stock',
+        inStock: existingProduct.inStock !== false,
+        availabilityTextEs: existingProduct.availabilityTextEs || '',
+        availabilityTextDe: existingProduct.availabilityTextDe || '',
+        availabilityTextEn: existingProduct.availabilityTextEn || '',
+      };
+
+      console.log('🔄 DEBUG: Setting form data:', formData);
+      
+      // Use reset to populate all fields at once - with delay to ensure DOM is ready
+      setTimeout(() => {
+        form.reset(formData);
+        console.log('✅ DEBUG: Form reset complete, current values:', form.getValues());
+      }, 100);
 
 
     }
@@ -468,7 +456,7 @@ export default function AdminProductForm() {
         title: `✅ Produkt erfolgreich ${actionText}!`,
         description: `Das Produkt wurde erfolgreich gespeichert und ist jetzt verfügbar.`,
         variant: "default",
-        duration: 4000,
+
       });
       
       // Invalidate and refresh queries
@@ -514,7 +502,6 @@ export default function AdminProductForm() {
         title: "❌ Produkterstellung fehlgeschlagen",
         description: errorMessage,
         variant: "destructive",
-        duration: 5000,
       });
       
 
@@ -740,15 +727,15 @@ export default function AdminProductForm() {
                         <FormItem>
                           <FormLabel className="text-gray-800 font-bold text-lg">3. Beschreibung <span className="text-red-500">*</span></FormLabel>
                           <FormControl>
-                            <ExpandableTextarea 
+                            <RichTextEditor
+                              label=""
                               value={field.value || ''}
                               onChange={(value) => {
                                 field.onChange(value);
                                 debounceTranslation(value, 'shortDescription');
                               }}
-                              placeholder="Kurze Produktbeschreibung auf Deutsch eingeben..."
-                              className="text-lg p-3 border-2 border-gray-300 focus:border-gray-600"
-                              label="Kurzbeschreibung (Deutsch)"
+                              placeholder="Produktbeschreibung mit Formatierung eingeben..."
+                              required
                             />
                           </FormControl>
                           <FormMessage />

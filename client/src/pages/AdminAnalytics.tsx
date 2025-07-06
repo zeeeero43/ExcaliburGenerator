@@ -38,6 +38,8 @@ export default function AdminAnalytics() {
   const { data: analytics, isLoading: analyticsLoading, refetch } = useQuery<AnalyticsData>({
     queryKey: ['/api/admin/analytics', selectedPeriod],
     enabled: isAuthenticated,
+    refetchInterval: 60000, // Aktualisierung alle 60 Sekunden
+    refetchOnWindowFocus: true, // Aktualisierung beim Fensterfokus
   });
 
   if (authLoading) {
@@ -100,13 +102,36 @@ export default function AdminAnalytics() {
           </Link>
           <h1 className="text-3xl font-bold">Website Analytics</h1>
         </div>
-        <Tabs value={selectedPeriod} onValueChange={handlePeriodChange}>
-          <TabsList>
-            <TabsTrigger value="day">24 Stunden</TabsTrigger>
-            <TabsTrigger value="month">Diesen Monat</TabsTrigger>
-            <TabsTrigger value="year">Dieses Jahr</TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="outline" 
+            onClick={() => refetch()}
+            disabled={analyticsLoading}
+            className="flex items-center gap-2"
+          >
+            🔄 Aktualisieren
+          </Button>
+          <Tabs value={selectedPeriod} onValueChange={handlePeriodChange}>
+            <TabsList>
+              <TabsTrigger value="day">24 Stunden</TabsTrigger>
+              <TabsTrigger value="month">Diesen Monat</TabsTrigger>
+              <TabsTrigger value="year">Dieses Jahr</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+      </div>
+
+      {/* Info Banner */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div className="flex items-center gap-2 text-blue-800">
+          <span className="text-lg">ℹ️</span>
+          <h3 className="font-medium">Analytics-Information</h3>
+        </div>
+        <p className="text-blue-700 mt-2 text-sm">
+          Analytics werden in Echtzeit verfolgt und zeigen echte Besucherdaten an. 
+          Daten werden automatisch alle 60 Sekunden aktualisiert. 
+          Die Statistiken umfassen nur tatsächliche Besucher Ihrer Website.
+        </p>
       </div>
 
       {/* Key Metrics */}
