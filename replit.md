@@ -226,6 +226,15 @@ Changelog:
   * Improved error handling with detailed validation messages and developer debugging
   * Technical details now added directly to product descriptions as requested by customer
   * Real-time translation now works seamlessly without requiring manual save actions
+- July 06, 2025 (production UX improvements). Enhanced user experience based on customer feedback:
+  * Fixed database field limitations: Changed shortDescription fields from varchar(500) to text for unlimited length
+  * Improved text display: Added whitespace-pre-wrap to preserve formatting in product detail pages
+  * Enhanced admin form UX: Replaced verbose "(Deutsch) Pflichtfeld" labels with red asterisks (*)
+  * Added visual error feedback: Form sections with missing required fields now show red border
+  * Implemented success notifications: Clear feedback when products are created/updated successfully
+  * Optimized homepage display: Product descriptions automatically truncated to 120 characters with "..."
+  * Enhanced category pages: Category descriptions limited to 100 characters for better layout
+  * Successfully deployed to production server with all improvements working correctly
 - July 06, 2025 (German-first workflow implementation). Complete restructuring for optimal German business workflow:
   * Fixed geolocation to default to Spanish for Cuban market instead of German
   * Completely restructured product creation workflow to German-only input with automatic real-time translation (1-second delay)
