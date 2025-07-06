@@ -486,91 +486,59 @@ export default function AdminProductForm() {
           errorMessage = `❌ Validierungsfehler: ${error.message.split('details: ')[1] || error.message}`;
           debugInfo = "Überprüfen Sie alle Pflichtfelder (rot markiert)";
         } else if (error.message.includes('Required')) {
-          errorMessage = "📍 Pflichtfelder fehlen. Bitte überprüfen Sie alle erforderlichen Felder.";
-          debugInfo = "Spanischer Name, Spanische Beschreibung und Kategorie sind erforderlich";
+          errorMessage = "Pflichtfelder fehlen. Bitte überprüfen Sie alle erforderlichen Felder.";
         } else if (error.message.includes('unique constraint')) {
-          errorMessage = "⚠️ Ein Produkt mit diesem Namen oder SKU existiert bereits.";
-          debugInfo = "Verwenden Sie einen anderen Produktnamen oder SKU";
+          errorMessage = "Ein Produkt mit diesem Namen oder SKU existiert bereits.";
+        } else if (error.message.includes('value too long')) {
+          errorMessage = "Ein Textfeld ist zu lang. Bitte kürzen Sie die Eingaben.";
         } else if (error.message.includes('401')) {
-          errorMessage = "🔒 Nicht autorisiert. Bitte melden Sie sich neu an.";
-          debugInfo = "Ihre Sitzung ist abgelaufen";
+          errorMessage = "Nicht autorisiert. Bitte melden Sie sich neu an.";
         } else if (error.message.includes('500')) {
-          errorMessage = "🔧 Server-Fehler. Wenden Sie sich an den Administrator.";
-          debugInfo = "Datenbankproblem oder Server-Konfigurationsfehler";
+          errorMessage = "Server-Fehler. Bitte versuchen Sie es erneut.";
         } else {
-          errorMessage = `🔍 Unbekannter Fehler: ${error.message}`;
+          errorMessage = `Fehler: ${error.message}`;
         }
       }
       
-      // Ausführliche Konsolen-Logs für Debugging
-      console.group('🔍 DEBUGGING INFORMATIONEN:');
-      console.log('📊 Formulardaten:', form.getValues());
-      console.log('🌐 Netzwerk-Fehler:', error);
-      console.log('📍 Debug-Tipp:', debugInfo);
-      
-      // Formular-Validierungsfehler prüfen
-      const formErrors = form.formState.errors;
-      if (Object.keys(formErrors).length > 0) {
-        console.log('📝 Formular-Validierungsfehler:', formErrors);
-        console.log('❗ Fehlende Felder:', Object.keys(formErrors).join(', '));
-      }
-      console.groupEnd();
-      
       toast({
-        title: "❌ Produkterstellung fehlgeschlagen",
-        description: `${errorMessage}\n\n💡 Debug-Tipp: ${debugInfo}`,
+        title: "Produkterstellung fehlgeschlagen",
+        description: errorMessage,
         variant: "destructive",
-        duration: 8000, // Länger anzeigen für besseres Debugging
+        duration: 5000,
       });
       
-      // Alert mit noch mehr Details für Debugging
-      if (process.env.NODE_ENV === 'development') {
-        setTimeout(() => {
-          alert(`🔍 ENTWICKLER-DEBUG INFO:\n\nFehler: ${error.message}\n\nFormulardaten: ${JSON.stringify(form.getValues(), null, 2)}\n\nValidierungsfehler: ${JSON.stringify(form.formState.errors, null, 2)}`);
-        }, 1000);
-      }
+
     },
   });
 
   const onSubmit = (data: ProductForm) => {
-    console.group('🔍 FORM SUBMIT DEBUG:');
-    console.log('📊 Submit Data:', data);
-    console.log('📝 Form Errors:', form.formState.errors);
-    console.log('✅ Form Valid:', form.formState.isValid);
-    
-    // Check for basic validation errors
+    // Basic validation
     if (!data.nameDe) {
-      console.error('❌ Missing German name');
       toast({
-        title: "❌ Validierungsfehler",
-        description: "Deutscher Produktname ist erforderlich",
+        title: "Fehlende Angabe",
+        description: "Produktname (Deutsch) ist erforderlich",
         variant: "destructive",
       });
       return;
     }
     
     if (!data.shortDescriptionDe) {
-      console.error('❌ Missing German description');
       toast({
-        title: "❌ Validierungsfehler", 
-        description: "Deutsche Kurzbeschreibung ist erforderlich",
+        title: "Fehlende Angabe",
+        description: "Beschreibung (Deutsch) ist erforderlich",
         variant: "destructive",
       });
       return;
     }
     
     if (!data.categoryId) {
-      console.error('❌ Missing category');
       toast({
-        title: "❌ Validierungsfehler",
+        title: "Fehlende Angabe",
         description: "Kategorie auswählen ist erforderlich", 
         variant: "destructive",
       });
       return;
     }
-    
-    console.log('✅ Validation passed, submitting...');
-    console.groupEnd();
     
     saveProductMutation.mutate(data);
   };
