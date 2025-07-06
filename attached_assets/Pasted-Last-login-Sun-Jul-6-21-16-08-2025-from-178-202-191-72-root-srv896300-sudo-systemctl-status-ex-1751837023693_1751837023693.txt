@@ -1,0 +1,37 @@
+Last login: Sun Jul  6 21:16:08 2025 from 178.202.191.72
+root@srv896300:~# sudo systemctl status excalibur-cuba
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: activating (auto-restart) (Result: exit-code) since Sun 2025-07-06 21:23:34 UTC; 511ms ago
+    Process: 13786 ExecStart=/usr/bin/node dist/index.js (code=exited, status=200/CHDIR)
+   Main PID: 13786 (code=exited, status=200/CHDIR)
+        CPU: 1ms
+root@srv896300:~# sudo journalctl -u excalibur-cuba -f --lines=20
+Jul 06 21:23:31 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:23:31 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:23:31 srv896300 systemd[13720]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:23:31 srv896300 systemd[13720]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:23:31 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:23:31 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 06 21:23:34 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 282.
+Jul 06 21:23:34 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:23:34 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:23:34 srv896300 systemd[13786]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:23:34 srv896300 systemd[13786]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:23:34 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:23:34 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 06 21:23:37 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 283.
+Jul 06 21:23:37 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:23:37 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:23:37 srv896300 systemd[13791]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:23:37 srv896300 systemd[13791]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:23:37 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:23:37 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 06 21:23:40 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 284.
+Jul 06 21:23:40 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:23:40 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:23:40 srv896300 systemd[13795]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:23:40 srv896300 systemd[13795]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:23:40 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:23:40 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 06 21:23:44 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart count
