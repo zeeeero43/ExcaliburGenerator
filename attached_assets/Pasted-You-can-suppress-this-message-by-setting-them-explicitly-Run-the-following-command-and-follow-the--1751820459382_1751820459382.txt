@@ -1,0 +1,41 @@
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 4 files changed, 12 insertions(+)
+ create mode 100644 .env
+ create mode 100644 NODE_ENV=production
+ create mode 100644 rest-express@1.0.0
+ create mode 100644 uploads/1751819803980-34759f19-b487-4850-90a0-5139751f657e.jpg
+root@srv896300:/var/www/excalibur-cuba# git push origin main
+Username for 'https://github.com': ä
+Password for 'https://%C3%A4@github.com':
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/zeeeero43/ExcaliburGenerator.git/'
+root@srv896300:/var/www/excalibur-cuba# git init
+Reinitialized existing Git repository in /var/www/excalibur-cuba/.git/
+root@srv896300:/var/www/excalibur-cuba# git add .
+root@srv896300:/var/www/excalibur-cuba# git commit -m "Initial commit: Excalibur Cuba website"
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+root@srv896300:/var/www/excalibur-cuba# git branch -M main
+root@srv896300:/var/www/excalibur-cuba# git remote add origin https://github.com/zeeeero43/ExcaliburGenerator.git
+error: remote origin already exists.
+root@srv896300:/var/www/excalibur-cuba# git remote add origin https://github.com/zeeeero43/ExcaliburGenerator.git
+error: remote origin already exists.
+root@srv896300:/var/www/excalibur-cuba# git push -u origin main
+Username for 'https://github.com': zeeeero43
+Password for 'https://zeeeero43@github.com':
+remote: Support for password authentication was removed on August 13, 2021.
+remote: Please see https://docs.github.com/get-started/getting-started-with-git/about-remote-repositories#cloning-with-https-urls for information on currently recommended modes of authentication.
+fatal: Authentication failed for 'https://github.com/zeeeero43/ExcaliburGenerator.git/'
+root@srv896300:/var/www/excalibur-cuba#
