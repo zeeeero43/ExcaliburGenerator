@@ -970,25 +970,9 @@ export const translations = {
   },
   
   en: {
-    // Offline and Cookie Banner
+    // Offline
     offline: {
       message: 'No internet connection'
-    },
-    cookieBanner: {
-      title: 'Cookie Usage',
-      description: 'We use cookies to improve your experience on our website.',
-      acceptAll: 'Accept All',
-      rejectAll: 'Reject All',
-      settings: 'Settings',
-      settingsTitle: 'Cookie Settings',
-      necessary: 'Necessary Cookies',
-      necessaryDesc: 'These cookies are essential for basic website functions.',
-      analytics: 'Analytics Cookies',
-      analyticsDesc: 'Help us understand how you use our website.',
-      marketing: 'Marketing Cookies',
-      marketingDesc: 'Used to show relevant advertising.',
-      acceptSelected: 'Accept Selected',
-      required: 'Required'
     },
 
     // Navigation
@@ -1377,7 +1361,7 @@ export const translations = {
       contactForPrivacyText: "For privacy questions, contact us:",
       lastUpdated: "Last Updated",
     },
-    
+
     // Cookie Banner
     cookieBanner: {
       title: "We Use Cookies",

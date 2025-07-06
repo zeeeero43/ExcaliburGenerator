@@ -12,9 +12,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation, useParams } from 'wouter';
-import { ArrowLeft, Upload, X } from 'lucide-react';
+import { ArrowLeft, Upload, X, Languages } from 'lucide-react';
 import type { Category, Subcategory, Product } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
+import { ExpandableTextarea } from '@/components/ExpandableTextarea';
+import { translateProductData } from '@/lib/translation';
 
 // Admin Translation Hook
 function useAdminTranslation() {
@@ -26,15 +28,15 @@ function useAdminTranslation() {
     const translations: Record<string, Record<string, string>> = {
       de: {
         // Form labels
-        productNameEs: 'Produktname (Spanisch)',
-        productNameDe: 'Produktname (Deutsch)', 
-        productNameEn: 'Produktname (Englisch)',
-        shortDescEs: 'Kurzbeschreibung (Spanisch)',
-        shortDescDe: 'Kurzbeschreibung (Deutsch)',
-        shortDescEn: 'Kurzbeschreibung (Englisch)',
-        descriptionEs: 'Beschreibung (Spanisch)',
-        descriptionDe: 'Beschreibung (Deutsch)',
-        descriptionEn: 'Beschreibung (Englisch)',
+        productNameEs: 'Produktname (Spanisch) - automatisch übersetzt',
+        productNameDe: 'Produktname (Deutsch) - Haupteingabe', 
+        productNameEn: 'Produktname (Englisch) - automatisch übersetzt',
+        shortDescEs: 'Kurzbeschreibung (Spanisch) - automatisch übersetzt',
+        shortDescDe: 'Kurzbeschreibung (Deutsch) - Haupteingabe',
+        shortDescEn: 'Kurzbeschreibung (Englisch) - automatisch übersetzt',
+        descriptionEs: 'Beschreibung (Spanisch) - automatisch übersetzt',
+        descriptionDe: 'Beschreibung (Deutsch) - Haupteingabe',
+        descriptionEn: 'Beschreibung (Englisch) - automatisch übersetzt',
         category: 'Kategorie',
         subcategory: 'Unterkategorie',
         sku: 'Artikelnummer',
@@ -74,18 +76,22 @@ function useAdminTranslation() {
         
         // Success/Error
         productSaved: 'Produkt erfolgreich gespeichert',
-        productError: 'Fehler beim Speichern des Produkts'
+        productError: 'Fehler beim Speichern des Produkts',
+        translateButton: 'Automatisch übersetzen',
+        translating: 'Übersetze...',
+        translationComplete: 'Übersetzung abgeschlossen!',
+        translationError: 'Fehler bei der Übersetzung'
       },
       es: {
         // Form labels
-        productNameEs: 'Nombre del Producto (Español)',
-        productNameDe: 'Nombre del Producto (Alemán)', 
-        productNameEn: 'Nombre del Producto (Inglés)',
-        shortDescEs: 'Descripción Corta (Español)',
-        shortDescDe: 'Descripción Corta (Alemán)',
-        shortDescEn: 'Descripción Corta (Inglés)',
-        descriptionEs: 'Descripción (Español)',
-        descriptionDe: 'Descripción (Alemán)',
+        productNameEs: 'Nombre del Producto (Español) - traducido automáticamente',
+        productNameDe: 'Nombre del Producto (Alemán) - entrada principal', 
+        productNameEn: 'Nombre del Producto (Inglés) - traducido automáticamente',
+        shortDescEs: 'Descripción Corta (Español) - traducido automáticamente',
+        shortDescDe: 'Descripción Corta (Alemán) - entrada principal',
+        shortDescEn: 'Descripción Corta (Inglés) - traducido automáticamente',
+        descriptionEs: 'Descripción (Español) - traducido automáticamente',
+        descriptionDe: 'Descripción (Alemán) - entrada principal',
         descriptionEn: 'Descripción (Inglés)',
         category: 'Categoría',
         subcategory: 'Subcategoría',
@@ -177,8 +183,58 @@ export default function AdminProductForm() {
   const queryClient = useQueryClient();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [specifications, setSpecifications] = useState<Array<{ key: string; value: string }>>([]);
+  const [isTranslating, setIsTranslating] = useState(false);
 
   const isEdit = params.id && params.id !== 'new';
+
+  // Translation function
+  const handleAutoTranslate = async () => {
+    if (isTranslating) return;
+    
+    const currentValues = form.getValues();
+    const germanData = {
+      name: currentValues.nameDe,
+      shortDescription: currentValues.shortDescriptionDe,
+      description: currentValues.descriptionDe,
+    };
+
+    // Only translate if German fields have content
+    if (!germanData.name && !germanData.shortDescription && !germanData.description) {
+      toast({
+        title: "Keine deutschen Inhalte",
+        description: "Bitte geben Sie zunächst deutsche Inhalte ein.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsTranslating(true);
+    try {
+      const { spanish, english } = await translateProductData(germanData);
+      
+      // Update form with translations
+      if (spanish.name) form.setValue('nameEs', spanish.name);
+      if (spanish.shortDescription) form.setValue('shortDescriptionEs', spanish.shortDescription);
+      if (spanish.description) form.setValue('descriptionEs', spanish.description);
+      
+      if (english.name) form.setValue('nameEn', english.name);
+      if (english.shortDescription) form.setValue('shortDescriptionEn', english.shortDescription);
+      if (english.description) form.setValue('descriptionEn', english.description);
+
+      toast({
+        title: t('translationComplete'),
+        description: "Deutsche Inhalte wurden automatisch übersetzt.",
+      });
+    } catch (error) {
+      toast({
+        title: t('translationError'),
+        description: "Fehler bei der automatischen Übersetzung.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsTranslating(false);
+    }
+  };
 
   const form = useForm<ProductForm>({
     resolver: zodResolver(productSchema),
@@ -652,19 +708,33 @@ export default function AdminProductForm() {
 
                 {/* Short Descriptions */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Kurzbeschreibung</h3>
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-medium">Kurzbeschreibung</h3>
+                    <Button 
+                      type="button" 
+                      onClick={handleAutoTranslate}
+                      disabled={isTranslating}
+                      className="flex items-center gap-2"
+                      variant="outline"
+                    >
+                      <Languages className="h-4 w-4" />
+                      {isTranslating ? t('translating') : t('translateButton')}
+                    </Button>
+                  </div>
                   <div className="grid grid-cols-1 gap-4">
                     <FormField
                       control={form.control}
-                      name="shortDescriptionEs"
+                      name="shortDescriptionDe"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-red-600 font-bold text-lg">2. Kurzbeschreibung (Spanisch) - PFLICHTFELD</FormLabel>
+                          <FormLabel className="text-green-600 font-bold text-lg">Kurzbeschreibung (Deutsch) - HAUPTEINGABE</FormLabel>
                           <FormControl>
-                            <Textarea 
-                              {...field} 
-                              placeholder="z.B. Panel de alta eficiencia para sistemas solares domésticos" 
-                              className="text-lg p-3 border-2 border-red-300 focus:border-red-500"
+                            <ExpandableTextarea 
+                              value={field.value || ''}
+                              onChange={field.onChange}
+                              placeholder="Kurze Produktbeschreibung auf Deutsch eingeben..."
+                              className="text-lg p-3 border-2 border-green-300 focus:border-green-500"
+                              label="Kurzbeschreibung (Deutsch)"
                             />
                           </FormControl>
                           <FormMessage />
@@ -674,12 +744,18 @@ export default function AdminProductForm() {
 
                     <FormField
                       control={form.control}
-                      name="shortDescriptionDe"
+                      name="shortDescriptionEs"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Kurzbeschreibung (Deutsch) - Optional</FormLabel>
+                          <FormLabel className="text-red-600 font-bold text-lg">2. Kurzbeschreibung (Spanisch) - PFLICHTFELD</FormLabel>
                           <FormControl>
-                            <Textarea {...field} placeholder="Kurze Produktbeschreibung" />
+                            <ExpandableTextarea 
+                              value={field.value || ''}
+                              onChange={field.onChange}
+                              placeholder="z.B. Panel de alta eficiencia para sistemas solares domésticos" 
+                              className="text-lg p-3 border-2 border-red-300 focus:border-red-500"
+                              label="Kurzbeschreibung (Spanisch)"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -691,9 +767,14 @@ export default function AdminProductForm() {
                       name="shortDescriptionEn"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Kurzbeschreibung (Englisch) - Optional</FormLabel>
+                          <FormLabel>Kurzbeschreibung (Englisch) - automatisch übersetzt</FormLabel>
                           <FormControl>
-                            <Textarea {...field} placeholder="Short product description" />
+                            <ExpandableTextarea 
+                              value={field.value || ''}
+                              onChange={field.onChange}
+                              placeholder="Short product description"
+                              label="Kurzbeschreibung (Englisch)"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -790,7 +871,8 @@ export default function AdminProductForm() {
                                 <img 
                                   src={field.value} 
                                   alt="Produktbild Vorschau" 
-                                  className="w-32 h-32 object-cover rounded border"
+                                  className="max-w-xs max-h-48 object-contain rounded border"
+                                  style={{ aspectRatio: 'auto' }}
                                 />
                               </div>
                             )}
