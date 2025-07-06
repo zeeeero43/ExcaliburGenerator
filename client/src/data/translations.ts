@@ -168,6 +168,27 @@ export const translations = {
     needCustomSolution: "¿Necesitas una solución personalizada?",
     customSolutionDescription: "Nuestros expertos pueden diseñar un sistema solar específico para tus necesidades energéticas.",
     
+    // Offline and Cookie Banner
+    offline: {
+      message: 'Sin conexión a internet'
+    },
+    cookieBanner: {
+      title: 'Uso de Cookies',
+      description: 'Utilizamos cookies para mejorar su experiencia en nuestro sitio web.',
+      acceptAll: 'Aceptar todas',
+      rejectAll: 'Rechazar todas',
+      settings: 'Configuración',
+      settingsTitle: 'Preferencias de Cookies',
+      necessary: 'Cookies necesarias',
+      necessaryDesc: 'Estas cookies son esenciales para el funcionamiento del sitio web.',
+      analytics: 'Cookies de análisis',
+      analyticsDesc: 'Nos ayudan a entender cómo utilizas nuestro sitio web.',
+      marketing: 'Cookies de marketing',
+      marketingDesc: 'Se utilizan para mostrar anuncios relevantes.',
+      acceptSelected: 'Aceptar seleccionadas',
+      required: 'Requeridas'
+    },
+    
     // Product Detail Extensions
     productFeatures: "Características del Producto",
     qualityAssurance: "Garantía de Calidad",
@@ -461,27 +482,32 @@ export const translations = {
       lastUpdated: "Última Actualización",
     },
     
-    // Cookie Banner
-    cookieBanner: {
-      title: "Usamos Cookies",
-      description: "Utilizamos cookies para mejorar su experiencia y optimizar nuestro sitio web. Al usar nuestro sitio web, acepta nuestra política de cookies.",
-      acceptAll: "Aceptar Todas las Cookies",
-      rejectAll: "Rechazar Todas",
-      settings: "Configuración",
-      settingsTitle: "Configuración de Cookies",
-      acceptSelected: "Aceptar Selección",
-      necessary: "Cookies Necesarias",
-      necessaryDesc: "Estas cookies son necesarias para las funciones básicas del sitio web.",
-      analytics: "Cookies de Análisis",
-      analyticsDesc: "Nos ayudan a entender cómo usa nuestro sitio web.",
-      marketing: "Cookies de Marketing",
-      marketingDesc: "Se utilizan para mostrar publicidad relevante.",
-      required: "Requerido"
-    }
+
 
   },
   
   de: {
+    // Offline and Cookie Banner
+    offline: {
+      message: 'Keine Internetverbindung'
+    },
+    cookieBanner: {
+      title: 'Cookie-Verwendung',
+      description: 'Wir verwenden Cookies, um Ihre Erfahrung auf unserer Website zu verbessern.',
+      acceptAll: 'Alle akzeptieren',
+      rejectAll: 'Alle ablehnen',
+      settings: 'Einstellungen',
+      settingsTitle: 'Cookie-Einstellungen',
+      necessary: 'Notwendige Cookies',
+      necessaryDesc: 'Diese Cookies sind für die Grundfunktionen der Website erforderlich.',
+      analytics: 'Analyse-Cookies',
+      analyticsDesc: 'Helfen uns zu verstehen, wie Sie unsere Website nutzen.',
+      marketing: 'Marketing-Cookies',
+      marketingDesc: 'Werden verwendet, um relevante Werbung anzuzeigen.',
+      acceptSelected: 'Auswahl akzeptieren',
+      required: 'Erforderlich'
+    },
+    
     // Navigation
     home: "Startseite",
     products: "Produkte",
@@ -940,29 +966,31 @@ export const translations = {
       contactForPrivacy: "Kontakt für Datenschutz",
       contactForPrivacyText: "Bei Fragen zum Datenschutz kontaktieren Sie uns:",
       lastUpdated: "Letzte Aktualisierung",
-    },
-    
-    // Cookie Banner
-    cookieBanner: {
-      title: "Wir verwenden Cookies",
-      description: "Wir nutzen Cookies, um Ihre Erfahrung zu verbessern und unsere Website zu optimieren. Durch die Nutzung unserer Website stimmen Sie unserer Cookie-Richtlinie zu.",
-      acceptAll: "Alle Cookies akzeptieren",
-      rejectAll: "Alle ablehnen",
-      settings: "Einstellungen",
-      settingsTitle: "Cookie-Einstellungen",
-      acceptSelected: "Auswahl akzeptieren",
-      necessary: "Notwendige Cookies",
-      necessaryDesc: "Diese Cookies sind für die Grundfunktionen der Website erforderlich.",
-      analytics: "Analyse-Cookies",
-      analyticsDesc: "Helfen uns zu verstehen, wie Sie unsere Website nutzen.",
-      marketing: "Marketing-Cookies",
-      marketingDesc: "Werden verwendet, um relevante Werbung anzuzeigen.",
-      required: "Erforderlich"
     }
-
   },
   
   en: {
+    // Offline and Cookie Banner
+    offline: {
+      message: 'No internet connection'
+    },
+    cookieBanner: {
+      title: 'Cookie Usage',
+      description: 'We use cookies to improve your experience on our website.',
+      acceptAll: 'Accept All',
+      rejectAll: 'Reject All',
+      settings: 'Settings',
+      settingsTitle: 'Cookie Settings',
+      necessary: 'Necessary Cookies',
+      necessaryDesc: 'These cookies are essential for basic website functions.',
+      analytics: 'Analytics Cookies',
+      analyticsDesc: 'Help us understand how you use our website.',
+      marketing: 'Marketing Cookies',
+      marketingDesc: 'Used to show relevant advertising.',
+      acceptSelected: 'Accept Selected',
+      required: 'Required'
+    },
+
     // Navigation
     home: "Home",
     products: "Products",

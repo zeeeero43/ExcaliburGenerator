@@ -136,19 +136,19 @@ function useAdminTranslation() {
   return { t, currentLanguage: adminLanguage };
 }
 
-// Dynamic schema creation based on admin language
+// Simplified schema - only Spanish required for easy product creation
 function createProductSchema(t: (key: string) => string) {
   return z.object({
-    nameEs: z.string().min(1, t('nameRequired')),
+    nameEs: z.string().min(1, 'Produktname (Spanisch) ist erforderlich'),
     nameDe: z.string().optional(),
     nameEn: z.string().optional(),
-    shortDescriptionEs: z.string().min(1, t('shortDescRequired')),
+    shortDescriptionEs: z.string().min(1, 'Kurzbeschreibung (Spanisch) ist erforderlich'),
     shortDescriptionDe: z.string().optional(),
     shortDescriptionEn: z.string().optional(),
     descriptionEs: z.string().optional(),
     descriptionDe: z.string().optional(),
     descriptionEn: z.string().optional(),
-    categoryId: z.coerce.number().min(1, t('categoryRequired')),
+    categoryId: z.coerce.number().min(1, 'Kategorie ist erforderlich'),
     subcategoryId: z.coerce.number().optional(),
     sku: z.string().optional(),
     price: z.string().optional(),
@@ -508,9 +508,20 @@ export default function AdminProductForm() {
           <h1 className="text-3xl font-bold text-gray-900">
             {isEdit ? 'Produkt bearbeiten' : 'Neues Produkt erstellen'}
           </h1>
-          <p className="text-gray-600">
-            Erstellen Sie einfach neue Produkte für Ihren Container-Import
-          </p>
+          <div className="bg-blue-100 border border-blue-300 rounded-lg p-4 mt-4">
+            <h2 className="text-lg font-semibold text-blue-800 mb-2">Vereinfachte Produkterstellung</h2>
+            <p className="text-blue-700 text-sm">
+              Nur 3 Felder sind erforderlich:
+            </p>
+            <ul className="text-blue-700 text-sm mt-2 list-disc ml-5">
+              <li>Produktname (Spanisch) - für den kubanischen Markt</li>
+              <li>Kurzbeschreibung (Spanisch)</li>
+              <li>Kategorie auswählen</li>
+            </ul>
+            <p className="text-blue-700 text-sm mt-2">
+              Alle anderen Felder sind optional und können später ergänzt werden.
+            </p>
+          </div>
         </div>
 
         <Form {...form}>
@@ -531,9 +542,13 @@ export default function AdminProductForm() {
                     name="nameEs"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-red-600 font-bold">📍 Produktname (Spanisch) - PFLICHTFELD</FormLabel>
+                        <FormLabel className="text-red-600 font-bold text-lg">1. Produktname (Spanisch) - PFLICHTFELD</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Nombre del producto" />
+                          <Input 
+                            {...field} 
+                            placeholder="z.B. Panel Solar 300W Monocristalino" 
+                            className="text-lg p-3 border-2 border-red-300 focus:border-red-500"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -576,14 +591,14 @@ export default function AdminProductForm() {
                     name="categoryId"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-red-600 font-bold">📍 Kategorie - PFLICHTFELD</FormLabel>
+                        <FormLabel className="text-red-600 font-bold text-lg">3. Kategorie - PFLICHTFELD</FormLabel>
                         <Select 
                           onValueChange={field.onChange} 
                           value={field.value?.toString()}
                         >
                           <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Kategorie wählen" />
+                            <SelectTrigger className="text-lg p-3 border-2 border-red-300 focus:border-red-500">
+                              <SelectValue placeholder="Kategorie wählen..." />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -644,9 +659,13 @@ export default function AdminProductForm() {
                       name="shortDescriptionEs"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-red-600 font-bold">📍 Kurzbeschreibung (Spanisch) - PFLICHTFELD</FormLabel>
+                          <FormLabel className="text-red-600 font-bold text-lg">2. Kurzbeschreibung (Spanisch) - PFLICHTFELD</FormLabel>
                           <FormControl>
-                            <Textarea {...field} placeholder="Descripción corta del producto" />
+                            <Textarea 
+                              {...field} 
+                              placeholder="z.B. Panel de alta eficiencia para sistemas solares domésticos" 
+                              className="text-lg p-3 border-2 border-red-300 focus:border-red-500"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -1053,12 +1072,13 @@ export default function AdminProductForm() {
               <Button
                 type="submit"
                 disabled={saveProductMutation.isPending}
+                className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg font-bold"
               >
                 {saveProductMutation.isPending 
                   ? 'Speichern...' 
                   : isEdit 
                     ? 'Produkt aktualisieren'
-                    : 'Produkt erstellen'
+                    : 'Neues Produkt erstellen'
                 }
               </Button>
             </div>

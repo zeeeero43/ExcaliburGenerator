@@ -208,11 +208,24 @@ export default function Products() {
                 <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
                   <div className="relative overflow-hidden rounded-t-lg">
                     <img
-                      src={product.mainImage || '/api/placeholder/500/500'}
+                      src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
                       alt={getLocalizedText(product, 'name')}
                       className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
                       onError={(e) => {
-                        e.currentTarget.src = '/api/placeholder/500/500';
+                        // Multiple fallback images for better reliability
+                        const fallbacks = [
+                          'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=500&fit=crop',
+                          'https://images.unsplash.com/photo-1580908346710-72e1c4b8b7a5?w=500&h=500&fit=crop',
+                          'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=500&h=500&fit=crop'
+                        ];
+                        
+                        const currentSrc = e.currentTarget.src;
+                        const currentIndex = fallbacks.findIndex(f => currentSrc.includes(f.split('?')[0].split('/').pop()));
+                        
+                        if (currentIndex < fallbacks.length - 1) {
+                          e.currentTarget.src = fallbacks[currentIndex + 1];
+                        }
                       }}
                     />
                     {product.isFeatured && (

@@ -58,15 +58,15 @@ async function compressAndSaveImage(buffer: Buffer, originalName: string): Promi
 
 // Simple IP to country mapping (in production, use a proper geolocation service)
 async function getCountryFromIP(ip: string): Promise<string | null> {
-  // In development, always return Cuba without network calls for fast loading
+  // In development, return Germany for German testing
   if (process.env.NODE_ENV === 'development') {
-    return 'CU';
+    return 'DE';
   }
   
   try {
     // For local development - quick return without network calls
     if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip === 'unknown') {
-      return 'CU'; // Default to Cuba for local testing
+      return 'DE'; // Default to Germany for local testing
     }
     
     // Fast timeout to prevent blocking page loads
@@ -81,17 +81,17 @@ async function getCountryFromIP(ip: string): Promise<string | null> {
       
       if (response.ok) {
         const data = await response.json();
-        return data.countryCode || 'CU';
+        return data.countryCode || 'DE';
       }
     } catch (fetchError) {
       clearTimeout(timeoutId);
-      return 'CU'; // Default fallback
+      return 'DE'; // Default fallback
     }
   } catch (error) {
     // Silent fail to avoid console spam
-    return 'CU';
+    return 'DE';
   }
-  return 'CU';
+  return 'DE';
 }
 
 // Helper function to generate slug from text
@@ -514,18 +514,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Geolocation endpoint for language detection
   app.get("/api/geolocation", async (req, res) => {
-    // Simple geolocation simulation
-    // In production, you would use a real IP geolocation service
-    const ip = req.ip || req.connection.remoteAddress;
-    
-    // Mock response for development
-    // Cuba detection would be based on actual IP ranges
-    const mockResponse = {
-      country: "CU", // Cuba
-      language: "es"
-    };
-    
-    res.json(mockResponse);
+    try {
+      const ip = req.ip || req.connection.remoteAddress || 'unknown';
+      const country = await getCountryFromIP(ip);
+      
+      // Map countries to languages - Default to German for German market
+      let language = 'de'; // Default to German instead of Spanish
+      
+      if (country) {
+        switch(country) {
+          case 'DE':
+          case 'AT':
+          case 'CH':
+            language = 'de';
+            break;
+          case 'ES':
+          case 'CU':
+            language = 'es';
+            break;
+          case 'US':
+          case 'GB':
+          case 'CA':
+          case 'AU':
+            language = 'en';
+            break;
+          default:
+            language = 'de'; // German as primary default
+        }
+      }
+      
+      res.json({ 
+        country: country || 'DE', // Default to Germany
+        language 
+      });
+    } catch (error) {
+      console.error("Geolocation error:", error);
+      res.json({ 
+        country: 'DE', // Default to Germany on error
+        language: 'de' // Default to German on error
+      });
+    }
   });
 
   // Static file serving for uploads

@@ -20,6 +20,8 @@ import AdminSiteImages from "./pages/AdminSiteImages";
 import AdminImageManager from "./pages/AdminImageManager";
 import Legal from "./pages/Legal";
 import NotFound from "./pages/not-found";
+import { CookieBanner } from "./components/CookieBanner";
+import { OfflineIndicator } from "./components/OfflineIndicator";
 
 function Router() {
   const { isLoading } = useLanguage();
@@ -123,8 +125,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
+        <OfflineIndicator />
         <Router />
+        <CookieBanner />
+        <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
   );

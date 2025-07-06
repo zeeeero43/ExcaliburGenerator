@@ -3,7 +3,7 @@ import { i18n, type Language } from '../lib/i18n';
 import { detectLanguageFromLocation } from '../lib/geolocation';
 
 export function useLanguage() {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>('es');
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('de'); // Default to German
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -24,9 +24,9 @@ export function useLanguage() {
         }
       } catch (error) {
         console.error('Language initialization failed:', error);
-        // Default to Spanish for Cuban market
-        setCurrentLanguage('es');
-        i18n.setLanguage('es');
+        // Default to German
+        setCurrentLanguage('de');
+        i18n.setLanguage('de');
       } finally {
         setIsLoading(false);
       }
