@@ -188,11 +188,22 @@ export default function AdminProductForm() {
 
 
 
-  // Real-time translation function
+  // Real-time translation function with improved long text handling
   const handleRealTimeTranslation = async (germanValue: string, fieldType: 'name' | 'shortDescription' | 'description') => {
     if (!germanValue.trim()) return;
     
     try {
+      console.log(`🔄 Starting translation for ${fieldType} (${germanValue.length} chars)...`);
+      
+      // Show loading toast for long texts
+      if (germanValue.length > 200) {
+        toast({
+          title: "🔄 Übersetzung läuft...",
+          description: `Langer Text wird übersetzt (${germanValue.length} Zeichen)...`,
+          duration: 3000,
+        });
+      }
+      
       const germanData = {
         [fieldType]: germanValue,
         name: fieldType === 'name' ? germanValue : '',
@@ -206,15 +217,37 @@ export default function AdminProductForm() {
       if (fieldType === 'name') {
         if (spanish.name) form.setValue('nameEs', spanish.name);
         if (english.name) form.setValue('nameEn', english.name);
+        console.log('✅ Name translated:', { de: germanValue, es: spanish.name, en: english.name });
       } else if (fieldType === 'shortDescription') {
         if (spanish.shortDescription) form.setValue('shortDescriptionEs', spanish.shortDescription);
         if (english.shortDescription) form.setValue('shortDescriptionEn', english.shortDescription);
+        console.log('✅ Short description translated:', { de: germanValue.substring(0, 50) + '...', es: spanish.shortDescription?.substring(0, 50) + '...', en: english.shortDescription?.substring(0, 50) + '...' });
       } else if (fieldType === 'description') {
         if (spanish.description) form.setValue('descriptionEs', spanish.description);
         if (english.description) form.setValue('descriptionEn', english.description);
+        console.log('✅ Full description translated:', { 
+          originalLength: germanValue.length, 
+          spanishLength: spanish.description?.length, 
+          englishLength: english.description?.length 
+        });
       }
+      
+      // Success toast with character count for long texts
+      const charInfo = germanValue.length > 200 ? ` (${germanValue.length} Zeichen verarbeitet)` : '';
+      toast({
+        title: "🌍 Automatische Übersetzung abgeschlossen",
+        description: `${fieldType} wurde ins Spanische und Englische übersetzt${charInfo}.`,
+        duration: 3000,
+      });
+      
     } catch (error) {
       console.error('Real-time translation failed:', error);
+      toast({
+        title: "⚠️ Übersetzung fehlgeschlagen",
+        description: "Die automatische Übersetzung ist vorübergehend nicht verfügbar. Versuchen Sie es erneut oder geben Sie die Übersetzungen manuell ein.",
+        variant: "destructive",
+        duration: 5000,
+      });
     }
   };
 
@@ -227,10 +260,13 @@ export default function AdminProductForm() {
       clearTimeout(translationTimeouts[fieldType]);
     }
     
+    // Set longer timeout for longer texts to allow user to finish typing
+    const delay = value.length > 200 ? 2500 : 1500; // 2.5s for long texts, 1.5s for short
+    
     // Set new timeout
     const timeoutId = setTimeout(() => {
       handleRealTimeTranslation(value, fieldType);
-    }, 1000); // 1 second delay
+    }, delay);
     
     setTranslationTimeouts(prev => ({
       ...prev,
@@ -490,13 +526,52 @@ export default function AdminProductForm() {
       // Alert mit noch mehr Details für Debugging
       if (process.env.NODE_ENV === 'development') {
         setTimeout(() => {
-          alert(`🔍 ENTWICKLER-DEBUG INFO:\n\nFehler: ${error.message}\n\nFormulardaten: ${JSON.stringify(form.getValues(), null, 2)}\n\nSpezifikationen: ${JSON.stringify(specifications, null, 2)}`);
+          alert(`🔍 ENTWICKLER-DEBUG INFO:\n\nFehler: ${error.message}\n\nFormulardaten: ${JSON.stringify(form.getValues(), null, 2)}\n\nValidierungsfehler: ${JSON.stringify(form.formState.errors, null, 2)}`);
         }, 1000);
       }
     },
   });
 
   const onSubmit = (data: ProductForm) => {
+    console.group('🔍 FORM SUBMIT DEBUG:');
+    console.log('📊 Submit Data:', data);
+    console.log('📝 Form Errors:', form.formState.errors);
+    console.log('✅ Form Valid:', form.formState.isValid);
+    
+    // Check for basic validation errors
+    if (!data.nameDe) {
+      console.error('❌ Missing German name');
+      toast({
+        title: "❌ Validierungsfehler",
+        description: "Deutscher Produktname ist erforderlich",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (!data.shortDescriptionDe) {
+      console.error('❌ Missing German description');
+      toast({
+        title: "❌ Validierungsfehler", 
+        description: "Deutsche Kurzbeschreibung ist erforderlich",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (!data.categoryId) {
+      console.error('❌ Missing category');
+      toast({
+        title: "❌ Validierungsfehler",
+        description: "Kategorie auswählen ist erforderlich", 
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log('✅ Validation passed, submitting...');
+    console.groupEnd();
+    
     saveProductMutation.mutate(data);
   };
 

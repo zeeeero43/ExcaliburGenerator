@@ -7,7 +7,65 @@ export async function translateText(text: string, fromLang: string, toLang: stri
   }
 
   try {
-    // Use the backend API for translation
+    // Split long texts into smaller chunks for better translation
+    const maxChunkSize = 500; // Characters per chunk
+    if (text.length > maxChunkSize) {
+      console.log(`🔄 Long text detected (${text.length} chars), splitting into chunks...`);
+      
+      // Split by sentences first, then by paragraphs if needed
+      const sentences = text.split(/(?<=[.!?])\s+/);
+      const chunks = [];
+      let currentChunk = '';
+      
+      for (const sentence of sentences) {
+        if ((currentChunk + sentence).length > maxChunkSize && currentChunk) {
+          chunks.push(currentChunk.trim());
+          currentChunk = sentence;
+        } else {
+          currentChunk += (currentChunk ? ' ' : '') + sentence;
+        }
+      }
+      
+      if (currentChunk) {
+        chunks.push(currentChunk.trim());
+      }
+      
+      // Translate each chunk separately
+      const translatedChunks = [];
+      for (let i = 0; i < chunks.length; i++) {
+        console.log(`🔄 Translating chunk ${i + 1}/${chunks.length}...`);
+        
+        const response = await fetch('/api/translate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: chunks[i],
+            fromLang,
+            toLang
+          })
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          translatedChunks.push(data.translatedText || chunks[i]);
+        } else {
+          translatedChunks.push(chunks[i]); // Fallback to original
+        }
+        
+        // Small delay between requests to avoid rate limiting
+        if (i < chunks.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
+      }
+      
+      const result = translatedChunks.join(' ');
+      console.log(`✅ Long text translation completed: ${text.length} → ${result.length} chars`);
+      return result;
+    }
+
+    // Regular translation for shorter texts
     const response = await fetch('/api/translate', {
       method: 'POST',
       headers: {
