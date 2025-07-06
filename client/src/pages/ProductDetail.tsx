@@ -255,24 +255,7 @@ export default function ProductDetail() {
               </CardContent>
             </Card>
 
-            {/* Specifications */}
-            {product.specifications && Object.keys(product.specifications).length > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">{String(t('specifications'))}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 gap-3">
-                    {Object.entries(product.specifications).map(([key, value]) => (
-                      <div key={key} className="flex justify-between py-2 border-b border-gray-100 last:border-b-0">
-                        <span className="font-medium text-gray-700">{key}:</span>
-                        <span className="text-gray-600">{value as string}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+
 
             {/* Contact Actions */}
             <div className="space-y-4">

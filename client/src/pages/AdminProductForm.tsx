@@ -181,14 +181,7 @@ export default function AdminProductForm() {
   type ProductForm = z.infer<typeof productSchema>;
   const queryClient = useQueryClient();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
-  const [specifications, setSpecifications] = useState<Array<{ 
-    key: string; 
-    value: string;
-    keyEs?: string;
-    keyEn?: string;
-    valueEs?: string;
-    valueEn?: string;
-  }>>([]);
+
 
 
   const isEdit = params.id && params.id !== 'new';
@@ -247,6 +240,7 @@ export default function AdminProductForm() {
 
   const form = useForm<ProductForm>({
     resolver: zodResolver(productSchema),
+    mode: 'onChange', // CRITICAL: Enable live validation for better form behavior
     defaultValues: {
       nameEs: '',
       nameDe: '',
@@ -377,19 +371,7 @@ export default function AdminProductForm() {
         setSelectedCategoryId(existingProduct.categoryId);
       }
 
-      // Parse specifications with translations
-      if (existingProduct.specifications && typeof existingProduct.specifications === 'object') {
-        const specsArray = Object.entries(existingProduct.specifications).map(([key, value]) => ({
-          key,
-          value: value as string,
-          keyEs: existingProduct.specificationsEs?.[key] || undefined,
-          keyEn: existingProduct.specificationsEn?.[key] || undefined,
-          valueEs: existingProduct.specificationsValuesEs?.[key] || undefined,
-          valueEn: existingProduct.specificationsValuesEn?.[key] || undefined,
-        }));
-        setSpecifications(specsArray);
-        console.log('✅ DEBUG: Specifications loaded:', specsArray);
-      }
+
     }
   }, [existingProduct, isEdit, form]);
 
@@ -407,22 +389,6 @@ export default function AdminProductForm() {
     mutationFn: async (data: ProductForm) => {
       const productData = {
         ...data,
-        specifications: specifications.length > 0 
-          ? Object.fromEntries(specifications.map(spec => [spec.key, spec.value]))
-          : undefined,
-        // Store translated specifications separately
-        specificationsEs: specifications.length > 0 
-          ? Object.fromEntries(specifications.map(spec => [spec.key, spec.keyEs || spec.key]))
-          : undefined,
-        specificationsEn: specifications.length > 0 
-          ? Object.fromEntries(specifications.map(spec => [spec.key, spec.keyEn || spec.key]))
-          : undefined,
-        specificationsValuesEs: specifications.length > 0 
-          ? Object.fromEntries(specifications.map(spec => [spec.key, spec.valueEs || spec.value]))
-          : undefined,
-        specificationsValuesEn: specifications.length > 0 
-          ? Object.fromEntries(specifications.map(spec => [spec.key, spec.valueEn || spec.value]))
-          : undefined,
         price: data.price ? data.price.toString() : undefined,
       };
 
@@ -503,7 +469,6 @@ export default function AdminProductForm() {
       // Ausführliche Konsolen-Logs für Debugging
       console.group('🔍 DEBUGGING INFORMATIONEN:');
       console.log('📊 Formulardaten:', form.getValues());
-      console.log('⚙️ Spezifikationen:', specifications);
       console.log('🌐 Netzwerk-Fehler:', error);
       console.log('📍 Debug-Tipp:', debugInfo);
       
@@ -535,123 +500,7 @@ export default function AdminProductForm() {
     saveProductMutation.mutate(data);
   };
 
-  const addSpecification = () => {
-    setSpecifications([...specifications, { key: '', value: '' }]);
-  };
 
-  const addSolarSpecifications = async () => {
-    const solarSpecs = [
-      { key: 'Leistung', value: '', keyEs: 'Potencia', keyEn: 'Power' },
-      { key: 'Spannung', value: '', keyEs: 'Voltaje', keyEn: 'Voltage' },
-      { key: 'Strom', value: '', keyEs: 'Corriente', keyEn: 'Current' },
-      { key: 'Wirkungsgrad', value: '', keyEs: 'Eficiencia', keyEn: 'Efficiency' },
-      { key: 'Garantie', value: '', keyEs: 'Garantía', keyEn: 'Warranty' },
-      { key: 'Abmessungen', value: '', keyEs: 'Dimensiones', keyEn: 'Dimensions' },
-      { key: 'Gewicht', value: '', keyEs: 'Peso', keyEn: 'Weight' },
-      { key: 'Zertifizierungen', value: '', keyEs: 'Certificaciones', keyEn: 'Certifications' },
-      { key: 'Betriebstemperatur', value: '', keyEs: 'Temperatura de operación', keyEn: 'Operating Temperature' },
-      { key: 'Schutzklasse', value: '', keyEs: 'Clase de protección', keyEn: 'Protection Class' }
-    ];
-    
-    // Add only those that don't already exist
-    const existingKeys = specifications.map(spec => spec.key);
-    const newSpecs = solarSpecs.filter(spec => !existingKeys.includes(spec.key));
-    
-    setSpecifications([...specifications, ...newSpecs]);
-    
-    toast({
-      title: "Solar-Spezifikationen hinzugefügt",
-      description: `${newSpecs.length} neue technische Felder wurden hinzugefügt (bereits übersetzt).`,
-    });
-  };
-
-  const addGeneratorSpecifications = () => {
-    const generatorSpecs = [
-      { key: 'Leistung', value: '', keyEs: 'Potencia', keyEn: 'Power' },
-      { key: 'Kraftstofftyp', value: '', keyEs: 'Tipo de combustible', keyEn: 'Fuel Type' },
-      { key: 'Tankvolumen', value: '', keyEs: 'Capacidad del tanque', keyEn: 'Tank Capacity' },
-      { key: 'Laufzeit', value: '', keyEs: 'Tiempo de funcionamiento', keyEn: 'Runtime' },
-      { key: 'Spannung', value: '', keyEs: 'Voltaje', keyEn: 'Voltage' },
-      { key: 'Frequenz', value: '', keyEs: 'Frecuencia', keyEn: 'Frequency' },
-      { key: 'Lautstärke', value: '', keyEs: 'Nivel de ruido', keyEn: 'Noise Level' },
-      { key: 'Abmessungen', value: '', keyEs: 'Dimensiones', keyEn: 'Dimensions' },
-      { key: 'Gewicht', value: '', keyEs: 'Peso', keyEn: 'Weight' },
-      { key: 'Garantie', value: '', keyEs: 'Garantía', keyEn: 'Warranty' }
-    ];
-    
-    // Add only those that don't already exist
-    const existingKeys = specifications.map(spec => spec.key);
-    const newSpecs = generatorSpecs.filter(spec => !existingKeys.includes(spec.key));
-    
-    setSpecifications([...specifications, ...newSpecs]);
-    
-    toast({
-      title: "Generator-Spezifikationen hinzugefügt",
-      description: `${newSpecs.length} neue technische Felder wurden hinzugefügt (bereits übersetzt).`,
-    });
-  };
-
-  const removeSpecification = (index: number) => {
-    setSpecifications(specifications.filter((_, i) => i !== index));
-  };
-
-  const updateSpecification = async (index: number, field: 'key' | 'value', value: string) => {
-    const updated = [...specifications];
-    updated[index][field] = value;
-    setSpecifications(updated);
-
-    // Auto-translate specification keys and values if they are entered in German
-    if (value.trim()) {
-      // Debounce the translation to avoid too many API calls
-      setTimeout(async () => {
-        try {
-          const { spanish, english } = await translateProductData({
-            name: field === 'key' ? value : '',
-            shortDescription: field === 'value' ? value : '',
-            description: ''
-          });
-          
-          if (field === 'key' && spanish.name && spanish.name !== value) {
-            console.log(`🔄 Spezifikation-Schlüssel übersetzt: ${value} → ${spanish.name}`);
-            
-            // CRITICAL: Actually update the specifications with Spanish translation
-            const translatedSpecs = [...specifications];
-            translatedSpecs[index] = {
-              ...translatedSpecs[index],
-              keyEs: spanish.name,
-              keyEn: english.name || spanish.name
-            };
-            setSpecifications(translatedSpecs);
-            
-            toast({
-              title: "Spezifikation übersetzt",
-              description: `${value} → ${spanish.name}`,
-              duration: 2000,
-            });
-          } else if (field === 'value' && spanish.shortDescription && spanish.shortDescription !== value) {
-            console.log(`🔄 Spezifikation-Wert übersetzt: ${value} → ${spanish.shortDescription}`);
-            
-            // CRITICAL: Actually update the specifications with Spanish translation
-            const translatedSpecs = [...specifications];
-            translatedSpecs[index] = {
-              ...translatedSpecs[index],
-              valueEs: spanish.shortDescription,
-              valueEn: english.shortDescription || spanish.shortDescription
-            };
-            setSpecifications(translatedSpecs);
-            
-            toast({
-              title: "Spezifikation übersetzt", 
-              description: `${value} → ${spanish.shortDescription}`,
-              duration: 2000,
-            });
-          }
-        } catch (error) {
-          console.error('Specification translation failed:', error);
-        }
-      }, 1000);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -1089,50 +938,7 @@ export default function AdminProductForm() {
                   </CardContent>
                 </Card>
 
-                {/* Specifications */}
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-medium">Technische Spezifikationen</h3>
-                    <div className="flex flex-wrap gap-2">
-                      <Button type="button" variant="outline" onClick={addSolarSpecifications}>
-                        🌞 Solar-Spezifikationen
-                      </Button>
-                      <Button type="button" variant="outline" onClick={addGeneratorSpecifications}>
-                        ⚡ Generator-Spezifikationen
-                      </Button>
-                      <Button type="button" variant="outline" onClick={addSpecification}>
-                        ➕ Eigene Spezifikation
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  {specifications.map((spec, index) => (
-                    <div key={index} className="flex gap-4 items-end">
-                      <div className="flex-1">
-                        <Input
-                          placeholder="Eigenschaft (z.B. Leistung)"
-                          value={spec.key}
-                          onChange={(e) => updateSpecification(index, 'key', e.target.value)}
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <Input
-                          placeholder="Wert (z.B. 5000W)"
-                          value={spec.value}
-                          onChange={(e) => updateSpecification(index, 'value', e.target.value)}
-                        />
-                      </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => removeSpecification(index)}
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
+
               </CardContent>
             </Card>
 

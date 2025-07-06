@@ -24,20 +24,7 @@ export function ProductComparison({ products, onRemoveProduct, onAddMoreProducts
     );
   }
 
-  const getSpecificationKeys = () => {
-    const allKeys = new Set<string>();
-    products.forEach(product => {
-      if (product.specifications) {
-        const specs = typeof product.specifications === 'string' 
-          ? JSON.parse(product.specifications) 
-          : product.specifications;
-        Object.keys(specs).forEach(key => allKeys.add(key));
-      }
-    });
-    return Array.from(allKeys);
-  };
 
-  const specKeys = getSpecificationKeys();
 
   return (
     <div className="space-y-6">
@@ -113,27 +100,7 @@ export function ProductComparison({ products, onRemoveProduct, onAddMoreProducts
               ))}
             </tr>
 
-            {/* Technical Specifications */}
-            {specKeys.map((specKey) => (
-              <tr key={specKey} className="border-b">
-                <td className="py-3 px-2 font-medium capitalize">
-                  {specKey.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ')}
-                </td>
-                {products.map((product) => {
-                  const specs = product.specifications 
-                    ? (typeof product.specifications === 'string' 
-                       ? JSON.parse(product.specifications) 
-                       : product.specifications)
-                    : {};
-                  
-                  return (
-                    <td key={product.id} className="py-3 px-4 text-center text-sm">
-                      {specs[specKey] || '-'}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
+
 
             {/* Action Row */}
             <tr>
