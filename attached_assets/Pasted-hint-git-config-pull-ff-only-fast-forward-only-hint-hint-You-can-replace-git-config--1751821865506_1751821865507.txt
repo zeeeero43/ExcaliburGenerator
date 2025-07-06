@@ -1,0 +1,76 @@
+hint:   git config pull.ff only       # fast-forward only
+hint:
+hint: You can replace "git config" with "git config --global" to set a default
+hint: preference for all repositories. You can also pass --rebase, --no-rebase,
+hint: or --ff-only on the command line to override the configured default per
+hint: invocation.
+fatal: Need to specify how to reconcile divergent branches.
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# cd /var/www/excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# git reset --hard origin/main
+HEAD is now at 3275d29 Streamline product information by removing technical specifications
+root@srv896300:/var/www/excalibur-cuba# git pull origin main
+From https://github.com/zeeeero43/ExcaliburGenerator
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+root@srv896300:/var/www/excalibur-cuba# git config pull.rebase false
+root@srv896300:/var/www/excalibur-cuba# git pull origin main --allow-unrelated-histories
+From https://github.com/zeeeero43/ExcaliburGenerator
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl status excalibur-cuba
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2025-07-06 17:06:13 UTC; 2s ago
+   Main PID: 8859 (node)
+      Tasks: 11 (limit: 9477)
+     Memory: 59.1M
+        CPU: 458ms
+     CGroup: /system.slice/excalibur-cuba.service
+             └─8859 /usr/bin/node dist/index.js
+
+Jul 06 17:06:13 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 17:06:14 srv896300 node[8859]: Warning: connect.session() MemoryStore is not
+Jul 06 17:06:14 srv896300 node[8859]: designed for a production environment, as it will leak
+Jul 06 17:06:14 srv896300 node[8859]: memory, and will not scale past a single process.
+Jul 06 17:06:14 srv896300 node[8859]: 🌱 Starting database seeding...
+Jul 06 17:06:14 srv896300 node[8859]: ✅ Secure admin user already exists
+Jul 06 17:06:14 srv896300 node[8859]: 🎉 Database seeding completed successfully!
+Jul 06 17:06:14 srv896300 node[8859]: 5:06:14 PM [express] serving on port 5000
+root@srv896300:/var/www/excalibur-cuba# cd /var/www/excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# git reset --hard origin/main
+HEAD is now at 3275d29 Streamline product information by removing technical specifications
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# cat /var/www/excalibur-cuba/ExcaliburGenerator/client/src/pages/AdminProductForm.tsx | grep -A5 -B5 "Spezifikationen"
+cat: /var/www/excalibur-cuba/ExcaliburGenerator/client/src/pages/AdminProductForm.tsx: No such file or directory
+root@srv896300:/var/www/excalibur-cuba# cd /var/www/excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# rm -f .git/index.lock
+root@srv896300:/var/www/excalibur-cuba# git reset --hard origin/main
+HEAD is now at 3275d29 Streamline product information by removing technical specifications
+root@srv896300:/var/www/excalibur-cuba# git pull origin main
+From https://github.com/zeeeero43/ExcaliburGenerator
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl stop excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl start excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl status excalibur-cuba
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2025-07-06 17:10:21 UTC; 2s ago
+   Main PID: 8930 (node)
+      Tasks: 11 (limit: 9477)
+     Memory: 53.8M
+        CPU: 458ms
+     CGroup: /system.slice/excalibur-cuba.service
+             └─8930 /usr/bin/node dist/index.js
+
+Jul 06 17:10:21 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 17:10:21 srv896300 node[8930]: Warning: connect.session() MemoryStore is not
+Jul 06 17:10:21 srv896300 node[8930]: designed for a production environment, as it will leak
+Jul 06 17:10:21 srv896300 node[8930]: memory, and will not scale past a single process.
+Jul 06 17:10:21 srv896300 node[8930]: 🌱 Starting database seeding...
+Jul 06 17:10:21 srv896300 node[8930]: ✅ Secure admin user already exists
+Jul 06 17:10:21 srv896300 node[8930]: 🎉 Database seeding completed successfully!
+Jul 06 17:10:21 srv896300 node[8930]: 5:10:21 PM [express] serving on port 5000
+root@srv896300:/var/www/excalibur-cuba#
