@@ -1,0 +1,220 @@
+* Using Stream ID: 1 (easy handle 0x560d31ce59f0)
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+> GET /get?q=test&langpair=de|es HTTP/2
+> Host: api.mymemory.translated.net
+> user-agent: curl/7.81.0
+> accept: */*
+>
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* Connection state changed (MAX_CONCURRENT_STREAMS == 128)!
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+< HTTP/2 429
+< date: Sun, 06 Jul 2025 21:07:35 GMT
+< content-type: application/json; charset=utf-8
+< content-length: 576
+< server: Apache/2.4.41 (Ubuntu)
+< cache-control: no-cache, no-store, max-age=0, must-revalidate
+< pragma: no-cache
+< expires: Fri, 01 Jan 1990 00:00:00 GMT
+< x-backend-content-length: 10
+< x-embedded-status: 200
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 0
+< access-control-allow-origin: *
+< retry-after: 10345
+<
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* Connection #0 to host api.mymemory.translated.net left intact
+{"responseData":{"translatedText":"MYMEMORY WARNING: YOU USED ALL AVAILABLE FREE TRANSLATIONS FOR TODAY. NEXT AVAILABLE IN  11 HOURS 52 MINUTES 25 SECONDS VISIT HTTPS:\/\/MYMEMORY.TRANSLATED.NET\/DOC\/USAGELIMITS.PHP TO TRANSLATE MORE"},"quotaFinished":null,"mtLangSupported":null,"responseDetails":"MYMEMORY WARNING: YOU USED ALL AVAILABLE FREE TRANSLATIONS FOR TODAY. NEXT AVAILABLE IN  11 HOURS 52 MINUTES 25 SECONDS VISIT HTTPS:\/\/MYMEMORY.TRANSLATED.NET\/DOC\/USAGELIMITS.PHP TO TRANSLATE MORE","responseStatus":429,"responderId":null,"exception_code":null,"matches":""}root@srv896300:~# sudo nano /etc/systemd/systemsudo nano /etc/systemd/system/excalibur-cuba.service
+root@srv896300:~# sudo systemctl daemon-reload
+root@srv896300:~# sudo systemctl restart excalibur-cuba
+root@srv896300:~# sudo systemctl status excalibur-cuba
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: activating (auto-restart) (Result: exit-code) since Sun 2025-07-06 21:08:20 UTC; 2s ago
+    Process: 11829 ExecStart=/usr/bin/node dist/index.js (code=exited, status=200/CHDIR)
+   Main PID: 11829 (code=exited, status=200/CHDIR)
+        CPU: 1ms
+
+Jul 06 21:08:20 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:08:20 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+root@srv896300:~# cd /var/www/excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# git reset --hard origin/main
+HEAD is now at 36a583c Update the website with new logo, translation fixes and product edits
+root@srv896300:/var/www/excalibur-cuba# git pull origin main
+remote: Enumerating objects: 18, done.
+remote: Counting objects: 100% (18/18), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 10 (delta 8), reused 10 (delta 8), pack-reused 0 (from 0)
+Unpacking objects: 100% (10/10), 3.79 KiB | 1.26 MiB/s, done.
+From https://github.com/zeeeero43/ExcaliburGenerator
+ * branch            main       -> FETCH_HEAD
+   36a583c..1543757  main       -> origin/main
+Updating 36a583c..1543757
+Fast-forward
+ FINAL_GIT_DEPLOYMENT_GUIDE.md |   3 +-
+ PRODUCTION_TRANSLATION_FIX.md | 124 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ client/src/lib/translation.ts |   5 ++++
+ server/routes.ts              |  76 +++++++++++++++++++++++++++++++++++++--------------
+ 4 files changed, 186 insertions(+), 22 deletions(-)
+ create mode 100644 PRODUCTION_TRANSLATION_FIX.md
+root@srv896300:/var/www/excalibur-cuba# npm run build
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.19 building for production...
+transforming (4) src/App.tsxBrowserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 2551 modules transformed.
+../dist/public/index.html                     6.55 kB │ gzip:   1.89 kB
+../dist/public/assets/index-BmYo6szT.css     98.78 kB │ gzip:  15.33 kB
+../dist/public/assets/index-KT5MpcOu.js   1,038.72 kB │ gzip: 292.60 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 7.42s
+
+  dist/index.js  55.1kb
+
+⚡ Done in 7ms
+root@srv896300:/var/www/excalibur-cuba# npm run db:push
+
+> rest-express@1.0.0 db:push
+> drizzle-kit push
+
+No config path provided, using default 'drizzle.config.ts'
+Reading config file '/var/www/excalibur-cuba/drizzle.config.ts'
+DATABASE_URL, ensure the database is provisioned
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# curl -v "https://api.mymemory.translated.net/get?q=test&langpair=de|es"
+*   Trying 52.29.70.108:443...
+* Connected to api.mymemory.translated.net (52.29.70.108) port 443 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+*  CAfile: /etc/ssl/certs/ca-certificates.crt
+*  CApath: /etc/ssl/certs
+* TLSv1.0 (OUT), TLS header, Certificate Status (22):
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.2 (IN), TLS handshake, Certificate (11):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.2 (IN), TLS handshake, Server finished (14):
+* TLSv1.2 (OUT), TLS header, Certificate Status (22):
+* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+* TLSv1.2 (OUT), TLS header, Finished (20):
+* TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.2 (OUT), TLS header, Certificate Status (22):
+* TLSv1.2 (OUT), TLS handshake, Finished (20):
+* TLSv1.2 (IN), TLS header, Finished (20):
+* TLSv1.2 (IN), TLS header, Certificate Status (22):
+* TLSv1.2 (IN), TLS handshake, Finished (20):
+* SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256
+* ALPN, server accepted to use h2
+* Server certificate:
+*  subject: CN=mymemory.translated.net
+*  start date: Sep  5 00:00:00 2024 GMT
+*  expire date: Oct  3 23:59:59 2025 GMT
+*  subjectAltName: host "api.mymemory.translated.net" matched cert's "*.mymemory.translated.net"
+*  issuer: C=US; O=Amazon; CN=Amazon RSA 2048 M02
+*  SSL certificate verify ok.
+* Using HTTP2, server supports multiplexing
+* Connection state changed (HTTP/2 confirmed)
+* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+* Using Stream ID: 1 (easy handle 0x5611b84939f0)
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+> GET /get?q=test&langpair=de|es HTTP/2
+> Host: api.mymemory.translated.net
+> user-agent: curl/7.81.0
+> accept: */*
+>
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* Connection state changed (MAX_CONCURRENT_STREAMS == 128)!
+* TLSv1.2 (OUT), TLS header, Supplemental data (23):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+< HTTP/2 429
+< date: Sun, 06 Jul 2025 21:09:39 GMT
+< content-type: application/json; charset=utf-8
+< content-length: 576
+< server: Apache/2.4.41 (Ubuntu)
+< cache-control: no-cache, no-store, max-age=0, must-revalidate
+< pragma: no-cache
+< expires: Fri, 01 Jan 1990 00:00:00 GMT
+< x-backend-content-length: 10
+< x-embedded-status: 200
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 0
+< access-control-allow-origin: *
+< retry-after: 10221
+<
+* TLSv1.2 (IN), TLS header, Supplemental data (23):
+* Connection #0 to host api.mymemory.translated.net left intact
+{"responseData":{"translatedText":"MYMEMORY WARNING: YOU USED ALL AVAILABLE FREE TRANSLATIONS FOR TODAY. NEXT AVAILABLE IN  11 HOURS 50 MINUTES 21 SECONDS VISIT HTTPS:\/\/MYMEMORY.TRANSLATED.NET\/DOC\/USAGELIMITS.PHP TO TRANSLATE MORE"},"quotaFinished":null,"mtLangSupported":null,"responseDetails":"MYMEMORY WARNING: YOU USED ALL AVAILABLE FREE TRANSLATIONS FOR TODAY. NEXT AVAILABLE IN  11 HOURS 50 MINUTES 21 SECONDS VISIT HTTPS:\/\/MYMEMORY.TRANSLATED.NET\/DOC\/USAGELIMITS.PHP TO TRANSLATE MORE","responseStatus":429,"responderId":null,"exception_code":null,"matches":""}root@srv896300:/var/www/excalibur-cuba# sudo systemctl daemon-reload
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl restart excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl status excalibur-cuba
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: activating (auto-restart) (Result: exit-code) since Sun 2025-07-06 21:09:46 UTC; 2s ago
+    Process: 11992 ExecStart=/usr/bin/node dist/index.js (code=exited, status=200/CHDIR)
+   Main PID: 11992 (code=exited, status=200/CHDIR)
+        CPU: 874us
+root@srv896300:/var/www/excalibur-cuba# sudo journalctl -u excalibur-cuba -f
+Jul 06 21:09:46 srv896300 systemd[11992]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:09:46 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:09:46 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 06 21:09:50 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 27.
+Jul 06 21:09:50 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:09:50 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:09:50 srv896300 systemd[11998]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:09:50 srv896300 systemd[11998]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:09:50 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:09:50 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 06 21:09:53 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 28.
+Jul 06 21:09:53 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:09:53 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:09:53 srv896300 systemd[12002]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:09:53 srv896300 systemd[12002]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:09:53 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:09:53 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+
+Jul 06 21:09:56 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 29.
+Jul 06 21:09:56 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:09:56 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:09:56 srv896300 systemd[12003]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:09:56 srv896300 systemd[12003]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:09:56 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:09:56 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 06 21:09:59 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 30.
+Jul 06 21:09:59 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:09:59 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:09:59 srv896300 systemd[12004]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:09:59 srv896300 systemd[12004]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:09:59 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:09:59 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 06 21:10:03 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 31.
+Jul 06 21:10:03 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:10:03 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:10:03 srv896300 systemd[12005]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:10:03 srv896300 systemd[12005]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:10:03 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:10:03 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 06 21:10:06 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 32.
+Jul 06 21:10:06 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 06 21:10:06 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 21:10:06 srv896300 systemd[12006]: excalibur-cuba.service: Changing to the requested working directory failed: No such file or directory
+Jul 06 21:10:06 srv896300 systemd[12006]: excalibur-cuba.service: Failed at step CHDIR spawning /usr/bin/node: No such file or directory
+Jul 06 21:10:06 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=200/CHDIR
+Jul 06 21:10:06 srv896300 systemd[1]: excalibur-cuba.
