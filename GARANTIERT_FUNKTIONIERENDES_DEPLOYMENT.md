@@ -233,6 +233,7 @@ Type=simple
 User=root
 WorkingDirectory=/var/www/excalibur-cuba/ExcaliburGenerator
 Environment=NODE_ENV=production
+Environment=DATABASE_URL=postgresql://excalibur_user:SecurePass2025@localhost:5432/excalibur_cuba
 ExecStart=/usr/bin/npm run start
 Restart=always
 RestartSec=5
@@ -260,6 +261,28 @@ systemctl start excalibur-cuba
 ### Service-Status prüfen
 ```bash
 systemctl status excalibur-cuba
+```
+
+### Bei Service-Fehlern: Debugging-Schritte
+```bash
+# 1. Manuell testen
+cd /var/www/excalibur-cuba/ExcaliburGenerator
+npm run start
+```
+
+```bash
+# 2. Falls npm start fehlschlägt: Node direkt testen
+node dist/index.js
+```
+
+```bash
+# 3. Environment-Variablen prüfen
+printenv | grep DATABASE
+```
+
+```bash
+# 4. Service-Logs prüfen (falls verfügbar)
+journalctl -u excalibur-cuba --no-pager -l
 ```
 
 ---
