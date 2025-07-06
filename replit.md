@@ -219,6 +219,13 @@ Changelog:
   * Fixed geolocation system to properly detect German users and default to German interface
   * Enhanced admin panel with clearer required field indicators and better UX
   * All core customer issues from deployment feedback have been addressed
+- July 06, 2025 (final feature cleanup). Removed technical specifications and fixed translation system:
+  * Completely removed technical specifications feature from admin forms, product pages, and comparison views
+  * Fixed ExpandableTextarea to trigger real-time translation in both normal and expanded view
+  * Enhanced translation system to handle long texts (chunked processing for texts over 500 characters)
+  * Improved error handling with detailed validation messages and developer debugging
+  * Technical details now added directly to product descriptions as requested by customer
+  * Real-time translation now works seamlessly without requiring manual save actions
 - July 06, 2025 (German-first workflow implementation). Complete restructuring for optimal German business workflow:
   * Fixed geolocation to default to Spanish for Cuban market instead of German
   * Completely restructured product creation workflow to German-only input with automatic real-time translation (1-second delay)

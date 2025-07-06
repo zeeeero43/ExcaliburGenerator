@@ -41,6 +41,12 @@ export function ExpandableTextarea({
     setIsExpanded(false);
   };
 
+  // CRITICAL: Handle real-time changes in modal and trigger translation
+  const handleModalChange = (newValue: string) => {
+    setModalValue(newValue);
+    onChange(newValue); // CRITICAL: Trigger onChange immediately for real-time translation
+  };
+
   return (
     <>
       <div className="relative">
@@ -74,7 +80,7 @@ export function ExpandableTextarea({
           <div className="flex-1 min-h-0">
             <Textarea
               value={modalValue}
-              onChange={(e) => setModalValue(e.target.value)}
+              onChange={(e) => handleModalChange(e.target.value)}
               placeholder={placeholder}
               className="min-h-[400px] resize-none"
               rows={maxRows}
@@ -86,7 +92,7 @@ export function ExpandableTextarea({
               Abbrechen
             </Button>
             <Button onClick={handleSaveModal}>
-              Speichern
+              Schließen
             </Button>
           </DialogFooter>
         </DialogContent>
