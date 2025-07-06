@@ -1,0 +1,41 @@
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@srv896300:~# docker run -d --name libretranslate --restart unless-stopped -p 5001:5000 libretranslate/libretranslate
+Unable to find image 'libretranslate/libretranslate:latest' locally
+latest: Pulling from libretranslate/libretranslate
+b983e127c643: Pull complete
+da38fb816c22: Pull complete
+7af2721bf536: Pull complete
+a68b3001a700: Pull complete
+aa272bea4dbb: Pull complete
+f7b294e5f2e1: Pull complete
+4f4fb700ef54: Pull complete
+68e03d216683: Pull complete
+Digest: sha256:1f0174192a289cac1694fff2c8fed20344b40b71e7e2192db8d2b0efa3d66e08
+Status: Downloaded newer image for libretranslate/libretranslate:latest
+23eaca0f2ed86d406ed5d9ed2cb426d61890691880641a0af764696cc5d376d6
+root@srv896300:~# curl -X POST "http://localhost:5001/translate" -H "Content-Type: application/json" -d '{"q": "Hallo", "source": "de", "target": "es"}'
+curl: (56) Recv failure: Connection reset by peer
+root@srv896300:~# curl -X POST "http://localhost:5001/translate" -H "Content-Type: application/json" -d '{"q": "Hallo", "source": "de", "target": "es"}'
+curl: (56) Recv failure: Connection reset by peer
+root@srv896300:~# docker ps -a
+CONTAINER ID   IMAGE                           COMMAND                  CREATED              STATUS              PORTS                                         NAMES
+23eaca0f2ed8   libretranslate/libretranslate   "./venv/bin/libretra…"   About a minute ago   Up About a minute   0.0.0.0:5001->5000/tcp, [::]:5001->5000/tcp   libretranslate
+root@srv896300:~# docker logs libretranslate
+root@srv896300:~# docker logs libretranslate
+root@srv896300:~# docker stop libretranslate
+libretranslate
+root@srv896300:~# docker rm libretranslate
+libretranslate
+root@srv896300:~# docker run -d \
+  --name libretranslate \
+  --restart unless-stopped \
+  -p 5001:5000 \
+  --memory=1g \
+  libretranslate/libretranslate
+261f7e88c380592571d8a4561190be036c94874a2c9bfa3d627acc73ef13610c
+root@srv896300:~# docker logs libretranslate
+root@srv896300:~# curl http://localhost:5001/languages
+curl: (56) Recv failure: Connection reset by peer
+root@srv896300:~#
