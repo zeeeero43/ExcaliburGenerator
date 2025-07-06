@@ -5,44 +5,45 @@ export async function seedDatabase() {
   try {
     console.log("🌱 Starting database seeding...");
 
-    // Deactivate old demo admin user if it exists
-    const oldAdminUser = await storage.getAdminUserByUsername("admin");
-    if (oldAdminUser) {
-      await storage.updateAdminUser(oldAdminUser.id, { isActive: false });
-      console.log("🔒 Old demo admin user deactivated");
-    }
+    // FOOLPROOF Admin Creation - Always ensure working admin user
+    try {
+      // Try to create new admin user - if it exists, it will be updated
+      const adminUser: InsertAdminUser = {
+        username: "admin",
+        email: "admin@excalibur-cuba.com",
+        password: "admin123",
+        firstName: "Admin",
+        lastName: "User", 
+        role: "admin",
+        isActive: true,
+      };
 
-    // Check for existing secure admin user
-    let existingAdminByUsername = await storage.getAdminUserByUsername("excalibur_admin");
-    
-    if (!existingAdminByUsername) {
-      // Try to find admin by email in case username was different
-      const existingUsers = await storage.getAdminUserByEmail("admin@excalibur-cuba.com");
+      const existingUser = await storage.getAdminUserByUsername("admin");
       
-      if (!existingUsers) {
-        const adminUser: InsertAdminUser = {
-          username: "excalibur_admin",
-          email: "admin@excalibur-cuba.com",
-          password: "ExcaliburCuba@2025!SecureAdmin#9847",
-          firstName: "Excalibur",
-          lastName: "Admin",
-          role: "admin",
-          isActive: true,
-        };
-        
+      if (!existingUser) {
         await storage.createAdminUser(adminUser);
-        console.log("✅ Secure admin user created for Excalibur Cuba");
+        console.log("✅ Admin user created successfully");
       } else {
-        // Update existing user to secure credentials
-        await storage.updateAdminUser(existingUsers.id, {
-          username: "excalibur_admin",
-          password: "ExcaliburCuba@2025!SecureAdmin#9847",
+        // Update existing user with fresh password
+        await storage.updateAdminUser(existingUser.id, {
+          password: "admin123",
           isActive: true
         });
-        console.log("✅ Existing admin user updated with secure credentials");
+        console.log("✅ Admin user password updated successfully");
       }
-    } else {
-      console.log("✅ Secure admin user already exists");
+
+      // Also ensure any old excalibur_admin user gets the correct password
+      const oldUser = await storage.getAdminUserByUsername("excalibur_admin");
+      if (oldUser) {
+        await storage.updateAdminUser(oldUser.id, {
+          password: "admin123",
+          isActive: true
+        });
+        console.log("✅ Legacy admin user updated");
+      }
+
+    } catch (error) {
+      console.error("❌ Admin user creation failed:", error);
     }
 
     // All categories and subcategories are now managed manually through the admin interface

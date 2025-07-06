@@ -152,13 +152,12 @@ npm run db:push
 # WÄHLEN SIE: "+ admin_users create table" (ERSTE Option)
 # Drücken Sie ENTER - NICHT die Umbenennung wählen!
 
-# WICHTIG: Admin-Benutzer direkt in der Datenbank erstellen
-sudo -u postgres psql -d excalibur_cuba << EOF
-INSERT INTO admin_users (username, email, password, first_name, last_name, role, is_active, created_at, updated_at)
-VALUES ('excalibur_admin', 'admin@excalibur-cuba.com', '\$2b\$10\$K8vW9mXOjF2nP5qL7cR8s.xY3zV1bA4mH6jK9nL2pQ5rT8uW0vX3', 'Excalibur', 'Admin', 'admin', true, NOW(), NOW())
-ON CONFLICT (username) DO NOTHING;
-\q
-EOF
+# Admin-Benutzer wird automatisch beim Start erstellt
+# Login-Daten:
+# Benutzername: admin
+# Passwort: admin123
+# 
+# Kein manueller SQL-Befehl erforderlich!
 ```
 
 ### 6. Systemd Service erstellen
