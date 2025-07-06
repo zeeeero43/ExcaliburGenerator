@@ -1,0 +1,61 @@
+
+Node.js v20.19.3
+root@srv896300:/var/www/excalibur-cuba# npm list dotenv
+rest-express@1.0.0 /var/www/excalibur-cuba
+└── (empty)
+
+root@srv896300:/var/www/excalibur-cuba# cd /var/www/excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# export DATABASE_URL=postgresql://excalibur_user:SecurePass2025!@localhost:5432/excalibur_cuba
+-bash: !@localhost: event not found
+root@srv896300:/var/www/excalibur-cuba# sudo tee /etc/systemd/system/excalibur-cuba.service > /dev/null << EOF
+[Unit]
+Description=Excalibur Cuba Website
+After=network.target postgresql.service
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/excalibur-cuba
+Environment=NODE_ENV=production
+Environment=DATABASE_URL=postgresql://excalibur_user:SecurePass2025!@localhost:5432/excalibur_cuba
+Environment=PORT=5000
+Environment=SESSION_SECRET=ExcaliburCuba2025SecretKeyForSessions123456789
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl daemon-reload
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl enable excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# sudo systemctl start excalibur-cuba
+root@srv896300:/var/www/excalibur-cuba# npm start
+
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.js
+
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+🌱 Starting database seeding...
+✅ Secure admin user already exists
+🎉 Database seeding completed successfully!
+node:events:502
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use 0.0.0.0:5000
+    at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+    at listenInCluster (node:net:1965:12)
+    at doListen (node:net:2139:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:83:21)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1944:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+  code: 'EADDRINUSE',
+  errno: -98,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 5000
+}
+
+Node.js v20.19.3
+root@srv896300:/var/www/excalibur-cuba#
