@@ -192,14 +192,14 @@ npm run db:push
 ### Admin-User direkt in Datenbank einfügen
 ```bash
 sudo -u postgres psql excalibur_cuba << 'EOF'
-INSERT INTO admin_users (id, username, email, password_hash, first_name, last_name, created_at, updated_at) 
-VALUES (1, 'excalibur_admin', 'admin@excalibur-cuba.com', '$2b$10$K8pF9Z7oL4N6wM2Q3R8tV.8JzL9M0N1P2Q3R4S5T6U7V8W9X0Y1Z2', 'Admin', 'User', NOW(), NOW());
+INSERT INTO admin_users (username, email, password, first_name, last_name, role, is_active, created_at, updated_at) 
+VALUES ('admin', 'admin@excalibur-cuba.com', '$2b$10$2po.o5EMMbM6muBI3UGgTO2mTyUqfNDpVe7Zg1Jz/NUCMa3rXt8wW', 'Admin', 'User', 'admin', true, NOW(), NOW());
 EOF
 ```
 
 ### Admin-User prüfen
 ```bash
-sudo -u postgres psql excalibur_cuba -c "SELECT username FROM admin_users;"
+sudo -u postgres psql excalibur_cuba -c "SELECT username, email, is_active FROM admin_users WHERE username = 'admin';"
 ```
 
 ---
@@ -329,8 +329,8 @@ http://DEINE_VPS_IP/admin/login
 ```
 
 **Login-Daten:**
-- Username: `excalibur_admin`
-- Password: `ExcaliburCuba@2025!SecureAdmin#9847`
+- Username: `admin`
+- Password: `admin123`
 
 ---
 
