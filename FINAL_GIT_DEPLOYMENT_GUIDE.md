@@ -166,7 +166,8 @@ npm run db:push
 sudo tee /etc/systemd/system/excalibur-cuba.service > /dev/null << EOF
 [Unit]
 Description=Excalibur Cuba Website
-After=network.target postgresql.service
+After=network-online.target
+Wants=network-online.target postgresql.service
 Wants=postgresql.service
 
 [Service]

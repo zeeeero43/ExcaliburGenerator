@@ -115,36 +115,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.error("Failed to seed database:", error);
   }
 
-  // Translation API
+  // Translation API with comprehensive debugging for production
   app.post("/api/translate", async (req, res) => {
     try {
       const { text, fromLang, toLang } = req.body;
       
+      console.log(`🔄 Translation request: ${fromLang} -> ${toLang}, text length: ${text?.length || 0}`);
+      
       if (!text || !fromLang || !toLang) {
-        return res.status(400).json({ error: "Missing required parameters" });
+        console.log("❌ Missing parameters:", { text: !!text, fromLang, toLang });
+        return res.json({ translatedText: text || '', error: 'MISSING_PARAMS' });
       }
 
-      // Use MyMemory translation API
-      const response = await fetch(
-        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromLang}|${toLang}`
-      );
-      
-      if (!response.ok) {
-        throw new Error('Translation API request failed');
+      if (fromLang === toLang) {
+        console.log("⚠️ Same language, returning original");
+        return res.json({ translatedText: text });
       }
-      
-      const data = await response.json();
-      
-      if (data.responseStatus === 200 && data.responseData) {
-        res.json({ translatedText: data.responseData.translatedText });
-      } else {
-        // Return original text if translation fails
-        res.json({ translatedText: text });
+
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromLang}|${toLang}`;
+      console.log(`🌐 Making request to: ${url.substring(0, 100)}...`);
+
+      // Add timeout and proper error handling for production
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+      try {
+        const response = await fetch(url, {
+          signal: controller.signal,
+          headers: {
+            'User-Agent': 'ExcaliburCuba/1.0 (+info@excalibur-cuba.com)'
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        
+        console.log(`📡 API Response: status=${data.responseStatus}, hasData=${!!data.responseData}`);
+        
+        if (data.responseStatus === 200 && data.responseData?.translatedText) {
+          const translatedText = data.responseData.translatedText;
+          console.log(`✅ Translation success: "${text.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
+          res.json({ translatedText });
+        } else {
+          console.log(`⚠️ API returned error status: ${data.responseStatus} - ${data.responseDetails || 'Unknown'}`);
+          res.json({ translatedText: text, error: 'API_ERROR', details: data.responseDetails });
+        }
+      } catch (fetchError: any) {
+        clearTimeout(timeoutId);
+        
+        if (fetchError.name === 'AbortError') {
+          console.error('❌ Translation timeout (10s exceeded)');
+          res.json({ translatedText: text, error: 'TIMEOUT' });
+        } else {
+          console.error('❌ Network/fetch error:', fetchError.message);
+          res.json({ translatedText: text, error: 'NETWORK_ERROR', details: fetchError.message });
+        }
       }
-    } catch (error) {
-      console.error('Translation error:', error);
-      // Return original text on error
-      res.json({ translatedText: req.body.text });
+    } catch (error: any) {
+      console.error('❌ Translation system error:', error);
+      res.json({ translatedText: req.body.text || '', error: 'SYSTEM_ERROR', details: error.message });
     }
   });
 

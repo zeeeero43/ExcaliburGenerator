@@ -83,6 +83,11 @@ export async function translateText(text: string, fromLang: string, toLang: stri
     }
     
     const data = await response.json();
+    if (data.error) {
+      console.error(`❌ Translation API error: ${data.error} - ${data.details || 'Unknown'}`);
+      console.error(`❌ PRODUCTION DEBUGGING: Check server logs with 'sudo journalctl -u excalibur-cuba -f'`);
+      return text; // Return original text if translation fails
+    }
     return data.translatedText || text;
   } catch (error) {
     console.error('Translation error:', error);
