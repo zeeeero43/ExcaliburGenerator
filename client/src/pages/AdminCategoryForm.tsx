@@ -14,12 +14,13 @@ import { apiRequest } from '@/lib/queryClient';
 import { ArrowLeft, Save, Trash2 } from 'lucide-react';
 import { insertCategorySchema, type Category } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
+import { translateProductData } from '@/lib/translation';
 
 // Form validation schema
 const categoryFormSchema = z.object({
   name: z.string().min(1, 'System-Name ist erforderlich'),
-  nameEs: z.string().min(1, 'Spanischer Name ist erforderlich'),
-  nameEn: z.string().min(1, 'Englischer Name ist erforderlich'),
+  nameEs: z.string().optional(),
+  nameEn: z.string().optional(),
   nameDe: z.string().min(1, 'Deutscher Name ist erforderlich'),
   description: z.string().optional(),
   descriptionEs: z.string().optional(),
@@ -37,6 +38,35 @@ export default function AdminCategoryForm() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Debounced translation
+  const debounceTranslation = (() => {
+    let timeout: NodeJS.Timeout;
+    return (germanValue: string, fieldType: 'name' | 'description') => {
+      clearTimeout(timeout);
+      timeout = setTimeout(async () => {
+        if (germanValue.trim()) {
+          try {
+            const { spanish, english } = await translateProductData({
+              name: fieldType === 'name' ? germanValue : '',
+              shortDescription: fieldType === 'description' ? germanValue : '',
+              description: ''
+            });
+            
+            if (fieldType === 'name') {
+              if (spanish.name) form.setValue('nameEs', spanish.name);
+              if (english.name) form.setValue('nameEn', english.name);
+            } else if (fieldType === 'description') {
+              if (spanish.shortDescription) form.setValue('descriptionEs', spanish.shortDescription);
+              if (english.shortDescription) form.setValue('descriptionEn', english.shortDescription);
+            }
+          } catch (error) {
+            console.error('Translation failed:', error);
+          }
+        }
+      }, 1000);
+    };
+  })();
   
   // Get category ID from URL path
   const pathParts = window.location.pathname.split('/');
@@ -196,24 +226,32 @@ export default function AdminCategoryForm() {
           <CardHeader>
             <CardTitle>Kategorie-Informationen</CardTitle>
             <CardDescription>
-              Geben Sie die Kategorie-Informationen in allen Sprachen ein
+              Nur deutsche Eingabe erforderlich - automatische Übersetzung zu Spanisch/Englisch
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                {/* German Fields */}
+                {/* German Input Fields */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Deutsch</h3>
+                  <h3 className="text-lg font-semibold text-gray-800">Deutsche Eingabe (Pflichtfelder)</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
                       name="nameDe"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name (Deutsch)</FormLabel>
+                          <FormLabel className="text-gray-800 font-bold">1. Kategorie Name (Deutsch) - PFLICHTFELD</FormLabel>
                           <FormControl>
-                            <Input placeholder="Kategorie Name..." {...field} />
+                            <Input 
+                              placeholder="z.B. Solaranlagen" 
+                              {...field}
+                              className="border-gray-300 focus:border-gray-600"
+                              onChange={(e) => {
+                                field.onChange(e);
+                                debounceTranslation(e.target.value, 'name');
+                              }}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -224,7 +262,7 @@ export default function AdminCategoryForm() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>System Name</FormLabel>
+                          <FormLabel>System Name (Optional)</FormLabel>
                           <FormControl>
                             <Input placeholder="system-name" {...field} />
                           </FormControl>
@@ -238,12 +276,17 @@ export default function AdminCategoryForm() {
                     name="descriptionDe"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Beschreibung (Deutsch)</FormLabel>
+                        <FormLabel className="text-gray-800 font-bold">2. Beschreibung (Deutsch) - Optional</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Kategorie Beschreibung auf Deutsch..."
                             rows={3}
                             {...field}
+                            className="border-gray-300 focus:border-gray-600"
+                            onChange={(e) => {
+                              field.onChange(e);
+                              debounceTranslation(e.target.value, 'description');
+                            }}
                           />
                         </FormControl>
                         <FormMessage />
@@ -252,74 +295,88 @@ export default function AdminCategoryForm() {
                   />
                 </div>
 
-                {/* Spanish Fields */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Español</h3>
-                  <FormField
-                    control={form.control}
-                    name="nameEs"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nombre (Español)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Nombre de categoría..." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="descriptionEs"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Descripción (Español)</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Descripción de categoría en español..."
-                            rows={3}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* English Fields */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900">English</h3>
-                  <FormField
-                    control={form.control}
-                    name="nameEn"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (English)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Category name..." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="descriptionEn"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (English)</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Category description in English..."
-                            rows={3}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                {/* Auto-translated Fields */}
+                <div className="space-y-4 bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-600">→ Automatisch übersetzt</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="nameEs"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-600">Nombre (Español)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Wird automatisch übersetzt..." 
+                              {...field}
+                              className="bg-gray-100 border-gray-200"
+                              readOnly
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="nameEn"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-600">Name (English)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Wird automatisch übersetzt..." 
+                              {...field}
+                              className="bg-gray-100 border-gray-200"
+                              readOnly
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="descriptionEs"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-600">Descripción (Español)</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Wird automatisch übersetzt..."
+                              rows={3}
+                              {...field}
+                              className="bg-gray-100 border-gray-200"
+                              readOnly
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="descriptionEn"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-600">Description (English)</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Wird automatisch übersetzt..."
+                              rows={3}
+                              {...field}
+                              className="bg-gray-100 border-gray-200"
+                              readOnly
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
 
                 {/* Category Image */}
