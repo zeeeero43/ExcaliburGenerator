@@ -140,11 +140,11 @@ function useAdminTranslation() {
 function createProductSchema(t: (key: string) => string) {
   return z.object({
     nameEs: z.string().min(1, t('nameRequired')),
-    nameDe: z.string().min(1, t('nameRequired')),
-    nameEn: z.string().min(1, t('nameRequired')),
+    nameDe: z.string().optional(),
+    nameEn: z.string().optional(),
     shortDescriptionEs: z.string().min(1, t('shortDescRequired')),
-    shortDescriptionDe: z.string().min(1, t('shortDescRequired')),
-    shortDescriptionEn: z.string().min(1, t('shortDescRequired')),
+    shortDescriptionDe: z.string().optional(),
+    shortDescriptionEn: z.string().optional(),
     descriptionEs: z.string().optional(),
     descriptionDe: z.string().optional(),
     descriptionEn: z.string().optional(),
@@ -487,7 +487,7 @@ export default function AdminProductForm() {
                     name="nameEs"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Produktname (Spanisch) *</FormLabel>
+                        <FormLabel className="text-red-600 font-bold">📍 Produktname (Spanisch) - PFLICHTFELD</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="Nombre del producto" />
                         </FormControl>
@@ -501,7 +501,7 @@ export default function AdminProductForm() {
                     name="nameDe"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Produktname (Deutsch) *</FormLabel>
+                        <FormLabel>Produktname (Deutsch) - Optional</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="Produktname" />
                         </FormControl>
@@ -515,7 +515,7 @@ export default function AdminProductForm() {
                     name="nameEn"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Produktname (Englisch) *</FormLabel>
+                        <FormLabel>Produktname (Englisch) - Optional</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="Product name" />
                         </FormControl>
@@ -532,7 +532,7 @@ export default function AdminProductForm() {
                     name="categoryId"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Kategorie *</FormLabel>
+                        <FormLabel className="text-red-600 font-bold">📍 Kategorie - PFLICHTFELD</FormLabel>
                         <Select 
                           onValueChange={field.onChange} 
                           value={field.value?.toString()}
@@ -600,7 +600,7 @@ export default function AdminProductForm() {
                       name="shortDescriptionEs"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Kurzbeschreibung (Spanisch) *</FormLabel>
+                          <FormLabel className="text-red-600 font-bold">📍 Kurzbeschreibung (Spanisch) - PFLICHTFELD</FormLabel>
                           <FormControl>
                             <Textarea {...field} placeholder="Descripción corta del producto" />
                           </FormControl>
@@ -614,7 +614,7 @@ export default function AdminProductForm() {
                       name="shortDescriptionDe"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Kurzbeschreibung (Deutsch) *</FormLabel>
+                          <FormLabel>Kurzbeschreibung (Deutsch) - Optional</FormLabel>
                           <FormControl>
                             <Textarea {...field} placeholder="Kurze Produktbeschreibung" />
                           </FormControl>
@@ -628,7 +628,7 @@ export default function AdminProductForm() {
                       name="shortDescriptionEn"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Kurzbeschreibung (Englisch) *</FormLabel>
+                          <FormLabel>Kurzbeschreibung (Englisch) - Optional</FormLabel>
                           <FormControl>
                             <Textarea {...field} placeholder="Short product description" />
                           </FormControl>
