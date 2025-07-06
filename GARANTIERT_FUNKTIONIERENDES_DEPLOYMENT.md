@@ -185,6 +185,21 @@ ls -la public/
 npm run db:push
 ```
 
+### Dependencies installieren (inkl. Dev-Dependencies für Build)
+```bash
+npm install --production=false
+```
+
+### Projekt für Production bauen
+```bash
+npm run build
+```
+
+### Build-Ergebnis prüfen
+```bash
+ls -la dist/
+```
+
 ---
 
 ## SCHRITT 7: ADMIN-USER ERSTELLEN
