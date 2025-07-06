@@ -823,6 +823,84 @@ export default function AdminProductForm() {
                     </div>
                   </div>
 
+                  {/* Full Descriptions - LARGE TEXTAREA */}
+                  <div className="space-y-4 border-t pt-6">
+                    <h3 className="text-lg font-medium">Vollständige Produktbeschreibung</h3>
+                    <p className="text-sm text-gray-600 bg-yellow-50 p-3 rounded">
+                      💡 Hier können Sie Ihre komplette Produktbeschreibung eingeben - alle technischen Daten, Spezifikationen, Preise etc.
+                      Die Box ist extra groß und wird automatisch übersetzt.
+                    </p>
+                    
+                    <div className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="descriptionDe"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-800 font-bold text-lg">
+                              4. Vollständige Beschreibung (Deutsch) - für lange Texte mit allen Details
+                            </FormLabel>
+                            <FormControl>
+                              <Textarea
+                                {...field}
+                                placeholder="Hier können Sie Ihre komplette Produktbeschreibung eingeben:\n\nTechnische Daten:\n- Leistung: ...\n- Spannung: ...\n- Gewicht: ...\n\nPreise:\n- Verkaufspreis: ...\n\nZahlungsmittel:\n- USD, EURO, etc.\n\nLieferung:\n- Details zur Lieferung...\n\nWir bieten auch..."
+                                className="min-h-[300px] text-base p-4 border-2 border-gray-300 focus:border-gray-600 resize-y"
+                                rows={12}
+                                onChange={(e) => {
+                                  field.onChange(e.target.value);
+                                  debounceTranslation(e.target.value, 'description');
+                                }}
+                              />
+                            </FormControl>
+                            <div className="text-sm text-gray-500">
+                              💡 Tipp: Diese Box ist vergrößerbar! Ziehen Sie an der unteren rechten Ecke oder geben Sie einfach Ihren kompletten Text ein.
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                        <FormField
+                          control={form.control}
+                          name="descriptionEs"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-600">→ Automatisch übersetzt (Spanisch)</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  {...field}
+                                  placeholder="Wird automatisch übersetzt..."
+                                  className="min-h-[250px] bg-gray-100 border-gray-200 resize-y"
+                                  rows={10}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="descriptionEn"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-600">→ Automatisch übersetzt (Englisch)</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  {...field}
+                                  placeholder="Wird automatisch übersetzt..."
+                                  className="min-h-[250px] bg-gray-100 border-gray-200 resize-y"
+                                  rows={10}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
                 </div>
               </CardContent>
