@@ -7,6 +7,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
+import { FormattedText } from '../components/FormattedText';
 import type { Product } from '@shared/schema';
 
 export default function ProductDetail() {
@@ -68,6 +69,9 @@ export default function ProductDetail() {
   const productShortDescription = currentLanguage === 'es' ? product.shortDescriptionEs : 
                                   currentLanguage === 'de' ? product.shortDescriptionDe : 
                                   product.shortDescriptionEn;
+  
+  // Check if we have extended description content
+  const hasExtendedDescription = productDescription && productDescription.length > 200;
 
   const handleContactWhatsApp = () => {
     const message = `¡Hola! Estoy interesado en el producto: ${productName}`;
@@ -244,7 +248,10 @@ export default function ProductDetail() {
               </CardHeader>
               <CardContent>
                 {productShortDescription ? (
-                  <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">{productShortDescription}</div>
+                  <FormattedText 
+                    text={productShortDescription} 
+                    className="text-gray-700 leading-relaxed"
+                  />
                 ) : (
                   <p className="text-gray-500 italic">
                     {currentLanguage === 'es' ? 'Descripción disponible próximamente.' :

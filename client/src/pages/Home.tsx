@@ -92,10 +92,8 @@ export default function Home() {
                     description = product.shortDescriptionEs || '';
                 }
                 
-                // Limit description length for better display
-                if (description && description.length > 120) {
-                  description = `${description.substring(0, 120)}...`;
-                }
+                // Limit description length for better display - use FormattedText for proper rendering
+                const shouldTruncate = description && description.length > 120;
 
                 return (
                   <ProductCard

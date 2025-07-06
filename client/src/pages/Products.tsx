@@ -7,6 +7,7 @@ import { Button } from '../components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
+import { FormattedText } from '../components/FormattedText';
 import type { Product, Category } from '@shared/schema';
 
 export default function Products() {
@@ -224,7 +225,10 @@ export default function Products() {
                         ];
                         
                         const currentSrc = e.currentTarget.src;
-                        const currentIndex = fallbacks.findIndex(f => currentSrc.includes(f.split('?')[0].split('/').pop()));
+                        const currentIndex = fallbacks.findIndex(f => {
+                          const fallbackBase = f.split('?')[0].split('/').pop();
+                          return fallbackBase && currentSrc.includes(fallbackBase);
+                        });
                         
                         if (currentIndex < fallbacks.length - 1) {
                           e.currentTarget.src = fallbacks[currentIndex + 1];
@@ -256,9 +260,13 @@ export default function Products() {
                   </CardHeader>
                   
                   <CardContent>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {getLocalizedText(product, 'shortDescription')}
-                    </p>
+                    <div className="text-gray-600 mb-4 line-clamp-3">
+                      <FormattedText 
+                        text={getLocalizedText(product, 'shortDescription') || ''} 
+                        maxLength={150}
+                        className="text-gray-600"
+                      />
+                    </div>
                     
                     {product.price && (
                       <div className="text-2xl font-bold text-excalibur-blue mb-2">

@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'wouter';
 import { Card, CardContent } from './ui/card';
+import { FormattedText } from './FormattedText';
 
 interface ProductCardProps {
   title: string;
@@ -27,12 +28,13 @@ export function ProductCard({ title, description, image, linkText, category, cla
           <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-excalibur-blue transition-colors">
             {title}
           </h3>
-          <p className="text-excalibur-gray mb-4 leading-relaxed">
-            {description && description.length > 150 
-              ? `${description.substring(0, 150)}...` 
-              : description
-            }
-          </p>
+          <div className="text-excalibur-gray mb-4 leading-relaxed">
+            <FormattedText 
+              text={description || ''} 
+              maxLength={150}
+              className="text-excalibur-gray"
+            />
+          </div>
           <div className="flex items-center text-excalibur-blue font-semibold group-hover:text-excalibur-orange transition-colors">
             <span>{linkText}</span>
             <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
