@@ -17,8 +17,11 @@ const SimpleRichTextComponent = ({ value, onChange, placeholder = '', ...props }
   };
 
   const insertFormat = (startTag: string, endTag: string = '') => {
-    const textarea = document.getElementById('rich-textarea') as HTMLTextAreaElement;
-    if (!textarea) return;
+    const textarea = document.querySelector('.rich-text-textarea') as HTMLTextAreaElement;
+    if (!textarea) {
+      console.error('Textarea not found');
+      return;
+    }
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
@@ -33,8 +36,9 @@ const SimpleRichTextComponent = ({ value, onChange, placeholder = '', ...props }
     // Set cursor position after the inserted tag
     setTimeout(() => {
       textarea.focus();
-      textarea.setSelectionRange(start + startTag.length, start + startTag.length + selectedText.length);
-    }, 0);
+      const newCursorPos = start + startTag.length + selectedText.length + endTag.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 10);
   };
 
   return (
@@ -103,11 +107,10 @@ const SimpleRichTextComponent = ({ value, onChange, placeholder = '', ...props }
       
       {/* Text Area */}
       <Textarea
-        id="rich-textarea"
+        className="rich-text-textarea border-0 rounded-none rounded-b-md resize-vertical"
         value={textValue}
         onChange={(e) => handleChange(e.target.value)}
         placeholder={placeholder + " (Mit Formatierung: **fett**, *kursiv*, _unterstrichen_, ## Überschrift)"}
-        className="border-0 rounded-none rounded-b-md resize-vertical"
         rows={8}
         {...props}
       />

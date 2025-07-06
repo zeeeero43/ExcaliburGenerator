@@ -182,6 +182,9 @@ export default function AdminProductForm() {
   type ProductForm = z.infer<typeof productSchema>;
   const queryClient = useQueryClient();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  
+  // Track form initialization to prevent re-triggering
+  const [formInitialized, setFormInitialized] = useState(false);
 
 
 
@@ -346,7 +349,7 @@ export default function AdminProductForm() {
 
   // Populate form with existing product data
   useEffect(() => {
-    if (existingProduct && isEdit) {
+    if (existingProduct && isEdit && !formInitialized) {
       console.log('🔄 DEBUG: Populating form with existing product:', {
         id: existingProduct.id,
         nameEs: existingProduct.nameEs,
@@ -389,15 +392,17 @@ export default function AdminProductForm() {
 
       console.log('🔄 DEBUG: Setting form data:', formData);
       
-      // Use reset to populate all fields at once - with delay to ensure DOM is ready
-      setTimeout(() => {
-        form.reset(formData);
-        console.log('✅ DEBUG: Form reset complete, current values:', form.getValues());
-      }, 100);
+      // CRITICAL FIX: Set each field individually to ensure proper loading
+      Object.entries(formData).forEach(([key, value]) => {
+        form.setValue(key as any, value);
+      });
+      
+      console.log('✅ DEBUG: Form data set individually, current values:', form.getValues());
+      setFormInitialized(true);
 
 
     }
-  }, [existingProduct, isEdit, form]);
+  }, [existingProduct, isEdit, form, formInitialized]);
 
   // Watch category changes
   const watchedCategoryId = form.watch('categoryId');
