@@ -344,6 +344,12 @@ Changelog:
   * Improved image loading logic to properly handle both relative paths (/uploads/...) and external URLs with proper fallback system
   * Enhanced text display on Home page, Products page, and ProductDetail page with consistent formatting support
   * All text now correctly displays bold, italic, and underlined content in Spanish, German, and English translations
+- July 09, 2025 (final UX fixes). Resolved remaining product display issues:
+  * PRODUCT IMAGES: Fixed product image loading on /products page to correctly display uploaded images from admin panel
+  * Implemented same image loading logic as ProductDetail page for consistent /uploads/ path handling
+  * Enhanced FormattedText usage throughout Products page for proper multilingual text formatting
+  * Removed invalid maxLength props from FormattedText components for proper rendering
+  * Both critical issues now completely resolved: products show correct images and formatted text in all languages
 ```
 
 ## User Preferences

@@ -88,9 +88,9 @@ export default function Products() {
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
               {t('ourProducts')}
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t('selectCategory')} - {t('productsSubtitle')}
-            </p>
+            <div className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <FormattedText text={`${t('selectCategory')} - ${t('productsSubtitle')}`} />
+            </div>
           </div>
 
           {/* Categories Grid */}
@@ -154,7 +154,6 @@ export default function Products() {
                     <div className="text-gray-600 mb-4">
                       <FormattedText 
                         text={getLocalizedText(category, 'description') || 'Kategorie anzeigen'} 
-                        maxLength={100}
                         className="text-gray-600"
                       />
                     </div>
@@ -198,9 +197,9 @@ export default function Products() {
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
               {getSelectedCategoryName()}
             </h1>
-            <p className="text-xl text-gray-600">
-              {filteredProducts.length} {t('productCount')} {t('inThisCategory')}
-            </p>
+            <div className="text-xl text-gray-600">
+              <FormattedText text={`${filteredProducts.length} ${t('productCount')} ${t('inThisCategory')}`} />
+            </div>
           </div>
         </div>
 
@@ -230,9 +229,9 @@ export default function Products() {
             <h3 className="text-xl font-semibold text-gray-600 mb-2">
               {t('noProductsFound')}
             </h3>
-            <p className="text-gray-500">
-              {t('noProductsMessage')}
-            </p>
+            <div className="text-gray-500">
+              <FormattedText text={t('noProductsMessage')} />
+            </div>
           </div>
         ) : (
           <div className={viewMode === 'grid' 
@@ -248,7 +247,17 @@ export default function Products() {
                 <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
                   <div className="relative overflow-hidden rounded-t-lg">
                     <img
-                      src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
+                      src={(() => {
+                        if (!product.mainImage) {
+                          return 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop';
+                        }
+                        if (product.mainImage.startsWith('http')) {
+                          return product.mainImage;
+                        }
+                        // Handle relative paths - ensure they start with /
+                        const imagePath = product.mainImage.startsWith('/') ? product.mainImage : `/${product.mainImage}`;
+                        return `http://localhost:5000${imagePath}`;
+                      })()}
                       alt={getLocalizedText(product, 'name')}
                       className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
@@ -299,7 +308,6 @@ export default function Products() {
                     <div className="text-gray-600 mb-4 line-clamp-3">
                       <FormattedText 
                         text={getLocalizedText(product, 'shortDescription')} 
-                        maxLength={150}
                         className="text-gray-600"
                       />
                     </div>
@@ -325,9 +333,9 @@ export default function Products() {
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
             {t('needCustomSolution')}
           </h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            {t('customSolutionDescription')}
-          </p>
+          <div className="text-gray-600 mb-6 max-w-2xl mx-auto">
+            <FormattedText text={t('customSolutionDescription')} />
+          </div>
           <Link to="/contact">
             <Button size="lg" className="bg-excalibur-blue hover:bg-blue-700">
               {t('contactUs')}
