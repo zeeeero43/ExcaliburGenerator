@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
-import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage } from 'lucide-react';
+import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage, Phone } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { Category, Product, Inquiry, AdminUser } from '@shared/schema';
@@ -272,6 +272,16 @@ export default function AdminDashboard() {
                   <FileImage className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">{t('imageManager')}</span>
                   <span className="sm:hidden">Bilder</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setLocation('/admin/contact')}
+                  className="text-xs sm:text-sm whitespace-nowrap"
+                >
+                  <Phone className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Kontakt</span>
+                  <span className="sm:hidden">Kontakt</span>
                 </Button>
                 <Button
                   variant="outline"

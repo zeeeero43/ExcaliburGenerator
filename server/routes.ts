@@ -838,14 +838,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Public endpoint for site settings (for hero images on public pages)
+  // Public endpoint for site settings (for hero images and contact info on public pages)
   app.get("/api/site-settings", async (req, res) => {
     try {
       const settings = await storage.getSiteSettings();
-      // Only return image-related settings for public access
+      // Return image-related settings and contact information for public access
       const publicSettings = settings.filter(setting => 
         setting.key.includes('hero_image_') || 
         setting.key.includes('product_fallback_image') ||
+        setting.key.includes('contact_') ||
         setting.type === 'image'
       );
       res.json(publicSettings);

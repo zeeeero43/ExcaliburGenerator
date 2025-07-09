@@ -18,6 +18,7 @@ import AdminCategoryForm from "./pages/AdminCategoryForm";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminSiteImages from "./pages/AdminSiteImages";
 import AdminImageManager from "./pages/AdminImageManager";
+import AdminContactSettings from "./pages/AdminContactSettings";
 import Legal from "./pages/Legal";
 import NotFound from "./pages/not-found";
 import { CookieBanner } from "./components/CookieBanner";
@@ -68,6 +69,7 @@ function Router() {
       <Route path="/admin/analytics" component={AdminAnalytics} />
       <Route path="/admin/site-images" component={AdminSiteImages} />
       <Route path="/admin/images" component={AdminImageManager} />
+      <Route path="/admin/contact" component={AdminContactSettings} />
       
       {/* Public Routes - With Layout */}
       <Route path="/">

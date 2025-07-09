@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Headphones, Building, Warehouse, MessageCircle } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { useMutation } from '@tanstack/react-query';
 import { apiRequest } from '../lib/queryClient';
@@ -37,6 +38,18 @@ type InquiryForm = z.infer<ReturnType<typeof createInquirySchema>>;
 export default function Contact() {
   const { t, currentLanguage } = useLanguage();
   const { toast } = useToast();
+
+  // Kontaktinformationen aus site-settings laden
+  const { data: siteSettings = [] } = useQuery<any[]>({
+    queryKey: ['/api/site-settings'],
+    retry: false,
+  });
+
+  // Hilfsfunktion um Kontaktinformationen zu laden
+  const getContactInfo = (key: string, fallback: string) => {
+    const setting = siteSettings.find(s => s.key === key);
+    return setting?.value || fallback;
+  };
 
   const inquirySchema = createInquirySchema(currentLanguage);
   const form = useForm<InquiryForm>({
@@ -80,21 +93,21 @@ export default function Contact() {
     {
       icon: Headphones,
       title: t('technicalAdvisory'),
-      phone: t('technicalAdvisoryPhone'),
+      phone: getContactInfo('contact_technical_phone', '+49 160 323 9439'),
       description: t('whatsappAvailable'),
       color: 'text-excalibur-blue'
     },
     {
       icon: Building,
       title: t('salesLabel'),
-      phone: t('salesPhone'),
+      phone: getContactInfo('contact_sales_phone', '+53 58781416'),
       description: 'Administración general',
       color: 'text-excalibur-orange'
     },
     {
       icon: Warehouse,
       title: t('warehouseDelivery'),
-      phone: t('deliveryPhone'),
+      phone: getContactInfo('contact_warehouse_phone', '+53 58781416'),
       description: 'Habana del Este',
       color: 'text-green-500'
     }
