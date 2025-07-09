@@ -155,7 +155,6 @@ function createProductSchema(t: (key: string) => string) {
     descriptionDe: z.string().optional(),
     descriptionEn: z.string().optional(),
     categoryId: z.coerce.number().min(1, 'Kategorie ist erforderlich'),
-    subcategoryId: z.coerce.number().optional(),
     sku: z.string().optional(),
     price: z.string().optional(),
     priceNote: z.string().optional(),
@@ -302,6 +301,7 @@ export default function AdminProductForm() {
       availabilityTextEs: '',
       availabilityTextDe: '',
       availabilityTextEn: '',
+      categoryId: undefined,
     },
   });
 
@@ -354,10 +354,7 @@ export default function AdminProductForm() {
         categoryId: existingProduct.categoryId
       });
       
-      // Set the category first for subcategory loading
-      if (existingProduct.categoryId) {
-        setSelectedCategoryId(existingProduct.categoryId);
-      }
+      // Removed subcategory functionality - no need to set selectedCategoryId
       
       // CRITICAL: Ensure form reset works with correct data mapping
       const formData = {
@@ -372,7 +369,6 @@ export default function AdminProductForm() {
         descriptionEn: existingProduct.descriptionEn || '',
         price: existingProduct.price ? String(existingProduct.price) : '',
         categoryId: existingProduct.categoryId || undefined,
-        subcategoryId: existingProduct.subcategoryId || undefined,
         mainImage: existingProduct.mainImage || '',
         images: (existingProduct.images && Array.isArray(existingProduct.images)) ? existingProduct.images : [],
         sku: existingProduct.sku || '',
@@ -399,14 +395,7 @@ export default function AdminProductForm() {
     }
   }, [existingProduct, isEdit, form, formInitialized]);
 
-  // Watch category changes
-  const watchedCategoryId = form.watch('categoryId');
-  useEffect(() => {
-    if (watchedCategoryId && watchedCategoryId !== selectedCategoryId) {
-      setSelectedCategoryId(watchedCategoryId);
-      form.setValue('subcategoryId', undefined);
-    }
-  }, [watchedCategoryId, selectedCategoryId, form]);
+  // Removed subcategory functionality - no need to watch category changes
 
   // Create/Update mutation
   const saveProductMutation = useMutation({
