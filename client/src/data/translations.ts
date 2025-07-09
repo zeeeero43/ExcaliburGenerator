@@ -561,7 +561,7 @@ export const translations = {
     
     // Products
     ourProducts: "UNSERE PRODUKTE",
-    productsSubtitle: "Über 20 komplette Solarsysteme und hochwertige Einzelkomponenten, zertifiziert für den kubanischen Markt",
+    productsSubtitle: "Über 100 komplette Solarsysteme und hochwertige Einzelkomponenten, zertifiziert für den kubanischen Markt",
     completeSolarSystems: "Komplette Solarsysteme",
     completeSolarSystemsDesc: "Vorkonfigurierte Systeme von 1KW bis 20KW mit Hybrid-Wechselrichter, monokristallinen Panels und Optionen mit/ohne Batterie. Ideal für Haushalte und Unternehmen in Kuba mit internationaler Garantie.",
     solarPanels: "Solarpaneele",
