@@ -1068,7 +1068,7 @@ export const translations = {
     
     // Products
     ourProducts: "OUR PRODUCTS",
-    productsSubtitle: "Over 20 complete solar systems and high-quality individual components certified for the Cuban market",
+    productsSubtitle: "Over 100 complete solar systems and high-quality individual components certified for the Cuban market",
     completeSolarSystems: "Complete Solar Systems",
     completeSolarSystemsDesc: "Pre-configured systems from 1KW to 20KW with hybrid inverter, monocrystalline panels and options with/without battery. Ideal for homes and businesses in Cuba with international warranty.",
     solarPanels: "Solar Panels",

@@ -47,9 +47,7 @@ export default function Contact() {
 
   // Hilfsfunktion um Kontaktinformationen zu laden
   const getContactInfo = (key: string, fallback: string) => {
-    console.log(`Looking for key: ${key}, available settings:`, siteSettings);
     const setting = siteSettings.find(s => s.key === key);
-    console.log(`Found setting for ${key}:`, setting);
     return setting?.value || fallback;
   };
 

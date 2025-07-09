@@ -323,6 +323,12 @@ Changelog:
   * Integrated new branding elements and updated logo references throughout application
   * Enhanced SEO sections with new German content about solar advantages and backup generators
   * All content now reflects professional Cuban solar business with strong German partnership emphasis
+- July 09, 2025 (product statistics update). Updated product quantity across all languages:
+  * Changed "über 20" to "über 100" in German product descriptions
+  * Updated "Over 20" to "Over 100" in English product descriptions
+  * Spanish already had "100+ sistemas solares completos" correctly
+  * All three languages now consistently show "100+" solar systems available
+  * Identified contact page issue: only warehouse phone loads correctly, admin needs to add missing technical and sales phone numbers via AdminContactSettings
 ```
 
 ## User Preferences
