@@ -183,7 +183,7 @@ export default function Home() {
               {t('ourServices') as string}
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
               <div className="text-center">
                 <div className="bg-excalibur-light rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="w-8 h-8 text-excalibur-blue" />
@@ -214,6 +214,14 @@ export default function Home() {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{t('generators') as string}</h3>
                 <p className="text-gray-600">{t('generatorsDesc') as string}</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="bg-excalibur-light rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="w-8 h-8 text-excalibur-blue" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">{t('constructionMachines') as string}</h3>
+                <p className="text-gray-600">{t('constructionMachinesDesc') as string}</p>
               </div>
             </div>
           </div>
