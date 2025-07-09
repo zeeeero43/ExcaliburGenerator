@@ -544,7 +544,7 @@ export const translations = {
     heroTitle1: "SOLARENERGIE FÜR KUBA",
     heroSubtitle1: "Hochwertige Solarkomponenten und Generatoren zum besten Preis",
     heroTitle2: "EXCALIBUR GENERATOREN",
-    heroSubtitle2: "Leise Diesel- und Benzingeneratoren 2-10KVA",
+    heroSubtitle2: "Leise Diesel- und Benzingeneratoren 2-20KVA",
     heroTitle3: "KOMPLETTLÖSUNGEN",
     heroSubtitle3: "Individuelle Solarsysteme nach Ihren Bedürfnissen",
     viewProducts: "Produkte ansehen",
@@ -554,8 +554,8 @@ export const translations = {
     // Features
     bestQuality: "Beste Qualität",
     bestQualityDesc: "International zertifizierte Produkte",
-    fastDelivery: "Schnelle Lieferung",
-    fastDeliveryDesc: "Lager verfügbar in Havanna del Este",
+    fastDelivery: "Schnelle Verfügbarkeit",
+    fastDeliveryDesc: "Schnelle Verfügbarkeit bei Selbstabholung - Habana del Este",
     technicalSupport: "Technischer Support",
     technicalSupportDesc: "Fachberatung 24/7",
     
@@ -571,7 +571,7 @@ export const translations = {
     batteries: "Batterien",
     batteriesDesc: "LiFePO4-Lithium- und AGM-Tiefzyklus-Batterien von 100Ah bis 1000Ah. Entwickelt für Solarsysteme mit über 6000 Lebenszyklen.",
     generators: "Generatoren",
-    generatorsDesc: "Leise Diesel- und Benzingeneratoren Excalibur von 2KVA bis 10KVA mit elektrischem Start, niedrigem Verbrauch und Geräuschpegel unter 60dB.",
+    generatorsDesc: "Leise Diesel- und Benzingeneratoren Excalibur von 2KVA bis 20KVA mit elektrischem Start, niedrigem Verbrauch und Geräuschpegel unter 60dB.",
     accessories: "Zubehör",
     accessoriesDesc: "Komplettes Installationsset: Aluminium-Strukturen, Solarkabel, Sicherungen, MC4-Stecker, Erdungssysteme und Spezialwerkzeuge.",
     viewSystems: "Systeme ansehen →",
@@ -591,7 +591,7 @@ export const translations = {
     yearsExperience: "Jahre Erfahrung",
     solarSystems: "Solarsysteme",
     ourWarehouse: "Unser Lager in Kuba",
-    warehouseDesc: "Zentral gelegen und leicht erreichbar in Havanna del Este. Unsere Preise sind wettbewerbsfähig und der Lagerbestand ist reichlich, da unser Lieferant alles in großen Mengen kauft und Container direkt von den Fabriken nach Kuba schickt.",
+    warehouseDesc: "Verkehrsgünstige zentrale Lage in Habana del Este. Unsere Preise sind wettbewerbsfähig und der Lagerbestand ist reichlich, da unser Lieferant alles in großen Mengen kauft und Container permanent von den Fabriken nach Kuba schickt.",
     
     // Additional About translations
     ourHistory: "Unsere Geschichte",
@@ -602,8 +602,8 @@ export const translations = {
     expertTeam: "Expertenteam",
     
     // New German content
-    illuminateCuba: "Wir erhellen Cuba besser",
-    illuminateCubaDesc: "Für eine hellere Zukunft in Cuba",
+    illuminateCuba: "Für eine hellere Zukunft in Cuba",
+    illuminateCubaDesc: "Wir erhellen Cuba besser",
     youngCubanCompany: "Junges kubanisches Unternehmen",
     youngCubanCompanyDesc: "Mit 35 Jahren Erfahrung unseres deutschen Partners",
     germanyPartnership: "35 Jahre Erfahrung mit Deutschland",
@@ -842,9 +842,9 @@ export const translations = {
     experience: "35 Jahre Erfahrung",
     experienceDesc: "Bewährte Erfahrung im internationalen Energiemarkt",
     directImport: "Direktimport",
-    directImportDesc: "Monatliche Container aus Deutschland mit frischen Produkten",
-    homeLocation: "Strategische Lage",
-    homeLocationDesc: "Lager in Havanna del Este für schnelle Lieferungen",
+    directImportDesc: "Permanente Container aus Deutschland mit frischen Produkten",
+    homeLocation: "Verkehrsgünstige zentrale Lage",
+    homeLocationDesc: "Lager in Havanna del Este für schnelle Verfügbarkeit bei Selbstabholung",
     
     // Services
     components: "Komponenten",
@@ -1051,7 +1051,7 @@ export const translations = {
     heroTitle1: "SOLAR ENERGY FOR CUBA",
     heroSubtitle1: "High-quality solar components and generators at the best price",
     heroTitle2: "EXCALIBUR GENERATORS",
-    heroSubtitle2: "Silent diesel and gasoline generators 2-10KVA",
+    heroSubtitle2: "Silent diesel and gasoline generators 2-20KVA",
     heroTitle3: "COMPLETE SOLUTIONS",
     heroSubtitle3: "Custom solar systems according to your needs",
     viewProducts: "View Products",
@@ -1061,8 +1061,8 @@ export const translations = {
     // Features
     bestQuality: "Best Quality",
     bestQualityDesc: "Internationally certified products",
-    fastDelivery: "Fast Delivery",
-    fastDeliveryDesc: "Stock available in Havanna del Este",
+    fastDelivery: "Fast Pickup",
+    fastDeliveryDesc: "Fast pickup availability - Habana del Este",
     technicalSupport: "Technical Support",
     technicalSupportDesc: "Specialized advice 24/7",
     
@@ -1078,7 +1078,7 @@ export const translations = {
     batteries: "Batteries",
     batteriesDesc: "LiFePO4 lithium and AGM deep cycle batteries from 100Ah to 1000Ah. Designed for solar systems with over 6000 life cycles.",
     generators: "Generators",
-    generatorsDesc: "Silent Excalibur diesel and gasoline generators from 2KVA to 10KVA with electric start, low consumption and noise level below 60dB.",
+    generatorsDesc: "Silent Excalibur diesel and gasoline generators from 2KVA to 20KVA with electric start, low consumption and noise level below 60dB.",
     accessories: "Accessories",
     accessoriesDesc: "Complete installation kit: aluminum structures, solar cables, fuses, MC4 connectors, grounding systems and specialized tools.",
     viewSystems: "View Systems →",
@@ -1095,7 +1095,7 @@ export const translations = {
     yearsExperience: "Years of experience",
     solarSystems: "Solar systems",
     ourWarehouse: "Our Warehouse in Cuba",
-    warehouseDesc: "Centrally located and easily accessible in Havanna del Este. Our prices are competitive and stock is abundant, as our supplier buys everything in large quantities and ships containers directly from factories to Cuba.",
+    warehouseDesc: "Strategically located in Havanna del Este. Our prices are competitive and stock is abundant, as our supplier buys everything in large quantities and ships containers permanently from factories to Cuba.",
     
     // Additional About translations
     ourHistory: "Our History",
