@@ -1139,6 +1139,25 @@ export const translations = {
     messagePlaceholder: "Describe your energy needs...",
     sendRequest: "Send Request",
     
+    // Product Detail Page
+    currentLanguage: "en",
+    productNotFound: "Product not found",
+    backToProducts: "Back to products",
+    description: "Description",
+    specifications: "Specifications",
+    inStock: "In Stock",
+    limitedStock: "Limited Stock",
+    outOfStock: "Out of Stock",
+    interestedInProduct: "Interested in this product?",
+    contactWhatsApp: "Contact via WhatsApp",
+    contactEmail: "Send Email",
+    contactPhone: "Call",
+    qualityGuarantee: "Quality Guarantee",
+    expertSupport: "Expert Support",
+    germanQuality: "Certified German quality",
+    monthlyContainerImports: "Monthly container imports",
+    bestPrices: "The best market prices",
+    
     // Footer
     quickLinks: "Quick Links",
     allRightsReserved: "All rights reserved.",
@@ -1187,9 +1206,35 @@ export const translations = {
     needCustomSolution: "Need a custom solution?",
     customSolutionDescription: "Our experts can design a specific solar system for your energy needs.",
     
+    // Offline and Cookie Banner
+    offline: {
+      message: 'No internet connection'
+    },
+    cookieBanner: {
+      title: 'Cookie Usage',
+      description: 'We use cookies to improve your experience on our website.',
+      acceptAll: 'Accept all',
+      rejectAll: 'Reject all',
+      settings: 'Settings',
+      settingsTitle: 'Cookie Preferences',
+      necessary: 'Necessary cookies',
+      necessaryDesc: 'These cookies are essential for the website to function.',
+      analytics: 'Analytics cookies',
+      analyticsDesc: 'Help us understand how you use our website.',
+      marketing: 'Marketing cookies',
+      marketingDesc: 'Used to show relevant advertisements.',
+      acceptSelected: 'Accept selected',
+      required: 'Required'
+    },
+    
     // Product Detail Extensions
     productFeatures: "Product Features",
     qualityAssurance: "Quality Assurance",
+    installationGuide: "Installation Guide",
+    certifications: "Certifications",
+    supportAndWarranty: "Support & Warranty",
+    relatedProducts: "Related Products",
+    productGallery: "Product Gallery",
     qualityAssuranceDesc: "Internationally certified products with extended warranties",
     highPerformance: "High Performance",
     highPerformanceDesc: "Cutting-edge technology for maximum energy efficiency",
@@ -1425,24 +1470,6 @@ export const translations = {
       contactForPrivacy: "Contact for Privacy",
       contactForPrivacyText: "For privacy questions, contact us:",
       lastUpdated: "Last Updated",
-    },
-
-    // Cookie Banner
-    cookieBanner: {
-      title: "We Use Cookies",
-      description: "We use cookies to improve your experience and optimize our website. By using our website, you agree to our cookie policy.",
-      acceptAll: "Accept All Cookies",
-      rejectAll: "Reject All",
-      settings: "Settings",
-      settingsTitle: "Cookie Settings",
-      acceptSelected: "Accept Selected",
-      necessary: "Necessary Cookies",
-      necessaryDesc: "These cookies are required for basic website functions.",
-      analytics: "Analytics Cookies",
-      analyticsDesc: "Help us understand how you use our website.",
-      marketing: "Marketing Cookies",
-      marketingDesc: "Used to display relevant advertising.",
-      required: "Required"
     }
   }
 };
