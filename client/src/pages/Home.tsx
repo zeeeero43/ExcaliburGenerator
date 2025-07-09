@@ -34,27 +34,27 @@ export default function Home() {
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 {t('bestQuality')}
               </h3>
-              <p className="text-excalibur-gray">
-                {t('bestQualityDesc')}
-              </p>
+              <div className="text-excalibur-gray">
+                <FormattedText text={t('bestQualityDesc')} />
+              </div>
             </div>
             <div className="flex flex-col items-center">
               <Truck className="w-12 h-12 text-excalibur-orange mb-4" />
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 {t('fastDelivery')}
               </h3>
-              <p className="text-excalibur-gray">
-                {t('fastDeliveryDesc')}
-              </p>
+              <div className="text-excalibur-gray">
+                <FormattedText text={t('fastDeliveryDesc')} />
+              </div>
             </div>
             <div className="flex flex-col items-center">
               <Users className="w-12 h-12 text-green-500 mb-4" />
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 {t('technicalSupport')}
               </h3>
-              <p className="text-excalibur-gray">
-                {t('technicalSupportDesc')}
-              </p>
+              <div className="text-excalibur-gray">
+                <FormattedText text={t('technicalSupportDesc')} />
+              </div>
             </div>
           </div>
         </div>
@@ -67,9 +67,9 @@ export default function Home() {
             <h2 className="text-4xl font-bold text-gray-800 mb-4">
               {t('ourProducts')}
             </h2>
-            <p className="text-xl text-excalibur-gray">
-              {t('productsSubtitle')}
-            </p>
+            <div className="text-xl text-excalibur-gray">
+              <FormattedText text={t('productsSubtitle')} />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -95,6 +95,7 @@ export default function Home() {
                 
                 // Limit description length for better display - use FormattedText for proper rendering
                 const shouldTruncate = description && description.length > 120;
+                const displayDescription = shouldTruncate ? `${description.substring(0, 120)}...` : description;
 
                 return (
                   <ProductCard
@@ -144,9 +145,9 @@ export default function Home() {
             </p>
             
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 mb-8">
-              <p className="text-lg leading-relaxed mb-6 text-gray-700">
-                {t('aboutText1') as string}
-              </p>
+              <div className="text-lg leading-relaxed mb-6 text-gray-700">
+                <FormattedText text={t('aboutText1') as string} />
+              </div>
               <div className="inline-block bg-excalibur-orange text-white px-6 py-3 rounded-lg font-semibold text-lg">
                 {t('slogan') as string}
               </div>
@@ -156,19 +157,25 @@ export default function Home() {
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <Shield className="w-12 h-12 mx-auto mb-4 text-excalibur-blue" />
                 <h3 className="text-xl font-semibold mb-2 text-gray-800">{t('experience') as string}</h3>
-                <p className="text-gray-600">{t('experienceDesc') as string}</p>
+                <div className="text-gray-600">
+                  <FormattedText text={t('experienceDesc') as string} />
+                </div>
               </div>
               
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <Truck className="w-12 h-12 mx-auto mb-4 text-excalibur-blue" />
                 <h3 className="text-xl font-semibold mb-2 text-gray-800">{t('directImport') as string}</h3>
-                <p className="text-gray-600">{t('directImportDesc') as string}</p>
+                <div className="text-gray-600">
+                  <FormattedText text={t('directImportDesc') as string} />
+                </div>
               </div>
               
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <Users className="w-12 h-12 mx-auto mb-4 text-excalibur-blue" />
                 <h3 className="text-xl font-semibold mb-2 text-gray-800">{t('homeLocation') as string}</h3>
-                <p className="text-gray-600">{t('homeLocationDesc') as string}</p>
+                <div className="text-gray-600">
+                  <FormattedText text={t('homeLocationDesc') as string} />
+                </div>
               </div>
             </div>
           </div>

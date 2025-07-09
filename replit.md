@@ -338,6 +338,12 @@ Changelog:
   * Successfully implemented 11 of 25 change requests from customer PDFs
   * All critical technical specifications and delivery terms now correctly reflect actual business operations
   * Remaining points require manual admin input or are already correctly implemented
+- July 09, 2025 (critical bug fixes). Fixed two major issues affecting user experience:
+  * CATEGORY IMAGE LOADING: Fixed category image display bug that was showing incorrect images on product pages despite correct admin settings
+  * TEXT FORMATTING: Applied FormattedText component consistently across all pages to preserve rich text formatting (bold/italic/underline) in all languages
+  * Improved image loading logic to properly handle both relative paths (/uploads/...) and external URLs with proper fallback system
+  * Enhanced text display on Home page, Products page, and ProductDetail page with consistent formatting support
+  * All text now correctly displays bold, italic, and underlined content in Spanish, German, and English translations
 ```
 
 ## User Preferences
