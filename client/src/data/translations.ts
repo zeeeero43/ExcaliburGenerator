@@ -11,7 +11,7 @@ export const translations = {
     heroTitle1: "ENERGÍA SOLAR PARA CUBA",
     heroSubtitle1: "Componentes solares y generadores de alta calidad al mejor precio",
     heroTitle2: "GENERADORES EXCALIBUR",
-    heroSubtitle2: "Generadores diesel y gasolina silenciosos de 2-10KVA",
+    heroSubtitle2: "Generadores diesel y gasolina silenciosos de 2-20KVA",
     heroTitle3: "SOLUCIONES COMPLETAS",
     heroSubtitle3: "Sistemas solares personalizados según sus necesidades",
     viewProducts: "Ver Productos",
@@ -21,14 +21,14 @@ export const translations = {
     // Features
     bestQuality: "Mejor Calidad",
     bestQualityDesc: "Productos certificados internacionalmente",
-    fastDelivery: "Entrega Rápida",
-    fastDeliveryDesc: "Stock disponible en Havanna del Este",
+    fastDelivery: "Rápida Disponibilidad",
+    fastDeliveryDesc: "Schnelle Verfügbarkeit bei Selbstabholung - Habana del Este",
     technicalSupport: "Soporte Técnico",
     technicalSupportDesc: "Asesoría especializada 24/7",
     
     // Products
     ourProducts: "NUESTROS PRODUCTOS",
-    productsSubtitle: "Más de 20 sistemas solares completos y componentes individuales de alta calidad certificados para el mercado cubano",
+    productsSubtitle: "100+ sistemas solares completos y componentes individuales de alta calidad certificados para el mercado cubano",
     completeSolarSystems: "Sistemas Solares Completos",
     completeSolarSystemsDesc: "Sistemas preconfigurados de 1KW a 20KW con inversor híbrido, paneles monocristalinos y opciones con/sin batería. Ideales para hogares y negocios en Cuba con garantía internacional.",
     solarPanels: "Paneles Solares",
@@ -38,7 +38,7 @@ export const translations = {
     batteries: "Baterías",
     batteriesDesc: "Baterías de litio LiFePO4 y AGM de ciclo profundo desde 100Ah hasta 1000Ah. Diseñadas para sistemas solares con más de 6000 ciclos de vida útil.",
     generators: "Generadores",
-    generatorsDesc: "Generadores diesel y gasolina silenciosos Excalibur de 2KVA a 10KVA con arranque eléctrico, bajo consumo y nivel de ruido inferior a 60dB.",
+    generatorsDesc: "Generadores diesel y gasolina silenciosos Excalibur de 2KVA a 20KVA con arranque eléctrico, bajo consumo y nivel de ruido inferior a 60dB.",
     accessories: "Accesorios",
     accessoriesDesc: "Kit completo de instalación: estructuras de aluminio, cables solares, fusibles, conectores MC4, sistemas de puesta a tierra y herramientas especializadas.",
     viewSystems: "Ver Sistemas →",
@@ -50,12 +50,12 @@ export const translations = {
     
     // About
     aboutTitle: "EXCALIBUR POWER: ILUMINAMOS CUBA",
-    aboutText1: "Somos KKMU Harry Lag Constructions de Matanzas y representamos a Excalibur Power Group en Cuba. Excalibur pertenece a los fabricantes líderes mundiales de generadores, energía solar y muchos otros componentes.",
-    aboutText2: "Garantizamos Mejor calidad al mejor precio gracias a nuestro socio Joint Venture, patrocinador y proveedor principal AFDL IMPORT & EXPORT (de Alemania) con 35 años de experiencia.",
+    aboutText1: "Somos KKMU Harry Lag Constructions S.R.L. en Joint Venture con nuestro proveedor alemán AFDL IMPORT & EXPORT GMBH & CO.KG., representante oficial de Excalibur Power Group en Cuba.",
+    aboutText2: "Garantizamos mejor calidad al mejor precio gracias a nuestro socio Joint Venture, patrocinador y proveedor principal AFDL IMPORT & EXPORT (de Alemania) con 35 años de experiencia.",
     yearsExperience: "Años de experiencia",
     solarSystems: "Sistemas solares",
     ourWarehouse: "Nuestro Almacén en Cuba",
-    warehouseDesc: "Ubicado centralmente y de fácil acceso en Havanna del Este. Nuestros precios son competitivos y el stock es abundante, ya que nuestro proveedor compra todo en grandes cantidades y envía contenedores directamente desde las fábricas a Cuba.",
+    warehouseDesc: "Ubicado en una verkehrsgünstige zentrale Lage en Habana del Este. Nuestros precios son competitivos y el stock es abundante, ya que nuestro proveedor compra todo en grandes cantidades y envía contenedores permanentemente desde las fábricas a Cuba.",
     
     // Additional About translations
     ourHistory: "Nuestra Historia",
@@ -81,10 +81,14 @@ export const translations = {
     contactUs: "CONTÁCTANOS",
     contactSubtitle: "Configuramos el sistema solar perfecto para sus necesidades",
     contactInfo: "Información de Contacto",
-    technicalAdvisory: "Asesoría Técnica",
+    technicalAdvisory: "Asesoría Técnica & Ventas",
+    technicalAdvisoryPhone: "+ 49 160 323 9439 (nur WA)",
+    salesPhone: "+ 53 5878 1416 (Tel./ WA)",
+    deliveryPhone: "+ 53 5473 1490 (Tel./ WA)",
     whatsappAvailable: "WhatsApp disponible",
     administration: "Administración",
-    warehouseDelivery: "Almacén & Entrega",
+    warehouseDelivery: "Abholung / Auslieferung",
+    salesLabel: "Ventas",
     emailAddresses: "Correos Electrónicos",
     requestQuote: "Solicitar Cotización",
     name: "Nombre",
@@ -136,11 +140,11 @@ export const translations = {
     
     // Additional SEO Content
     generatorsTitle: "Generadores de Respaldo: Seguridad Energética Garantizada",
-    generatorsDescription: "Complementamos nuestros sistemas solares con generadores silenciosos de última generación, proporcionando una solución energética integral que garantiza suministro eléctrico continuo. Nuestros generadores diesel y gasolina ofrecen desde 2KVA hasta 10KVA, ideales para hogares, pequeños negocios y aplicaciones industriales.",
+    generatorsDescription: "Complementamos nuestros sistemas solares con generadores silenciosos de última generación, proporcionando una solución energética integral que garantiza suministro eléctrico continuo. Nuestros generadores diesel y gasolina ofrecen desde 2KVA hasta 20KVA, ideales para hogares, pequeños negocios y aplicaciones industriales.",
     whyChooseTitle: "¿Por qué elegir Excalibur Power Cuba?",
     whyChooseDescription: "Con 35 años de experiencia en el mercado energético y un sólido respaldo de nuestro partner alemán AFDL IMPORT & EXPORT, ofrecemos la mejor relación calidad-precio en componentes solares y generadores. Nuestro compromiso es iluminar Cuba con tecnología de vanguardia y servicio profesional.",
-    monthlyImportsTitle: "Importaciones Mensuales - Siempre con Stock Disponible",
-    monthlyImportsDescription: "Recibimos contenedores mensuales desde Alemania con productos frescos y las últimas tecnologías del mercado. Nuestro almacén en Havanna del Este mantiene un inventario amplio para satisfacer la demanda inmediata de nuestros clientes. Esto nos permite ofrecer precios competitivos y disponibilidad garantizada.",
+    monthlyImportsTitle: "Importaciones Permanentes - Siempre con Stock Disponible",
+    monthlyImportsDescription: "Recibimos contenedores permanentemente desde Alemania con productos frescos y las últimas tecnologías del mercado. Nuestro almacén en Habana del Este mantiene un inventario amplio para satisfacer la demanda inmediata de nuestros clientes. Esto nos permite ofrecer precios competitivos y disponibilidad garantizada.",
     
     // Footer
     quickLinks: "Enlaces Rápidos",
@@ -235,14 +239,18 @@ export const translations = {
     experience: "35 años de experiencia",
     experienceDesc: "Experiencia comprobada en el mercado energético internacional",
     directImport: "Importación directa",
-    directImportDesc: "Contenedores mensuales desde Alemania con productos frescos",
+    directImportDesc: "Contenedores permanentes desde Alemania con productos frescos",
     homeLocation: "Ubicación estratégica",
-    homeLocationDesc: "Almacén en Havanna del Este para entregas rápidas",
+    homeLocationDesc: "Verkehrsgünstige zentrale Lage in Habana del Este - nur Auslieferung ab Lager Guanabo (nur an Selbstabholer)",
     
     // Services
     components: "Componentes",
     solarSystemsDesc: "Sistemas solares completos de 1KW a 20KW con componentes de alta calidad",
     componentsDesc: "Componentes individuales: paneles, inversores, baterías y accesorios",
+    ourServicesForYou: "Unsere Leistungen für Sie",
+    ourServicesForYouDesc: "Wir bieten: Solar-Komponenten, komplette Solaranlagen, Generatoren und mehr",
+    generatorsVariety: "Generatoren: Wir bieten Benzin & Diesel Generatoren in vielen verschiedenen Varianten 2-20KVA",
+    buildingMaterials: "Bau-Materialien: Carbon Glasfaser Bewehrung, Marmor Balustraden, Schiebetore & vieles mehr",
     
     // Product page translations
     productCount: "productos",

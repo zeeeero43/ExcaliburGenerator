@@ -238,10 +238,10 @@ export default function Home() {
                 <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <Users className="w-8 h-8 text-green-600" />
                 </div>
-                <h3 className="text-lg font-semibold mb-3">{t('technicalSupport') as string}</h3>
+                <h3 className="text-lg font-semibold mb-3">{t('technicalAdvisory') as string}</h3>
                 <p className="text-gray-600 mb-2">{t('germany') as string}</p>
                 <a href="tel:+4916032394399" className="text-excalibur-blue font-semibold hover:underline">
-                  +49 160 323 9439
+                  {t('technicalAdvisoryPhone')}
                 </a>
               </div>
               
@@ -249,10 +249,10 @@ export default function Home() {
                 <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-lg font-semibold mb-3">{t('administration') as string}</h3>
+                <h3 className="text-lg font-semibold mb-3">{t('salesLabel') as string}</h3>
                 <p className="text-gray-600 mb-2">{t('cuba') as string}</p>
                 <a href="tel:+5358781416" className="text-excalibur-blue font-semibold hover:underline">
-                  +53 58 78 1416
+                  {t('salesPhone')}
                 </a>
               </div>
               
@@ -260,10 +260,10 @@ export default function Home() {
                 <div className="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <Truck className="w-8 h-8 text-orange-600" />
                 </div>
-                <h3 className="text-lg font-semibold mb-3">{t('warehouse') as string}</h3>
+                <h3 className="text-lg font-semibold mb-3">{t('warehouseDelivery') as string}</h3>
                 <p className="text-gray-600 mb-2">{t('havanaLocation') as string}</p>
                 <a href="tel:+5354731490" className="text-excalibur-blue font-semibold hover:underline">
-                  +53 5473 1490
+                  {t('deliveryPhone')}
                 </a>
               </div>
             </div>

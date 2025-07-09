@@ -80,22 +80,22 @@ export default function Contact() {
     {
       icon: Headphones,
       title: t('technicalAdvisory'),
-      phone: '+49 160 323 9439',
+      phone: t('technicalAdvisoryPhone'),
       description: t('whatsappAvailable'),
       color: 'text-excalibur-blue'
     },
     {
       icon: Building,
-      title: t('administration'),
-      phone: '+53 58 78 1416',
+      title: t('salesLabel'),
+      phone: t('salesPhone'),
       description: 'Administración general',
       color: 'text-excalibur-orange'
     },
     {
       icon: Warehouse,
       title: t('warehouseDelivery'),
-      phone: '+53 5473 1490',
-      description: 'Havanna del Este',
+      phone: t('deliveryPhone'),
+      description: 'Habana del Este',
       color: 'text-green-500'
     }
   ];
@@ -155,9 +155,9 @@ export default function Contact() {
                         >
                           <Phone size={16} />
                         </a>
-                        {contact.phone.includes('+53') && (
+                        {(contact.phone.includes('+53') || contact.phone.includes('WA')) && (
                           <a
-                            href={`https://api.whatsapp.com/send?phone=${contact.phone.replace(/\s/g, '')}`}
+                            href={`https://api.whatsapp.com/send?phone=${contact.phone.replace(/\s/g, '').replace(/[()]/g, '').split('(')[0]}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition-colors"

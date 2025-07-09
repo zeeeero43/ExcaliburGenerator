@@ -726,50 +726,86 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Ultra-fast analytics tracking - works in all environments
+  // Robust analytics tracking - Multiple service fallbacks
   app.use((req, res, next) => {
     // Continue request immediately without waiting
     next();
     
     // Only track GET requests and ignore admin/api routes
     if (req.method === 'GET' && !req.path.startsWith('/api/') && !req.path.startsWith('/admin/')) {
-      // Run analytics completely asynchronously after response is sent
-      process.nextTick(async () => {
+      // Use setImmediate for better performance than process.nextTick
+      setImmediate(async () => {
         try {
           const ipAddress = req.ip || req.connection.remoteAddress || 'unknown';
           const userAgent = req.get('User-Agent') || '';
           
-          // Ultra-fast country detection for Cuba
+          // Robust country detection with multiple fallbacks
           let country = 'CU'; // Default for Cuban users
-          if (process.env.NODE_ENV === 'production' && !ipAddress.startsWith('192.168.') && ipAddress !== '127.0.0.1') {
-            try {
-              const controller = new AbortController();
-              setTimeout(() => controller.abort(), 300); // Ultra-fast 300ms timeout
-              
-              const response = await fetch(`http://ip-api.com/json/${ipAddress}?fields=countryCode`, {
-                signal: controller.signal
-              });
-              
-              if (response.ok) {
-                const data = await response.json();
-                country = data.countryCode || 'CU';
+          
+          // Only try geolocation in production and for real IPs
+          if (process.env.NODE_ENV === 'production' && 
+              !ipAddress.startsWith('192.168.') && 
+              !ipAddress.startsWith('127.0.0.1') && 
+              ipAddress !== '::1' && 
+              ipAddress !== 'unknown') {
+            
+            // Try multiple services for better reliability
+            const geoServices = [
+              `https://ipapi.co/${ipAddress}/country/`,
+              `https://ip-api.com/json/${ipAddress}?fields=countryCode`,
+              `https://ipinfo.io/${ipAddress}/country`
+            ];
+            
+            for (const service of geoServices) {
+              try {
+                const controller = new AbortController();
+                setTimeout(() => controller.abort(), 1000); // 1 second timeout
+                
+                const response = await fetch(service, {
+                  signal: controller.signal,
+                  headers: {
+                    'User-Agent': 'ExcaliburCuba-Analytics/1.0'
+                  }
+                });
+                
+                if (response.ok) {
+                  const data = await response.text();
+                  
+                  // Handle different response formats
+                  if (service.includes('ipapi.co')) {
+                    country = data.trim().toUpperCase();
+                  } else if (service.includes('ip-api.com')) {
+                    const jsonData = JSON.parse(data);
+                    country = jsonData.countryCode || 'CU';
+                  } else if (service.includes('ipinfo.io')) {
+                    country = data.trim().toUpperCase();
+                  }
+                  
+                  // Valid country code found, break out of loop
+                  if (country && country.length === 2) {
+                    break;
+                  }
+                }
+              } catch (error) {
+                // Try next service
+                continue;
               }
-            } catch {
-              // Silent fail, keep default
             }
           }
           
+          // Store analytics data
           await storage.createPageView({
             ipAddress,
             userAgent,
-            country,
+            country: country || 'CU',
             city: null,
             page: req.path,
             referrer: req.get('Referer') || null,
             language: req.get('Accept-Language')?.split(',')[0] || null,
           });
         } catch (error) {
-          // Silent fail to avoid any issues
+          console.error('Analytics tracking error:', error);
+          // Continue silently to avoid blocking the application
         }
       });
     }

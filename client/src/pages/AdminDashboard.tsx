@@ -223,14 +223,14 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div>
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center py-4 space-y-4 lg:space-y-0">
+            <div className="flex-shrink-0">
               <h1 className="text-2xl font-bold text-gray-900">{t('dashboard')}</h1>
               <p className="text-sm text-gray-600">{t('welcome')}, {(user as AdminUser)?.firstName || (user as AdminUser)?.username || 'Admin'}!</p>
             </div>
-            <div className="flex flex-col md:flex-row gap-3 md:items-center">
+            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
               <Select value={adminLanguage} onValueChange={handleLanguageChange}>
-                <SelectTrigger className="w-full md:w-auto min-w-[140px]">
+                <SelectTrigger className="w-full sm:w-auto min-w-[140px]">
                   <div className="flex items-center gap-2">
                     <Languages className="w-4 h-4" />
                     <SelectValue />
@@ -242,12 +242,12 @@ export default function AdminDashboard() {
                 </SelectContent>
               </Select>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:flex gap-2 md:gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex gap-2 lg:gap-3 w-full sm:w-auto">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setLocation('/admin/analytics')}
-                  className="text-xs sm:text-sm"
+                  className="text-xs sm:text-sm whitespace-nowrap"
                 >
                   <BarChart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">{t('analytics')}</span>
@@ -257,7 +257,7 @@ export default function AdminDashboard() {
                   variant="outline"
                   size="sm"
                   onClick={() => setLocation('/admin/site-images')}
-                  className="text-xs sm:text-sm"
+                  className="text-xs sm:text-sm whitespace-nowrap"
                 >
                   <Image className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">{t('websiteImages')}</span>
@@ -267,7 +267,7 @@ export default function AdminDashboard() {
                   variant="outline"
                   size="sm"
                   onClick={() => setLocation('/admin/images')}
-                  className="text-xs sm:text-sm"
+                  className="text-xs sm:text-sm whitespace-nowrap"
                 >
                   <FileImage className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">{t('imageManager')}</span>
@@ -277,7 +277,7 @@ export default function AdminDashboard() {
                   variant="outline"
                   size="sm"
                   onClick={() => window.open('/', '_blank')}
-                  className="text-xs sm:text-sm"
+                  className="text-xs sm:text-sm whitespace-nowrap"
                 >
                   <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">{t('viewWebsite')}</span>
@@ -288,7 +288,7 @@ export default function AdminDashboard() {
                   size="sm"
                   onClick={() => logoutMutation.mutate()}
                   disabled={logoutMutation.isPending}
-                  className="text-xs sm:text-sm col-span-2 sm:col-span-1"
+                  className="text-xs sm:text-sm col-span-2 sm:col-span-1 whitespace-nowrap"
                 >
                   <LogOut className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">{t('logout')}</span>
