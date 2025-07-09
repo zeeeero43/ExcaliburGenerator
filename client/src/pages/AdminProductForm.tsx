@@ -181,7 +181,7 @@ export default function AdminProductForm() {
   const productSchema = createProductSchema(t);
   type ProductForm = z.infer<typeof productSchema>;
   const queryClient = useQueryClient();
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  // Removed selectedCategoryId state
   
   // Track form initialization to prevent re-triggering
   const [formInitialized, setFormInitialized] = useState(false);
@@ -341,11 +341,7 @@ export default function AdminProductForm() {
     });
   }, [isEdit, productId, existingProduct, productLoading, categories, categoriesLoading, categoriesError, user]);
 
-  // Fetch subcategories based on selected category
-  const { data: subcategories = [] } = useQuery<Subcategory[]>({
-    queryKey: ['/api/subcategories', { categoryId: selectedCategoryId }],
-    enabled: !!selectedCategoryId,
-  });
+  // Removed subcategory functionality
 
   // Populate form with existing product data
   useEffect(() => {
@@ -655,7 +651,7 @@ export default function AdminProductForm() {
                 </div>
 
                 {/* Category Selection */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-4">
                   <FormField
                     control={form.control}
                     name="categoryId"
@@ -683,35 +679,6 @@ export default function AdminProductForm() {
                                 </SelectItem>
                               ))
                             )}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="subcategoryId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Unterkategorie</FormLabel>
-                        <Select 
-                          onValueChange={field.onChange} 
-                          value={field.value?.toString()}
-                          disabled={!selectedCategoryId}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Unterkategorie wählen" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {subcategories.map((subcategory) => (
-                              <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
-                                {subcategory.nameDe}
-                              </SelectItem>
-                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />

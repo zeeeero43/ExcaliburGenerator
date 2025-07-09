@@ -105,21 +105,43 @@ export default function Products() {
                   {/* Category Image */}
                   <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden">
                     <img
-                      src={category.image ? (category.image.startsWith('http') ? category.image : `http://localhost:5000${category.image}`) : 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
+                      src={(() => {
+                        if (category.image) {
+                          // If it's a full URL, use it directly
+                          if (category.image.startsWith('http')) {
+                            return category.image;
+                          }
+                          // If it's a relative path, construct full URL
+                          return `http://localhost:5000${category.image}`;
+                        }
+                        // Default solar panel image
+                        return 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
+                      })()}
                       alt={getLocalizedText(category, 'name')}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
+                        // Fallback to solar-related images
                         const fallbacks = [
                           'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=300&fit=crop',
                           'https://images.unsplash.com/photo-1580908346710-72e1c4b8b7a5?w=500&h=300&fit=crop',
-                          'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=500&h=300&fit=crop'
+                          'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=500&h=300&fit=crop',
+                          'https://images.unsplash.com/photo-1518049362265-d5b2a6467637?w=500&h=300&fit=crop'
                         ];
                         
                         const currentSrc = e.currentTarget.src;
-                        const currentIndex = fallbacks.findIndex(f => currentSrc.includes(f.split('?')[0].split('/').pop() || ''));
+                        let nextIndex = 0;
                         
-                        if (currentIndex < fallbacks.length - 1) {
-                          e.currentTarget.src = fallbacks[currentIndex + 1];
+                        // Find current fallback index
+                        for (let i = 0; i < fallbacks.length; i++) {
+                          if (currentSrc.includes(fallbacks[i].split('?')[0].split('/').pop() || '')) {
+                            nextIndex = i + 1;
+                            break;
+                          }
+                        }
+                        
+                        // Use next fallback if available
+                        if (nextIndex < fallbacks.length) {
+                          e.currentTarget.src = fallbacks[nextIndex];
                         }
                       }}
                     />

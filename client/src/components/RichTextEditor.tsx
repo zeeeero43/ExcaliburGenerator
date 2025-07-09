@@ -30,6 +30,7 @@ const SimpleRichTextComponent = ({ value, onChange, placeholder = '', ...props }
     const beforeText = textValue.substring(0, start);
     const afterText = textValue.substring(end);
     
+    // Preserve formatting in translations by not stripping tags
     const newText = beforeText + startTag + selectedText + endTag + afterText;
     handleChange(newText);
     

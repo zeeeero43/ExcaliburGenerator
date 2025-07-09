@@ -54,11 +54,11 @@ export default function AdminCategoryForm() {
             });
             
             if (fieldType === 'name') {
-              if (spanish.name) form.setValue('nameEs', spanish.name);
-              if (english.name) form.setValue('nameEn', english.name);
+              if (spanish.name && spanish.name.trim()) form.setValue('nameEs', spanish.name);
+              if (english.name && english.name.trim()) form.setValue('nameEn', english.name);
             } else if (fieldType === 'description') {
-              if (spanish.shortDescription) form.setValue('descriptionEs', spanish.shortDescription);
-              if (english.shortDescription) form.setValue('descriptionEn', english.shortDescription);
+              if (spanish.shortDescription && spanish.shortDescription.trim()) form.setValue('descriptionEs', spanish.shortDescription);
+              if (english.shortDescription && english.shortDescription.trim()) form.setValue('descriptionEn', english.shortDescription);
             }
           } catch (error) {
             console.error('Translation failed:', error);
