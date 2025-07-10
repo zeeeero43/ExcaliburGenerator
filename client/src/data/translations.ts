@@ -28,7 +28,7 @@ export const translations = {
     
     // Products
     ourProducts: "NUESTROS PRODUCTOS",
-    productsSubtitle: "100+ sistemas solares completos y componentes individuales de alta calidad certificados para el mercado cubano",
+    productsSubtitle: "Gran oferta de componentes solares certificados, sistemas solares completos, generadores, materiales de construcción y otros materiales y mucho más.",
     completeSolarSystems: "Sistemas Solares Completos",
     completeSolarSystemsDesc: "Sistemas preconfigurados de 1KW a 20KW con inversor híbrido, paneles monocristalinos y opciones con/sin batería. Ideales para hogares y negocios en Cuba con garantía internacional.",
     solarPanels: "Paneles Solares",
