@@ -364,6 +364,13 @@ Changelog:
   * Enhanced generator description with comprehensive Excalibur offering from 2kva-20kva
   * Changed generator icon from Truck to Zap symbol for better visual representation
   * All changes implemented systematically across German, Spanish, and English translations
+- July 10, 2025 (final 5 critical fixes). Successfully implemented all 5 final change requests:
+  * Changed "Baumaschinen & Fahrzeuge" to "Baumaterial und sonstige Materialien" in German and Spanish
+  * Updated experience messaging to focus on German partner AFDL's 35 years of experience
+  * Changed monthly imports to "Permanente Lieferungen" emphasizing permanent container deliveries from worldwide
+  * Fixed salesLabel display issue - now properly shows "Ventas" on contact page
+  * Updated Spanish translations: "Deutschland" removed, "Cuba" changed to "Administración", "Abholung / Lager" translated to "Recogida / Almacén"
+  * All translations now consistently emphasize construction materials instead of machines and vehicles across all languages
 ```
 
 ## User Preferences
