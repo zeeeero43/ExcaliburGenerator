@@ -65,7 +65,7 @@ export default function Legal() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4" />
-                      <span>YisellBonachea@Gmail.com</span>
+                      <span>YisellBonachea(at)Gmail.com</span>
                     </div>
                   </div>
                 </div>
@@ -202,7 +202,7 @@ export default function Legal() {
                   <h3 className="font-semibold mb-2">{t('legal.contactForPrivacy')}</h3>
                   <p className="text-gray-700">
                     {t('legal.contactForPrivacyText')}<br />
-                    <strong>Email:</strong> privacy@excalibur-cuba.com<br />
+                    <strong>Email:</strong> privacy(at)excalibur-cuba.com<br />
                     <strong>Tel:</strong> +53 7 123 4567
                   </p>
                 </div>
