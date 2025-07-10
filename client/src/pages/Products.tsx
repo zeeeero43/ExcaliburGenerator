@@ -105,17 +105,7 @@ export default function Products() {
                   {/* Category Image */}
                   <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden">
                     <img
-                      src={(() => {
-                        if (!category.image) {
-                          return 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
-                        }
-                        if (category.image.startsWith('http')) {
-                          return category.image;
-                        }
-                        // Handle relative paths - ensure they start with /
-                        const imagePath = category.image.startsWith('/') ? category.image : `/${category.image}`;
-                        return `http://localhost:5000${imagePath}`;
-                      })()}
+                      src={category.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
                       alt={getLocalizedText(category, 'name')}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
@@ -247,17 +237,7 @@ export default function Products() {
                 <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
                   <div className="relative overflow-hidden rounded-t-lg">
                     <img
-                      src={(() => {
-                        if (!product.mainImage) {
-                          return 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop';
-                        }
-                        if (product.mainImage.startsWith('http')) {
-                          return product.mainImage;
-                        }
-                        // Handle relative paths - ensure they start with /
-                        const imagePath = product.mainImage.startsWith('/') ? product.mainImage : `/${product.mainImage}`;
-                        return `http://localhost:5000${imagePath}`;
-                      })()}
+                      src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
                       alt={getLocalizedText(product, 'name')}
                       className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"

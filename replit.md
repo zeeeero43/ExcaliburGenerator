@@ -376,6 +376,11 @@ Changelog:
   * Completed systematic elimination of all duplicate translation keys causing console warnings
   * Translation system now completely clean with no duplicate keys across German, Spanish, and English
   * All content changes and translation fixes are now complete and ready for production
+- July 10, 2025 (category image loading fix). Fixed category image display bug on /products page:
+  * Removed complex localhost URL construction that was causing images not to display
+  * Changed to simple direct image path approach matching admin panel (which works correctly)
+  * Fixed both category images and product images on Products page to use consistent loading logic
+  * Category images now display correctly on /products page matching admin panel functionality
 ```
 
 ## User Preferences
