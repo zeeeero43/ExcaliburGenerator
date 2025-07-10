@@ -39,7 +39,7 @@ export default function Home() {
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <Ship className="w-12 h-12 text-excalibur-orange mb-4" />
+              <Truck className="w-12 h-12 text-excalibur-orange mb-4" />
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 {t('fastDelivery')}
               </h3>
@@ -273,7 +273,7 @@ export default function Home() {
               
               <div className="bg-white rounded-lg shadow-md p-6 text-center">
                 <div className="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Ship className="w-8 h-8 text-orange-600" />
+                  <Truck className="w-8 h-8 text-orange-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('warehouseDelivery') as string}</h3>
                 <p className="text-gray-600 mb-2">{t('havanaLocation') as string}</p>
