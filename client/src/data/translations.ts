@@ -254,16 +254,16 @@ export const translations = {
     
     // Home page boxes
     experience: "35 años de experiencia",
-    experienceDesc: "Experiencia comprobada en el mercado energético internacional",
-    directImport: "Importación directa",
-    directImportDesc: "Contenedores permanentes desde Alemania con productos frescos",
+    experienceDesc: "Nuestro proveedor alemán AFDL cuenta con 35 años de experiencia internacional",
+    directImport: "Importaciones directas de todo el mundo a Cuba",
+    directImportDesc: "Entregas permanentes con las últimas tecnologías y mejores precios mundiales",
     homeLocation: "Ubicación estratégica",
     homeLocationDesc: "Verkehrsgünstige zentrale Lage in Habana del Este - nur Auslieferung ab Lager Guanabo (nur an Selbstabholer)",
     
     // Services
-    components: "Componentes",
-    solarSystemsDesc: "Sistemas solares completos de 1KW a 20KW con componentes de alta calidad",
-    componentsDesc: "Componentes individuales: paneles, inversores, baterías y accesorios",
+    components: "Componentes Solares Individuales",
+    solarSystemsDesc: "Sistemas solares completos de 3 a 30KW con componentes de alta calidad al mejor precio",
+    componentsDesc: "Con nosotros obtienes todo para ensamblar cualquier sistema solar completamente según tus necesidades y deseos",
     ourServicesForYou: "Unsere Leistungen für Sie",
     ourServicesForYouDesc: "Wir bieten: Solar-Komponenten, komplette Solaranlagen, Generatoren und mehr",
     generatorsVariety: "Generatoren: Wir bieten Benzin & Diesel Generatoren in vielen verschiedenen Varianten 2-20KVA",
@@ -557,7 +557,6 @@ export const translations = {
     fastDelivery: "Schnelle Verfügbarkeit",
     fastDeliveryDesc: "Schnelle Verfügbarkeit bei Selbstabholung - Habana del Este",
     technicalSupport: "Technischer Support",
-    technicalSupportDesc: "24/7 für alle angebotenen Bereiche",
     
     // Products
     ourProducts: "UNSERE PRODUKTE",
@@ -616,12 +615,6 @@ export const translations = {
     whyChooseDescription: "Ihr vertrauensvoller Partner für Solarenergie und Generatoren in Cuba",
     monthlyImportsTitle: "Monatliche Container-Importe",
     monthlyImportsDescription: "Wir scheuen keine Kosten und Mühen, durch permanente Recherche, Importe innovativer Technologien aus aller Welt",
-    experience: "Erfahrung",
-    experienceDesc: "35 Jahre Erfahrung durch deutschen Partner",
-    directImport: "Direkte Importe",
-    directImportDesc: "Monatliche Container direkt von den Herstellern",
-    homeLocation: "Lokale Präsenz",
-    homeLocationDesc: "Lager in Havanna del Este für schnelle Lieferung",
     pickupDelivery: "Pickup nur in Havanna del Este",
     pickupDeliveryDesc: "Keine Lieferung, Abholung erforderlich",
     supportLanguages: "Unterstützte Sprachen",
@@ -630,14 +623,12 @@ export const translations = {
     youngestCubanCompanyDesc: "35 Jahre Erfahrung im Joint Venture mit Deutschland",
     
     // Contact information updates
-    technicalAdvisory: "Technische Beratung",
     technicalAdvisoryPhone: "+49 160 323 9439",
     sales: "Verkauf",
     salesPhone: "+53 58781416",
     germany: "Deutschland",
     matanzas: "Matanzas",
     havanaDelEste: "Havanna del Este",
-    contactDesc: "Kontaktieren Sie uns für professionelle Beratung und Unterstützung",
     expertTeamDesc: "Spezialisierte Techniker mit über 10 Jahren Erfahrung",
     bestPrice: "Bester Preis",
     bestPriceDesc: "Direkteinkäufe von Fabriken für beste Preise",
@@ -655,9 +646,7 @@ export const translations = {
     contactUs: "KONTAKTIEREN SIE UNS",
     contactSubtitle: "Wir konfigurieren das perfekte Solarsystem für Ihre Bedürfnisse",
     contactInfo: "Kontaktinformationen",
-    technicalAdvisory: "Technische Beratung",
     whatsappAvailable: "WhatsApp verfügbar",
-    administration: "Verwaltung",
     warehouseDelivery: "Lager & Lieferung",
     emailAddresses: "E-Mail-Adressen",
     requestQuote: "Angebot anfordern",
@@ -765,10 +754,6 @@ export const translations = {
     // Additional SEO Content
     generatorsTitle: "Backup-Generatoren: Garantierte Energiesicherheit",
     generatorsDescription: "Wir ergänzen unsere Solarsysteme mit modernen geräuscharmen Generatoren und bieten eine integrierte Energielösung, die kontinuierliche Stromversorgung gewährleistet. Unsere Diesel- und Benzin-Generatoren bieten 2KVA bis 10KVA, ideal für Haushalte, kleine Unternehmen und industrielle Anwendungen.",
-    whyChooseTitle: "Warum Excalibur Power Cuba wählen?",
-    whyChooseDescription: "Mit 35 Jahren Erfahrung unseres deutschen Partners AFDL IMPORT & EXPORT bieten wir das beste Preis-Leistungs-Verhältnis für Solarkomponenten und Generatoren. Unser Engagement ist es, Kuba mit modernster Technologie und professionellem Service wieder zu erleuchten.",
-    monthlyImportsTitle: "Permanente Lieferungen",
-    monthlyImportsDescription: "Wir erhalten permanente Container-Lieferungen aus Deutschland und der ganzen Welt mit Produkten und der neuesten Markttechnologien. Unser Lager in Havanna del Este hält ein umfangreichen Bestand für Sie bereit, um die sofortige Nachfrage unserer Kunden zu erfüllen. Dies ermöglicht uns, wettbewerbsfähige Preise und eine sofortige oder zeitnahe Verfügbarkeit anzubieten.",
     
     // Footer
     quickLinks: "Schnellzugriff",
@@ -831,24 +816,25 @@ export const translations = {
     
     // Missing keys for Home page
     ourServices: "Unsere Leistungen für Sie",
-    contactDesc: "Wir stellen Ihnen gern die für Sie passende Solaranlage nach Ihren Wünschen zusammen",
+    international: "International",
     administration: "Administration",
-    warehouse: "Lager & Warenausgabe",
+    warehouse: "Pickup / Warehouse",
     havanaLocation: "Havanna del Este",
     emailLabel: "E-Mail Kontakt:",
     
     // Home page boxes
-    experience: "Unser deutscher Lieferant AFDL verfügt über 35 Jahre internationaler Erfahrung",
-    experienceDesc: "Bewährte Erfahrung im internationalen Energiemarkt",
-    directImport: "Container-Importe",
-    directImportDesc: "Direkt-Importe aus aller Welt nach Cuba",
+    experience: "35 Jahre Erfahrung",
+    experienceDesc: "Unser deutscher Lieferant AFDL verfügt über 35 Jahre internationaler Erfahrung",
+    directImport: "Direkt-Importe aus aller Welt nach Cuba",
+    directImportDesc: "Permanente Lieferungen mit den neuesten Technologien und besten Preisen weltweit",
     homeLocation: "Verkehrsgünstige zentrale Lage",
     homeLocationDesc: "Lager in Havanna del Este für schnelle Verfügbarkeit bei Selbstabholung",
     
     // Services
-    components: "Komponenten",
-    solarSystemsDesc: "Komplette Solarsysteme von 1KW bis 20KW mit hochwertigen Komponenten",
-    componentsDesc: "Einzelkomponenten: Panels, Wechselrichter, Batterien und Zubehör",
+    components: "Solar-Einzelkomponenten",
+    solarSystemsDesc: "Komplette Solaranlagen von 3 bis 30KW mit hochwertigen Komponenten zum besten Preis",
+    componentsDesc: "Bei uns bekommen Sie alles um jede Solar-Anlage ganz nach Bedarf und Wünschen, individuell zusammengestellt",
+    technicalSupportDesc: "24/7 für alle angebotenen Bereiche",
     
     // Product page translations
     productCount: "Produkte",
@@ -1205,10 +1191,7 @@ export const translations = {
     needCustomSolution: "Need a custom solution?",
     customSolutionDescription: "Our experts can design a specific solar system for your energy needs.",
     
-    // Offline and Cookie Banner
-    offline: {
-      message: 'No internet connection'
-    },
+
     cookieBanner: {
       title: 'Cookie Usage',
       description: 'We use cookies to improve your experience on our website.',
@@ -1230,7 +1213,6 @@ export const translations = {
     productFeatures: "Product Features",
     qualityAssurance: "Quality Assurance",
     installationGuide: "Installation Guide",
-    certifications: "Certifications",
     supportAndWarranty: "Support & Warranty",
     relatedProducts: "Related Products",
     productGallery: "Product Gallery",
@@ -1248,7 +1230,6 @@ export const translations = {
     technicalSupportExtended: "Specialized technical support available 24 hours a day.",
     supportChannels: "Support Channels",
     technicalDetails: "Technical Details",
-    certifications: "Certifications",
     certified: "Certified",
     ceCompliance: "CE Compliance",
     iecStandard: "IEC 61215 Standard",
@@ -1280,16 +1261,16 @@ export const translations = {
     
     // Home page boxes
     experience: "35 years of experience",
-    experienceDesc: "Proven experience in the international energy market",
-    directImport: "Direct import",
-    directImportDesc: "Monthly containers from Germany with fresh products",
+    experienceDesc: "Our German supplier AFDL has 35 years of international experience",
+    directImport: "Direct imports from worldwide to Cuba",
+    directImportDesc: "Permanent deliveries with the latest technologies and best prices worldwide",
     homeLocation: "Strategic location",
     homeLocationDesc: "Warehouse in Havana del Este for fast deliveries",
     
     // Services
-    components: "Components",
-    solarSystemsDesc: "Complete solar systems from 1KW to 20KW with high-quality components",
-    componentsDesc: "Individual components: panels, inverters, batteries and accessories",
+    components: "Solar Individual Components",
+    solarSystemsDesc: "Complete solar systems from 3 to 30KW with high-quality components at the best price",
+    componentsDesc: "With us you get everything to assemble any solar system completely according to your needs and wishes",
     
     // Contact page
     contactLocation: "Location",
