@@ -381,6 +381,13 @@ Changelog:
   * Changed to simple direct image path approach matching admin panel (which works correctly)
   * Fixed both category images and product images on Products page to use consistent loading logic
   * Category images now display correctly on /products page matching admin panel functionality
+- July 10, 2025 (final cleanup). Completed translation system cleanup and icon improvements:
+  * Removed all remaining duplicate translation keys: technicalAdvisoryPhone, salesPhone, international, administration
+  * Eliminated all console warnings about duplicate keys in translation system
+  * Changed Transport (Truck) icons to Ship icons for container import/delivery messaging consistency
+  * Updated both feature bar and contact section icons from Truck to Ship
+  * Translation system now completely clean with no duplicate keys across all three languages
+  * All visual elements properly reflect container imports and international shipping focus
 ```
 
 ## User Preferences

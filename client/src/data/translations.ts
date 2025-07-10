@@ -24,7 +24,7 @@ export const translations = {
     fastDelivery: "Rápida Disponibilidad",
     fastDeliveryDesc: "Schnelle Verfügbarkeit bei Selbstabholung - Habana del Este",
     technicalSupport: "Soporte Técnico",
-    technicalSupportDesc: "Asesoría especializada 24/7",
+    technicalSupportDesc: "24/7 para todas las áreas ofrecidas",
     
     // Products
     ourProducts: "NUESTROS PRODUCTOS",
@@ -88,7 +88,8 @@ export const translations = {
     salesPhone: "+53 58 78 14 16",
     deliveryPhone: "+53 54 73 14 90",
     whatsappAvailable: "WhatsApp disponible",
-    administration: "Administración",
+    international: "Internacional",
+    administration: "Administración", 
     warehouseDelivery: "Recogida / Almacén",
     salesLabel: "Ventas",
     emailAddresses: "Correos Electrónicos",
@@ -557,6 +558,7 @@ export const translations = {
     fastDelivery: "Schnelle Verfügbarkeit",
     fastDeliveryDesc: "Schnelle Verfügbarkeit bei Selbstabholung - Habana del Este",
     technicalSupport: "Technischer Support",
+    technicalSupportDesc: "24/7 für alle angebotenen Bereiche",
     
     // Products
     ourProducts: "UNSERE PRODUKTE",
@@ -623,9 +625,7 @@ export const translations = {
     youngestCubanCompanyDesc: "35 Jahre Erfahrung im Joint Venture mit Deutschland",
     
     // Contact information updates
-    technicalAdvisoryPhone: "+49 160 323 9439",
     sales: "Verkauf",
-    salesPhone: "+53 58781416",
     germany: "Deutschland",
     matanzas: "Matanzas",
     havanaDelEste: "Havanna del Este",
@@ -646,8 +646,13 @@ export const translations = {
     contactUs: "KONTAKTIEREN SIE UNS",
     contactSubtitle: "Wir konfigurieren das perfekte Solarsystem für Ihre Bedürfnisse",
     contactInfo: "Kontaktinformationen",
+    technicalAdvisory: "Technische Beratung & Verkauf",
+    technicalAdvisoryPhone: "+49 160 323 9439",
+    salesPhone: "+53 58 78 14 16",
+    deliveryPhone: "+53 54 73 14 90",
     whatsappAvailable: "WhatsApp verfügbar",
-    warehouseDelivery: "Lager & Lieferung",
+    international: "International",
+    administration: "Verwaltung",
     emailAddresses: "E-Mail-Adressen",
     requestQuote: "Angebot anfordern",
     name: "Name",
@@ -816,8 +821,6 @@ export const translations = {
     
     // Missing keys for Home page
     ourServices: "Unsere Leistungen für Sie",
-    international: "International",
-    administration: "Administration",
     warehouse: "Pickup / Warehouse",
     havanaLocation: "Havanna del Este",
     emailLabel: "E-Mail Kontakt:",
@@ -834,7 +837,6 @@ export const translations = {
     components: "Solar-Einzelkomponenten",
     solarSystemsDesc: "Komplette Solaranlagen von 3 bis 30KW mit hochwertigen Komponenten zum besten Preis",
     componentsDesc: "Bei uns bekommen Sie alles um jede Solar-Anlage ganz nach Bedarf und Wünschen, individuell zusammengestellt",
-    technicalSupportDesc: "24/7 für alle angebotenen Bereiche",
     
     // Product page translations
     productCount: "Produkte",
@@ -1049,7 +1051,7 @@ export const translations = {
     fastDelivery: "Fast Pickup",
     fastDeliveryDesc: "Fast pickup availability - Habana del Este",
     technicalSupport: "Technical Support",
-    technicalSupportDesc: "Specialized advice 24/7",
+    technicalSupportDesc: "24/7 for all offered areas",
     
     // Products
     ourProducts: "OUR PRODUCTS",
@@ -1063,9 +1065,11 @@ export const translations = {
     batteries: "Batteries",
     batteriesDesc: "LiFePO4 lithium and AGM deep cycle batteries from 100Ah to 1000Ah. Designed for solar systems with over 6000 life cycles.",
     generators: "Generators",
-    generatorsDesc: "Silent Excalibur diesel and gasoline generators from 2KVA to 20KVA with electric start, low consumption and noise level below 60dB.",
+    generatorsDesc: "Large selection of Excalibur generators: We offer a wide selection of Excalibur generators. Modern, Powerful, Fuel efficient. From 2kva - 20kva, gasoline and diesel.",
+    constructionMachines: "Construction materials and other materials",
+    constructionMachinesDesc: "We offer construction materials and other materials for all projects in Cuba. High-quality technology for professional applications.",
     accessories: "Accessories",
-    accessoriesDesc: "Complete installation kit: aluminum structures, solar cables, fuses, MC4 connectors, grounding systems and specialized tools.",
+    accessoriesDesc: "Solar individual components: With us you get everything to assemble any solar system completely according to your needs and wishes",
     viewSystems: "View Systems →",
     viewPanels: "View Panels →",
     viewInverters: "View Inverters →",
@@ -1106,10 +1110,15 @@ export const translations = {
     contactUs: "CONTACT US",
     contactSubtitle: "We configure the perfect solar system for your needs",
     contactInfo: "Contact Information",
-    technicalAdvisory: "Technical Advisory",
+    technicalAdvisory: "Technical Advisory & Sales",
+    technicalAdvisoryPhone: "+49 160 323 9439",
+    salesPhone: "+53 58 78 14 16",
+    deliveryPhone: "+53 54 73 14 90",
     whatsappAvailable: "WhatsApp available",
+    international: "International",
     administration: "Administration",
-    warehouseDelivery: "Warehouse & Delivery",
+    warehouseDelivery: "Pickup / Warehouse",
+    salesLabel: "Sales",
     emailAddresses: "Email Addresses",
     requestQuote: "Request Quote",
     name: "Name",
