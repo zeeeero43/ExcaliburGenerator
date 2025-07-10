@@ -21,7 +21,7 @@ import AdminImageManager from "./pages/AdminImageManager";
 import AdminContactSettings from "./pages/AdminContactSettings";
 import Legal from "./pages/Legal";
 import NotFound from "./pages/not-found";
-import { CookieBanner } from "./components/CookieBanner";
+
 import { OfflineIndicator } from "./components/OfflineIndicator";
 
 function Router() {
@@ -129,7 +129,6 @@ function App() {
       <TooltipProvider>
         <OfflineIndicator />
         <Router />
-        <CookieBanner />
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>

@@ -356,6 +356,12 @@ Changelog:
   * Category images now load correctly using same approach as AdminDashboard: src={category.image}
   * Fix enables proper image display in both development and production environments
   * Products page now shows category images correctly matching admin panel display
+- July 10, 2025 (final fixes). Resolved 3 critical translation and UI issues:
+  * Fixed Cookie Banner duplication by removing from App.tsx (only in Layout.tsx now)
+  * Added missing German generatorsDesc translation: "Umfassendes Excalibur-Sortiment von 2kva-20kva für alle Anwendungen"
+  * Fixed English translation inconsistency: changed constructionMaterials to constructionMachines to match German version
+  * All translation keys now consistent across German, Spanish, and English versions
+  * Cookie Banner now appears only once per page as intended
 - July 10, 2025 (comprehensive content update). Completed all 13 customer-requested changes:
   * Updated logo reference to new excalibur-logo-kuba_1752159180990.png across website
   * Changed "Beste Qualität" to "Beste Qualität zum besten Preis" in all languages

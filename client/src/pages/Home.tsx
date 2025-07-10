@@ -1,4 +1,4 @@
-import { Shield, Truck, Users, CheckCircle, Zap, Ship } from 'lucide-react';
+import { Shield, Truck, Users, CheckCircle, Zap, Ship, Warehouse } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { HeroSlider } from '../components/HeroSlider';
@@ -254,7 +254,7 @@ export default function Home() {
                   <Users className="w-8 h-8 text-green-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('technicalAdvisory') as string}</h3>
-                <p className="text-gray-600 mb-2">{t('germany') as string}</p>
+                <p className="text-gray-600 mb-2">{t('international') as string}</p>
                 <a href="tel:+4916032394399" className="text-excalibur-blue font-semibold hover:underline">
                   {t('technicalAdvisoryPhone')}
                 </a>
@@ -265,7 +265,7 @@ export default function Home() {
                   <CheckCircle className="w-8 h-8 text-blue-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('salesLabel') as string}</h3>
-                <p className="text-gray-600 mb-2">{t('cuba') as string}</p>
+                <p className="text-gray-600 mb-2">{t('administration') as string}</p>
                 <a href="tel:+5358781416" className="text-excalibur-blue font-semibold hover:underline">
                   {t('salesPhone')}
                 </a>
@@ -273,7 +273,7 @@ export default function Home() {
               
               <div className="bg-white rounded-lg shadow-md p-6 text-center">
                 <div className="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Truck className="w-8 h-8 text-orange-600" />
+                  <Warehouse className="w-8 h-8 text-orange-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('warehouseDelivery') as string}</h3>
                 <p className="text-gray-600 mb-2">{t('havanaLocation') as string}</p>
