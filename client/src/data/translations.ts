@@ -63,7 +63,7 @@ export const translations = {
     ourHistory: "Nuestra Historia",
     satisfiedClients: "Clientes satisfechos",
     technicalSupportStats: "Soporte técnico",
-    guaranteedQuality: "Calidad Garantizada",
+    guaranteedQuality: "Mejor calidad al mejor precio",
     guaranteedQualityDesc: "Productos certificados internacionalmente con garantías extendidas",
     expertTeam: "Equipo Experto",
     expertTeamDesc: "Técnicos especializados con más de 10 años de experiencia",
@@ -280,7 +280,7 @@ export const translations = {
     contactLocationDesc: "Almacén principal en Havanna del Este con fácil acceso desde toda Cuba",
     
     // About
-    slogan: "Iluminamos Cuba con energía solar",
+    slogan: "Para un futuro más brillante en Cuba",
     
     // Admin Dashboard Top-Level Keys
     dashboard: "Admin Excalibur Cuba",
@@ -561,7 +561,7 @@ export const translations = {
     
     // Products
     ourProducts: "UNSERE PRODUKTE",
-    productsSubtitle: "Großangebot zertifizierter Solar-Komponenten,komplette Solarsysteme, Generatoren, Baumaschinen, Baumaterial, Fahrzeuge und vieles mehr.",
+    productsSubtitle: "Großangebot zertifizierter Solar-Komponenten, komplette Solarsysteme, Generatoren, Baumaterial und sonstige Materialien und vieles mehr.",
     completeSolarSystems: "Komplette Solarsysteme",
     completeSolarSystemsDesc: "Komplette Solaranlagen von 3 bis 30KW mit hochwertigen Komponenten zum besten Preis",
     solarPanels: "Solarpaneele",
@@ -597,7 +597,7 @@ export const translations = {
     ourHistory: "Unsere Geschichte",
     satisfiedClients: "Zufriedene Kunden",
     technicalSupportStats: "Technischer Support",
-    guaranteedQuality: "Garantierte Qualität",
+    guaranteedQuality: "Beste Qualität zum besten Preis",
     guaranteedQualityDesc: "International zertifizierte Produkte mit erweiterten Garantien",
     expertTeam: "Expertenteam",
     
@@ -1067,7 +1067,7 @@ export const translations = {
     
     // Products
     ourProducts: "OUR PRODUCTS",
-    productsSubtitle: "Over 100 complete solar systems and high-quality individual components certified for the Cuban market",
+    productsSubtitle: "Large selection of certified solar components, complete solar systems, generators, construction materials and other materials and much more.",
     completeSolarSystems: "Complete Solar Systems",
     completeSolarSystemsDesc: "Pre-configured systems from 1KW to 20KW with hybrid inverter, monocrystalline panels and options with/without battery. Ideal for homes and businesses in Cuba with international warranty.",
     solarPanels: "Solar Panels",
@@ -1100,7 +1100,7 @@ export const translations = {
     ourHistory: "Our History",
     satisfiedClients: "Satisfied Clients",
     technicalSupportStats: "Technical Support",
-    guaranteedQuality: "Guaranteed Quality",
+    guaranteedQuality: "Best quality at the best price",
     guaranteedQualityDesc: "Internationally certified products with extended warranties",
     expertTeam: "Expert Team",
     expertTeamDesc: "Specialized technicians with over 10 years of experience",
@@ -1297,7 +1297,7 @@ export const translations = {
     contactLocationDesc: "Main warehouse in Havana del Este with easy access from all of Cuba",
     
     // About
-    slogan: "We illuminate Cuba with solar energy",
+    slogan: "For a brighter future in Cuba",
     
     // Admin Backend
     admin: {
