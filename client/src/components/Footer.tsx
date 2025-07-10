@@ -43,11 +43,11 @@ export function Footer() {
                 <MessageCircle size={20} />
               </a>
               <a
-                href="mailto:info@excalibur-cuba.com"
+                href="tel:+4916032394383"
                 className="w-10 h-10 bg-excalibur-orange rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors"
-                aria-label="Email"
+                aria-label="Phone"
               >
-                <Mail size={20} />
+                <Phone size={20} />
               </a>
             </div>
           </div>
@@ -94,13 +94,18 @@ export function Footer() {
               </li>
               <li className="flex items-start space-x-2">
                 <Phone size={16} className="mt-1 text-excalibur-blue" />
-                <span>+53 58 78 1416</span>
+                <span>+49 160 323 9439</span>
               </li>
               <li className="flex items-start space-x-2">
-                <Mail size={16} className="mt-1 text-green-500" />
-                <span>info@excalibur-cuba.com</span>
+                <Phone size={16} className="mt-1 text-green-500" />
+                <span>+53 58 78 14 16</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <Phone size={16} className="mt-1 text-yellow-500" />
+                <span>+53 54 73 14 90</span>
               </li>
             </ul>
+
           </div>
         </div>
 

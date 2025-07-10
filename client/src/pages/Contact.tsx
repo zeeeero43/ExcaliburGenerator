@@ -113,14 +113,7 @@ export default function Contact() {
     }
   ];
 
-  const emailContacts = [
-    { label: 'Información general', email: 'info@excalibur-cuba.com' },
-    { label: 'Ventas', email: 'venta@excalibur-cuba.com' },
-    { label: 'Yisell', email: 'yisell@excalibur-cuba.com' },
-    { label: 'Osley', email: 'osley@excalibur-cuba.com' },
-    { label: 'Tito', email: 'tito@excalibur-cuba.com' },
-    { label: 'Fred', email: 'fred@excalibur-cuba.com' }
-  ];
+
 
   return (
     <div className="py-16 bg-white min-h-screen">
@@ -186,29 +179,7 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Email Contacts */}
-            <div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-                {t('emailAddresses')}
-              </h2>
-              <Card>
-                <CardContent className="p-6">
-                  <div className="space-y-3">
-                    {emailContacts.map((contact, index) => (
-                      <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
-                        <span className="font-medium text-gray-700">{contact.label}:</span>
-                        <a
-                          href={`mailto:${contact.email}`}
-                          className="text-excalibur-blue hover:text-excalibur-orange transition-colors"
-                        >
-                          {contact.email}
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+
 
             {/* Location */}
             <Card>
