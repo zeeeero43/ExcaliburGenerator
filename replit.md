@@ -350,6 +350,12 @@ Changelog:
   * Enhanced FormattedText usage throughout Products page for proper multilingual text formatting
   * Removed invalid maxLength props from FormattedText components for proper rendering
   * Both critical issues now completely resolved: products show correct images and formatted text in all languages
+- July 10, 2025 (critical category image fix). Fixed category images not displaying on /products page:
+  * Removed hardcoded localhost URL construction from category image loading
+  * Changed from complex URL manipulation to simple direct image URL usage like admin panel
+  * Category images now load correctly using same approach as AdminDashboard: src={category.image}
+  * Fix enables proper image display in both development and production environments
+  * Products page now shows category images correctly matching admin panel display
 - July 10, 2025 (comprehensive content update). Completed all 13 customer-requested changes:
   * Updated logo reference to new excalibur-logo-kuba_1752159180990.png across website
   * Changed "Beste Qualität" to "Beste Qualität zum besten Preis" in all languages

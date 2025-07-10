@@ -105,17 +105,7 @@ export default function Products() {
                   {/* Category Image */}
                   <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden">
                     <img
-                      src={(() => {
-                        if (!category.image) {
-                          return 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
-                        }
-                        if (category.image.startsWith('http')) {
-                          return category.image;
-                        }
-                        // Handle relative paths - ensure they start with /
-                        const imagePath = category.image.startsWith('/') ? category.image : `/${category.image}`;
-                        return `http://localhost:5000${imagePath}`;
-                      })()}
+                      src={category.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
                       alt={getLocalizedText(category, 'name')}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
