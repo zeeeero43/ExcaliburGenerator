@@ -20,6 +20,18 @@ export default function Home() {
     queryKey: ['/api/categories'],
   });
 
+  // Load contact settings from admin panel
+  const { data: siteSettings = [] } = useQuery<any[]>({
+    queryKey: ['/api/site-settings'],
+    retry: false,
+  });
+
+  // Helper function to get contact info from admin settings
+  const getContactInfo = (key: string, fallback: string) => {
+    const setting = siteSettings.find(s => s.key === key);
+    return setting?.value || fallback;
+  };
+
   return (
     <div>
       {/* Hero Section */}
@@ -255,8 +267,8 @@ export default function Home() {
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('technicalAdvisory') as string}</h3>
                 <p className="text-gray-600 mb-2">{t('international') as string}</p>
-                <a href="tel:+4916032394399" className="text-excalibur-blue font-semibold hover:underline">
-                  {t('technicalAdvisoryPhone')}
+                <a href={`tel:${getContactInfo('contact_technical_phone', '+49 160 323 9439').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
+                  {getContactInfo('contact_technical_phone', '+49 160 323 9439')}
                 </a>
               </div>
               
@@ -266,8 +278,8 @@ export default function Home() {
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('salesLabel') as string}</h3>
                 <p className="text-gray-600 mb-2">{t('administration') as string}</p>
-                <a href="tel:+5358781416" className="text-excalibur-blue font-semibold hover:underline">
-                  {t('salesPhone')}
+                <a href={`tel:${getContactInfo('contact_sales_phone', '+53 58 78 14 16').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
+                  {getContactInfo('contact_sales_phone', '+53 58 78 14 16')}
                 </a>
               </div>
               
@@ -277,8 +289,8 @@ export default function Home() {
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('warehouseDelivery') as string}</h3>
                 <p className="text-gray-600 mb-2">{t('havanaLocation') as string}</p>
-                <a href="tel:+5354731490" className="text-excalibur-blue font-semibold hover:underline">
-                  {t('deliveryPhone')}
+                <a href={`tel:${getContactInfo('contact_warehouse_phone', '+53 54 73 14 90').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
+                  {getContactInfo('contact_warehouse_phone', '+53 54 73 14 90')}
                 </a>
               </div>
             </div>
