@@ -1,5 +1,5 @@
 export const translations = {
-  es: {
+  de: {
     // Navigation
     home: "Inicio",
     products: "Productos",
@@ -645,7 +645,10 @@ export const translations = {
     // Contact
     contactUs: "KONTAKTIEREN SIE UNS",
     contactSubtitle: "Wir konfigurieren das perfekte Solarsystem für Ihre Bedürfnisse",
+    contactDesc: "Wir konfigurieren das perfekte Solarsystem für Ihre Bedürfnisse",
     contactInfo: "Kontaktinformationen",
+    cuba: "Administration",
+    salesLabel: "Verkauf",
     technicalAdvisory: "Technische Beratung & Verkauf",
     technicalAdvisoryPhone: "+49 160 323 9439",
     salesPhone: "+53 58 78 14 16",
@@ -653,6 +656,9 @@ export const translations = {
     whatsappAvailable: "WhatsApp verfügbar",
     international: "International",
     administration: "Verwaltung",
+    warehouseDelivery: "Abholung / Lager",
+    havanaLocation: "Havanna del Este",
+    emailLabel: "E-Mail Kontakt:",
     emailAddresses: "E-Mail-Adressen",
     requestQuote: "Angebot anfordern",
     name: "Name",
@@ -822,8 +828,6 @@ export const translations = {
     // Missing keys for Home page
     ourServices: "Unsere Leistungen für Sie",
     warehouse: "Pickup / Warehouse",
-    havanaLocation: "Havanna del Este",
-    emailLabel: "E-Mail Kontakt:",
     
     // Home page boxes
     experience: "35 Jahre Erfahrung",
@@ -1460,5 +1464,125 @@ export const translations = {
       contactForPrivacyText: "For privacy questions, contact us:",
       lastUpdated: "Last Updated",
     }
+  },
+  
+  es: {
+    // Offline
+    offline: {
+      message: 'Sin conexión a internet'
+    },
+
+    // Navigation
+    home: "Inicio",
+    products: "Productos",
+    about: "Nosotros",
+    contact: "Contacto",
+    searchProducts: "Buscar productos...",
+    
+    // Hero Section
+    heroTitle1: "ENERGÍA SOLAR PARA CUBA",
+    heroSubtitle1: "Componentes solares y generadores de alta calidad al mejor precio",
+    heroTitle2: "GENERADORES EXCALIBUR",
+    heroSubtitle2: "Generadores diésel y gasolina silenciosos 2-20KVA",
+    heroTitle3: "SOLUCIONES COMPLETAS",
+    heroSubtitle3: "Sistemas solares personalizados según sus necesidades",
+    viewProducts: "Ver Productos",
+    inquireNow: "Consultar Ahora",
+    customizeSystem: "Personalizar Sistema",
+    
+    // Features
+    bestQuality: "Mejor Calidad al Mejor Precio",
+    bestQualityDesc: "Productos certificados internacionalmente al mejor precio",
+    fastDelivery: "Recogida Rápida",
+    fastDeliveryDesc: "Disponibilidad rápida para recogida - Habana del Este",
+    technicalSupport: "Soporte Técnico",
+    technicalSupportDesc: "24/7 para todas las áreas ofrecidas",
+    
+    // Products
+    ourProducts: "NUESTROS PRODUCTOS",
+    productsSubtitle: "Gran selección de componentes solares certificados, sistemas solares completos, generadores, materiales de construcción y otros materiales y mucho más.",
+    completeSolarSystems: "Sistemas Solares Completos",
+    completeSolarSystemsDesc: "Sistemas completos de 3 a 30KW con componentes de alta calidad al mejor precio",
+    solarPanels: "Paneles Solares",
+    solarPanelsDesc: "Módulos fotovoltaicos monocristalinos y policristalinos de 300W a 550W con certificación IEC y 25 años de garantía. Máxima eficiencia para el clima tropical de Cuba.",
+    inverters: "Inversores",
+    invertersDesc: "Inversores híbridos y de red de 1KW a 20KW con MPPT integrado, compatibles con baterías de litio. Tecnología alemana con protecciones avanzadas.",
+    batteries: "Baterías",
+    batteriesDesc: "Baterías LiFePO4 de litio y AGM de ciclo profundo de 100Ah a 1000Ah. Diseñadas para sistemas solares con más de 6000 ciclos de vida.",
+    generators: "Generadores",
+    generatorsDesc: "Gran selección de generadores Excalibur: Ofrecemos una amplia selección de generadores Excalibur. Modernos, Potentes, Eficientes en combustible. De 2kva - 20kva, gasolina y diésel.",
+    accessories: "Accesorios",
+    accessoriesDesc: "Componentes solares individuales: Con nosotros obtiene todo para ensamblar cualquier sistema solar completamente según sus necesidades y deseos",
+    constructionMachines: "Materiales de construcción y otros materiales",
+    constructionMachinesDesc: "Ofrecemos materiales de construcción y otros materiales para todos los proyectos en Cuba. Tecnología de alta calidad para aplicaciones profesionales.",
+    viewSystems: "Ver Sistemas →",
+    viewPanels: "Ver Paneles →",
+    viewInverters: "Ver Inversores →",
+    viewBatteries: "Ver Baterías →",
+    viewGenerators: "Ver Generadores →",
+    viewAccessories: "Ver Accesorios →",
+    
+    // About
+    aboutTitle: "EXCALIBUR POWER: ILUMINANDO CUBA",
+    aboutText1: "Somos KKMU Harry Lag Constructions de Matanzas y representamos a Excalibur Power Group en Cuba. Excalibur pertenece a los principales fabricantes mundiales de generadores, energía solar y muchos otros componentes.",
+    aboutText2: "Garantizamos la mejor calidad al mejor precio gracias a nuestro socio de Joint Venture, patrocinador y proveedor principal AFDL IMPORT & EXPORT (de Alemania) con 35 años de experiencia.",
+    slogan: "Para un futuro más brillante en Cuba",
+    yearsExperience: "Años de experiencia",
+    solarSystems: "Sistemas solares",
+    ourWarehouse: "Nuestro Almacén en Cuba",
+    warehouseDesc: "Ubicación céntrica estratégica en Habana del Este. Nuestros precios son competitivos y el stock es abundante, ya que nuestro proveedor compra todo en grandes cantidades y envía contenedores permanentemente desde fábricas a Cuba.",
+    heroSubtitle: "Somos la KKMU 'Harry Lag Construcción S.R.L'., en Joint Venture con nuestro proveedor alemán 'AFDL Import & Export GmbH & Co.Kg.', representante oficial del Excalibur Power Group en Cuba.",
+    
+    // Contact
+    contactUs: "CONTÁCTANOS",
+    contactSubtitle: "Configuramos el sistema solar perfecto para sus necesidades",
+    contactDesc: "Configuramos el sistema solar perfecto para sus necesidades",
+    contactInfo: "Información de contacto",
+    cuba: "Administración",
+    salesLabel: "Ventas",
+    technicalAdvisory: "Asesoría Técnica y Ventas",
+    technicalAdvisoryPhone: "+49 160 323 9439",
+    salesPhone: "+53 58 78 14 16",
+    deliveryPhone: "+53 54 73 14 90",
+    whatsappAvailable: "WhatsApp disponible",
+    international: "Internacional",
+    administration: "Administración",
+    warehouseDelivery: "Recogida / Almacén",
+    havanaLocation: "Habana del Este",
+    emailLabel: "Contacto por email:",
+    emailAddresses: "Direcciones de email",
+    requestQuote: "Solicitar cotización",
+    name: "Nombre",
+    phone: "Número WhatsApp",
+    email: "Email",
+    systemType: "Tipo de sistema",
+    select: "Seleccionar...",
+    completeSolarSystem: "Sistema solar completo",
+    generatorOnly: "Solo generador",
+    individualComponents: "Componentes individuales",
+    message: "Mensaje",
+    messagePlaceholder: "Describa sus necesidades energéticas...",
+    sendRequest: "Enviar solicitud",
+
+    // Missing keys for Home page
+    ourServices: "Nuestros Servicios para Usted",
+    warehouse: "Recogida / Almacén",
+    
+    // Home page boxes
+    experience: "35 Años de Experiencia",
+    experienceDesc: "Nuestro proveedor alemán AFDL tiene 35 años de experiencia internacional",
+    directImport: "Importaciones Directas de todo el mundo a Cuba",
+    directImportDesc: "Entregas permanentes con las últimas tecnologías y mejores precios mundiales",
+    homeLocation: "Ubicación central estratégica",
+    homeLocationDesc: "Almacén en Habana del Este para disponibilidad rápida en recogida",
+    
+    // Services
+    components: "Componentes Solares Individuales",
+    solarSystemsDesc: "Sistemas solares completos de 3 a 30KW con componentes de alta calidad al mejor precio",
+    componentsDesc: "Con nosotros obtiene todo para ensamblar cualquier sistema solar completamente según sus necesidades y deseos",
+    
+    // Missing translations
+    currentLanguage: "es",
+    viewDetails: "Ver detalles"
   }
 };
