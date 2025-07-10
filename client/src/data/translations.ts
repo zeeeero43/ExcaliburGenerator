@@ -19,8 +19,8 @@ export const translations = {
     customizeSystem: "Personalizar Sistema",
     
     // Features
-    bestQuality: "Mejor Calidad",
-    bestQualityDesc: "Productos certificados internacionalmente",
+    bestQuality: "Mejor Calidad al Mejor Precio",
+    bestQualityDesc: "Productos certificados internacionalmente al mejor precio",
     fastDelivery: "Rápida Disponibilidad",
     fastDeliveryDesc: "Schnelle Verfügbarkeit bei Selbstabholung - Habana del Este",
     technicalSupport: "Soporte Técnico",
@@ -552,18 +552,18 @@ export const translations = {
     customizeSystem: "System anpassen",
     
     // Features
-    bestQuality: "Beste Qualität",
-    bestQualityDesc: "International zertifizierte Produkte",
+    bestQuality: "Beste Qualität zum besten Preis",
+    bestQualityDesc: "International zertifizierte Produkte zum besten Preis",
     fastDelivery: "Schnelle Verfügbarkeit",
     fastDeliveryDesc: "Schnelle Verfügbarkeit bei Selbstabholung - Habana del Este",
     technicalSupport: "Technischer Support",
-    technicalSupportDesc: "Fachberatung 24/7",
+    technicalSupportDesc: "24/7 für alle angebotenen Bereiche",
     
     // Products
     ourProducts: "UNSERE PRODUKTE",
-    productsSubtitle: "Über 100 komplette Solarsysteme und hochwertige Einzelkomponenten, zertifiziert für den kubanischen Markt",
+    productsSubtitle: "Großangebot zertifizierter Solar-Komponenten,komplette Solarsysteme, Generatoren, Baumaschinen, Baumaterial, Fahrzeuge und vieles mehr.",
     completeSolarSystems: "Komplette Solarsysteme",
-    completeSolarSystemsDesc: "Vorkonfigurierte Systeme von 1KW bis 20KW mit Hybrid-Wechselrichter, monokristallinen Panels und Optionen mit/ohne Batterie. Ideal für Haushalte und Unternehmen in Kuba mit internationaler Garantie.",
+    completeSolarSystemsDesc: "Komplette Solaranlagen von 3 bis 30KW mit hochwertigen Komponenten zum besten Preis",
     solarPanels: "Solarpaneele",
     solarPanelsDesc: "Photovoltaik-Module monokristallin und polykristallin von 300W bis 550W mit IEC-Zertifizierung und 25 Jahren Garantie. Höchste Effizienz für das tropische Klima Kubas.",
     inverters: "Wechselrichter",
@@ -571,9 +571,9 @@ export const translations = {
     batteries: "Batterien",
     batteriesDesc: "LiFePO4-Lithium- und AGM-Tiefzyklus-Batterien von 100Ah bis 1000Ah. Entwickelt für Solarsysteme mit über 6000 Lebenszyklen.",
     generators: "Generatoren",
-    generatorsDesc: "Leise Diesel- und Benzingeneratoren Excalibur von 2KVA bis 20KVA mit elektrischem Start, niedrigem Verbrauch und Geräuschpegel unter 60dB.",
+    generatorsDesc: "Großangebot Excalibur Generatoren: Bei uns steht Ihnen eine große Auswahl Excalibur Generatoren zur Verfügung. Modern, Kraftvoll, Kraftstoff sparend. Von 2kva - 20kva, als Benziner und Diesel.",
     accessories: "Zubehör",
-    accessoriesDesc: "Komplettes Installationsset: Aluminium-Strukturen, Solarkabel, Sicherungen, MC4-Stecker, Erdungssysteme und Spezialwerkzeuge.",
+    accessoriesDesc: "Solar-Einzelkomponenten: Bei uns bekommen Sie alles um jede Solar-Anlage ganz nach Bedarf und Wünschen, individuell zusammengestellt",
     viewSystems: "Systeme ansehen →",
     viewPanels: "Panels ansehen →",
     viewInverters: "Wechselrichter ansehen →",
@@ -587,7 +587,7 @@ export const translations = {
     aboutTitle: "EXCALIBUR POWER: WIR ERHELLEN KUBA",
     aboutText1: "Wir sind KKMU Harry Lag Constructions aus Matanzas und vertreten die Excalibur Power Group in Kuba. Excalibur gehört zu den weltweit führenden Herstellern von Generatoren, Solarenergie und vielen anderen Komponenten.",
     aboutText2: "Wir garantieren beste Qualitaet zum besten Preis dank unserem Joint Venture Partner, Sponsor und Hauptlieferanten AFDL IMPORT & EXPORT (aus Deutschland) mit 35 Jahren Erfahrung.",
-    slogan: "Wir erhellen Kuba mit Solarenergie",
+    slogan: "Für eine hellere Zukunft in Cuba",
     yearsExperience: "Jahre Erfahrung",
     solarSystems: "Solarsysteme",
     ourWarehouse: "Unser Lager in Kuba",
@@ -649,7 +649,7 @@ export const translations = {
     countriesServed: "Bediente Länder",
     containersSent: "Versendete Container",
     warehouseLocation: "Unser Lager in Havanna del Este ist strategisch gelegen, um ganz Kuba mit schnellen Lieferungen und reichlich Lagerbestand zu bedienen. Wir arbeiten direkt mit den Fabriken zusammen, um die besten Preise und höchste Qualität zu gewährleisten.",
-    heroSubtitle: "Offizielle Vertreter der Excalibur Power Group in Kuba, die hochwertige Energielösungen anbieten, um Kubas Zukunft zu erhellen.",
+    heroSubtitle: "Wir sind die KKMU 'Harry Lag Construcción S.R.L'., in Joint Venture mit unserem deutschen Lieferanten 'AFDL Import & Export GmbH & Co.Kg.', offizieller Vertreter der Excalibur Power Group in Cuba.",
     
     // Contact
     contactUs: "KONTAKTIEREN SIE UNS",
@@ -839,10 +839,10 @@ export const translations = {
     emailLabel: "E-Mail Kontakt:",
     
     // Home page boxes
-    experience: "35 Jahre Erfahrung",
+    experience: "Unser deutscher Lieferant AFDL verfügt über 35 Jahre internationaler Erfahrung",
     experienceDesc: "Bewährte Erfahrung im internationalen Energiemarkt",
-    directImport: "Direktimport",
-    directImportDesc: "Permanente Container aus Deutschland mit frischen Produkten",
+    directImport: "Container-Importe",
+    directImportDesc: "Direkt-Importe aus aller Welt nach Cuba",
     homeLocation: "Verkehrsgünstige zentrale Lage",
     homeLocationDesc: "Lager in Havanna del Este für schnelle Verfügbarkeit bei Selbstabholung",
     
@@ -1059,8 +1059,8 @@ export const translations = {
     customizeSystem: "Customize System",
     
     // Features
-    bestQuality: "Best Quality",
-    bestQualityDesc: "Internationally certified products",
+    bestQuality: "Best Quality at Best Price",
+    bestQualityDesc: "Internationally certified products at best price",
     fastDelivery: "Fast Pickup",
     fastDeliveryDesc: "Fast pickup availability - Habana del Este",
     technicalSupport: "Technical Support",

@@ -1,4 +1,4 @@
-import { Shield, Truck, Users, CheckCircle } from 'lucide-react';
+import { Shield, Truck, Users, CheckCircle, Zap, Ship } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { HeroSlider } from '../components/HeroSlider';
@@ -163,7 +163,7 @@ export default function Home() {
               </div>
               
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <Truck className="w-12 h-12 mx-auto mb-4 text-excalibur-blue" />
+                <Ship className="w-12 h-12 mx-auto mb-4 text-excalibur-blue" />
                 <h3 className="text-xl font-semibold mb-2 text-gray-800">{t('directImport') as string}</h3>
                 <div className="text-gray-600">
                   <FormattedText text={t('directImportDesc') as string} />
@@ -217,7 +217,7 @@ export default function Home() {
               
               <div className="text-center">
                 <div className="bg-excalibur-light rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Truck className="w-8 h-8 text-excalibur-blue" />
+                  <Zap className="w-8 h-8 text-excalibur-blue" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{t('generators') as string}</h3>
                 <p className="text-gray-600">{t('generatorsDesc') as string}</p>

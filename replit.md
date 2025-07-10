@@ -350,6 +350,20 @@ Changelog:
   * Enhanced FormattedText usage throughout Products page for proper multilingual text formatting
   * Removed invalid maxLength props from FormattedText components for proper rendering
   * Both critical issues now completely resolved: products show correct images and formatted text in all languages
+- July 10, 2025 (comprehensive content update). Completed all 13 customer-requested changes:
+  * Updated logo reference to new excalibur-logo-kuba_1752159180990.png across website
+  * Changed "Beste Qualität" to "Beste Qualität zum besten Preis" in all languages
+  * Updated product page subtitle with comprehensive offering including generators, construction machines, building materials
+  * Changed company description from simple Matanzas description to full Joint Venture details with AFDL Import & Export
+  * Updated homepage slogan from "Wir erhellen Kuba mit Solarenergie" to "Für eine hellere Zukunft in Cuba"
+  * Modified experience section to highlight German supplier AFDL's 35 years international experience
+  * Changed DirectImport to Container-Importe with Ship icon instead of Truck
+  * Updated technical support description to "24/7 für alle angebotenen Bereiche"
+  * Changed solar systems range from "1KW bis 20KW" to "3 bis 30KW"
+  * Updated accessories description to emphasize individual solar components customization
+  * Enhanced generator description with comprehensive Excalibur offering from 2kva-20kva
+  * Changed generator icon from Truck to Zap symbol for better visual representation
+  * All changes implemented systematically across German, Spanish, and English translations
 ```
 
 ## User Preferences
