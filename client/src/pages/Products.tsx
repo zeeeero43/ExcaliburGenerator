@@ -105,33 +105,12 @@ export default function Products() {
                   {/* Category Image */}
                   <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden">
                     <img
-                      src={category.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
+                      src={category.image}
                       alt={getLocalizedText(category, 'name')}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
-                        // Only fallback if actual image fails
-                        const fallbacks = [
-                          'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop',
-                          'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=300&fit=crop',
-                          'https://images.unsplash.com/photo-1580908346710-72e1c4b8b7a5?w=500&h=300&fit=crop',
-                          'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=500&h=300&fit=crop'
-                        ];
-                        
-                        const currentSrc = e.currentTarget.src;
-                        let nextIndex = 0;
-                        
-                        // Check if we're already using a fallback
-                        for (let i = 0; i < fallbacks.length; i++) {
-                          if (currentSrc.includes(fallbacks[i].split('?')[0].split('/').pop() || '')) {
-                            nextIndex = i + 1;
-                            break;
-                          }
-                        }
-                        
-                        // Use next fallback if available
-                        if (nextIndex < fallbacks.length) {
-                          e.currentTarget.src = fallbacks[nextIndex];
-                        }
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
                       }}
                     />
                   </div>
