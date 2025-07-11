@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Menu, X, MessageCircle, MapPin, Mail } from 'lucide-react';
+import { Menu, X, MessageCircle, MapPin, Phone } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
@@ -29,9 +29,15 @@ export function Header() {
               <MapPin size={14} />
               <span>Havanna del Este, Cuba</span>
             </div>
-            <div className="flex items-center space-x-1 hidden sm:flex">
-              <Mail size={14} />
-              <span>info@excalibur-cuba.com</span>
+            <div className="flex items-center space-x-4 hidden sm:flex">
+              <div className="flex items-center space-x-1">
+                <Phone size={14} />
+                <span>+53 5878 1416</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Phone size={14} />
+                <span>+49 157 5169 1275</span>
+              </div>
             </div>
           </div>
           <LanguageSwitcher />
