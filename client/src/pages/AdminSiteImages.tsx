@@ -290,7 +290,7 @@ export default function AdminSiteImages() {
                         <img 
                           src={currentImage} 
                           alt={area.name}
-                          className="w-full h-32 object-cover rounded-md"
+                          className="w-full h-32 object-contain bg-gray-100 rounded-md"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
                             e.currentTarget.nextElementSibling!.textContent = 'Bild konnte nicht geladen werden';
@@ -361,7 +361,7 @@ export default function AdminSiteImages() {
                             <img 
                               src={image.url} 
                               alt={image.filename}
-                              className="w-full h-32 object-cover rounded-md"
+                              className="w-full h-32 object-contain bg-gray-100 rounded-md"
                               onError={(e) => {
                                 console.error('Image load error for:', image.url);
                                 // Fallback: try with explicit localhost construction
@@ -509,7 +509,7 @@ export default function AdminSiteImages() {
                         <img 
                           src={customImageUrl.trim()} 
                           alt="Vorschau"
-                          className="w-full h-32 object-cover rounded-md"
+                          className="w-full h-32 object-contain bg-gray-100 rounded-md"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
                             e.currentTarget.nextElementSibling!.textContent = 'Bild konnte nicht geladen werden. Überprüfen Sie die URL.';

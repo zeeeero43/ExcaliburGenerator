@@ -107,7 +107,7 @@ export default function Products() {
                     <img
                       src={category.image}
                       alt={getLocalizedText(category, 'name')}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
@@ -218,7 +218,7 @@ export default function Products() {
                     <img
                       src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
                       alt={getLocalizedText(product, 'name')}
-                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="w-full h-48 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;

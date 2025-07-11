@@ -16,11 +16,11 @@ export function ProductCard({ title, description, image, linkText, category, cla
   return (
     <Link href={`/product/${category}`}>
       <Card className={`group cursor-pointer card-enhanced hover-lift overflow-hidden ${className}`}>
-        <div className="aspect-video overflow-hidden">
+        <div className="aspect-video bg-gray-100 overflow-hidden">
           <img
             src={image}
             alt={title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />
         </div>

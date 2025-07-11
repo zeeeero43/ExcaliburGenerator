@@ -129,7 +129,7 @@ export default function ProductDetail() {
               <img
                 src={allImages[currentImageIndex] || '/api/placeholder/500/500'}
                 alt={`${productName} - Bild ${currentImageIndex + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 onError={(e) => {
                   e.currentTarget.src = '/api/placeholder/500/500';
                 }}
@@ -179,7 +179,7 @@ export default function ProductDetail() {
                     <img
                       src={image}
                       alt={`${productName} - Thumbnail ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain bg-gray-50"
                       onError={(e) => {
                         e.currentTarget.src = '/api/placeholder/100/100';
                       }}

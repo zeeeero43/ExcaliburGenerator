@@ -876,7 +876,7 @@ export default function AdminProductForm() {
                                     <img 
                                       src={imageUrl} 
                                       alt={`Zusätzliches Bild ${index + 1}`}
-                                      className="w-full h-20 sm:h-24 object-cover rounded border"
+                                      className="w-full h-20 sm:h-24 object-contain bg-gray-100 rounded border"
                                     />
                                     <Button
                                       type="button"

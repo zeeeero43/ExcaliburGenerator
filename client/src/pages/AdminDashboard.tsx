@@ -393,7 +393,7 @@ export default function AdminDashboard() {
                         <img
                           src={product.mainImage || '/placeholder-product.jpg'}
                           alt={product.nameEs}
-                          className="w-16 h-16 object-cover rounded"
+                          className="w-16 h-16 object-contain bg-gray-100 rounded"
                         />
                         <div>
                           <h3 className="font-medium">{product.nameEs}</h3>
@@ -473,7 +473,7 @@ export default function AdminDashboard() {
                       <img
                         src={category.image || '/placeholder-category.jpg'}
                         alt={category.nameEs}
-                        className="w-12 h-12 object-cover rounded"
+                        className="w-12 h-12 object-contain bg-gray-100 rounded"
                       />
                       <div>
                         <CardTitle className="text-base">{category.nameEs}</CardTitle>

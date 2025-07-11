@@ -411,7 +411,7 @@ export default function AdminCategoryForm() {
                                 <img 
                                   src={field.value} 
                                   alt="Kategorie-Bild Vorschau" 
-                                  className="w-32 h-32 object-cover rounded border"
+                                  className="w-32 h-32 object-contain bg-gray-100 rounded border"
                                 />
                               </div>
                             )}

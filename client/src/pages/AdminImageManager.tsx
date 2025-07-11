@@ -338,7 +338,7 @@ export default function AdminImageManager() {
                       <img
                         src={image.url}
                         alt={image.filename}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain bg-gray-100"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           if (!target.src.includes('localhost:5000')) {
