@@ -80,7 +80,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
                         {item.product.mainImage ? (
                           <img 
                             src={item.product.mainImage} 
-                            alt={getLocalizedText(item.product, 'name')}
+                            alt={item.product.name}
                             className="w-full h-full object-contain"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
@@ -94,10 +94,10 @@ export function Cart({ isOpen, onClose }: CartProps) {
                       
                       <div className="flex-1">
                         <h4 className="font-semibold text-gray-900 mb-1">
-                          {getLocalizedText(item.product, 'name')}
+                          {item.product.name}
                         </h4>
                         <p className="text-sm text-gray-600 mb-3">
-                          {getLocalizedText(item.product, 'shortDescription') || getLocalizedText(item.product, 'description')}
+                          {item.product.shortDescription || item.product.description}
                         </p>
                         
                         <div className="flex items-center justify-between">
