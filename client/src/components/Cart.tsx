@@ -77,11 +77,15 @@ export function Cart({ isOpen, onClose }: CartProps) {
                   <CardContent className="p-4">
                     <div className="flex items-start space-x-4">
                       <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
-                        {item.product.image ? (
+                        {item.product.mainImage ? (
                           <img 
-                            src={item.product.image} 
-                            alt={item.product.name}
-                            className="w-full h-full object-cover"
+                            src={item.product.mainImage} 
+                            alt={getLocalizedText(item.product, 'name')}
+                            className="w-full h-full object-contain"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = 'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=100&h=100&fit=crop';
+                            }}
                           />
                         ) : (
                           <ShoppingCart className="w-8 h-8 text-gray-400" />
@@ -90,10 +94,10 @@ export function Cart({ isOpen, onClose }: CartProps) {
                       
                       <div className="flex-1">
                         <h4 className="font-semibold text-gray-900 mb-1">
-                          {item.product.name}
+                          {getLocalizedText(item.product, 'name')}
                         </h4>
                         <p className="text-sm text-gray-600 mb-3">
-                          {item.product.shortDescription || item.product.description}
+                          {getLocalizedText(item.product, 'shortDescription') || getLocalizedText(item.product, 'description')}
                         </p>
                         
                         <div className="flex items-center justify-between">

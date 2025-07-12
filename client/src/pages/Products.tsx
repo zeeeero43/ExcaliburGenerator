@@ -315,9 +315,9 @@ export default function Products() {
           }>
             {filteredProducts.map((product) => (
               <div key={product.id} className="group">
-                <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
-                  <Link to={`/product/${product.slug}`}>
-                    <div className="relative overflow-hidden rounded-t-lg cursor-pointer">
+                <Link to={`/product/${product.slug}`}>
+                  <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1 cursor-pointer">
+                    <div className="relative overflow-hidden rounded-t-lg">
                       <img
                         src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
                         alt={getLocalizedText(product, 'name')}
@@ -345,42 +345,42 @@ export default function Products() {
                         {t(product.stockStatus || 'in_stock')}
                       </Badge>
                     </div>
-                  </Link>
-                  
-                  <CardHeader>
-                    <CardTitle className="text-xl group-hover:text-excalibur-blue transition-colors">
-                      <Link to={`/product/${product.slug}`} className="hover:underline">
+                    
+                    <CardHeader>
+                      <CardTitle className="text-xl group-hover:text-excalibur-blue transition-colors">
                         {getLocalizedText(product, 'name')}
-                      </Link>
-                    </CardTitle>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <div className="text-gray-600 mb-4 line-clamp-3">
-                      <FormattedText 
-                        text={getLocalizedText(product, 'shortDescription')} 
-                        className="text-gray-600"
-                      />
-                    </div>
+                      </CardTitle>
+                    </CardHeader>
                     
-                    {product.price && (
-                      <div className="text-2xl font-bold text-excalibur-blue mb-2">
-                        {product.price}€
+                    <CardContent>
+                      <div className="text-gray-600 mb-4 line-clamp-3">
+                        <FormattedText 
+                          text={getLocalizedText(product, 'shortDescription')} 
+                          className="text-gray-600"
+                        />
                       </div>
-                    )}
-                    
-                    <div className="flex items-center justify-between">
-                      <Link to={`/product/${product.slug}`} className="text-excalibur-orange font-semibold group-hover:underline">
-                        {t('viewDetails')} →
-                      </Link>
-                      <AddToCartButton 
-                        product={product}
-                        size="sm"
-                        variant="outline"
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
+                      
+                      {product.price && (
+                        <div className="text-2xl font-bold text-excalibur-blue mb-2">
+                          {product.price}€
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="text-excalibur-orange font-semibold group-hover:underline">
+                          {t('viewDetails')} →
+                        </div>
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <AddToCartButton 
+                            product={product}
+                            size="sm"
+                            variant="outline"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               </div>
             ))}
           </div>

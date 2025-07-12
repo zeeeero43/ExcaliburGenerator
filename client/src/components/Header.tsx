@@ -53,7 +53,7 @@ export function Header() {
             <img 
               src="/uploads/excalibur-logo-kuba-kleiner.png" 
               alt="Excalibur Cuba" 
-              className="h-8 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
           </Link>
 
