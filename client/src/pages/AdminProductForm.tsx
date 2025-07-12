@@ -167,6 +167,7 @@ function createProductSchema(t: (key: string) => string) {
     availabilityTextEs: z.string().optional(),
     availabilityTextDe: z.string().optional(),
     availabilityTextEn: z.string().optional(),
+    sortOrder: z.number().default(0),
     specifications: z.record(z.string()).optional(),
   });
 }
@@ -301,6 +302,7 @@ export default function AdminProductForm() {
       availabilityTextEs: '',
       availabilityTextDe: '',
       availabilityTextEn: '',
+      sortOrder: 0,
       categoryId: undefined,
     },
   });
@@ -380,6 +382,7 @@ export default function AdminProductForm() {
         availabilityTextEs: existingProduct.availabilityTextEs || '',
         availabilityTextDe: existingProduct.availabilityTextDe || '',
         availabilityTextEn: existingProduct.availabilityTextEn || '',
+        sortOrder: existingProduct.sortOrder || 0,
       };
 
       console.log('🔄 DEBUG: Setting form data:', formData);
@@ -1063,6 +1066,43 @@ export default function AdminProductForm() {
                     />
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Sort Order */}
+            <Card className="bg-green-50 border-green-200">
+              <CardHeader>
+                <CardTitle className="text-lg text-green-800">📊 Reihenfolge des Produkts</CardTitle>
+                <CardDescription className="text-green-600">
+                  Bestimmen Sie die Reihenfolge mit Zahlen (1-2-3-4-5-6-7-8 etc.). Niedrigere Zahlen erscheinen zuerst in der Kategorie.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <FormField
+                  control={form.control}
+                  name="sortOrder"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base font-medium">Reihenfolge-Nummer</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number"
+                          min="0"
+                          max="999"
+                          placeholder="z.B. 1 für erste Position in der Kategorie, 2 für zweite Position..."
+                          {...field}
+                          value={field.value || ''}
+                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : 0)}
+                          className="w-32"
+                        />
+                      </FormControl>
+                      <div className="text-sm text-green-600 mt-1">
+                        💡 Tipp: Verwenden Sie 1 für das wichtigste Produkt der Kategorie, 2 für das zweitwichtigste, etc.
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </CardContent>
             </Card>
 
