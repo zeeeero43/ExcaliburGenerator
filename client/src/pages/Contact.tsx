@@ -100,14 +100,14 @@ export default function Contact() {
     {
       icon: Building,
       title: t('salesLabel'),
-      phone: getContactInfo('contact_sales_phone', '+53 58781416'),
+      phone: getContactInfo('contact_sales_phone', '+53 5878 1416'),
       description: 'Administración general',
       color: 'text-excalibur-orange'
     },
     {
       icon: Warehouse,
       title: t('warehouseDelivery'),
-      phone: getContactInfo('contact_warehouse_phone', '+53 58781416'),
+      phone: getContactInfo('contact_warehouse_phone', '+53 54 73 14 90'),
       description: 'Habana del Este',
       color: 'text-green-500'
     }
@@ -161,17 +161,15 @@ export default function Contact() {
                         >
                           <Phone size={16} />
                         </a>
-                        {(contact.phone.includes('+53') || contact.phone.includes('WA')) && (
-                          <a
-                            href={`https://api.whatsapp.com/send?phone=${contact.phone.replace(/\s/g, '').replace(/[()]/g, '').split('(')[0]}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition-colors"
-                            title="WhatsApp"
-                          >
-                            <MessageCircle size={16} />
-                          </a>
-                        )}
+                        <a
+                          href={`https://api.whatsapp.com/send?phone=${contact.phone.replace(/\s/g, '').replace(/[()]/g, '').split('(')[0]}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition-colors"
+                          title="WhatsApp"
+                        >
+                          <MessageCircle size={16} />
+                        </a>
                       </div>
                     </CardContent>
                   </Card>

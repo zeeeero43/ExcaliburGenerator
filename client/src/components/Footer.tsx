@@ -93,16 +93,16 @@ export function Footer() {
                 <span>Havanna del Este, Cuba</span>
               </li>
               <li className="flex items-start space-x-2">
-                <Phone size={16} className="mt-1 text-excalibur-blue" />
-                <span>+49 160 323 9439</span>
+                <MessageCircle size={16} className="mt-1 text-green-500" />
+                <span>Support+Verkauf: +49 160 323 9439</span>
               </li>
               <li className="flex items-start space-x-2">
-                <Phone size={16} className="mt-1 text-green-500" />
-                <span>+53 58 78 14 16</span>
+                <MessageCircle size={16} className="mt-1 text-green-500" />
+                <span>Administration + Verkauf: +53 5878 1416</span>
               </li>
               <li className="flex items-start space-x-2">
-                <Phone size={16} className="mt-1 text-yellow-500" />
-                <span>+53 54 73 14 90</span>
+                <MessageCircle size={16} className="mt-1 text-green-500" />
+                <span>Auslieferung / Abholung: +53 54 73 14 90</span>
               </li>
             </ul>
 
