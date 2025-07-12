@@ -155,6 +155,7 @@ function createProductSchema(t: (key: string) => string) {
     descriptionDe: z.string().optional(),
     descriptionEn: z.string().optional(),
     categoryId: z.coerce.number().min(1, 'Kategorie ist erforderlich'),
+    subcategoryId: z.coerce.number().optional(),
     sku: z.string().optional(),
     price: z.string().optional(),
     priceNote: z.string().optional(),
@@ -310,6 +311,7 @@ export default function AdminProductForm() {
       availabilityTextEn: '',
       sortOrder: 0,
       categoryId: undefined,
+      subcategoryId: undefined,
     },
   });
 
@@ -329,6 +331,11 @@ export default function AdminProductForm() {
   // Fetch categories
   const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ['/api/admin/categories'],
+  });
+
+  // Fetch subcategories
+  const { data: subcategories = [] } = useQuery<Subcategory[]>({
+    queryKey: ['/api/admin/subcategories'],
   });
 
   // Update form when product data loads - SAME LOGIC AS AdminCategoryForm
@@ -661,6 +668,33 @@ export default function AdminProductForm() {
                       </FormItem>
                     )}
                   />
+
+                  <FormField
+                    control={form.control}
+                    name="subcategoryId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-800 font-bold text-lg">3. Unterkategorie (Optional)</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value?.toString()}>
+                          <FormControl>
+                            <SelectTrigger className="text-lg p-3 border-2 border-gray-300 focus:border-gray-600">
+                              <SelectValue placeholder="Unterkategorie wählen..." />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {subcategories
+                              .filter(sub => sub.categoryId === Number(form.watch('categoryId')))
+                              .map((subcategory) => (
+                                <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
+                                  {subcategory.nameDe || subcategory.nameEs || subcategory.name}
+                                </SelectItem>
+                              ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
                 {/* Short Descriptions */}
@@ -672,7 +706,7 @@ export default function AdminProductForm() {
                       name="shortDescriptionDe"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-800 font-bold text-lg">3. Beschreibung <span className="text-red-500">*</span></FormLabel>
+                          <FormLabel className="text-gray-800 font-bold text-lg">4. Beschreibung <span className="text-red-500">*</span></FormLabel>
                           <FormControl>
                             <RichTextEditor
                               label=""

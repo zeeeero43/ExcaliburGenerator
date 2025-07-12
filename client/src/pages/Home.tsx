@@ -1,4 +1,4 @@
-import { Shield, Truck, Users, CheckCircle, Zap, Ship, Warehouse } from 'lucide-react';
+import { Shield, Truck, Users, CheckCircle, Zap, Ship, Warehouse, MessageCircle } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { HeroSlider } from '../components/HeroSlider';
@@ -263,13 +263,16 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-white rounded-lg shadow-md p-6 text-center">
                 <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-8 h-8 text-green-600" />
+                  <MessageCircle className="w-8 h-8 text-green-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('technicalAdvisory') as string}</h3>
-                <p className="text-gray-600 mb-2">{t('international') as string}</p>
-                <a href={`tel:${getContactInfo('contact_technical_phone', '+49 160 323 9439').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
-                  {getContactInfo('contact_technical_phone', '+49 160 323 9439')}
-                </a>
+                <p className="text-gray-600 mb-2">{t('supportSales') as string}</p>
+                <div className="flex items-center justify-center space-x-2">
+                  <MessageCircle className="w-5 h-5 text-green-500" />
+                  <a href={`tel:${getContactInfo('contact_technical_phone', '+49 160 323 9439').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
+                    {getContactInfo('contact_technical_phone', '+49 160 323 9439')}
+                  </a>
+                </div>
               </div>
               
               <div className="bg-white rounded-lg shadow-md p-6 text-center">
@@ -277,10 +280,13 @@ export default function Home() {
                   <CheckCircle className="w-8 h-8 text-blue-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('salesLabel') as string}</h3>
-                <p className="text-gray-600 mb-2">{t('administration') as string}</p>
-                <a href={`tel:${getContactInfo('contact_sales_phone', '+53 58 78 14 16').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
-                  {getContactInfo('contact_sales_phone', '+53 58 78 14 16')}
-                </a>
+                <p className="text-gray-600 mb-2">{t('administrationSales') as string}</p>
+                <div className="flex items-center justify-center space-x-2">
+                  <MessageCircle className="w-5 h-5 text-green-500" />
+                  <a href={`tel:${getContactInfo('contact_sales_phone', '+53 5878 1416').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
+                    {getContactInfo('contact_sales_phone', '+53 5878 1416')}
+                  </a>
+                </div>
               </div>
               
               <div className="bg-white rounded-lg shadow-md p-6 text-center">
@@ -288,10 +294,13 @@ export default function Home() {
                   <Warehouse className="w-8 h-8 text-orange-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('warehouseDelivery') as string}</h3>
-                <p className="text-gray-600 mb-2">{t('havanaLocation') as string}</p>
-                <a href={`tel:${getContactInfo('contact_warehouse_phone', '+53 54 73 14 90').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
-                  {getContactInfo('contact_warehouse_phone', '+53 54 73 14 90')}
-                </a>
+                <p className="text-gray-600 mb-2">{t('deliveryPickup') as string}</p>
+                <div className="flex items-center justify-center space-x-2">
+                  <MessageCircle className="w-5 h-5 text-green-500" />
+                  <a href={`tel:${getContactInfo('contact_warehouse_phone', '+53 54 73 14 90').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
+                    {getContactInfo('contact_warehouse_phone', '+53 54 73 14 90')}
+                  </a>
+                </div>
               </div>
             </div>
             

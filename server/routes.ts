@@ -27,8 +27,8 @@ if (!fs.existsSync(uploadsDir)) {
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB for faster uploads
-    files: 5, // Max 5 files per upload
+    fileSize: 10 * 1024 * 1024, // 10MB per file
+    files: 10, // Max 10 files per upload for better batch processing
   },
   fileFilter: (req, file, cb) => {
     const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
@@ -298,6 +298,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Subcategories API
+  app.get("/api/subcategories", async (req, res) => {
+    try {
+      const subcategories = await storage.getSubcategories();
+      res.json(subcategories);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+      res.status(500).json({ error: "Failed to fetch subcategories" });
+    }
+  });
+
+  // Admin subcategories API
+  app.get("/api/admin/subcategories", isAuthenticated, async (req, res) => {
+    try {
+      const subcategories = await storage.getSubcategories();
+      res.json(subcategories);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+      res.status(500).json({ error: "Failed to fetch subcategories" });
+    }
+  });
+
+  app.get("/api/admin/subcategories/:id", isAuthenticated, async (req, res) => {
+    try {
+      const subcategory = await storage.getSubcategoryById(parseInt(req.params.id));
+      if (!subcategory) {
+        return res.status(404).json({ error: "Subcategory not found" });
+      }
+      res.json(subcategory);
+    } catch (error) {
+      console.error("Error fetching subcategory:", error);
+      res.status(500).json({ error: "Failed to fetch subcategory" });
+    }
+  });
+
+  app.post("/api/admin/subcategories", isAuthenticated, async (req, res) => {
+    try {
+      const subcategoryData = req.body;
+      
+      // Generate slug if not provided
+      if (!subcategoryData.slug) {
+        subcategoryData.slug = generateSlug(subcategoryData.nameDe || subcategoryData.name);
+      }
+
+      const validatedData = insertSubcategorySchema.parse(subcategoryData);
+      const subcategory = await storage.createSubcategory(validatedData);
+      res.json(subcategory);
+    } catch (error) {
+      console.error("Error creating subcategory:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Validation error", details: error.errors });
+      }
+      res.status(500).json({ error: "Failed to create subcategory" });
+    }
+  });
+
+  app.put("/api/admin/subcategories/:id", isAuthenticated, async (req, res) => {
+    try {
+      const subcategoryData = insertSubcategorySchema.partial().parse(req.body);
+      const subcategory = await storage.updateSubcategory(parseInt(req.params.id), subcategoryData);
+      res.json(subcategory);
+    } catch (error) {
+      console.error("Error updating subcategory:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Validation error", details: error.errors });
+      }
+      res.status(500).json({ error: "Failed to update subcategory" });
+    }
+  });
+
+  app.delete("/api/admin/subcategories/:id", isAuthenticated, async (req, res) => {
+    try {
+      const subcategoryId = parseInt(req.params.id);
+      
+      // First update all products in this subcategory to remove subcategory reference
+      const products = await storage.getProducts({ subcategoryId });
+      for (const product of products) {
+        await storage.updateProduct(product.id, { subcategoryId: null });
+      }
+      
+      // Then delete the subcategory
+      await storage.deleteSubcategory(subcategoryId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting subcategory:", error);
+      res.status(500).json({ error: "Failed to delete subcategory" });
+    }
+  });
+
   app.get("/api/admin/categories", isAuthenticated, async (req, res) => {
     try {
       const categories = await storage.getCategories();
@@ -385,7 +474,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
 
-  // Subcategories API
+  // Subcategories API for category filtering
   app.get("/api/subcategories", async (req, res) => {
     try {
       const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
@@ -399,17 +488,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/subcategories", isAuthenticated, async (req, res) => {
     try {
-      const subcategoryData = insertSubcategorySchema.parse(req.body);
+      const subcategoryData = req.body;
+      
+      console.log("🔍 Creating subcategory with data:", subcategoryData);
       
       // Generate slug if not provided
       if (!subcategoryData.slug) {
-        subcategoryData.slug = generateSlug(subcategoryData.nameEs || subcategoryData.name);
+        subcategoryData.slug = generateSlug(subcategoryData.nameDe || subcategoryData.name);
       }
 
-      const subcategory = await storage.createSubcategory(subcategoryData);
+      const validatedData = insertSubcategorySchema.parse(subcategoryData);
+      const subcategory = await storage.createSubcategory(validatedData);
+      
+      console.log("✅ Subcategory created successfully:", subcategory);
       res.json(subcategory);
     } catch (error) {
-      console.error("Error creating subcategory:", error);
+      console.error("❌ Error creating subcategory:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Validation error", details: error.errors });
+      }
       res.status(500).json({ error: "Failed to create subcategory" });
     }
   });

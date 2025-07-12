@@ -8,6 +8,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { FormattedText } from '../components/FormattedText';
+import { AddToCartButton } from '../components/AddToCartButton';
 import type { Product } from '@shared/schema';
 
 export default function ProductDetail() {
@@ -263,6 +264,16 @@ export default function ProductDetail() {
             </Card>
 
 
+
+            {/* Add to Cart Button */}
+            <div className="mb-6">
+              <AddToCartButton 
+                product={product}
+                size="lg"
+                showQuantity={true}
+                className="w-full"
+              />
+            </div>
 
             {/* Contact Actions */}
             <div className="space-y-4">

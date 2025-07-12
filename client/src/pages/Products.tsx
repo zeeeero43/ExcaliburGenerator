@@ -8,17 +8,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { FormattedText } from '../components/FormattedText';
-import type { Product, Category } from '@shared/schema';
+import { AddToCartButton } from '../components/AddToCartButton';
+import type { Product, Category, Subcategory } from '@shared/schema';
 
 export default function Products() {
   const { t, currentLanguage } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showCategories, setShowCategories] = useState(true);
+  const [showSubcategories, setShowSubcategories] = useState(false);
 
   // Load real categories from database
   const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ['/api/categories'],
+  });
+
+  // Load subcategories from database
+  const { data: subcategories = [] } = useQuery<Subcategory[]>({
+    queryKey: ['/api/subcategories'],
   });
 
   // Load real products from database
@@ -33,10 +41,17 @@ export default function Products() {
     return item[langField] || item[field] || '';
   };
 
-  // Filter products by selected category
-  const filteredProducts = selectedCategory
+  // Filter subcategories by selected category
+  const filteredSubcategories = selectedCategory
+    ? subcategories.filter(subcategory => 
+        subcategory.isActive && subcategory.categoryId === selectedCategory
+      )
+    : [];
+
+  // Filter products by selected subcategory
+  const filteredProducts = selectedSubcategory
     ? products.filter(product => 
-        product.isActive && product.categoryId === selectedCategory
+        product.isActive && product.subcategoryId === selectedSubcategory
       )
     : [];
 
@@ -44,12 +59,27 @@ export default function Products() {
   const selectCategory = (categoryId: number, categoryName: string) => {
     setSelectedCategory(categoryId);
     setShowCategories(false);
+    setShowSubcategories(true);
+  };
+
+  // Handle subcategory selection
+  const selectSubcategory = (subcategoryId: number, subcategoryName: string) => {
+    setSelectedSubcategory(subcategoryId);
+    setShowSubcategories(false);
   };
 
   // Handle back to categories
   const backToCategories = () => {
     setSelectedCategory(null);
+    setSelectedSubcategory(null);
     setShowCategories(true);
+    setShowSubcategories(false);
+  };
+
+  // Handle back to subcategories
+  const backToSubcategories = () => {
+    setSelectedSubcategory(null);
+    setShowSubcategories(true);
   };
 
   // Get selected category name
@@ -57,6 +87,13 @@ export default function Products() {
     if (!selectedCategory) return '';
     const category = categories.find(c => c.id === selectedCategory);
     return category ? getLocalizedText(category, 'name') || 'Kategorie' : '';
+  };
+
+  // Get selected subcategory name
+  const getSelectedSubcategoryName = () => {
+    if (!selectedSubcategory) return '';
+    const subcategory = subcategories.find(s => s.id === selectedSubcategory);
+    return subcategory ? getLocalizedText(subcategory, 'name') || 'Unterkategorie' : '';
   };
 
   if (isLoading) {
@@ -72,6 +109,78 @@ export default function Products() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Subcategories View
+  if (showSubcategories) {
+    return (
+      <div className="py-16 bg-white min-h-screen">
+        <div className="container mx-auto px-4">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <Button 
+              variant="outline" 
+              onClick={backToCategories}
+              className="mb-4"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              {t('backToCategories')}
+            </Button>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+              {getSelectedCategoryName()}
+            </h1>
+            <p className="text-gray-600">
+              {t('selectSubcategory')}
+            </p>
+          </div>
+
+          {/* Subcategories Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredSubcategories.map((subcategory) => (
+              <Card 
+                key={subcategory.id} 
+                className="hover:shadow-lg transition-shadow cursor-pointer group"
+                onClick={() => selectSubcategory(subcategory.id, getLocalizedText(subcategory, 'name'))}
+              >
+                <CardContent className="p-0">
+                  {/* Subcategory Image */}
+                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden">
+                    <img
+                      src={subcategory.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
+                      alt={getLocalizedText(subcategory, 'name')}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
+                      }}
+                    />
+                  </div>
+                  
+                  {/* Subcategory Info */}
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                      {getLocalizedText(subcategory, 'name')}
+                    </h3>
+                    <div className="text-gray-600 mb-4">
+                      <FormattedText 
+                        text={getLocalizedText(subcategory, 'description') || 'Unterkategorie anzeigen'} 
+                        maxLength={100}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Badge variant="secondary" className="text-sm">
+                        {getLocalizedText(subcategory, 'name')}
+                      </Badge>
+                      <Eye className="w-5 h-5 text-gray-500 group-hover:text-blue-500 transition-colors" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </div>
@@ -127,11 +236,8 @@ export default function Products() {
                       />
                     </div>
                     
-                    {/* Product Count */}
-                    <div className="flex items-center justify-between">
-                      <Badge variant="secondary">
-                        {products.filter(p => p.categoryId === category.id && p.isActive).length} {t('productCount')}
-                      </Badge>
+                    {/* Category Action */}
+                    <div className="flex items-center justify-end">
                       <Button variant="ghost" size="sm" className="group-hover:bg-excalibur-blue group-hover:text-white">
                         <Eye className="w-4 h-4 mr-2" />
                         {t('viewDetails')}
@@ -208,67 +314,74 @@ export default function Products() {
             : "space-y-6"
           }>
             {filteredProducts.map((product) => (
-              <Link
-                key={product.id}
-                to={`/product/${product.slug}`}
-                className="block group"
-              >
-                <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
-                  <div className="relative overflow-hidden rounded-t-lg">
-                    <img
-                      src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
-                      alt={getLocalizedText(product, 'name')}
-                      className="w-full h-48 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=500&fit=crop';
-                      }}
-                    />
-                    {product.isFeatured && (
-                      <Badge className="absolute top-3 left-3 bg-excalibur-orange text-white">
-                        {t('featured')}
-                      </Badge>
-                    )}
-                    <Badge 
-                      className={`absolute top-3 right-3 ${
-                        product.stockStatus === 'in_stock' 
-                          ? 'bg-green-500' 
-                          : product.stockStatus === 'limited'
-                          ? 'bg-yellow-500'
-                          : 'bg-red-500'
-                      } text-white`}
-                    >
-                      {t(product.stockStatus || 'in_stock')}
-                    </Badge>
-                  </div>
-                  
-                  <CardHeader>
-                    <CardTitle className="text-xl group-hover:text-excalibur-blue transition-colors">
-                      {getLocalizedText(product, 'name')}
-                    </CardTitle>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <div className="text-gray-600 mb-4 line-clamp-3">
-                      <FormattedText 
-                        text={getLocalizedText(product, 'shortDescription')} 
-                        className="text-gray-600"
+              <div key={product.id} className="group">
+                <Link to={`/product/${product.slug}`}>
+                  <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1 cursor-pointer">
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img
+                        src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
+                        alt={getLocalizedText(product, 'name')}
+                        className="w-full h-48 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = 'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=500&fit=crop';
+                        }}
                       />
+                      {product.isFeatured && (
+                        <Badge className="absolute top-3 left-3 bg-excalibur-orange text-white">
+                          {t('featured')}
+                        </Badge>
+                      )}
+                      <Badge 
+                        className={`absolute top-3 right-3 ${
+                          product.stockStatus === 'in_stock' 
+                            ? 'bg-green-500' 
+                            : product.stockStatus === 'limited'
+                            ? 'bg-yellow-500'
+                            : 'bg-red-500'
+                        } text-white`}
+                      >
+                        {t(product.stockStatus || 'in_stock')}
+                      </Badge>
                     </div>
                     
-                    {product.price && (
-                      <div className="text-2xl font-bold text-excalibur-blue mb-2">
-                        {product.price}€
+                    <CardHeader>
+                      <CardTitle className="text-xl group-hover:text-excalibur-blue transition-colors">
+                        {getLocalizedText(product, 'name')}
+                      </CardTitle>
+                    </CardHeader>
+                    
+                    <CardContent>
+                      <div className="text-gray-600 mb-4 line-clamp-3">
+                        <FormattedText 
+                          text={getLocalizedText(product, 'shortDescription')} 
+                          className="text-gray-600"
+                        />
                       </div>
-                    )}
-                    
-                    <div className="text-excalibur-orange font-semibold group-hover:underline">
-                      {t('viewDetails')} →
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+                      
+                      {product.price && (
+                        <div className="text-2xl font-bold text-excalibur-blue mb-2">
+                          {product.price}€
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="text-excalibur-orange font-semibold group-hover:underline">
+                          {t('viewDetails')} →
+                        </div>
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <AddToCartButton 
+                            product={product}
+                            size="sm"
+                            variant="outline"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </div>
             ))}
           </div>
         )}
