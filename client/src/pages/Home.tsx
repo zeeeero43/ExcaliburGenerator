@@ -266,7 +266,7 @@ export default function Home() {
                   <MessageCircle className="w-8 h-8 text-green-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('technicalAdvisory') as string}</h3>
-                <p className="text-gray-600 mb-2">Support+Verkauf</p>
+                <p className="text-gray-600 mb-2">{t('supportSales') as string}</p>
                 <div className="flex items-center justify-center space-x-2">
                   <MessageCircle className="w-5 h-5 text-green-500" />
                   <a href={`tel:${getContactInfo('contact_technical_phone', '+49 160 323 9439').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
@@ -280,7 +280,7 @@ export default function Home() {
                   <CheckCircle className="w-8 h-8 text-blue-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('salesLabel') as string}</h3>
-                <p className="text-gray-600 mb-2">Administration + Verkauf</p>
+                <p className="text-gray-600 mb-2">{t('administrationSales') as string}</p>
                 <div className="flex items-center justify-center space-x-2">
                   <MessageCircle className="w-5 h-5 text-green-500" />
                   <a href={`tel:${getContactInfo('contact_sales_phone', '+53 5878 1416').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">
@@ -294,7 +294,7 @@ export default function Home() {
                   <Warehouse className="w-8 h-8 text-orange-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-3">{t('warehouseDelivery') as string}</h3>
-                <p className="text-gray-600 mb-2">Auslieferung / Abholung</p>
+                <p className="text-gray-600 mb-2">{t('deliveryPickup') as string}</p>
                 <div className="flex items-center justify-center space-x-2">
                   <MessageCircle className="w-5 h-5 text-green-500" />
                   <a href={`tel:${getContactInfo('contact_warehouse_phone', '+53 54 73 14 90').replace(/\s/g, '')}`} className="text-excalibur-blue font-semibold hover:underline">

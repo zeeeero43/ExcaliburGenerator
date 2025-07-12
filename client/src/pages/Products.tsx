@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { FormattedText } from '../components/FormattedText';
+import { AddToCartButton } from '../components/AddToCartButton';
 import type { Product, Category, Subcategory } from '@shared/schema';
 
 export default function Products() {
@@ -313,11 +314,7 @@ export default function Products() {
             : "space-y-6"
           }>
             {filteredProducts.map((product) => (
-              <Link
-                key={product.id}
-                to={`/product/${product.slug}`}
-                className="block group"
-              >
+              <div key={product.id} className="group">
                 <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
                   <div className="relative overflow-hidden rounded-t-lg">
                     <img
@@ -350,7 +347,9 @@ export default function Products() {
                   
                   <CardHeader>
                     <CardTitle className="text-xl group-hover:text-excalibur-blue transition-colors">
-                      {getLocalizedText(product, 'name')}
+                      <Link to={`/product/${product.slug}`} className="hover:underline">
+                        {getLocalizedText(product, 'name')}
+                      </Link>
                     </CardTitle>
                   </CardHeader>
                   
@@ -368,12 +367,19 @@ export default function Products() {
                       </div>
                     )}
                     
-                    <div className="text-excalibur-orange font-semibold group-hover:underline">
-                      {t('viewDetails')} →
+                    <div className="flex items-center justify-between">
+                      <Link to={`/product/${product.slug}`} className="text-excalibur-orange font-semibold group-hover:underline">
+                        {t('viewDetails')} →
+                      </Link>
+                      <AddToCartButton 
+                        product={product}
+                        size="sm"
+                        variant="outline"
+                      />
                     </div>
                   </CardContent>
                 </Card>
-              </Link>
+              </div>
             ))}
           </div>
         )}

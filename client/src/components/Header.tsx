@@ -3,12 +3,13 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X, MessageCircle, MapPin, Phone } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { LanguageSwitcher } from './LanguageSwitcher';
-
-
+import { CartIcon } from './CartIcon';
+import { Cart } from './Cart';
 import { Button } from './ui/button';
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [location] = useLocation();
   const { t } = useLanguage();
 
@@ -69,6 +70,7 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <CartIcon onClick={() => setIsCartOpen(true)} />
           </div>
 
 
@@ -120,10 +122,14 @@ export function Header() {
                 <MessageCircle size={20} />
                 <span>{t('whatsapp')}</span>
               </a>
+              <CartIcon onClick={() => setIsCartOpen(true)} />
             </div>
           </div>
         )}
       </nav>
+      
+      {/* Cart Modal */}
+      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </header>
   );
 }

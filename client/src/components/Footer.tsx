@@ -94,15 +94,15 @@ export function Footer() {
               </li>
               <li className="flex items-start space-x-2">
                 <MessageCircle size={16} className="mt-1 text-green-500" />
-                <span>Support+Verkauf: +49 160 323 9439</span>
+                <span>{t('supportSales') as string}: +49 160 323 9439</span>
               </li>
               <li className="flex items-start space-x-2">
                 <MessageCircle size={16} className="mt-1 text-green-500" />
-                <span>Administration + Verkauf: +53 5878 1416</span>
+                <span>{t('administrationSales') as string}: +53 5878 1416</span>
               </li>
               <li className="flex items-start space-x-2">
                 <MessageCircle size={16} className="mt-1 text-green-500" />
-                <span>Auslieferung / Abholung: +53 54 73 14 90</span>
+                <span>{t('deliveryPickup') as string}: +53 54 73 14 90</span>
               </li>
             </ul>
 

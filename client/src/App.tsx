@@ -24,6 +24,7 @@ import Legal from "./pages/Legal";
 import NotFound from "./pages/not-found";
 
 import { OfflineIndicator } from "./components/OfflineIndicator";
+import { CartProvider } from "./contexts/CartContext";
 
 function Router() {
   const { isLoading } = useLanguage();
@@ -140,9 +141,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <OfflineIndicator />
-        <Router />
-        <Toaster />
+        <CartProvider>
+          <OfflineIndicator />
+          <Router />
+          <Toaster />
+        </CartProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
