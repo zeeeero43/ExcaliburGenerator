@@ -105,14 +105,23 @@ export default function AdminSubcategoryForm() {
     if (!text.trim()) return '';
     
     try {
-      const response = await apiRequest('/api/translate', {
+      const response = await fetch('/api/translate', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           text: text.trim(),
           targetLanguage: targetLang
         }),
       });
-      return response.translatedText || text;
+      
+      if (!response.ok) {
+        throw new Error(`Translation failed: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data.translatedText || text;
     } catch (error) {
       console.error('Translation error:', error);
       return text;
@@ -278,54 +287,20 @@ export default function AdminSubcategoryForm() {
                   )}
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="nameEn"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (Englisch)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="z.B. Solar Panels" {...field} readOnly />
-                        </FormControl>
-                        <div className="text-xs text-gray-500">
-                          Automatisch übersetzt
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="nameEs"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (Spanisch)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="z.B. Paneles Solares" {...field} readOnly />
-                        </FormControl>
-                        <div className="text-xs text-gray-500">
-                          Automatisch übersetzt
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-
-
+                {/* German Title First */}
+                <div className="space-y-4">
                   <FormField
                     control={form.control}
                     name="nameDe"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Name (Deutsch) <span className="text-red-500">*</span></FormLabel>
+                        <FormLabel className="text-lg font-semibold">Name (Deutsch) <span className="text-red-500">*</span></FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Input 
                               placeholder="z.B. Solarmodule" 
                               {...field}
+                              className="text-lg p-3 border-2 border-gray-300 focus:border-blue-500"
                               onChange={(e) => {
                                 field.onChange(e);
                                 handleTranslation(e.target.value, 'name');
@@ -345,6 +320,53 @@ export default function AdminSubcategoryForm() {
                       </FormItem>
                     )}
                   />
+
+                  {/* Auto-translated fields */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                    <FormField
+                      control={form.control}
+                      name="nameEs"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-600">→ Name (Spanisch)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Wird automatisch übersetzt..." 
+                              {...field} 
+                              className="bg-gray-100 border-gray-200"
+                              readOnly 
+                            />
+                          </FormControl>
+                          <div className="text-xs text-gray-500">
+                            Automatisch übersetzt
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="nameEn"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-600">→ Name (Englisch)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Wird automatisch übersetzt..." 
+                              {...field} 
+                              className="bg-gray-100 border-gray-200"
+                              readOnly 
+                            />
+                          </FormControl>
+                          <div className="text-xs text-gray-500">
+                            Automatisch übersetzt
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

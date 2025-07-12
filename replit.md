@@ -412,6 +412,14 @@ Changelog:
   * All subcategories now display parent category information and can be freely positioned
   * System supports multilingual subcategory management with German, Spanish, and English fields
   * Complete subcategory system now functional with free positioning capabilities as requested
+- July 12, 2025 (admin translation system fixes). Resolved critical translation and UI issues:
+  * Fixed translation API error in AdminSubcategoryForm by correcting fetch call from apiRequest to direct fetch
+  * Reordered AdminSubcategoryForm fields to put German title input first as requested
+  * Added subcategory selection functionality to AdminProductForm without changing existing translation functions
+  * Enhanced ProductForm with dynamic subcategory dropdown that filters by selected category
+  * Updated form schema to include subcategoryId field for complete product categorization
+  * All admin forms now have consistent German-first workflow with automatic Spanish/English translation
+  * Translation system now works properly across all admin forms (Product, Category, Subcategory)
 ```
 
 ## User Preferences
