@@ -26,6 +26,7 @@ const subcategoryFormSchema = z.object({
   descriptionEs: z.string().optional(),
   descriptionDe: z.string().optional(),
   descriptionEn: z.string().optional(),
+  image: z.string().optional(),
   slug: z.string().optional(),
   sortOrder: z.coerce.number().min(0).default(0),
   isActive: z.boolean().default(true),
@@ -87,6 +88,7 @@ export default function AdminSubcategoryForm() {
       descriptionEs: '',
       descriptionDe: '',
       descriptionEn: '',
+      image: '',
       slug: '',
       sortOrder: 0,
       isActive: true,
@@ -182,6 +184,7 @@ export default function AdminSubcategoryForm() {
         descriptionEs: subcategory.descriptionEs || '',
         descriptionDe: subcategory.descriptionDe || '',
         descriptionEn: subcategory.descriptionEn || '',
+        image: subcategory.image || '',
         slug: subcategory.slug || '',
         sortOrder: subcategory.sortOrder || 0,
         isActive: subcategory.isActive,
@@ -198,10 +201,7 @@ export default function AdminSubcategoryForm() {
       
       console.log('🚀 MUTATION REQUEST:', { url, method, data });
       
-      return await apiRequest(url, {
-        method,
-        body: JSON.stringify(data),
-      });
+      return await apiRequest(method, url, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/subcategories'] });
@@ -473,6 +473,26 @@ export default function AdminSubcategoryForm() {
                     )}
                   />
                 </div>
+
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Bild</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Bild URL (z.B. https://example.com/image.jpg)"
+                          {...field}
+                        />
+                      </FormControl>
+                      <div className="text-xs text-gray-500">
+                        Geben Sie eine URL für das Unterkategorie-Bild ein
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
