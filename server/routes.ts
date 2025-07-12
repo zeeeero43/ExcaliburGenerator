@@ -108,6 +108,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Setup session middleware
   setupSession(app);
 
+  // CRITICAL: Register API routes IMMEDIATELY after session setup to ensure priority
+  console.log("🔥 CRITICAL: Registering API routes with HIGH PRIORITY");
+  
+  // Get single product by ID - MOVED TO TOP FOR PRIORITY
+  app.get("/api/admin/products/:id", isAuthenticated, async (req, res) => {
+    console.log("🔍 CRITICAL: HIGH PRIORITY GET /api/admin/products/:id route HIT!", {
+      params: req.params,
+      originalUrl: req.originalUrl,
+      method: req.method
+    });
+    
+    try {
+      const id = parseInt(req.params.id);
+      console.log("🔍 CRITICAL: Parsed ID:", id);
+      
+      const product = await storage.getProductById(id);
+      console.log("🔍 CRITICAL: Product from storage:", product ? "FOUND" : "NOT FOUND");
+      
+      if (!product) {
+        console.log("🔍 CRITICAL: Returning 404 - Product not found");
+        return res.status(404).json({ error: "Product not found" });
+      }
+      
+      console.log("🔍 CRITICAL: Returning product JSON");
+      res.json(product);
+    } catch (error) {
+      console.error("🔍 CRITICAL: Error fetching product:", error);
+      res.status(500).json({ error: "Failed to fetch product" });
+    }
+  });
+
   // Seed database on startup
   try {
     await seedDatabase();
@@ -516,22 +547,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get single product by ID
-  app.get("/api/admin/products/:id", isAuthenticated, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const product = await storage.getProductById(id);
-      
-      if (!product) {
-        return res.status(404).json({ error: "Product not found" });
-      }
-      
-      res.json(product);
-    } catch (error) {
-      console.error("Error fetching product:", error);
-      res.status(500).json({ error: "Failed to fetch product" });
-    }
-  });
+
 
   app.put("/api/admin/products/:id", isAuthenticated, async (req, res) => {
     try {
