@@ -429,6 +429,12 @@ Changelog:
   * Enhanced user experience with smaller Excalibur logo integration and responsive sizing (h-11 mobile, h-16 desktop)
   * Fixed critical translation import issue in Cart component for proper multilingual support
   * Shopping cart now serves as product memory system for Cuban customers with WhatsApp integration
+- July 12, 2025 (cart translation fixes). Fixed cart button translation issues:
+  * Enhanced logo sizing for better visibility: h-11 mobile, h-16 desktop
+  * Fixed getLocalizedText import error in Cart component
+  * Added missing clearCart translations for all languages (German: "Alles löschen", English: "Clear all", Spanish: "Limpiar todo")
+  * Updated all cart buttons to use proper translation functions instead of hardcoded text
+  * Both individual "Remove" and "Clear all" buttons now display correctly in all languages
 ```
 
 ## User Preferences

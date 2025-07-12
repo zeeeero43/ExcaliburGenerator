@@ -127,7 +127,8 @@ export function Cart({ isOpen, onClose }: CartProps) {
                             size="sm"
                             onClick={() => removeItem(item.product.id)}
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-4 h-4 mr-1" />
+                            {t('removeFromCart')}
                           </Button>
                         </div>
                       </div>
@@ -153,7 +154,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
                 className="text-red-600 hover:text-red-700"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Löschen
+                {t('clearCart')}
               </Button>
             </div>
             
