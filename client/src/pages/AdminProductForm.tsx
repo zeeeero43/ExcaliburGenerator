@@ -183,8 +183,7 @@ export default function AdminProductForm() {
   const queryClient = useQueryClient();
   // Removed selectedCategoryId state
   
-  // Track form initialization to prevent re-triggering
-  const [formInitialized, setFormInitialized] = useState(false);
+  // Removed formInitialized state - using simple reset logic like AdminCategoryForm
 
 
 
@@ -327,39 +326,10 @@ export default function AdminProductForm() {
     retry: false,
   });
 
-  // Debug logging
+  // Update form when product data loads - SAME LOGIC AS AdminCategoryForm
   useEffect(() => {
-    console.log('Form data:', { 
-      isEdit,
-      productId,
-      existingProduct,
-      productLoading,
-      categories, 
-      categoriesLoading, 
-      categoriesError,
-      categoriesCount: categories.length,
-      user: !!user,
-      errorMessage: categoriesError?.message
-    });
-  }, [isEdit, productId, existingProduct, productLoading, categories, categoriesLoading, categoriesError, user]);
-
-  // Removed subcategory functionality
-
-  // Populate form with existing product data
-  useEffect(() => {
-    if (existingProduct && isEdit && !formInitialized) {
-      console.log('🔄 DEBUG: Populating form with existing product:', {
-        id: existingProduct.id,
-        nameEs: existingProduct.nameEs,
-        nameDe: existingProduct.nameDe,
-        price: existingProduct.price,
-        categoryId: existingProduct.categoryId
-      });
-      
-      // Removed subcategory functionality - no need to set selectedCategoryId
-      
-      // CRITICAL: Ensure form reset works with correct data mapping
-      const formData = {
+    if (existingProduct && isEdit) {
+      form.reset({
         nameEs: existingProduct.nameEs || '',
         nameDe: existingProduct.nameDe || existingProduct.name || '',
         nameEn: existingProduct.nameEn || '',
@@ -383,20 +353,9 @@ export default function AdminProductForm() {
         availabilityTextDe: existingProduct.availabilityTextDe || '',
         availabilityTextEn: existingProduct.availabilityTextEn || '',
         sortOrder: existingProduct.sortOrder || 0,
-      };
-
-      console.log('🔄 DEBUG: Setting form data:', formData);
-      
-      // CRITICAL FIX: Use form.reset() like in AdminCategoryForm
-      form.reset(formData);
-      
-      console.log('✅ DEBUG: Form reset with data:', formData);
-      console.log('✅ DEBUG: Current form values after reset:', form.getValues());
-      setFormInitialized(true);
-
-
+      });
     }
-  }, [existingProduct, isEdit, form, formInitialized]);
+  }, [existingProduct, isEdit, form]);
 
   // Removed subcategory functionality - no need to watch category changes
 
