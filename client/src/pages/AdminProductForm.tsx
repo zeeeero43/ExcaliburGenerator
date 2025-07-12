@@ -187,10 +187,11 @@ export default function AdminProductForm() {
 
 
 
-  // Get product ID from URL path - SAME LOGIC AS AdminCategoryForm
-  const pathParts = window.location.pathname.split('/');
-  const isEdit = window.location.pathname.includes('/edit');
-  const productId = isEdit ? pathParts[pathParts.length - 2] : null;
+  // Get product ID from params - FIX FOR WOUTER ROUTING
+  const productId = params.id;
+  const isEdit = productId && productId !== 'new';
+  
+  console.log('DEBUG ProductForm:', { params, productId, isEdit });
 
 
 
@@ -320,7 +321,9 @@ export default function AdminProductForm() {
 
   // Update form when product data loads - SAME LOGIC AS AdminCategoryForm
   useEffect(() => {
+    console.log('DEBUG useEffect:', { existingProduct, isEdit, productId });
     if (existingProduct && isEdit) {
+      console.log('DEBUG: Resetting form with product data:', existingProduct);
       form.reset({
         nameEs: existingProduct.nameEs || '',
         nameDe: existingProduct.nameDe || existingProduct.name || '',
@@ -346,6 +349,7 @@ export default function AdminProductForm() {
         availabilityTextEn: existingProduct.availabilityTextEn || '',
         sortOrder: existingProduct.sortOrder || 0,
       });
+      console.log('DEBUG: Form reset completed');
     }
   }, [existingProduct, isEdit, form]);
 
@@ -359,7 +363,7 @@ export default function AdminProductForm() {
         price: data.price ? data.price.toString() : undefined,
       };
 
-      const url = isEdit ? `/api/admin/products/${params.id}` : '/api/admin/products';
+      const url = isEdit ? `/api/admin/products/${productId}` : '/api/admin/products';
       const method = isEdit ? 'PUT' : 'POST';
 
       console.log('📤 Sende Produktdaten:', productData);
