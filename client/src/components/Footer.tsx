@@ -93,16 +93,16 @@ export function Footer() {
                 <span>Havanna del Este, Cuba</span>
               </li>
               <li className="flex items-start space-x-2">
-                <MessageCircle size={16} className="mt-1 text-green-500" />
-                <span>{t('supportSales') as string}: +49 160 323 9439</span>
+                <Phone size={16} className="mt-1 text-excalibur-blue" />
+                <span>+49 160 323 9439</span>
               </li>
               <li className="flex items-start space-x-2">
-                <MessageCircle size={16} className="mt-1 text-green-500" />
-                <span>{t('administrationSales') as string}: +53 5878 1416</span>
+                <Phone size={16} className="mt-1 text-green-500" />
+                <span>+53 58 78 14 16</span>
               </li>
               <li className="flex items-start space-x-2">
-                <MessageCircle size={16} className="mt-1 text-green-500" />
-                <span>{t('deliveryPickup') as string}: +53 54 73 14 90</span>
+                <Phone size={16} className="mt-1 text-yellow-500" />
+                <span>+53 54 73 14 90</span>
               </li>
             </ul>
 

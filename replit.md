@@ -391,50 +391,6 @@ Changelog:
   * Updated English translations to match German and Spanish messaging consistency
   * All messaging now focuses on energy independence and self-production rather than cost savings
   * Trilingual consistency maintained across all content changes
-- July 12, 2025 (critical layout restructure). Fixed major media library layout and scrolling issues:
-  * Completely restructured ImageUpload component from vertical to horizontal layout
-  * Added left sidebar (320px) with all controls: upload, search, filters, sorting, actions
-  * Created right main area (flexible) for image gallery with proper ScrollArea implementation
-  * Fixed scrolling problem - gallery now uses h-full with proper flex-1 space allocation
-  * Increased multer limits from 5 to 10 files per upload to prevent "Too many files" error
-  * Enhanced grid view to support up to 10 columns on large screens for better space utilization
-  * Improved dialog sizing to max-w-7xl h-[90vh] for optimal screen coverage without cutoff
-  * Media library now provides professional workflow with settings on left, images on right
-  * All scrolling and layout issues resolved - media library now fully functional in product/category forms
-- July 12, 2025 (comprehensive subcategory system implementation). Created complete subcategory management system with free positioning:
-  * Added subcategory statistics card to admin dashboard showing total and active counts
-  * Created dedicated subcategory management tab with visual position indicators (1, 2, 3, etc.)
-  * Enhanced AdminSubcategoryForm with automatic position suggestions and user-friendly positioning UI
-  * Implemented comprehensive subcategory CRUD operations with proper routing and error handling
-  * Added visual position badges and automatic sorting by sortOrder throughout the system
-  * Created positioning helper text with recommendations for new subcategories
-  * Integrated subcategory management seamlessly into existing admin workflow
-  * All subcategories now display parent category information and can be freely positioned
-  * System supports multilingual subcategory management with German, Spanish, and English fields
-  * Complete subcategory system now functional with free positioning capabilities as requested
-- July 12, 2025 (admin translation system fixes). Resolved critical translation and UI issues:
-  * Fixed translation API error in AdminSubcategoryForm by correcting fetch call from apiRequest to direct fetch
-  * Reordered AdminSubcategoryForm fields to put German title input first as requested
-  * Added subcategory selection functionality to AdminProductForm without changing existing translation functions
-  * Enhanced ProductForm with dynamic subcategory dropdown that filters by selected category
-  * Updated form schema to include subcategoryId field for complete product categorization
-  * All admin forms now have consistent German-first workflow with automatic Spanish/English translation
-  * Translation system now works properly across all admin forms (Product, Category, Subcategory)
-- July 12, 2025 (shopping cart system completion). Implemented comprehensive shopping cart functionality:
-  * Created complete shopping cart system with CartContext, Cart.tsx, AddToCartButton, and CartIcon components
-  * Added cart functionality to all product pages with localStorage persistence
-  * Implemented responsive cart positioning: desktop navigation and mobile next to hamburger menu
-  * Added product images to cart display with fallback system and proper localization
-  * Made entire product cards clickable while preventing cart button from triggering navigation
-  * Enhanced user experience with smaller Excalibur logo integration and responsive sizing (h-11 mobile, h-16 desktop)
-  * Fixed critical translation import issue in Cart component for proper multilingual support
-  * Shopping cart now serves as product memory system for Cuban customers with WhatsApp integration
-- July 12, 2025 (cart translation fixes). Fixed cart button translation issues:
-  * Enhanced logo sizing for better visibility: h-11 mobile, h-16 desktop
-  * Fixed getLocalizedText import error in Cart component
-  * Added missing clearCart translations for all languages (German: "Alles löschen", English: "Clear all", Spanish: "Limpiar todo")
-  * Updated all cart buttons to use proper translation functions instead of hardcoded text
-  * Both individual "Remove" and "Clear all" buttons now display correctly in all languages
 ```
 
 ## User Preferences

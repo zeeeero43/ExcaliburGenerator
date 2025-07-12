@@ -3,13 +3,12 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X, MessageCircle, MapPin, Phone } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { CartIcon } from './CartIcon';
-import { Cart } from './Cart';
+
+
 import { Button } from './ui/button';
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [location] = useLocation();
   const { t } = useLanguage();
 
@@ -51,9 +50,9 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <img 
-              src="/uploads/excalibur-logo-kuba-kleiner.png" 
+              src="/uploads/excalibur-logo-kuba.png" 
               alt="Excalibur Cuba" 
-              className="h-11 md:h-16 w-auto object-contain"
+              className="h-12 w-auto object-contain"
             />
           </Link>
 
@@ -70,7 +69,6 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <CartIcon onClick={() => setIsCartOpen(true)} />
           </div>
 
 
@@ -86,17 +84,15 @@ export function Header() {
             <span>{t('whatsapp')}</span>
           </a>
 
-          {/* Mobile Menu Button and Cart */}
-          <div className="md:hidden flex items-center space-x-2">
-            <CartIcon onClick={() => setIsCartOpen(true)} />
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </Button>
-          </div>
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="md:hidden"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </Button>
         </div>
 
         {/* Mobile Navigation */}
@@ -128,9 +124,6 @@ export function Header() {
           </div>
         )}
       </nav>
-      
-      {/* Cart Modal */}
-      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </header>
   );
 }

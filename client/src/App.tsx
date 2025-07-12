@@ -15,7 +15,6 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProductForm from "./pages/AdminProductForm";
 import AdminCategoryForm from "./pages/AdminCategoryForm";
-import AdminSubcategoryForm from "./pages/AdminSubcategoryForm";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminSiteImages from "./pages/AdminSiteImages";
 import AdminImageManager from "./pages/AdminImageManager";
@@ -24,7 +23,6 @@ import Legal from "./pages/Legal";
 import NotFound from "./pages/not-found";
 
 import { OfflineIndicator } from "./components/OfflineIndicator";
-import { CartProvider } from "./contexts/CartContext";
 
 function Router() {
   const { isLoading } = useLanguage();
@@ -66,18 +64,6 @@ function Router() {
         {(params) => {
           console.log('AdminCategoryForm route matched: /admin/categories/:id/edit', params);
           return <AdminCategoryForm />;
-        }}
-      </Route>
-      <Route path="/admin/subcategories/new">
-        {() => {
-          console.log('AdminSubcategoryForm route matched: /admin/subcategories/new');
-          return <AdminSubcategoryForm />;
-        }}
-      </Route>
-      <Route path="/admin/subcategories/:id/edit">
-        {(params) => {
-          console.log('AdminSubcategoryForm route matched: /admin/subcategories/:id/edit', params);
-          return <AdminSubcategoryForm />;
         }}
       </Route>
       <Route path="/admin/analytics" component={AdminAnalytics} />
@@ -141,11 +127,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <CartProvider>
-          <OfflineIndicator />
-          <Router />
-          <Toaster />
-        </CartProvider>
+        <OfflineIndicator />
+        <Router />
+        <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
   );
