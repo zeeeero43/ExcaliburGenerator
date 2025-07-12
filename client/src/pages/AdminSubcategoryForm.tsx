@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import type { Category, Subcategory } from '@shared/schema';
 
 const subcategoryFormSchema = z.object({
@@ -39,6 +39,8 @@ export default function AdminSubcategoryForm() {
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [subcategoryId, setSubcategoryId] = useState<number | null>(null);
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [translationTimeout, setTranslationTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Extract ID from URL if editing
   useEffect(() => {
@@ -97,6 +99,65 @@ export default function AdminSubcategoryForm() {
       form.setValue('sortOrder', getNextPosition());
     }
   }, [allSubcategories, isEditing, form]);
+
+  // Translation function
+  const translateText = async (text: string, targetLang: string) => {
+    if (!text.trim()) return '';
+    
+    try {
+      const response = await apiRequest('/api/translate', {
+        method: 'POST',
+        body: JSON.stringify({
+          text: text.trim(),
+          targetLanguage: targetLang
+        }),
+      });
+      return response.translatedText || text;
+    } catch (error) {
+      console.error('Translation error:', error);
+      return text;
+    }
+  };
+
+  // Handle automatic translation with delay
+  const handleTranslation = async (germanText: string, field: 'name' | 'description') => {
+    if (!germanText.trim() || isEditing) return;
+    
+    // Clear existing timeout
+    if (translationTimeout) {
+      clearTimeout(translationTimeout);
+    }
+    
+    // Set new timeout for translation
+    const timeout = setTimeout(async () => {
+      setIsTranslating(true);
+      try {
+        const [spanishText, englishText] = await Promise.all([
+          translateText(germanText, 'es'),
+          translateText(germanText, 'en')
+        ]);
+        
+        if (field === 'name') {
+          form.setValue('nameEs', spanishText);
+          form.setValue('nameEn', englishText);
+        } else {
+          form.setValue('descriptionEs', spanishText);
+          form.setValue('descriptionEn', englishText);
+        }
+        
+        toast({
+          title: "Übersetzung abgeschlossen",
+          description: `${field === 'name' ? 'Name' : 'Beschreibung'} wurde automatisch übersetzt`,
+        });
+      } catch (error) {
+        console.error('Translation failed:', error);
+      } finally {
+        setIsTranslating(false);
+      }
+    }, 1000);
+    
+    setTranslationTimeout(timeout);
+  };
 
   // Update form when subcategory data is loaded
   useEffect(() => {
@@ -220,55 +281,66 @@ export default function AdminSubcategoryForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
+                    name="nameEn"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name (Englisch)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="z.B. Solar Panels" {...field} readOnly />
+                        </FormControl>
+                        <div className="text-xs text-gray-500">
+                          Automatisch übersetzt
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
                     name="nameEs"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Name (Spanisch)</FormLabel>
                         <FormControl>
-                          <Input placeholder="z.B. Paneles Solares" {...field} />
+                          <Input placeholder="z.B. Paneles Solares" {...field} readOnly />
                         </FormControl>
+                        <div className="text-xs text-gray-500">
+                          Automatisch übersetzt
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+
+
 
                   <FormField
                     control={form.control}
                     name="nameDe"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Name (Deutsch)</FormLabel>
+                        <FormLabel>Name (Deutsch) <span className="text-red-500">*</span></FormLabel>
                         <FormControl>
-                          <Input placeholder="z.B. Solarmodule" {...field} />
+                          <div className="relative">
+                            <Input 
+                              placeholder="z.B. Solarmodule" 
+                              {...field}
+                              onChange={(e) => {
+                                field.onChange(e);
+                                handleTranslation(e.target.value, 'name');
+                              }}
+                            />
+                            {isTranslating && (
+                              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
+                              </div>
+                            )}
+                          </div>
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="nameEn"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (Englisch)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="z.B. Solar Panels" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="slug"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Slug (URL)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="wird automatisch generiert" {...field} />
-                        </FormControl>
+                        <div className="text-xs text-gray-500">
+                          Wird automatisch in Spanisch und Englisch übersetzt
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -278,17 +350,31 @@ export default function AdminSubcategoryForm() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <FormField
                     control={form.control}
-                    name="descriptionEs"
+                    name="descriptionDe"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Beschreibung (Spanisch)</FormLabel>
+                        <FormLabel>Beschreibung (Deutsch)</FormLabel>
                         <FormControl>
-                          <Textarea
-                            placeholder="Beschreibung der Unterkategorie..."
-                            className="min-h-[100px]"
-                            {...field}
-                          />
+                          <div className="relative">
+                            <Textarea
+                              placeholder="Beschreibung der Unterkategorie..."
+                              className="min-h-[100px]"
+                              {...field}
+                              onChange={(e) => {
+                                field.onChange(e);
+                                handleTranslation(e.target.value, 'description');
+                              }}
+                            />
+                            {isTranslating && (
+                              <div className="absolute right-3 top-3">
+                                <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
+                              </div>
+                            )}
+                          </div>
                         </FormControl>
+                        <div className="text-xs text-gray-500">
+                          Wird automatisch übersetzt
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -296,17 +382,21 @@ export default function AdminSubcategoryForm() {
 
                   <FormField
                     control={form.control}
-                    name="descriptionDe"
+                    name="descriptionEs"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Beschreibung (Deutsch)</FormLabel>
+                        <FormLabel>Beschreibung (Spanisch)</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Beschreibung der Unterkategorie..."
+                            placeholder="Descripción de la subcategoría..."
                             className="min-h-[100px]"
                             {...field}
+                            readOnly
                           />
                         </FormControl>
+                        <div className="text-xs text-gray-500">
+                          Automatisch übersetzt
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -323,8 +413,12 @@ export default function AdminSubcategoryForm() {
                             placeholder="Subcategory description..."
                             className="min-h-[100px]"
                             {...field}
+                            readOnly
                           />
                         </FormControl>
+                        <div className="text-xs text-gray-500">
+                          Automatisch übersetzt
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
