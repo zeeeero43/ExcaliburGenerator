@@ -191,7 +191,12 @@ export default function AdminProductForm() {
   const productId = params.id;
   const isEdit = productId && productId !== 'new';
   
-  console.log('DEBUG ProductForm:', { params, productId, isEdit });
+  console.log('🔍 DEBUG ProductForm INIT:', { 
+    params, 
+    productId, 
+    isEdit,
+    pathname: window.location.pathname 
+  });
 
 
 
@@ -309,9 +314,16 @@ export default function AdminProductForm() {
   });
 
   // Fetch existing product data for editing - SAME LOGIC AS AdminCategoryForm
-  const { data: existingProduct, isLoading: isLoadingProduct } = useQuery<Product>({
+  const { data: existingProduct, isLoading: isLoadingProduct, error: productError } = useQuery<Product>({
     queryKey: [`/api/admin/products/${productId}`],
     enabled: isEdit && !!productId,
+  });
+  
+  console.log('🔍 DEBUG QUERY:', { 
+    existingProduct, 
+    isLoadingProduct, 
+    productError,
+    queryEnabled: isEdit && !!productId 
   });
 
   // Fetch categories
@@ -321,10 +333,23 @@ export default function AdminProductForm() {
 
   // Update form when product data loads - SAME LOGIC AS AdminCategoryForm
   useEffect(() => {
-    console.log('DEBUG useEffect:', { existingProduct, isEdit, productId });
+    console.log('🔍 DEBUG useEffect TRIGGERED:', { 
+      existingProduct: !!existingProduct, 
+      isEdit, 
+      productId,
+      productData: existingProduct
+    });
+    
     if (existingProduct && isEdit) {
-      console.log('DEBUG: Resetting form with product data:', existingProduct);
-      form.reset({
+      console.log('🔄 DEBUG: Resetting form with product data:', {
+        id: existingProduct.id,
+        nameDe: existingProduct.nameDe,
+        nameEs: existingProduct.nameEs,
+        shortDescriptionDe: existingProduct.shortDescriptionDe,
+        categoryId: existingProduct.categoryId
+      });
+      
+      const formData = {
         nameEs: existingProduct.nameEs || '',
         nameDe: existingProduct.nameDe || existingProduct.name || '',
         nameEn: existingProduct.nameEn || '',
@@ -348,8 +373,12 @@ export default function AdminProductForm() {
         availabilityTextDe: existingProduct.availabilityTextDe || '',
         availabilityTextEn: existingProduct.availabilityTextEn || '',
         sortOrder: existingProduct.sortOrder || 0,
-      });
-      console.log('DEBUG: Form reset completed');
+      };
+      
+      console.log('🔄 DEBUG: Form data prepared:', formData);
+      form.reset(formData);
+      console.log('✅ DEBUG: Form reset completed');
+      console.log('📝 DEBUG: Current form values:', form.getValues());
     }
   }, [existingProduct, isEdit, form]);
 
