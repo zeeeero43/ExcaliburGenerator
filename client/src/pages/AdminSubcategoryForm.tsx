@@ -17,17 +17,17 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import type { Category, Subcategory } from '@shared/schema';
 
 const subcategoryFormSchema = z.object({
-  categoryId: z.number().min(1, "Kategorie ist erforderlich"),
-  name: z.string().min(1, "Name ist erforderlich"),
-  nameEs: z.string().min(1, "Spanischer Name ist erforderlich"),
+  categoryId: z.coerce.number().min(1, "Kategorie ist erforderlich"),
+  name: z.string().optional(),
+  nameEs: z.string().optional(),
   nameDe: z.string().min(1, "Deutscher Name ist erforderlich"),
-  nameEn: z.string().min(1, "Englischer Name ist erforderlich"),
+  nameEn: z.string().optional(),
   description: z.string().optional(),
   descriptionEs: z.string().optional(),
   descriptionDe: z.string().optional(),
   descriptionEn: z.string().optional(),
   slug: z.string().optional(),
-  sortOrder: z.number().min(0).default(0),
+  sortOrder: z.coerce.number().min(0).default(0),
   isActive: z.boolean().default(true),
 });
 
@@ -112,7 +112,8 @@ export default function AdminSubcategoryForm() {
         },
         body: JSON.stringify({
           text: text.trim(),
-          targetLanguage: targetLang
+          fromLang: 'de',
+          toLang: targetLang
         }),
       });
       
@@ -218,13 +219,37 @@ export default function AdminSubcategoryForm() {
   });
 
   const onSubmit = (data: SubcategoryForm) => {
+    console.log('🚀 SUBMIT DATA:', data);
+    
     // Generate slug if not provided
     if (!data.slug) {
-      data.slug = data.nameEs.toLowerCase()
+      const nameForSlug = data.nameEs || data.nameDe || data.nameEn || data.name || 'unterkategorie';
+      data.slug = nameForSlug.toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '');
     }
     
+    // Ensure categoryId is set
+    if (!data.categoryId || data.categoryId === 0) {
+      toast({
+        title: "Fehler",
+        description: "Bitte wählen Sie eine Kategorie aus.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Ensure German name is set
+    if (!data.nameDe || data.nameDe.trim() === '') {
+      toast({
+        title: "Fehler", 
+        description: "Deutscher Name ist erforderlich.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log('🚀 FINAL SUBMIT DATA:', data);
     mutation.mutate(data);
   };
 
