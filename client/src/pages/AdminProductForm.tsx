@@ -187,9 +187,10 @@ export default function AdminProductForm() {
 
 
 
-  // Extract product ID from URL properly
-  const productId = params.id && params.id !== 'new' ? parseInt(params.id) : null;
-  const isEdit = Boolean(productId);
+  // Get product ID from URL path - SAME LOGIC AS AdminCategoryForm
+  const pathParts = window.location.pathname.split('/');
+  const isEdit = window.location.pathname.includes('/edit');
+  const productId = isEdit ? pathParts[pathParts.length - 2] : null;
 
 
 
@@ -306,24 +307,15 @@ export default function AdminProductForm() {
     },
   });
 
-  // Check authentication first
-  const { data: user } = useQuery({
-    queryKey: ['/api/admin/user'],
-    retry: false,
-  });
-
-  // Fetch existing product if editing
-  const { data: existingProduct, isLoading: productLoading } = useQuery<Product>({
+  // Fetch existing product data for editing - SAME LOGIC AS AdminCategoryForm
+  const { data: existingProduct, isLoading: isLoadingProduct } = useQuery<Product>({
     queryKey: [`/api/admin/products/${productId}`],
-    enabled: Boolean(isEdit && productId && user),
-    retry: false,
+    enabled: isEdit && !!productId,
   });
 
-  // Fetch categories - must be authenticated
-  const { data: categories = [], isLoading: categoriesLoading, error: categoriesError } = useQuery<Category[]>({
+  // Fetch categories
+  const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ['/api/admin/categories'],
-    enabled: !!user,
-    retry: false,
   });
 
   // Update form when product data loads - SAME LOGIC AS AdminCategoryForm
