@@ -127,13 +127,13 @@ export default function Products() {
               className="mb-4"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Zurück zu Kategorien
+              {t('backToCategories')}
             </Button>
             <h1 className="text-3xl font-bold text-gray-800 mb-2">
               {getSelectedCategoryName()}
             </h1>
             <p className="text-gray-600">
-              Wählen Sie eine Unterkategorie aus
+              {t('selectSubcategory')}
             </p>
           </div>
 
@@ -235,11 +235,8 @@ export default function Products() {
                       />
                     </div>
                     
-                    {/* Product Count */}
-                    <div className="flex items-center justify-between">
-                      <Badge variant="secondary">
-                        {products.filter(p => p.categoryId === category.id && p.isActive).length} {t('productCount')}
-                      </Badge>
+                    {/* Category Action */}
+                    <div className="flex items-center justify-end">
                       <Button variant="ghost" size="sm" className="group-hover:bg-excalibur-blue group-hover:text-white">
                         <Eye className="w-4 h-4 mr-2" />
                         {t('viewDetails')}

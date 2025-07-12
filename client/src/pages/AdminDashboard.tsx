@@ -442,8 +442,8 @@ export default function AdminDashboard() {
                           className="w-16 h-16 object-contain bg-gray-100 rounded"
                         />
                         <div>
-                          <h3 className="font-medium">{product.nameEs}</h3>
-                          <p className="text-sm text-gray-600">{product.shortDescriptionEs}</p>
+                          <h3 className="font-medium">{product.nameDe || product.nameEs}</h3>
+                          <p className="text-sm text-gray-600">{product.shortDescriptionDe || product.shortDescriptionEs}</p>
                           <div className="flex items-center space-x-2 mt-1">
                             <Badge variant={product.isActive ? "default" : "secondary"}>
                               {product.isActive ? "Aktiv" : "Inaktiv"}
@@ -522,9 +522,9 @@ export default function AdminDashboard() {
                         className="w-12 h-12 object-contain bg-gray-100 rounded"
                       />
                       <div>
-                        <CardTitle className="text-base">{category.nameEs}</CardTitle>
+                        <CardTitle className="text-base">{category.nameDe || category.nameEs}</CardTitle>
                         <CardDescription className="text-sm">
-                          {category.descriptionEs}
+                          {category.descriptionDe || category.descriptionEs}
                         </CardDescription>
                       </div>
                     </div>
@@ -608,9 +608,9 @@ export default function AdminDashboard() {
                               </span>
                             </div>
                             <div>
-                              <CardTitle className="text-base">{subcategory.nameEs}</CardTitle>
+                              <CardTitle className="text-base">{subcategory.nameDe || subcategory.nameEs}</CardTitle>
                               <CardDescription className="text-sm">
-                                {parentCategory?.nameEs || 'Keine Kategorie'}
+                                {parentCategory?.nameDe || parentCategory?.nameEs || 'Keine Kategorie'}
                               </CardDescription>
                             </div>
                           </div>
@@ -619,7 +619,7 @@ export default function AdminDashboard() {
                       </CardHeader>
                       <CardContent>
                         <p className="text-sm text-gray-600 mb-4">
-                          {subcategory.descriptionEs || 'Keine Beschreibung'}
+                          {subcategory.descriptionDe || subcategory.descriptionEs || 'Keine Beschreibung'}
                         </p>
                         <div className="flex justify-between items-center">
                           <div className="flex items-center space-x-2">

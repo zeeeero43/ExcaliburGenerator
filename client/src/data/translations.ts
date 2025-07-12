@@ -29,6 +29,9 @@ export const translations = {
     // Products
     ourProducts: "NUESTROS PRODUCTOS",
     productsSubtitle: "Gran oferta de componentes solares certificados, sistemas solares completos, generadores, materiales de construcción y otros materiales y mucho más.",
+    selectCategory: "Selecciona una categoría",
+    selectSubcategory: "Selecciona una subcategoría",
+    backToCategories: "Volver a Categorías",
     completeSolarSystems: "Sistemas Solares Completos",
     completeSolarSystemsDesc: "Sistemas preconfigurados de 1KW a 20KW con inversor híbrido, paneles monocristalinos y opciones con/sin batería. Ideales para hogares y negocios en Cuba con garantía internacional.",
     solarPanels: "Paneles Solares",
@@ -861,6 +864,7 @@ export const translations = {
     // Product page translations
     productCount: "Produkte",
     backToCategories: "Zurück zu Kategorien",
+    selectSubcategory: "Wählen Sie eine Unterkategorie aus",
     inThisCategory: "in dieser Kategorie",
     
     // Contact page
@@ -1200,6 +1204,8 @@ export const translations = {
     
     // Products Page
     selectCategory: "Select category",
+    selectSubcategory: "Select a subcategory",
+    backToCategories: "Back to Categories",
     allCategories: "All categories",
     noProductsFound: "No products found",
     noProductsMessage: "No products available in this category.",
