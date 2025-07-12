@@ -15,6 +15,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProductForm from "./pages/AdminProductForm";
 import AdminCategoryForm from "./pages/AdminCategoryForm";
+import AdminSubcategoryForm from "./pages/AdminSubcategoryForm";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminSiteImages from "./pages/AdminSiteImages";
 import AdminImageManager from "./pages/AdminImageManager";
@@ -64,6 +65,18 @@ function Router() {
         {(params) => {
           console.log('AdminCategoryForm route matched: /admin/categories/:id/edit', params);
           return <AdminCategoryForm />;
+        }}
+      </Route>
+      <Route path="/admin/subcategories/new">
+        {() => {
+          console.log('AdminSubcategoryForm route matched: /admin/subcategories/new');
+          return <AdminSubcategoryForm />;
+        }}
+      </Route>
+      <Route path="/admin/subcategories/:id/edit">
+        {(params) => {
+          console.log('AdminSubcategoryForm route matched: /admin/subcategories/:id/edit', params);
+          return <AdminSubcategoryForm />;
         }}
       </Route>
       <Route path="/admin/analytics" component={AdminAnalytics} />

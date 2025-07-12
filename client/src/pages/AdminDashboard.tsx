@@ -7,10 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
-import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage, Phone } from 'lucide-react';
+import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage, Phone, Layers, ArrowUpDown } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/hooks/useLanguage';
-import type { Category, Product, Inquiry, AdminUser } from '@shared/schema';
+import type { Category, Product, Inquiry, AdminUser, Subcategory } from '@shared/schema';
 
 // Check if user is authenticated
 function useAdminAuth() {
@@ -61,6 +61,11 @@ export default function AdminDashboard() {
   // Fetch data
   const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ['/api/admin/categories'],
+    enabled: isAuthenticated,
+  });
+
+  const { data: subcategories = [] } = useQuery<Subcategory[]>({
+    queryKey: ['/api/admin/subcategories'],
     enabled: isAuthenticated,
   });
 
@@ -144,6 +149,34 @@ export default function AdminDashboard() {
     },
   });
 
+  // Delete subcategory mutation
+  const deleteSubcategoryMutation = useMutation({
+    mutationFn: async (subcategoryId: number) => {
+      const response = await fetch(`/api/admin/subcategories/${subcategoryId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete subcategory');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/subcategories'] });
+      toast({
+        title: "Unterkategorie gelöscht",
+        description: "Die Unterkategorie wurde erfolgreich entfernt.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Fehler beim Löschen",
+        description: "Die Unterkategorie konnte nicht gelöscht werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Update inquiry status mutation
   const updateInquiryMutation = useMutation({
     mutationFn: async ({ id, status }: { id: number; status: string }) => {
@@ -217,6 +250,8 @@ export default function AdminDashboard() {
   const pendingInquiries = inquiries.filter((inquiry: Inquiry) => inquiry.status === 'new').length;
   const totalProducts = products.length;
   const activeProducts = products.filter((product: Product) => product.isActive).length;
+  const totalSubcategories = subcategories.length;
+  const activeSubcategories = subcategories.filter((subcategory: Subcategory) => subcategory.isActive).length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -312,7 +347,7 @@ export default function AdminDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{t('categories')}</CardTitle>
@@ -321,6 +356,16 @@ export default function AdminDashboard() {
             <CardContent>
               <div className="text-2xl font-bold">{categories.length}</div>
               <p className="text-xs text-muted-foreground">{t('activeCategories')}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Unterkategorien</CardTitle>
+              <Layers className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalSubcategories}</div>
+              <p className="text-xs text-muted-foreground">{activeSubcategories} aktiv</p>
             </CardContent>
           </Card>
 
@@ -359,9 +404,10 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs defaultValue="products" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="products">{t('manageProducts')}</TabsTrigger>
             <TabsTrigger value="categories">{t('manageCategories')}</TabsTrigger>
+            <TabsTrigger value="subcategories">Unterkategorien</TabsTrigger>
             <TabsTrigger value="inquiries">{t('customerInquiries')}</TabsTrigger>
           </TabsList>
 
@@ -513,6 +559,117 @@ export default function AdminDashboard() {
                 </Card>
               ))}
             </div>
+          </TabsContent>
+
+          {/* Subcategories Tab */}
+          <TabsContent value="subcategories" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-xl font-semibold">Unterkategorien-Verwaltung</h2>
+                <p className="text-gray-600">Organisieren Sie Ihre Unterkategorien mit freier Positionierung</p>
+              </div>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline"
+                  onClick={() => {
+                    // Sort subcategories by position
+                    const sorted = [...subcategories].sort((a, b) => a.sortOrder - b.sortOrder);
+                    console.log('Sorted subcategories:', sorted);
+                  }}
+                >
+                  <ArrowUpDown className="w-4 h-4 mr-2" />
+                  Sortierung anzeigen
+                </Button>
+                <Button 
+                  onClick={() => {
+                    console.log('Navigating to subcategory form...');
+                    setLocation('/admin/subcategories/new');
+                  }}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Neue Unterkategorie
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {subcategories
+                .sort((a, b) => a.sortOrder - b.sortOrder)
+                .map((subcategory: Subcategory) => {
+                  const parentCategory = categories.find(c => c.id === subcategory.categoryId);
+                  return (
+                    <Card key={subcategory.id} className="relative">
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                              <span className="text-blue-600 font-bold text-sm">
+                                {subcategory.sortOrder}
+                              </span>
+                            </div>
+                            <div>
+                              <CardTitle className="text-base">{subcategory.nameEs}</CardTitle>
+                              <CardDescription className="text-sm">
+                                {parentCategory?.nameEs || 'Keine Kategorie'}
+                              </CardDescription>
+                            </div>
+                          </div>
+                          <Layers className="w-4 h-4 text-gray-400" />
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-600 mb-4">
+                          {subcategory.descriptionEs || 'Keine Beschreibung'}
+                        </p>
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center space-x-2">
+                            <Badge variant={subcategory.isActive ? "default" : "secondary"}>
+                              {subcategory.isActive ? "Aktiv" : "Inaktiv"}
+                            </Badge>
+                            <span className="text-xs text-gray-500">
+                              Position: {subcategory.sortOrder}
+                            </span>
+                          </div>
+                          <div className="flex space-x-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setLocation(`/admin/subcategories/${subcategory.id}/edit`)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                if (confirm('Sind Sie sicher, dass Sie diese Unterkategorie löschen möchten?')) {
+                                  deleteSubcategoryMutation.mutate(subcategory.id);
+                                }
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+            </div>
+
+            {subcategories.length === 0 && (
+              <Card>
+                <CardContent className="text-center py-12">
+                  <Layers className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Keine Unterkategorien gefunden</h3>
+                  <p className="text-gray-600 mb-4">Erstellen Sie Ihre erste Unterkategorie zur besseren Organisation</p>
+                  <Button onClick={() => setLocation('/admin/subcategories/new')}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Erste Unterkategorie erstellen
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           {/* Inquiries Tab */}

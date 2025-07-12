@@ -55,11 +55,23 @@ export default function AdminSubcategoryForm() {
     queryKey: ['/api/admin/categories'],
   });
 
+  // Fetch existing subcategories to suggest next position
+  const { data: allSubcategories = [] } = useQuery<Subcategory[]>({
+    queryKey: ['/api/admin/subcategories'],
+  });
+
   // Fetch subcategory data if editing
   const { data: subcategory } = useQuery<Subcategory>({
     queryKey: ['/api/admin/subcategories', subcategoryId],
     enabled: isEditing && !!subcategoryId,
   });
+
+  // Calculate next available position
+  const getNextPosition = () => {
+    if (allSubcategories.length === 0) return 1;
+    const maxPosition = Math.max(...allSubcategories.map(sub => sub.sortOrder));
+    return maxPosition + 1;
+  };
 
   const form = useForm<SubcategoryForm>({
     resolver: zodResolver(subcategoryFormSchema),
@@ -78,6 +90,13 @@ export default function AdminSubcategoryForm() {
       isActive: true,
     },
   });
+
+  // Set next available position when creating new subcategory
+  useEffect(() => {
+    if (!isEditing && allSubcategories.length > 0) {
+      form.setValue('sortOrder', getNextPosition());
+    }
+  }, [allSubcategories, isEditing, form]);
 
   // Update form when subcategory data is loaded
   useEffect(() => {
@@ -318,14 +337,25 @@ export default function AdminSubcategoryForm() {
                     name="sortOrder"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Sortierung</FormLabel>
+                        <FormLabel>Position/Reihenfolge</FormLabel>
                         <FormControl>
-                          <Input 
-                            type="number" 
-                            placeholder="0" 
-                            {...field}
-                            onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                          />
+                          <div className="space-y-2">
+                            <Input 
+                              type="number" 
+                              placeholder="0" 
+                              {...field}
+                              onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                            />
+                            <div className="text-sm text-gray-600 bg-blue-50 p-2 rounded">
+                              💡 <strong>Positionierung:</strong> Niedrige Zahlen erscheinen zuerst (1, 2, 3, etc.)<br/>
+                              {!isEditing && (
+                                <>Empfohlen: <strong>{getNextPosition()}</strong> (nächste verfügbare Position)</>
+                              )}
+                              {isEditing && (
+                                <>Aktuell: <strong>{field.value}</strong> - ändern Sie die Zahl für neue Position</>
+                              )}
+                            </div>
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
