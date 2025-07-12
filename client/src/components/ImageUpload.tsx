@@ -4,28 +4,30 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Image, X, Copy, Check, Trash2 } from 'lucide-react';
+import { Upload, Image, X, Copy, Check, Trash2, Search, Grid, List, SortAsc, SortDesc, FileImage, Eye } from 'lucide-react';
+import type { UploadedImage } from '@shared/schema';
 
 interface ImageUploadProps {
   onImageSelect: (url: string) => void;
   currentImage?: string;
 }
 
-interface UploadedImage {
-  id: string;
-  filename: string;
-  url: string;
-  size: number;
-  uploadedAt: string;
-}
-
 export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
+  const [previewImage, setPreviewImage] = useState<UploadedImage | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState<'date' | 'name' | 'size'>('date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState<string>('all');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -102,6 +104,39 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
     },
   });
 
+  // Batch delete mutation
+  const batchDeleteMutation = useMutation({
+    mutationFn: async (imageIds: string[]) => {
+      const deletePromises = imageIds.map(id => 
+        fetch(`/api/admin/images/${id}`, { method: 'DELETE' })
+      );
+      
+      const responses = await Promise.all(deletePromises);
+      const failures = responses.filter(r => !r.ok);
+      
+      if (failures.length > 0) {
+        throw new Error(`${failures.length} Bilder konnten nicht gelöscht werden`);
+      }
+      
+      return responses;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Bilder gelöscht",
+        description: `${selectedImages.size} Bild(er) erfolgreich gelöscht.`,
+      });
+      setSelectedImages(new Set());
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/images'] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Fehler",
+        description: error.message || "Einige Bilder konnten nicht gelöscht werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -118,22 +153,50 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
     setDragActive(false);
     
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      uploadMutation.mutate(e.dataTransfer.files);
+      handleFiles(e.dataTransfer.files);
     }
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      // Limit to 5 files for better performance
-      const files = Array.from(e.target.files).slice(0, 5);
+      handleFiles(e.target.files);
+    }
+  };
+
+  const handleFiles = (files: FileList) => {
+    const validFiles = Array.from(files).filter(file => {
+      const isImage = file.type.startsWith('image/');
+      const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB
+      
+      if (!isImage) {
+        toast({
+          title: "Ungültige Datei",
+          description: `${file.name} ist keine gültige Bilddatei.`,
+          variant: "destructive",
+        });
+        return false;
+      }
+      
+      if (!isValidSize) {
+        toast({
+          title: "Datei zu groß",
+          description: `${file.name} ist größer als 10MB.`,
+          variant: "destructive",
+        });
+        return false;
+      }
+      
+      return true;
+    });
+
+    if (validFiles.length > 0) {
       const fileList = new DataTransfer();
-      files.forEach(file => fileList.items.add(file));
+      validFiles.forEach(file => fileList.items.add(file));
       uploadMutation.mutate(fileList.files);
     }
   };
 
   const handleImageSelect = (url: string) => {
-    // Use the URL as-is from the database
     onImageSelect(url);
     setIsOpen(false);
     toast({
@@ -160,6 +223,48 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+  const formatDate = (dateString: string | Date | null) => {
+    if (!dateString) return 'Unbekannt';
+    const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+    return date.toLocaleDateString('de-DE', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  // Filter and sort images
+  const filteredAndSortedImages = images
+    .filter(image => {
+      const matchesSearch = image.filename.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = filterCategory === 'all' || 
+        (filterCategory === 'products' && image.filename.includes('product')) ||
+        (filterCategory === 'categories' && image.filename.includes('category')) ||
+        (filterCategory === 'other' && !image.filename.includes('product') && !image.filename.includes('category'));
+      
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      let comparison = 0;
+      
+      switch (sortBy) {
+        case 'name':
+          comparison = a.filename.localeCompare(b.filename);
+          break;
+        case 'size':
+          comparison = a.size - b.size;
+          break;
+        case 'date':
+        default:
+          comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          break;
+      }
+      
+      return sortOrder === 'asc' ? comparison : -comparison;
+    });
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -168,28 +273,74 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
           Bild aus Mediathek wählen
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[80vh]">
+      <DialogContent className="max-w-6xl h-[90vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle>Mediathek</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <Image className="w-5 h-5" />
+            Professionelle Mediathek
+          </DialogTitle>
           <DialogDescription>
-            Laden Sie neue Bilder hoch oder wählen Sie aus vorhandenen Bildern
+            Laden Sie neue Bilder hoch, verwalten Sie Ihre Sammlung und wählen Sie das perfekte Bild aus
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="flex-1 flex flex-col space-y-6 overflow-hidden">
+          {/* Header with actions */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="flex items-center gap-2">
+              {selectedImages.size > 0 && (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => batchDeleteMutation.mutate(Array.from(selectedImages))}
+                  disabled={batchDeleteMutation.isPending}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  {selectedImages.size} löschen
+                </Button>
+              )}
+              
+              <div className="flex items-center border rounded-md">
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                  className="rounded-r-none"
+                >
+                  <Grid className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                  className="rounded-l-none"
+                >
+                  <List className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+
+            <Badge variant="outline" className="text-sm">
+              {filteredAndSortedImages.length} Bilder
+            </Badge>
+          </div>
+
           {/* Upload Area */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Bilder hochladen</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Upload className="w-5 h-5" />
+                Mehrere Bilder hochladen
+              </CardTitle>
               <CardDescription>
-                Ziehen Sie Bilder hierher oder klicken Sie zum Auswählen
+                Ziehen Sie mehrere Bilder hierher oder klicken Sie zum Auswählen (max. 10MB pro Datei)
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div
-                className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
                   dragActive 
-                    ? 'border-excalibur-blue bg-blue-50' 
+                    ? 'border-blue-500 bg-blue-50' 
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
                 onDragEnter={handleDrag}
@@ -197,9 +348,9 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
               >
-                <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-lg font-medium mb-2">
-                  Bilder hier ablegen oder 
+                <FileImage className="w-10 h-10 mx-auto mb-3 text-gray-400" />
+                <p className="text-base font-medium mb-2">
+                  Mehrere Bilder hier ablegen oder 
                   <Button
                     type="button"
                     variant="link"
@@ -210,7 +361,7 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
                   </Button>
                 </p>
                 <p className="text-sm text-gray-600">
-                  Unterstützte Formate: JPG, PNG, WebP (max. 10MB)
+                  JPG, PNG, WebP • Multi-Select • Drag & Drop
                 </p>
                 <input
                   ref={fileInputRef}
@@ -223,9 +374,9 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
               </div>
               
               {uploadMutation.isPending && (
-                <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                   <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-excalibur-blue mr-3"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-3"></div>
                     <span className="text-sm">Bilder werden hochgeladen...</span>
                   </div>
                 </div>
@@ -233,95 +384,291 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
             </CardContent>
           </Card>
 
-          {/* Image Gallery */}
+          {/* Filter Controls */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Vorhandene Bilder</CardTitle>
-              <CardDescription>
-                Klicken Sie auf ein Bild, um es auszuwählen
-              </CardDescription>
+              <CardTitle className="text-lg">Filter und Sortierung</CardTitle>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-96">
-                {isLoading ? (
-                  <div className="flex items-center justify-center h-32">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-excalibur-blue"></div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {/* Search */}
+                <div className="space-y-2">
+                  <Label htmlFor="search">Suche</Label>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      id="search"
+                      placeholder="Dateiname..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
                   </div>
-                ) : images.length === 0 ? (
-                  <div className="text-center py-12">
-                    <Image className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Keine Bilder</h3>
-                    <p className="text-gray-600">Laden Sie Ihr erstes Bild hoch</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {images.map((image) => (
-                      <div key={image.id} className="group relative">
-                        <div 
-                          className={`border-2 rounded-lg overflow-hidden cursor-pointer transition-colors ${
-                            currentImage === image.url 
-                              ? 'border-excalibur-blue bg-blue-50' 
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                          onClick={() => handleImageSelect(image.url)}
-                        >
-                          <div className="aspect-square">
+                </div>
+
+                {/* Category Filter */}
+                <div className="space-y-2">
+                  <Label>Kategorie</Label>
+                  <Select value={filterCategory} onValueChange={setFilterCategory}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Alle Bilder</SelectItem>
+                      <SelectItem value="products">Produkt-Bilder</SelectItem>
+                      <SelectItem value="categories">Kategorie-Bilder</SelectItem>
+                      <SelectItem value="other">Andere Bilder</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Sort By */}
+                <div className="space-y-2">
+                  <Label>Sortieren</Label>
+                  <Select value={sortBy} onValueChange={(value: 'date' | 'name' | 'size') => setSortBy(value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="date">Datum</SelectItem>
+                      <SelectItem value="name">Name</SelectItem>
+                      <SelectItem value="size">Größe</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Sort Order */}
+                <div className="space-y-2">
+                  <Label>Reihenfolge</Label>
+                  <Button
+                    variant="outline"
+                    onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                    className="w-full justify-start"
+                  >
+                    {sortOrder === 'asc' ? <SortAsc className="w-4 h-4 mr-2" /> : <SortDesc className="w-4 h-4 mr-2" />}
+                    {sortOrder === 'asc' ? 'Aufsteigend' : 'Absteigend'}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Image Gallery */}
+          <Card className="flex-1 flex flex-col">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <Image className="w-5 h-5" />
+                  Bildergalerie
+                </span>
+                {filteredAndSortedImages.length > 0 && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      const visibleIds = filteredAndSortedImages.map(img => img.id);
+                      if (selectedImages.size === visibleIds.length) {
+                        setSelectedImages(new Set());
+                      } else {
+                        setSelectedImages(new Set(visibleIds));
+                      }
+                    }}
+                  >
+                    {selectedImages.size === filteredAndSortedImages.length ? 'Alle abwählen' : 'Alle auswählen'}
+                  </Button>
+                )}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1 overflow-hidden">
+              {isLoading ? (
+                <div className="flex items-center justify-center h-32">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                </div>
+              ) : filteredAndSortedImages.length === 0 ? (
+                <div className="text-center py-12">
+                  <Image className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                  <p className="text-gray-600">
+                    {searchTerm || filterCategory !== 'all' ? 'Keine Bilder gefunden' : 'Keine Bilder hochgeladen'}
+                  </p>
+                </div>
+              ) : (
+                <ScrollArea className="h-full">
+                  {viewMode === 'grid' ? (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 p-2">
+                      {filteredAndSortedImages.map((image) => {
+                        const isSelected = selectedImages.has(image.id);
+                        
+                        return (
+                          <div 
+                            key={image.id}
+                            className={`group relative border-2 rounded-lg overflow-hidden transition-all cursor-pointer ${
+                              isSelected 
+                                ? 'border-blue-500 ring-2 ring-blue-200' 
+                                : 'border-gray-200 hover:border-gray-300'
+                            }`}
+                            onClick={() => {
+                              const newSelected = new Set(selectedImages);
+                              if (isSelected) {
+                                newSelected.delete(image.id);
+                              } else {
+                                newSelected.add(image.id);
+                              }
+                              setSelectedImages(newSelected);
+                            }}
+                          >
+                            <div className="aspect-square relative">
+                              <img
+                                src={image.url}
+                                alt={image.filename}
+                                className="w-full h-full object-cover"
+                              />
+                              
+                              {isSelected && (
+                                <div className="absolute top-2 left-2 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                                  <Check className="w-3 h-3 text-white" />
+                                </div>
+                              )}
+                              
+                              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity" />
+                              
+                              <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="flex gap-1">
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleImageSelect(image.url);
+                                    }}
+                                    className="h-6 px-2 text-xs"
+                                  >
+                                    Auswählen
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setPreviewImage(image);
+                                    }}
+                                    className="h-6 w-6 p-0"
+                                  >
+                                    <Eye className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="space-y-2 p-2">
+                      {filteredAndSortedImages.map((image) => {
+                        const isSelected = selectedImages.has(image.id);
+                        
+                        return (
+                          <div 
+                            key={image.id}
+                            className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all ${
+                              isSelected 
+                                ? 'border-blue-500 bg-blue-50' 
+                                : 'border-gray-200 hover:border-gray-300'
+                            }`}
+                            onClick={() => {
+                              const newSelected = new Set(selectedImages);
+                              if (isSelected) {
+                                newSelected.delete(image.id);
+                              } else {
+                                newSelected.add(image.id);
+                              }
+                              setSelectedImages(newSelected);
+                            }}
+                          >
                             <img
                               src={image.url}
                               alt={image.filename}
-                              className="w-full h-full object-cover"
+                              className="w-16 h-16 object-cover rounded-md"
                             />
+                            
+                            <div className="flex-1 ml-4">
+                              <p className="font-medium">{image.filename}</p>
+                              <p className="text-sm text-gray-600">
+                                {formatFileSize(image.size)} • {formatDate(image.createdAt)}
+                              </p>
+                            </div>
+                            
+                            <div className="flex items-center gap-2">
+                              <Button
+                                size="sm"
+                                variant="default"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleImageSelect(image.url);
+                                }}
+                              >
+                                Auswählen
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setPreviewImage(image);
+                                }}
+                              >
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                            </div>
                           </div>
-                          <div className="p-2">
-                            <p className="text-xs font-medium truncate">{image.filename}</p>
-                            <p className="text-xs text-gray-500">{formatFileSize(image.size)}</p>
-                          </div>
-                        </div>
-                        
-                        {/* Action Buttons */}
-                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div className="flex space-x-1">
-                            <Button
-                              size="sm"
-                              variant="secondary"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                copyToClipboard(image.url, image.id);
-                              }}
-                            >
-                              {copiedId === image.id ? (
-                                <Check className="w-3 h-3" />
-                              ) : (
-                                <Copy className="w-3 h-3" />
-                              )}
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                deleteMutation.mutate(image.id);
-                              }}
-                            >
-                              <Trash2 className="w-3 h-3" />
-                            </Button>
-                          </div>
-                        </div>
-                        
-                        {/* Selection Indicator */}
-                        {currentImage === image.url && (
-                          <div className="absolute top-2 left-2">
-                            <Badge variant="default">Ausgewählt</Badge>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </ScrollArea>
+                        );
+                      })}
+                    </div>
+                  )}
+                </ScrollArea>
+              )}
             </CardContent>
           </Card>
         </div>
+
+        {/* Preview Dialog */}
+        <Dialog open={previewImage !== null} onOpenChange={() => setPreviewImage(null)}>
+          <DialogContent className="max-w-4xl">
+            <DialogHeader>
+              <DialogTitle>{previewImage?.filename}</DialogTitle>
+              <DialogDescription>
+                {previewImage && formatFileSize(previewImage.size)} • {previewImage && formatDate(previewImage.createdAt)}
+              </DialogDescription>
+            </DialogHeader>
+            {previewImage && (
+              <div className="space-y-4">
+                <img
+                  src={previewImage.url}
+                  alt={previewImage.filename}
+                  className="w-full h-auto max-h-96 object-contain rounded-lg"
+                />
+                <div className="flex gap-2">
+                  <Button
+                    variant="default"
+                    onClick={() => {
+                      handleImageSelect(previewImage.url);
+                      setPreviewImage(null);
+                    }}
+                  >
+                    Dieses Bild auswählen
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => copyToClipboard(previewImage.url, previewImage.id)}
+                  >
+                    <Copy className="w-4 h-4 mr-2" />
+                    URL kopieren
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </DialogContent>
     </Dialog>
   );
