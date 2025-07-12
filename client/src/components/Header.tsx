@@ -51,9 +51,9 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <img 
-              src="/uploads/excalibur-logo-kuba.png" 
+              src="/uploads/excalibur-logo-kuba-kleiner.png" 
               alt="Excalibur Cuba" 
-              className="h-12 w-auto object-contain"
+              className="h-8 w-auto object-contain"
             />
           </Link>
 
@@ -86,15 +86,17 @@ export function Header() {
             <span>{t('whatsapp')}</span>
           </a>
 
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="md:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </Button>
+          {/* Mobile Menu Button and Cart */}
+          <div className="md:hidden flex items-center space-x-2">
+            <CartIcon onClick={() => setIsCartOpen(true)} />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </Button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -122,7 +124,6 @@ export function Header() {
                 <MessageCircle size={20} />
                 <span>{t('whatsapp')}</span>
               </a>
-              <CartIcon onClick={() => setIsCartOpen(true)} />
             </div>
           </div>
         )}

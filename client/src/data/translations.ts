@@ -1170,7 +1170,7 @@ export const translations = {
     emailAddresses: "Email Addresses",
     requestQuote: "Request Quote",
     name: "Name",
-    phone: "WhatsApp Number",
+    phone: "Phone Number",
     email: "Email",
     systemType: "System Type",
     select: "Select...",

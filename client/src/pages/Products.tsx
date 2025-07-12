@@ -316,34 +316,36 @@ export default function Products() {
             {filteredProducts.map((product) => (
               <div key={product.id} className="group">
                 <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1">
-                  <div className="relative overflow-hidden rounded-t-lg">
-                    <img
-                      src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
-                      alt={getLocalizedText(product, 'name')}
-                      className="w-full h-48 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=500&fit=crop';
-                      }}
-                    />
-                    {product.isFeatured && (
-                      <Badge className="absolute top-3 left-3 bg-excalibur-orange text-white">
-                        {t('featured')}
+                  <Link to={`/product/${product.slug}`}>
+                    <div className="relative overflow-hidden rounded-t-lg cursor-pointer">
+                      <img
+                        src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
+                        alt={getLocalizedText(product, 'name')}
+                        className="w-full h-48 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = 'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=500&fit=crop';
+                        }}
+                      />
+                      {product.isFeatured && (
+                        <Badge className="absolute top-3 left-3 bg-excalibur-orange text-white">
+                          {t('featured')}
+                        </Badge>
+                      )}
+                      <Badge 
+                        className={`absolute top-3 right-3 ${
+                          product.stockStatus === 'in_stock' 
+                            ? 'bg-green-500' 
+                            : product.stockStatus === 'limited'
+                            ? 'bg-yellow-500'
+                            : 'bg-red-500'
+                        } text-white`}
+                      >
+                        {t(product.stockStatus || 'in_stock')}
                       </Badge>
-                    )}
-                    <Badge 
-                      className={`absolute top-3 right-3 ${
-                        product.stockStatus === 'in_stock' 
-                          ? 'bg-green-500' 
-                          : product.stockStatus === 'limited'
-                          ? 'bg-yellow-500'
-                          : 'bg-red-500'
-                      } text-white`}
-                    >
-                      {t(product.stockStatus || 'in_stock')}
-                    </Badge>
-                  </div>
+                    </div>
+                  </Link>
                   
                   <CardHeader>
                     <CardTitle className="text-xl group-hover:text-excalibur-blue transition-colors">
