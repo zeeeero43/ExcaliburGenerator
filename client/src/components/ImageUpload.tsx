@@ -273,7 +273,7 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
           Bild aus Mediathek wählen
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-6xl h-[90vh] flex flex-col">
+      <DialogContent className="max-w-7xl h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Image className="w-5 h-5" />
@@ -284,187 +284,187 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 flex flex-col space-y-6 overflow-hidden">
-          {/* Header with actions */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div className="flex items-center gap-2">
-              {selectedImages.size > 0 && (
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => batchDeleteMutation.mutate(Array.from(selectedImages))}
-                  disabled={batchDeleteMutation.isPending}
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  {selectedImages.size} löschen
-                </Button>
-              )}
-              
-              <div className="flex items-center border rounded-md">
-                <Button
-                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('grid')}
-                  className="rounded-r-none"
-                >
-                  <Grid className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('list')}
-                  className="rounded-l-none"
-                >
-                  <List className="w-4 h-4" />
-                </Button>
+        <div className="flex-1 flex gap-6 overflow-hidden">
+          {/* LEFT SIDEBAR: Controls and Settings */}
+          <div className="w-96 flex flex-col space-y-4 overflow-y-auto">
+            {/* Header Actions */}
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                {selectedImages.size > 0 && (
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => batchDeleteMutation.mutate(Array.from(selectedImages))}
+                    disabled={batchDeleteMutation.isPending}
+                    className="flex-1"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    {selectedImages.size} löschen
+                  </Button>
+                )}
+                
+                <div className="flex items-center border rounded-md">
+                  <Button
+                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('grid')}
+                    className="rounded-r-none"
+                  >
+                    <Grid className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('list')}
+                    className="rounded-l-none"
+                  >
+                    <List className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
+
+              <Badge variant="outline" className="text-sm text-center">
+                {filteredAndSortedImages.length} Bilder
+              </Badge>
             </div>
 
-            <Badge variant="outline" className="text-sm">
-              {filteredAndSortedImages.length} Bilder
-            </Badge>
-          </div>
+            {/* Upload Area */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Upload className="w-4 h-4" />
+                  Bilder hochladen
+                </CardTitle>
+                <CardDescription className="text-sm">
+                  Mehrere Bilder gleichzeitig (max. 10MB)
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div
+                  className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
+                    dragActive 
+                      ? 'border-blue-500 bg-blue-50' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  onDragEnter={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDragOver={handleDrag}
+                  onDrop={handleDrop}
+                >
+                  <FileImage className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                  <p className="text-sm font-medium mb-1">
+                    Bilder ablegen oder 
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="p-0 ml-1 h-auto text-sm"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      durchsuchen
+                    </Button>
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    JPG, PNG, WebP
+                  </p>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleFileInput}
+                    className="hidden"
+                  />
+                </div>
+                
+                {uploadMutation.isPending && (
+                  <div className="mt-3 p-2 bg-blue-50 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600 mr-2"></div>
+                      <span className="text-xs">Hochladen...</span>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
-          {/* Upload Area */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Upload className="w-5 h-5" />
-                Mehrere Bilder hochladen
-              </CardTitle>
-              <CardDescription>
-                Ziehen Sie mehrere Bilder hierher oder klicken Sie zum Auswählen (max. 10MB pro Datei)
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div
-                className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                  dragActive 
-                    ? 'border-blue-500 bg-blue-50' 
-                    : 'border-gray-300 hover:border-gray-400'
-                }`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={handleDrop}
-              >
-                <FileImage className="w-10 h-10 mx-auto mb-3 text-gray-400" />
-                <p className="text-base font-medium mb-2">
-                  Mehrere Bilder hier ablegen oder 
-                  <Button
-                    type="button"
-                    variant="link"
-                    className="p-0 ml-1"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    durchsuchen
-                  </Button>
-                </p>
-                <p className="text-sm text-gray-600">
-                  JPG, PNG, WebP • Multi-Select • Drag & Drop
-                </p>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={handleFileInput}
-                  className="hidden"
-                />
-              </div>
-              
-              {uploadMutation.isPending && (
-                <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-3"></div>
-                    <span className="text-sm">Bilder werden hochgeladen...</span>
+            {/* Filter Controls */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Filter & Sortierung</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {/* Search */}
+                  <div className="space-y-2">
+                    <Label htmlFor="search" className="text-sm">Suche</Label>
+                    <div className="relative">
+                      <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        id="search"
+                        placeholder="Dateiname..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Category Filter */}
+                  <div className="space-y-2">
+                    <Label className="text-sm">Kategorie</Label>
+                    <Select value={filterCategory} onValueChange={setFilterCategory}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Alle Bilder</SelectItem>
+                        <SelectItem value="products">Produkt-Bilder</SelectItem>
+                        <SelectItem value="categories">Kategorie-Bilder</SelectItem>
+                        <SelectItem value="other">Andere Bilder</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Sort By */}
+                  <div className="space-y-2">
+                    <Label className="text-sm">Sortieren</Label>
+                    <Select value={sortBy} onValueChange={(value: 'date' | 'name' | 'size') => setSortBy(value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="date">Datum</SelectItem>
+                        <SelectItem value="name">Name</SelectItem>
+                        <SelectItem value="size">Größe</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Sort Order */}
+                  <div className="space-y-2">
+                    <Label className="text-sm">Reihenfolge</Label>
+                    <Button
+                      variant="outline"
+                      onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                      className="w-full justify-start"
+                    >
+                      {sortOrder === 'asc' ? <SortAsc className="w-4 h-4 mr-2" /> : <SortDesc className="w-4 h-4 mr-2" />}
+                      {sortOrder === 'asc' ? 'Aufsteigend' : 'Absteigend'}
+                    </Button>
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          {/* Filter Controls */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Filter und Sortierung</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                {/* Search */}
-                <div className="space-y-2">
-                  <Label htmlFor="search">Suche</Label>
-                  <div className="relative">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="search"
-                      placeholder="Dateiname..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-
-                {/* Category Filter */}
-                <div className="space-y-2">
-                  <Label>Kategorie</Label>
-                  <Select value={filterCategory} onValueChange={setFilterCategory}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Alle Bilder</SelectItem>
-                      <SelectItem value="products">Produkt-Bilder</SelectItem>
-                      <SelectItem value="categories">Kategorie-Bilder</SelectItem>
-                      <SelectItem value="other">Andere Bilder</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Sort By */}
-                <div className="space-y-2">
-                  <Label>Sortieren</Label>
-                  <Select value={sortBy} onValueChange={(value: 'date' | 'name' | 'size') => setSortBy(value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="date">Datum</SelectItem>
-                      <SelectItem value="name">Name</SelectItem>
-                      <SelectItem value="size">Größe</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Sort Order */}
-                <div className="space-y-2">
-                  <Label>Reihenfolge</Label>
+            {/* Bulk Actions */}
+            {filteredAndSortedImages.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Aktionen</CardTitle>
+                </CardHeader>
+                <CardContent>
                   <Button
                     variant="outline"
-                    onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                    className="w-full justify-start"
-                  >
-                    {sortOrder === 'asc' ? <SortAsc className="w-4 h-4 mr-2" /> : <SortDesc className="w-4 h-4 mr-2" />}
-                    {sortOrder === 'asc' ? 'Aufsteigend' : 'Absteigend'}
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Image Gallery */}
-          <Card className="flex-1 flex flex-col">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span className="flex items-center gap-2">
-                  <Image className="w-5 h-5" />
-                  Bildergalerie
-                </span>
-                {filteredAndSortedImages.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
                     onClick={() => {
                       const visibleIds = filteredAndSortedImages.map(img => img.id);
                       if (selectedImages.size === visibleIds.length) {
@@ -473,162 +473,183 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
                         setSelectedImages(new Set(visibleIds));
                       }
                     }}
+                    className="w-full"
                   >
                     {selectedImages.size === filteredAndSortedImages.length ? 'Alle abwählen' : 'Alle auswählen'}
                   </Button>
-                )}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 overflow-hidden">
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* RIGHT MAIN AREA: Image Gallery */}
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <Image className="w-5 h-5" />
+                Bildergalerie
+              </h3>
+              {selectedImages.size > 0 && (
+                <Badge variant="secondary">
+                  {selectedImages.size} ausgewählt
+                </Badge>
+              )}
+            </div>
+
+            <div className="flex-1 border rounded-lg overflow-hidden">
               {isLoading ? (
-                <div className="flex items-center justify-center h-32">
+                <div className="flex items-center justify-center h-full">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 </div>
               ) : filteredAndSortedImages.length === 0 ? (
-                <div className="text-center py-12">
-                  <Image className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                  <p className="text-gray-600">
-                    {searchTerm || filterCategory !== 'all' ? 'Keine Bilder gefunden' : 'Keine Bilder hochgeladen'}
-                  </p>
+                <div className="flex items-center justify-center h-full text-center">
+                  <div>
+                    <Image className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                    <p className="text-gray-600">
+                      {searchTerm || filterCategory !== 'all' ? 'Keine Bilder gefunden' : 'Keine Bilder hochgeladen'}
+                    </p>
+                  </div>
                 </div>
               ) : (
                 <ScrollArea className="h-full">
-                  {viewMode === 'grid' ? (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 p-2">
-                      {filteredAndSortedImages.map((image) => {
-                        const isSelected = selectedImages.has(image.id);
-                        
-                        return (
-                          <div 
-                            key={image.id}
-                            className={`group relative border-2 rounded-lg overflow-hidden transition-all cursor-pointer ${
-                              isSelected 
-                                ? 'border-blue-500 ring-2 ring-blue-200' 
-                                : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                            onClick={() => {
-                              const newSelected = new Set(selectedImages);
-                              if (isSelected) {
-                                newSelected.delete(image.id);
-                              } else {
-                                newSelected.add(image.id);
-                              }
-                              setSelectedImages(newSelected);
-                            }}
-                          >
-                            <div className="aspect-square relative">
-                              <img
-                                src={image.url}
-                                alt={image.filename}
-                                className="w-full h-full object-cover"
-                              />
-                              
-                              {isSelected && (
-                                <div className="absolute top-2 left-2 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                                  <Check className="w-3 h-3 text-white" />
-                                </div>
-                              )}
-                              
-                              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity" />
-                              
-                              <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div className="flex gap-1">
-                                  <Button
-                                    size="sm"
-                                    variant="secondary"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleImageSelect(image.url);
-                                    }}
-                                    className="h-6 px-2 text-xs"
-                                  >
-                                    Auswählen
-                                  </Button>
-                                  <Button
-                                    size="sm"
-                                    variant="secondary"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setPreviewImage(image);
-                                    }}
-                                    className="h-6 w-6 p-0"
-                                  >
-                                    <Eye className="w-3 h-3" />
-                                  </Button>
+                  <div className="p-4">
+                    {viewMode === 'grid' ? (
+                      <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
+                        {filteredAndSortedImages.map((image) => {
+                          const isSelected = selectedImages.has(image.id);
+                          
+                          return (
+                            <div 
+                              key={image.id}
+                              className={`group relative border-2 rounded-lg overflow-hidden transition-all cursor-pointer hover:shadow-md ${
+                                isSelected 
+                                  ? 'border-blue-500 ring-2 ring-blue-200' 
+                                  : 'border-gray-200 hover:border-gray-300'
+                              }`}
+                              onClick={() => {
+                                const newSelected = new Set(selectedImages);
+                                if (isSelected) {
+                                  newSelected.delete(image.id);
+                                } else {
+                                  newSelected.add(image.id);
+                                }
+                                setSelectedImages(newSelected);
+                              }}
+                            >
+                              <div className="aspect-square relative">
+                                <img
+                                  src={image.url}
+                                  alt={image.filename}
+                                  className="w-full h-full object-cover"
+                                />
+                                
+                                {isSelected && (
+                                  <div className="absolute top-2 left-2 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                                    <Check className="w-3 h-3 text-white" />
+                                  </div>
+                                )}
+                                
+                                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity" />
+                                
+                                <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <div className="flex gap-1">
+                                    <Button
+                                      size="sm"
+                                      variant="secondary"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleImageSelect(image.url);
+                                      }}
+                                      className="h-6 px-2 text-xs flex-1"
+                                    >
+                                      Auswählen
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="secondary"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setPreviewImage(image);
+                                      }}
+                                      className="h-6 w-6 p-0"
+                                    >
+                                      <Eye className="w-3 h-3" />
+                                    </Button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="space-y-2 p-2">
-                      {filteredAndSortedImages.map((image) => {
-                        const isSelected = selectedImages.has(image.id);
-                        
-                        return (
-                          <div 
-                            key={image.id}
-                            className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all ${
-                              isSelected 
-                                ? 'border-blue-500 bg-blue-50' 
-                                : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                            onClick={() => {
-                              const newSelected = new Set(selectedImages);
-                              if (isSelected) {
-                                newSelected.delete(image.id);
-                              } else {
-                                newSelected.add(image.id);
-                              }
-                              setSelectedImages(newSelected);
-                            }}
-                          >
-                            <img
-                              src={image.url}
-                              alt={image.filename}
-                              className="w-16 h-16 object-cover rounded-md"
-                            />
-                            
-                            <div className="flex-1 ml-4">
-                              <p className="font-medium">{image.filename}</p>
-                              <p className="text-sm text-gray-600">
-                                {formatFileSize(image.size)} • {formatDate(image.createdAt)}
-                              </p>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {filteredAndSortedImages.map((image) => {
+                          const isSelected = selectedImages.has(image.id);
+                          
+                          return (
+                            <div 
+                              key={image.id}
+                              className={`flex items-center p-3 border rounded-lg cursor-pointer transition-all hover:shadow-sm ${
+                                isSelected 
+                                  ? 'border-blue-500 bg-blue-50' 
+                                  : 'border-gray-200 hover:border-gray-300'
+                              }`}
+                              onClick={() => {
+                                const newSelected = new Set(selectedImages);
+                                if (isSelected) {
+                                  newSelected.delete(image.id);
+                                } else {
+                                  newSelected.add(image.id);
+                                }
+                                setSelectedImages(newSelected);
+                              }}
+                            >
+                              <img
+                                src={image.url}
+                                alt={image.filename}
+                                className="w-16 h-16 object-cover rounded-md"
+                              />
+                              
+                              <div className="flex-1 ml-4">
+                                <p className="font-medium">{image.filename}</p>
+                                <p className="text-sm text-gray-600">
+                                  {formatFileSize(image.size)} • {formatDate(image.createdAt)}
+                                </p>
+                              </div>
+                              
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  size="sm"
+                                  variant="default"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleImageSelect(image.url);
+                                  }}
+                                >
+                                  Auswählen
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setPreviewImage(image);
+                                  }}
+                                >
+                                  <Eye className="w-4 h-4" />
+                                </Button>
+                              </div>
                             </div>
-                            
-                            <div className="flex items-center gap-2">
-                              <Button
-                                size="sm"
-                                variant="default"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleImageSelect(image.url);
-                                }}
-                              >
-                                Auswählen
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setPreviewImage(image);
-                                }}
-                              >
-                                <Eye className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </ScrollArea>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
         {/* Preview Dialog */}

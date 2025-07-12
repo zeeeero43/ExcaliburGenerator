@@ -27,8 +27,8 @@ if (!fs.existsSync(uploadsDir)) {
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB for faster uploads
-    files: 5, // Max 5 files per upload
+    fileSize: 10 * 1024 * 1024, // 10MB per file
+    files: 10, // Max 10 files per upload for better batch processing
   },
   fileFilter: (req, file, cb) => {
     const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];

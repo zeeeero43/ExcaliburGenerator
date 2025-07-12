@@ -391,6 +391,16 @@ Changelog:
   * Updated English translations to match German and Spanish messaging consistency
   * All messaging now focuses on energy independence and self-production rather than cost savings
   * Trilingual consistency maintained across all content changes
+- July 12, 2025 (critical layout restructure). Fixed major media library layout and scrolling issues:
+  * Completely restructured ImageUpload component from vertical to horizontal layout
+  * Added left sidebar (320px) with all controls: upload, search, filters, sorting, actions
+  * Created right main area (flexible) for image gallery with proper ScrollArea implementation
+  * Fixed scrolling problem - gallery now uses h-full with proper flex-1 space allocation
+  * Increased multer limits from 5 to 10 files per upload to prevent "Too many files" error
+  * Enhanced grid view to support up to 10 columns on large screens for better space utilization
+  * Improved dialog sizing to max-w-7xl h-[90vh] for optimal screen coverage without cutoff
+  * Media library now provides professional workflow with settings on left, images on right
+  * All scrolling and layout issues resolved - media library now fully functional in product/category forms
 ```
 
 ## User Preferences
