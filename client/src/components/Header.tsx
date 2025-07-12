@@ -36,7 +36,7 @@ export function Header() {
               </div>
               <div className="flex items-center space-x-1">
                 <Phone size={14} />
-                <span>+49 157 5169 1275</span>
+                <span>+49 160 323 9439</span>
               </div>
             </div>
           </div>
