@@ -196,7 +196,9 @@ export default function AdminSubcategoryForm() {
         : '/api/admin/subcategories';
       const method = isEditing ? 'PUT' : 'POST';
       
-      await apiRequest(url, {
+      console.log('🚀 MUTATION REQUEST:', { url, method, data });
+      
+      return await apiRequest(url, {
         method,
         body: JSON.stringify(data),
       });
@@ -302,7 +304,7 @@ export default function AdminSubcategoryForm() {
                         <SelectContent>
                           {categories.map((category) => (
                             <SelectItem key={category.id} value={category.id.toString()}>
-                              {category.nameEs}
+                              {category.nameDe || category.nameEs || category.name}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -432,11 +434,11 @@ export default function AdminSubcategoryForm() {
                     name="descriptionEs"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Beschreibung (Spanisch)</FormLabel>
+                        <FormLabel className="text-gray-600">→ Beschreibung (Spanisch)</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Descripción de la subcategoría..."
-                            className="min-h-[100px]"
+                            placeholder="Wird automatisch übersetzt..."
+                            className="min-h-[100px] bg-gray-100 border-gray-200"
                             {...field}
                             readOnly
                           />
@@ -454,11 +456,11 @@ export default function AdminSubcategoryForm() {
                     name="descriptionEn"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Beschreibung (Englisch)</FormLabel>
+                        <FormLabel className="text-gray-600">→ Beschreibung (Englisch)</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Subcategory description..."
-                            className="min-h-[100px]"
+                            placeholder="Wird automatisch übersetzt..."
+                            className="min-h-[100px] bg-gray-100 border-gray-200"
                             {...field}
                             readOnly
                           />
