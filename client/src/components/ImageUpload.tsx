@@ -286,7 +286,7 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
 
         <div className="flex-1 flex gap-6 overflow-hidden">
           {/* LEFT SIDEBAR: Controls and Settings */}
-          <div className="w-96 flex flex-col space-y-4 overflow-y-auto">
+          <div className="w-1/3 flex flex-col space-y-4 overflow-y-auto">
             {/* Header Actions */}
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
@@ -514,7 +514,7 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
                 <ScrollArea className="h-full">
                   <div className="p-4">
                     {viewMode === 'grid' ? (
-                      <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                         {filteredAndSortedImages.map((image) => {
                           const isSelected = selectedImages.has(image.id);
                           
