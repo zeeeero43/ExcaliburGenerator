@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import type { Category, Subcategory } from '@shared/schema';
+import { ImageUpload } from '@/components/ImageUpload';
 
 const subcategoryFormSchema = z.object({
   categoryId: z.coerce.number().min(1, "Kategorie ist erforderlich"),
@@ -479,15 +480,31 @@ export default function AdminSubcategoryForm() {
                   name="image"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Bild</FormLabel>
+                      <FormLabel>Unterkategorie-Bild</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Bild URL (z.B. https://example.com/image.jpg)"
-                          {...field}
-                        />
+                        <div className="space-y-2">
+                          <ImageUpload 
+                            onImageSelect={field.onChange}
+                            currentImage={field.value}
+                          />
+                          <Input 
+                            {...field} 
+                            placeholder="Oder URL eingeben: https://..." 
+                            className="mt-2"
+                          />
+                          {field.value && (
+                            <div className="mt-2">
+                              <img 
+                                src={field.value} 
+                                alt="Unterkategorie-Bild Vorschau" 
+                                className="w-32 h-32 object-contain bg-gray-100 rounded border"
+                              />
+                            </div>
+                          )}
+                        </div>
                       </FormControl>
                       <div className="text-xs text-gray-500">
-                        Geben Sie eine URL für das Unterkategorie-Bild ein
+                        Wählen Sie ein Bild für die Unterkategorie aus
                       </div>
                       <FormMessage />
                     </FormItem>
