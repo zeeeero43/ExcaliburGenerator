@@ -27,10 +27,18 @@ export function AddToCartButton({
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
 
+  // Check if product has custom availability text (should not be addable to cart)
+  const hasCustomAvailabilityText = !!(product.availabilityTextEs || product.availabilityTextDe || product.availabilityTextEn);
+  
+  // Check if product is actually in stock
+  const isInStock = product.stockStatus === 'in_stock' && !hasCustomAvailabilityText;
+
   const currentItem = items.find(item => item.product.id === product.id);
   const currentQuantity = currentItem?.quantity || 0;
 
   const handleAddToCart = async () => {
+    if (!isInStock) return;
+    
     setIsAdding(true);
     
     try {
@@ -80,6 +88,7 @@ export function AddToCartButton({
           variant="outline"
           size={size}
           onClick={() => updateQuantity(product.id, currentQuantity + 1)}
+          disabled={!isInStock}
         >
           <Plus className="w-4 h-4" />
         </Button>
@@ -116,13 +125,18 @@ export function AddToCartButton({
         variant={variant}
         size={size}
         onClick={handleAddToCart}
-        disabled={isAdding}
-        className={`${isAdding ? 'bg-green-600 hover:bg-green-600' : ''}`}
+        disabled={isAdding || !isInStock}
+        className={`${isAdding ? 'bg-green-600 hover:bg-green-600' : ''} ${!isInStock ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         {isAdding ? (
           <>
             <Check className="w-4 h-4 mr-2" />
             Hinzugefügt
+          </>
+        ) : !isInStock ? (
+          <>
+            <ShoppingCart className="w-4 h-4 mr-2" />
+            {hasCustomAvailabilityText ? 'Nicht verfügbar' : t('outOfStock')}
           </>
         ) : (
           <>

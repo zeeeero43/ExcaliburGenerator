@@ -86,9 +86,15 @@ export function ProductComparison({ products, onRemoveProduct, onAddMoreProducts
                                        (product.stockStatus === 'in_stock' ? 'Verfügbar' : 
                                         product.stockStatus === 'out_of_stock' ? 'Nicht verfügbar' : 'Auf Bestellung');
                 
+                // Check if has custom availability text
+                const hasCustomAvailabilityText = !!(product.availabilityTextEs || product.availabilityTextDe || product.availabilityTextEn);
+                
+                // Get effective stock status
+                const effectiveStockStatus = hasCustomAvailabilityText ? 'limited' : (product.stockStatus || 'in_stock');
+                
                 return (
                   <td key={product.id} className="py-3 px-4 text-center">
-                    <Badge variant={product.stockStatus === 'in_stock' ? 'default' : 'secondary'}>
+                    <Badge variant={effectiveStockStatus === 'in_stock' ? 'default' : 'secondary'}>
                       {availabilityText}
                     </Badge>
                   </td>

@@ -58,6 +58,24 @@ export default function Products() {
     return customText || t(product.stockStatus || 'in_stock');
   };
 
+  // Helper function to check if product has custom availability text
+  const hasCustomAvailabilityText = (product: any) => {
+    if (!product) return false;
+    return !!(product.availabilityTextEs || product.availabilityTextDe || product.availabilityTextEn);
+  };
+
+  // Helper function to get effective stock status (considering custom availability)
+  const getEffectiveStockStatus = (product: any) => {
+    if (!product) return 'in_stock';
+    
+    // If custom availability text exists, treat as 'limited' (yellow/orange)
+    if (hasCustomAvailabilityText(product)) {
+      return 'limited';
+    }
+    
+    return product.stockStatus || 'in_stock';
+  };
+
   // Filter subcategories by selected category
   const filteredSubcategories = selectedCategory
     ? subcategories.filter(subcategory => 
@@ -352,9 +370,9 @@ export default function Products() {
                       )}
                       <Badge 
                         className={`absolute top-3 right-3 ${
-                          product.stockStatus === 'in_stock' 
+                          getEffectiveStockStatus(product) === 'in_stock' 
                             ? 'bg-green-500' 
-                            : product.stockStatus === 'limited'
+                            : getEffectiveStockStatus(product) === 'limited'
                             ? 'bg-yellow-500'
                             : 'bg-red-500'
                         } text-white`}

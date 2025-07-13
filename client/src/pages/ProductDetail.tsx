@@ -87,6 +87,19 @@ export default function ProductDetail() {
     // Use custom text if available, otherwise use default translation
     return customText || t(product.stockStatus || 'in_stock');
   };
+
+  // Helper functions for availability logic
+  const hasCustomAvailabilityText = !!(product?.availabilityTextEs || product?.availabilityTextDe || product?.availabilityTextEn);
+  const getEffectiveStockStatus = () => {
+    if (!product) return 'in_stock';
+    
+    // If custom availability text exists, treat as 'limited' (yellow/orange)
+    if (hasCustomAvailabilityText) {
+      return 'limited';
+    }
+    
+    return product.stockStatus || 'in_stock';
+  };
   
   // Check if we have extended description content
   const hasExtendedDescription = productDescription && productDescription.length > 200;
@@ -233,12 +246,12 @@ export default function ProductDetail() {
               {/* Stock Status */}
               <div className="flex items-center gap-2 mb-4">
                 <Check className={`w-5 h-5 ${
-                  product.stockStatus === 'in_stock' ? 'text-green-600' : 
-                  product.stockStatus === 'limited' ? 'text-yellow-600' : 'text-red-600'
+                  getEffectiveStockStatus() === 'in_stock' ? 'text-green-600' : 
+                  getEffectiveStockStatus() === 'limited' ? 'text-yellow-600' : 'text-red-600'
                 }`} />
                 <span className={`font-semibold ${
-                  product.stockStatus === 'in_stock' ? 'text-green-600' : 
-                  product.stockStatus === 'limited' ? 'text-yellow-600' : 'text-red-600'
+                  getEffectiveStockStatus() === 'in_stock' ? 'text-green-600' : 
+                  getEffectiveStockStatus() === 'limited' ? 'text-yellow-600' : 'text-red-600'
                 }`}>
                   {getAvailabilityText()}
                 </span>

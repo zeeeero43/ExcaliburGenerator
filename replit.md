@@ -435,6 +435,14 @@ Changelog:
   * Added missing clearCart translations for all languages (German: "Alles löschen", English: "Clear all", Spanish: "Limpiar todo")
   * Updated all cart buttons to use proper translation functions instead of hardcoded text
   * Both individual "Remove" and "Clear all" buttons now display correctly in all languages
+- July 13, 2025 (availability system overhaul). Completely fixed product availability display and cart functionality:
+  * Fixed availability display bug: products with custom availability texts (e.g. "in 2 monaten verfügbar") now show yellow/orange instead of green
+  * Disabled cart functionality for products with custom availability texts - they cannot be added to cart anymore
+  * Implemented comprehensive availability logic across all pages: Products, ProductDetail, ProductComparison
+  * Added effective stock status calculation that treats custom availability texts as "limited" status
+  * Updated AddToCartButton to disable both initial add and quantity increase for non-available products
+  * Custom availability texts now properly override default stock status translations in all languages
+  * All availability colors now correctly reflect actual product availability status
 ```
 
 ## User Preferences
