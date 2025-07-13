@@ -103,6 +103,27 @@ export default function AdminSubcategoryForm() {
     }
   }, [allSubcategories, isEditing, form]);
 
+  // Update form when subcategory data loads (like category editing)
+  useEffect(() => {
+    if (subcategory && isEditing) {
+      form.reset({
+        categoryId: subcategory.categoryId,
+        name: subcategory.name || '',
+        nameEs: subcategory.nameEs || '',
+        nameDe: subcategory.nameDe || '',
+        nameEn: subcategory.nameEn || '',
+        description: subcategory.description || '',
+        descriptionEs: subcategory.descriptionEs || '',
+        descriptionDe: subcategory.descriptionDe || '',
+        descriptionEn: subcategory.descriptionEn || '',
+        image: subcategory.image || '',
+        slug: subcategory.slug || '',
+        sortOrder: subcategory.sortOrder ?? 0,
+        isActive: subcategory.isActive ?? true,
+      });
+    }
+  }, [subcategory, isEditing, form]);
+
   // Translation function
   const translateText = async (text: string, targetLang: string) => {
     if (!text.trim()) return '';
