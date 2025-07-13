@@ -78,14 +78,22 @@ export function ProductComparison({ products, onRemoveProduct, onAddMoreProducts
             
             <tr className="border-b">
               <td className="py-3 px-2 font-medium">Verfügbarkeit</td>
-              {products.map((product) => (
-                <td key={product.id} className="py-3 px-4 text-center">
-                  <Badge variant={product.stockStatus === 'in_stock' ? 'default' : 'secondary'}>
-                    {product.stockStatus === 'in_stock' ? 'Verfügbar' : 
-                     product.stockStatus === 'out_of_stock' ? 'Nicht verfügbar' : 'Auf Bestellung'}
-                  </Badge>
-                </td>
-              ))}
+              {products.map((product) => {
+                // Get availability text (custom or default)
+                const availabilityText = product.availabilityTextDe || 
+                                       product.availabilityTextEs || 
+                                       product.availabilityTextEn || 
+                                       (product.stockStatus === 'in_stock' ? 'Verfügbar' : 
+                                        product.stockStatus === 'out_of_stock' ? 'Nicht verfügbar' : 'Auf Bestellung');
+                
+                return (
+                  <td key={product.id} className="py-3 px-4 text-center">
+                    <Badge variant={product.stockStatus === 'in_stock' ? 'default' : 'secondary'}>
+                      {availabilityText}
+                    </Badge>
+                  </td>
+                );
+              })}
             </tr>
 
             <tr className="border-b">

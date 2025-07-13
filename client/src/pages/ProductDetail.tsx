@@ -70,6 +70,23 @@ export default function ProductDetail() {
   const productShortDescription = currentLanguage === 'es' ? product.shortDescriptionEs : 
                                   currentLanguage === 'de' ? product.shortDescriptionDe : 
                                   product.shortDescriptionEn;
+
+  // Get availability text (custom or default)
+  const getAvailabilityText = () => {
+    if (!product) return t('in_stock');
+    
+    let customText = '';
+    if (currentLanguage === 'es') {
+      customText = product.availabilityTextEs || '';
+    } else if (currentLanguage === 'de') {
+      customText = product.availabilityTextDe || '';
+    } else {
+      customText = product.availabilityTextEn || '';
+    }
+    
+    // Use custom text if available, otherwise use default translation
+    return customText || t(product.stockStatus || 'in_stock');
+  };
   
   // Check if we have extended description content
   const hasExtendedDescription = productDescription && productDescription.length > 200;
@@ -223,9 +240,7 @@ export default function ProductDetail() {
                   product.stockStatus === 'in_stock' ? 'text-green-600' : 
                   product.stockStatus === 'limited' ? 'text-yellow-600' : 'text-red-600'
                 }`}>
-                  {product.stockStatus === 'in_stock' ? String(t('inStock')) : 
-                   product.stockStatus === 'limited' ? String(t('limitedStock')) : 
-                   String(t('outOfStock'))}
+                  {getAvailabilityText()}
                 </span>
               </div>
 

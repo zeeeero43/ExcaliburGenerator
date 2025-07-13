@@ -41,6 +41,23 @@ export default function Products() {
     return item[langField] || item[field] || '';
   };
 
+  // Helper function to get availability text (custom or default)
+  const getAvailabilityText = (product: any) => {
+    if (!product) return t('in_stock');
+    
+    let customText = '';
+    if (currentLanguage === 'es') {
+      customText = product.availabilityTextEs || '';
+    } else if (currentLanguage === 'de') {
+      customText = product.availabilityTextDe || '';
+    } else {
+      customText = product.availabilityTextEn || '';
+    }
+    
+    // Use custom text if available, otherwise use default translation
+    return customText || t(product.stockStatus || 'in_stock');
+  };
+
   // Filter subcategories by selected category
   const filteredSubcategories = selectedCategory
     ? subcategories.filter(subcategory => 
@@ -342,7 +359,7 @@ export default function Products() {
                             : 'bg-red-500'
                         } text-white`}
                       >
-                        {t(product.stockStatus || 'in_stock')}
+                        {getAvailabilityText(product)}
                       </Badge>
                     </div>
                     
