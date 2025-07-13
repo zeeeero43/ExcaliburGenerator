@@ -246,44 +246,42 @@ export default function AdminSubcategoryForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <Card className="max-w-4xl mx-auto">
+    <div className="p-8">
+      <div className="flex items-center gap-4 mb-6">
+        <Button
+          variant="outline"
+          onClick={() => setLocation('/admin/subcategories')}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Zurück
+        </Button>
+        <h1 className="text-3xl font-bold">
+          {isEdit ? 'Unterkategorie bearbeiten' : 'Neue Unterkategorie'}
+        </h1>
+        {isEdit && (
+          <Button
+            variant="destructive"
+            onClick={onDelete}
+            disabled={deleteSubcategoryMutation.isPending}
+            className="ml-auto"
+          >
+            <Trash2 className="w-4 h-4 mr-2" />
+            Löschen
+          </Button>
+        )}
+      </div>
+
+      <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-2xl font-bold text-gray-800">
-                {isEdit ? 'Unterkategorie bearbeiten' : 'Neue Unterkategorie'}
-              </CardTitle>
-              <CardDescription>
-                {isEdit ? 'Unterkategorie-Details aktualisieren' : 'Eine neue Unterkategorie erstellen'}
-              </CardDescription>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                onClick={() => setLocation('/admin/subcategories')}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Zurück
-              </Button>
-              {isEdit && (
-                <Button
-                  variant="destructive"
-                  onClick={onDelete}
-                  disabled={deleteSubcategoryMutation.isPending}
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Löschen
-                </Button>
-              )}
-            </div>
-          </div>
+          <CardTitle>Unterkategorie-Informationen</CardTitle>
+          <CardDescription>
+            Nur deutsche Eingabe erforderlich - automatische Übersetzung zu Spanisch/Englisch
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {/* Category Selection */}
               <FormField
                 control={form.control}
                 name="categoryId"
@@ -309,16 +307,15 @@ export default function AdminSubcategoryForm() {
                 )}
               />
 
-              {/* German Name */}
               <FormField
                 control={form.control}
                 name="nameDe"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Deutscher Name *</FormLabel>
+                    <FormLabel>Name (Deutsch) *</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Deutscher Name eingeben"
+                        placeholder="z.B. Batteriespeicher"
                         {...field}
                         onChange={(e) => {
                           field.onChange(e);
@@ -331,46 +328,43 @@ export default function AdminSubcategoryForm() {
                 )}
               />
 
-              {/* Spanish Name */}
               <FormField
                 control={form.control}
                 name="nameEs"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Spanischer Name</FormLabel>
+                    <FormLabel>Name (Spanisch)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Spanischer Name (automatisch übersetzt)" {...field} />
+                      <Input placeholder="Automatisch übersetzt" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {/* English Name */}
               <FormField
                 control={form.control}
                 name="nameEn"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Englischer Name</FormLabel>
+                    <FormLabel>Name (English)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Englischer Name (automatisch übersetzt)" {...field} />
+                      <Input placeholder="Automatically translated" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {/* German Description */}
               <FormField
                 control={form.control}
                 name="descriptionDe"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Deutsche Beschreibung</FormLabel>
+                    <FormLabel>Beschreibung (Deutsch)</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Deutsche Beschreibung eingeben"
+                        placeholder="z.B. Hochwertige Batteriespeicher für alle Solaranlagen"
                         {...field}
                         onChange={(e) => {
                           field.onChange(e);
@@ -383,37 +377,34 @@ export default function AdminSubcategoryForm() {
                 )}
               />
 
-              {/* Spanish Description */}
               <FormField
                 control={form.control}
                 name="descriptionEs"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Spanische Beschreibung</FormLabel>
+                    <FormLabel>Beschreibung (Spanisch)</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Spanische Beschreibung (automatisch übersetzt)" {...field} />
+                      <Textarea placeholder="Automatisch übersetzt" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {/* English Description */}
               <FormField
                 control={form.control}
                 name="descriptionEn"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Englische Beschreibung</FormLabel>
+                    <FormLabel>Description (English)</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Englische Beschreibung (automatisch übersetzt)" {...field} />
+                      <Textarea placeholder="Automatically translated" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {/* Image Upload */}
               <FormField
                 control={form.control}
                 name="image"
@@ -431,7 +422,6 @@ export default function AdminSubcategoryForm() {
                 )}
               />
 
-              {/* Sort Order */}
               <FormField
                 control={form.control}
                 name="sortOrder"
@@ -451,7 +441,6 @@ export default function AdminSubcategoryForm() {
                 )}
               />
 
-              {/* Active Switch */}
               <FormField
                 control={form.control}
                 name="isActive"
