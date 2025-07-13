@@ -66,7 +66,7 @@ export default function AdminSubcategoryForm() {
 
   // Fetch subcategory data if editing
   const { data: subcategory } = useQuery<Subcategory>({
-    queryKey: ['/api/admin/subcategories', subcategoryId],
+    queryKey: [`/api/admin/subcategories/${subcategoryId}`],
     enabled: isEditing && !!subcategoryId,
   });
 
