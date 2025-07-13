@@ -435,6 +435,12 @@ Changelog:
   * Added missing clearCart translations for all languages (German: "Alles löschen", English: "Clear all", Spanish: "Limpiar todo")
   * Updated all cart buttons to use proper translation functions instead of hardcoded text
   * Both individual "Remove" and "Clear all" buttons now display correctly in all languages
+- July 13, 2025 (subcategory editing fix). Fixed subcategory editing to show previous values like category editing:
+  * Restructured URL parsing to match category editing logic (pathParts and isEdit)
+  * Changed query key format from array to string template to match category implementation
+  * Added proper useEffect to load existing subcategory data when editing
+  * Form now pre-populates with all current values: German/Spanish/English names, descriptions, category, image, sort order
+  * Fixed subcategory editing workflow to work identically to category editing - no more empty fields when editing
 ```
 
 ## User Preferences
