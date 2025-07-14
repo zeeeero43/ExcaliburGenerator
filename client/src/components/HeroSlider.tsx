@@ -35,7 +35,7 @@ export function HeroSlider() {
       id: 1,
       image: getImageUrl('hero_image_1', 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080'),
       title: t('heroTitle1'),
-      subtitle: t('heroSubtitle1'),
+      subtitle: '',
       buttonText: t('viewProducts'),
       buttonAction: () => window.location.href = '/products'
     },
@@ -43,17 +43,17 @@ export function HeroSlider() {
       id: 2,
       image: getImageUrl('hero_image_2', 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080'),
       title: t('heroTitle2'),
-      subtitle: t('heroSubtitle2'),
-      buttonText: t('inquireNow'),
-      buttonAction: () => window.location.href = '/contact'
+      subtitle: '',
+      buttonText: t('viewProducts'),
+      buttonAction: () => window.location.href = '/products'
     },
     {
       id: 3,
       image: getImageUrl('hero_image_3', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080'),
       title: t('heroTitle3'),
-      subtitle: t('heroSubtitle3'),
-      buttonText: t('customizeSystem'),
-      buttonAction: () => window.location.href = '/contact'
+      subtitle: '',
+      buttonText: t('viewProducts'),
+      buttonAction: () => window.location.href = '/products'
     }
   ];
 
@@ -78,7 +78,7 @@ export function HeroSlider() {
   };
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-[70vh] md:h-screen overflow-hidden">
       {/* Background Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-black/30 z-10"></div>
       
@@ -99,12 +99,9 @@ export function HeroSlider() {
             />
             <div className="absolute inset-0 flex items-center justify-center z-20">
               <div className="text-center text-white max-w-4xl px-6">
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
                   {slide.title}
                 </h1>
-                <p className="text-lg md:text-xl lg:text-2xl mb-8 leading-relaxed">
-                  {slide.subtitle}
-                </p>
                 <Button
                   onClick={slide.buttonAction}
                   className="bg-excalibur-orange text-white px-8 py-4 text-lg font-semibold hover:bg-orange-600 transition-colors"

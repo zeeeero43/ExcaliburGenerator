@@ -105,12 +105,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* Subtitle after products */}
-          <div className="text-center mt-12">
-            <div className="text-xl text-excalibur-gray">
-              <FormattedText text={t('productsSubtitle')} />
-            </div>
-          </div>
+
         </div>
       </section>
 

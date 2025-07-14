@@ -450,6 +450,12 @@ Changelog:
   * Moved product subtitle text below products on homepage instead of above
   * Implemented consistent layout pattern across all product display pages
   * Enhanced visual hierarchy with proper spacing and element positioning
+- July 14, 2025 (hero section and subtitle cleanup). Streamlined user interface for faster navigation:
+  * Changed all hero slider buttons to "Produkte ansehen" (View Products) in all languages
+  * Removed subtitle texts between title and button in hero section for cleaner look
+  * Reduced hero section height on mobile to 70vh (was 100vh) for faster access to products
+  * Completely removed all subtitle texts from categories and products on homepage and /products page
+  * Implemented clean "Title → Details" pattern throughout application without descriptive subtitles
 ```
 
 ## User Preferences

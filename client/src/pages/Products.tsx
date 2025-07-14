@@ -209,12 +209,7 @@ export default function Products() {
             ))}
           </div>
 
-          {/* Subtitle after subcategories */}
-          <div className="text-center mt-12">
-            <p className="text-gray-600 text-lg">
-              {t('selectSubcategory')}
-            </p>
-          </div>
+
         </div>
       </div>
     );
@@ -273,12 +268,7 @@ export default function Products() {
             ))}
           </div>
 
-          {/* Subtitle after products */}
-          <div className="text-center mt-12">
-            <div className="text-xl text-gray-600 max-w-3xl mx-auto">
-              <FormattedText text={`${t('selectCategory')} - ${t('productsSubtitle')}`} />
-            </div>
-          </div>
+
         </div>
       </div>
     );
@@ -414,12 +404,7 @@ export default function Products() {
           </div>
         )}
 
-        {/* Subtitle after products */}
-        <div className="text-center mt-12 mb-8">
-          <div className="text-xl text-gray-600">
-            <FormattedText text={`${filteredProducts.length} ${t('productCount')} ${t('inThisCategory')}`} />
-          </div>
-        </div>
+
 
         {/* Call to Action */}
         <div className="mt-8 text-center bg-gray-50 rounded-lg p-8">
