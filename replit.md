@@ -456,6 +456,11 @@ Changelog:
   * Reduced hero section height on mobile to 70vh (was 100vh) for faster access to products
   * Completely removed all subtitle texts from categories and products on homepage and /products page
   * Implemented clean "Title → Details" pattern throughout application without descriptive subtitles
+- July 14, 2025 (navigation and layout fixes). Fixed critical user experience issues:
+  * Added automatic scroll to top when navigating to subcategories and products (prevents scroll bug)
+  * Reduced hero title size from text-7xl to text-6xl for better mobile display
+  * Removed description text from ProductCard component for cleaner "Title → Details" layout
+  * Fixed navigation flow to automatically position user at top of page after category selection
 ```
 
 ## User Preferences

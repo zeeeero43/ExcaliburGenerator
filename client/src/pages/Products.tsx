@@ -95,12 +95,14 @@ export default function Products() {
     setSelectedCategory(categoryId);
     setShowCategories(false);
     setShowSubcategories(true);
+    window.scrollTo(0, 0);
   };
 
   // Handle subcategory selection
   const selectSubcategory = (subcategoryId: number, subcategoryName: string) => {
     setSelectedSubcategory(subcategoryId);
     setShowSubcategories(false);
+    window.scrollTo(0, 0);
   };
 
   // Handle back to categories
