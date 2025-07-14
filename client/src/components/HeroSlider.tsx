@@ -78,7 +78,7 @@ export function HeroSlider() {
   };
 
   return (
-    <section className="relative h-[70vh] md:h-screen overflow-hidden">
+    <section className="relative h-[50vh] md:h-[60vh] overflow-hidden">
       {/* Background Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-black/30 z-10"></div>
       

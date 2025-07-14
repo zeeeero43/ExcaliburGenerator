@@ -46,7 +46,7 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Only show products that are explicitly featured by admin */}
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product) => {
