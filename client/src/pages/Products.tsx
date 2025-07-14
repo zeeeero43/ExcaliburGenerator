@@ -165,16 +165,13 @@ export default function Products() {
               <ArrowLeft className="w-4 h-4 mr-2" />
               {t('backToCategories')}
             </Button>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            <h1 className="text-3xl font-bold text-gray-800 mb-8">
               {getSelectedCategoryName()}
             </h1>
-            <p className="text-gray-600">
-              {t('selectSubcategory')}
-            </p>
           </div>
 
           {/* Subcategories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredSubcategories.map((subcategory) => (
               <Card 
                 key={subcategory.id} 
@@ -196,16 +193,10 @@ export default function Products() {
                   </div>
                   
                   {/* Subcategory Info */}
-                  <div className="p-6">
+                  <div className="p-4">
                     <h3 className="text-xl font-semibold text-gray-800 mb-2">
                       {getLocalizedText(subcategory, 'name')}
                     </h3>
-                    <div className="text-gray-600 mb-4">
-                      <FormattedText 
-                        text={getLocalizedText(subcategory, 'description') || 'Unterkategorie anzeigen'} 
-                        maxLength={100}
-                      />
-                    </div>
                     <div className="flex items-center justify-between">
                       <Badge variant="secondary" className="text-sm">
                         {getLocalizedText(subcategory, 'name')}
@@ -216,6 +207,13 @@ export default function Products() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          {/* Subtitle after subcategories */}
+          <div className="text-center mt-12">
+            <p className="text-gray-600 text-lg">
+              {t('selectSubcategory')}
+            </p>
           </div>
         </div>
       </div>
@@ -229,16 +227,13 @@ export default function Products() {
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            <h1 className="text-4xl font-bold text-gray-800 mb-8">
               {t('ourProducts')}
             </h1>
-            <div className="text-xl text-gray-600 max-w-3xl mx-auto">
-              <FormattedText text={`${t('selectCategory')} - ${t('productsSubtitle')}`} />
-            </div>
           </div>
 
           {/* Categories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {categories.map((category) => (
               <Card 
                 key={category.id} 
@@ -260,16 +255,10 @@ export default function Products() {
                   </div>
                   
                   {/* Category Info */}
-                  <div className="p-6">
+                  <div className="p-4">
                     <h3 className="text-xl font-semibold text-gray-800 mb-2">
                       {getLocalizedText(category, 'name')}
                     </h3>
-                    <div className="text-gray-600 mb-4">
-                      <FormattedText 
-                        text={getLocalizedText(category, 'description') || 'Kategorie anzeigen'} 
-                        className="text-gray-600"
-                      />
-                    </div>
                     
                     {/* Category Action */}
                     <div className="flex items-center justify-end">
@@ -282,6 +271,13 @@ export default function Products() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          {/* Subtitle after products */}
+          <div className="text-center mt-12">
+            <div className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <FormattedText text={`${t('selectCategory')} - ${t('productsSubtitle')}`} />
+            </div>
           </div>
         </div>
       </div>
@@ -304,12 +300,9 @@ export default function Products() {
           </Button>
           
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            <h1 className="text-4xl font-bold text-gray-800 mb-8">
               {getSelectedCategoryName()}
             </h1>
-            <div className="text-xl text-gray-600">
-              <FormattedText text={`${filteredProducts.length} ${t('productCount')} ${t('inThisCategory')}`} />
-            </div>
           </div>
         </div>
 
@@ -421,8 +414,15 @@ export default function Products() {
           </div>
         )}
 
+        {/* Subtitle after products */}
+        <div className="text-center mt-12 mb-8">
+          <div className="text-xl text-gray-600">
+            <FormattedText text={`${filteredProducts.length} ${t('productCount')} ${t('inThisCategory')}`} />
+          </div>
+        </div>
+
         {/* Call to Action */}
-        <div className="mt-16 text-center bg-gray-50 rounded-lg p-8">
+        <div className="mt-8 text-center bg-gray-50 rounded-lg p-8">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
             {t('needCustomSolution')}
           </h3>

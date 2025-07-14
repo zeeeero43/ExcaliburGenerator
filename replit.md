@@ -443,6 +443,13 @@ Changelog:
   * Updated AddToCartButton to disable both initial add and quantity increase for non-available products
   * Custom availability texts now properly override default stock status translations in all languages
   * All availability colors now correctly reflect actual product availability status
+- July 14, 2025 (layout restructure). Implemented comprehensive layout changes for better user experience:
+  * Reorganized Products page layout: Title → Products → Subtitle (was Title → Subtitle → Products)
+  * Reduced spacing between categories and subcategories for more compact display
+  * Removed Features Bar (3 advantages section) from homepage as requested
+  * Moved product subtitle text below products on homepage instead of above
+  * Implemented consistent layout pattern across all product display pages
+  * Enhanced visual hierarchy with proper spacing and element positioning
 ```
 
 ## User Preferences

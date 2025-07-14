@@ -37,51 +37,13 @@ export default function Home() {
       {/* Hero Section */}
       <HeroSlider />
 
-      {/* Features Bar */}
-      <section className="bg-excalibur-light py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="flex flex-col items-center">
-              <Shield className="w-12 h-12 text-excalibur-blue mb-4" />
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                {t('bestQuality')}
-              </h3>
-              <div className="text-excalibur-gray">
-                <FormattedText text={t('bestQualityDesc')} />
-              </div>
-            </div>
-            <div className="flex flex-col items-center">
-              <Truck className="w-12 h-12 text-excalibur-orange mb-4" />
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                {t('fastDelivery')}
-              </h3>
-              <div className="text-excalibur-gray">
-                <FormattedText text={t('fastDeliveryDesc')} />
-              </div>
-            </div>
-            <div className="flex flex-col items-center">
-              <Users className="w-12 h-12 text-green-500 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                {t('technicalSupport')}
-              </h3>
-              <div className="text-excalibur-gray">
-                <FormattedText text={t('technicalSupportDesc')} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Product Categories */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+            <h2 className="text-4xl font-bold text-gray-800 mb-8">
               {t('ourProducts')}
             </h2>
-            <div className="text-xl text-excalibur-gray">
-              <FormattedText text={t('productsSubtitle')} />
-            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -141,6 +103,13 @@ export default function Home() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Subtitle after products */}
+          <div className="text-center mt-12">
+            <div className="text-xl text-excalibur-gray">
+              <FormattedText text={t('productsSubtitle')} />
+            </div>
           </div>
         </div>
       </section>
