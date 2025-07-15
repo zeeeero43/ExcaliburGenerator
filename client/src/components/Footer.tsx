@@ -10,7 +10,7 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
-          <div className="col-span-2">
+          <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-12 h-12 bg-excalibur-blue rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">E</span>
@@ -52,10 +52,10 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
+          {/* Quick Links & Contact Combined (Mobile) / Separate (Desktop) */}
+          <div className="md:col-span-1">
             <h4 className="text-lg font-semibold mb-4">{t('quickLinks')}</h4>
-            <ul className="space-y-2 text-gray-400">
+            <ul className="space-y-2 text-gray-400 mb-6">
               <li>
                 <Link href="/" className="hover:text-white transition-colors">
                   {t('home')}
@@ -82,10 +82,33 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
+            
+            {/* Contact Info - Shows under Quick Links on Mobile */}
+            <div className="md:hidden">
+              <h4 className="text-lg font-semibold mb-4">{t('contact')}</h4>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li className="flex items-start space-x-2">
+                  <MapPin size={16} className="mt-1 text-excalibur-orange" />
+                  <span>Havanna del Este, Cuba</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <MessageCircle size={16} className="mt-1 text-green-500" />
+                  <span>{t('supportSales') as string}: +49 160 323 9439</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <MessageCircle size={16} className="mt-1 text-green-500" />
+                  <span>{t('administrationSales') as string}: +53 5878 1416</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <MessageCircle size={16} className="mt-1 text-green-500" />
+                  <span>{t('deliveryPickup') as string}: +53 54 73 14 90</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          {/* Contact Info */}
-          <div>
+          {/* Contact Info - Separate Column on Desktop */}
+          <div className="hidden md:block">
             <h4 className="text-lg font-semibold mb-4">{t('contact')}</h4>
             <ul className="space-y-2 text-gray-400 text-sm">
               <li className="flex items-start space-x-2">
@@ -105,7 +128,6 @@ export function Footer() {
                 <span>{t('deliveryPickup') as string}: +53 54 73 14 90</span>
               </li>
             </ul>
-
           </div>
         </div>
 
