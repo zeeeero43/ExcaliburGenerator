@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
-import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage, Phone, Layers, ArrowUpDown } from 'lucide-react';
+import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage, Phone, Layers, Copy } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Category, Product, Inquiry, AdminUser, Subcategory } from '@shared/schema';
 
@@ -520,7 +520,7 @@ export default function AdminDashboard() {
                           onClick={() => duplicateProductMutation.mutate(product.id)}
                           disabled={duplicateProductMutation.isPending}
                         >
-                          <ArrowUpDown className="w-4 h-4" />
+                          <Copy className="w-4 h-4" />
                         </Button>
                         <Button
                           variant="outline"
@@ -608,7 +608,7 @@ export default function AdminDashboard() {
                           onClick={() => duplicateCategoryMutation.mutate(category.id)}
                           disabled={duplicateCategoryMutation.isPending}
                         >
-                          <ArrowUpDown className="w-4 h-4" />
+                          <Copy className="w-4 h-4" />
                         </Button>
                         <Button
                           variant="outline"
@@ -645,7 +645,7 @@ export default function AdminDashboard() {
                     console.log('Sorted subcategories:', sorted);
                   }}
                 >
-                  <ArrowUpDown className="w-4 h-4 mr-2" />
+                  <Copy className="w-4 h-4 mr-2" />
                   Sortierung anzeigen
                 </Button>
                 <Button 
@@ -717,7 +717,7 @@ export default function AdminDashboard() {
                               onClick={() => duplicateSubcategoryMutation.mutate(subcategory.id)}
                               disabled={duplicateSubcategoryMutation.isPending}
                             >
-                              <ArrowUpDown className="w-4 h-4" />
+                              <Copy className="w-4 h-4" />
                             </Button>
                             <Button
                               variant="outline"

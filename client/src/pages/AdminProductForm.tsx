@@ -12,93 +12,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation, useParams } from 'wouter';
-import { ArrowLeft, Upload, X } from 'lucide-react';
+import { ArrowLeft, Upload, X, RefreshCw } from 'lucide-react';
 import type { Category, Subcategory, Product } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
-import { ExpandableTextarea } from '@/components/ExpandableTextarea';
-import { RichTextEditor } from '@/components/RichTextEditor';
-import { translateProductData } from '@/lib/translation';
 
-// German translations for the admin form
-const adminTexts = {
-  de: {
-    // Form labels
-    productNameEs: 'Produktname (Spanisch) - automatisch übersetzt',
-    productNameDe: 'Produktname (Deutsch) - Haupteingabe',
-    productNameEn: 'Produktname (Englisch) - automatisch übersetzt',
-    shortDescEs: 'Kurzbeschreibung (Spanisch) - automatisch übersetzt',
-    shortDescDe: 'Kurzbeschreibung (Deutsch) - Haupteingabe',
-    shortDescEn: 'Kurzbeschreibung (Englisch) - automatisch übersetzt',
-    descriptionEs: 'Beschreibung (Spanisch) - automatisch übersetzt',
-    descriptionDe: 'Beschreibung (Deutsch) - Haupteingabe',
-    descriptionEn: 'Beschreibung (Englisch)',
-    category: 'Kategorie',
-    subcategory: 'Unterkategorie',
-    sku: 'Artikelnummer',
-    price: 'Preis',
-    priceNote: 'Preisnotiz',
-    mainImage: 'Hauptbild',
-    additionalImages: 'Weitere Bilder',
-    addImage: 'Bild hinzufügen',
-    removeImage: 'Bild entfernen',
-    active: 'Aktiv',
-    featured: 'Vorgestellt',
-    stockStatus: 'Lagerstatus',
-    inStock: 'Auf Lager',
-    availabilityEs: 'Verfügbarkeit (Spanisch)',
-    availabilityDe: 'Verfügbarkeit (Deutsch)',
-    availabilityEn: 'Verfügbarkeit (Englisch)',
-    
-    // Stock status
-    in_stock: 'Auf Lager',
-    out_of_stock: 'Nicht verfügbar',
-    limited: 'Begrenzt verfügbar',
-    
-    // Form actions
-    save: 'Produkt speichern',
-    cancel: 'Abbrechen',
-    edit: 'Bearbeiten',
-    create: 'Erstellen',
-    forceRefresh: '🔄 Daten neu laden',
-    backToDashboard: 'Zurück zum Dashboard',
-    selectCategory: 'Kategorie auswählen',
-    selectSubcategory: 'Unterkategorie auswählen',
-    selectImage: 'Bild auswählen',
-    
-    // Form titles
-    newProduct: 'Neues Produkt',
-    editProduct: 'Produkt bearbeiten',
-    
-    // Messages
-    noCategories: 'Keine Kategorien verfügbar',
-    noSubcategories: 'Keine Unterkategorien verfügbar',
-    categoryRequired: 'Kategorie ist erforderlich',
-    nameRequired: 'Name ist erforderlich',
-    shortDescRequired: 'Kurzbeschreibung ist erforderlich',
-    
-    // Success/Error
-    productSaved: 'Produkt erfolgreich gespeichert',
-    productError: 'Fehler beim Speichern des Produkts',
-    translating: 'Übersetze...',
-    translationComplete: 'Übersetzung abgeschlossen!',
-    translationError: 'Fehler bei der Übersetzung'
-  }
-};
-
-const t = (key: string) => adminTexts.de[key] || key;
-
-// Form validation schema
+// Vereinfachtes Schema für Produkterstellung
 const productFormSchema = z.object({
-  nameEs: z.string().min(1, t('nameRequired')),
+  nameEs: z.string().min(1, 'Name ist erforderlich'),
   nameDe: z.string().optional(),
   nameEn: z.string().optional(),
-  shortDescriptionEs: z.string().min(1, t('shortDescRequired')),
+  shortDescriptionEs: z.string().min(1, 'Kurzbeschreibung ist erforderlich'),
   shortDescriptionDe: z.string().optional(),
   shortDescriptionEn: z.string().optional(),
   descriptionEs: z.string().optional(),
   descriptionDe: z.string().optional(),
   descriptionEn: z.string().optional(),
-  categoryId: z.number().min(1, t('categoryRequired')),
+  categoryId: z.number().min(1, 'Kategorie ist erforderlich'),
   subcategoryId: z.number().optional(),
   sku: z.string().optional(),
   price: z.string().optional(),
@@ -120,8 +49,6 @@ export default function AdminProductForm() {
   const [location, setLocation] = useLocation();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
-  const [isTranslating, setIsTranslating] = useState(false);
-  const [translationTimeout, setTranslationTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const isEditing = Boolean(id);
 
@@ -153,108 +80,25 @@ export default function AdminProductForm() {
     },
   });
 
-  // Fetch product data for editing
+  // Daten laden
   const { data: product, isLoading: isLoadingProduct } = useQuery({
     queryKey: [`/api/admin/products/${id}`],
     enabled: isEditing,
   });
 
-  // Fetch categories
   const { data: categories = [] } = useQuery({
     queryKey: ['/api/admin/categories'],
   });
 
-  // Fetch subcategories
   const { data: allSubcategories = [] } = useQuery({
     queryKey: ['/api/admin/subcategories'],
   });
 
-  // Filter subcategories based on selected category
+  // Unterkategorien filtern
   const selectedCategoryId = form.watch('categoryId');
   const subcategories = allSubcategories.filter(sub => sub.categoryId === selectedCategoryId);
 
-  // Auto-translation function
-  const handleAutoTranslation = async (germanText: string, fromField: string, toField: string) => {
-    if (!germanText || germanText.trim() === '') return;
-    
-    setIsTranslating(true);
-    
-    try {
-      const response = await fetch('/api/translate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: germanText,
-          from: 'de',
-          to: toField.includes('Es') ? 'es' : 'en',
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.translatedText && data.translatedText !== germanText) {
-          form.setValue(toField as keyof ProductFormData, data.translatedText);
-        }
-      }
-    } catch (error) {
-      console.error('Translation failed:', error);
-    } finally {
-      setIsTranslating(false);
-    }
-  };
-
-  // Real-time translation with debounce
-  useEffect(() => {
-    const germanName = form.watch('nameDe');
-    if (germanName) {
-      if (translationTimeout) {
-        clearTimeout(translationTimeout);
-      }
-      
-      const timeout = setTimeout(() => {
-        handleAutoTranslation(germanName, 'nameDe', 'nameEs');
-        handleAutoTranslation(germanName, 'nameDe', 'nameEn');
-      }, 1000);
-      
-      setTranslationTimeout(timeout);
-    }
-  }, [form.watch('nameDe')]);
-
-  useEffect(() => {
-    const germanDesc = form.watch('shortDescriptionDe');
-    if (germanDesc) {
-      if (translationTimeout) {
-        clearTimeout(translationTimeout);
-      }
-      
-      const timeout = setTimeout(() => {
-        handleAutoTranslation(germanDesc, 'shortDescriptionDe', 'shortDescriptionEs');
-        handleAutoTranslation(germanDesc, 'shortDescriptionDe', 'shortDescriptionEn');
-      }, 1000);
-      
-      setTranslationTimeout(timeout);
-    }
-  }, [form.watch('shortDescriptionDe')]);
-
-  useEffect(() => {
-    const germanFullDesc = form.watch('descriptionDe');
-    if (germanFullDesc) {
-      if (translationTimeout) {
-        clearTimeout(translationTimeout);
-      }
-      
-      const timeout = setTimeout(() => {
-        handleAutoTranslation(germanFullDesc, 'descriptionDe', 'descriptionEs');
-        handleAutoTranslation(germanFullDesc, 'descriptionDe', 'descriptionEn');
-      }, 1000);
-      
-      setTranslationTimeout(timeout);
-    }
-  }, [form.watch('descriptionDe')]);
-
-  // Set form data when product is loaded
+  // Formulardaten setzen beim Laden
   useEffect(() => {
     if (product) {
       form.reset({
@@ -284,7 +128,7 @@ export default function AdminProductForm() {
     }
   }, [product, form]);
 
-  // Force refresh function
+  // Daten neu laden
   const forceRefreshForm = () => {
     queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${id}`] });
     toast({
@@ -293,7 +137,7 @@ export default function AdminProductForm() {
     });
   };
 
-  // Save product mutation
+  // Speichern
   const saveProductMutation = useMutation({
     mutationFn: async (data: ProductFormData) => {
       const url = isEditing ? `/api/admin/products/${id}` : '/api/admin/products';
@@ -309,22 +153,22 @@ export default function AdminProductForm() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to save product');
+        throw new Error(errorData.error || 'Fehler beim Speichern');
       }
 
       return response.json();
     },
     onSuccess: () => {
       toast({
-        title: t('productSaved'),
-        description: isEditing ? t('editProduct') : t('newProduct'),
+        title: "Produkt gespeichert",
+        description: isEditing ? "Produkt wurde aktualisiert" : "Neues Produkt wurde erstellt",
       });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
       setLocation('/admin');
     },
     onError: (error: Error) => {
       toast({
-        title: t('productError'),
+        title: "Fehler",
         description: error.message,
         variant: 'destructive',
       });
@@ -348,10 +192,10 @@ export default function AdminProductForm() {
           className="flex items-center gap-2"
         >
           <ArrowLeft className="w-4 h-4" />
-          {t('backToDashboard')}
+          Zurück zum Dashboard
         </Button>
         <h1 className="text-2xl font-bold">
-          {isEditing ? t('editProduct') : t('newProduct')}
+          {isEditing ? 'Produkt bearbeiten' : 'Neues Produkt'}
         </h1>
         {isEditing && (
           <Button
@@ -359,31 +203,33 @@ export default function AdminProductForm() {
             onClick={forceRefreshForm}
             className="ml-auto"
           >
-            {t('forceRefresh')}
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Daten neu laden
           </Button>
         )}
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>{isEditing ? t('editProduct') : t('newProduct')}</CardTitle>
+          <CardTitle>{isEditing ? 'Produkt bearbeiten' : 'Neues Produkt erstellen'}</CardTitle>
           <CardDescription>
-            Alle Felder werden automatisch vom Deutschen ins Spanische und Englische übersetzt
+            Füllen Sie die Felder aus, um ein Produkt zu erstellen oder zu bearbeiten
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {/* Product Names */}
+              
+              {/* Produktname */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
-                  name="nameDe"
+                  name="nameEs"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('productNameDe')} *</FormLabel>
+                      <FormLabel>Name (Spanisch) *</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Deutscher Produktname" />
+                        <Input {...field} placeholder="Produktname auf Spanisch" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -391,12 +237,12 @@ export default function AdminProductForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="nameEs"
+                  name="nameDe"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('productNameEs')}</FormLabel>
+                      <FormLabel>Name (Deutsch)</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Automatisch übersetzt" />
+                        <Input {...field} placeholder="Produktname auf Deutsch" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -407,9 +253,9 @@ export default function AdminProductForm() {
                   name="nameEn"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('productNameEn')}</FormLabel>
+                      <FormLabel>Name (Englisch)</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Automatically translated" />
+                        <Input {...field} placeholder="Product name in English" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -417,16 +263,16 @@ export default function AdminProductForm() {
                 />
               </div>
 
-              {/* Short Descriptions */}
+              {/* Kurzbeschreibung */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
-                  name="shortDescriptionDe"
+                  name="shortDescriptionEs"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('shortDescDe')} *</FormLabel>
+                      <FormLabel>Kurzbeschreibung (Spanisch) *</FormLabel>
                       <FormControl>
-                        <Textarea {...field} placeholder="Deutsche Kurzbeschreibung" />
+                        <Textarea {...field} placeholder="Kurze Beschreibung auf Spanisch" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -434,12 +280,12 @@ export default function AdminProductForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="shortDescriptionEs"
+                  name="shortDescriptionDe"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('shortDescEs')}</FormLabel>
+                      <FormLabel>Kurzbeschreibung (Deutsch)</FormLabel>
                       <FormControl>
-                        <Textarea {...field} placeholder="Automatisch übersetzt" />
+                        <Textarea {...field} placeholder="Kurze Beschreibung auf Deutsch" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -450,9 +296,9 @@ export default function AdminProductForm() {
                   name="shortDescriptionEn"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('shortDescEn')}</FormLabel>
+                      <FormLabel>Kurzbeschreibung (Englisch)</FormLabel>
                       <FormControl>
-                        <Textarea {...field} placeholder="Automatically translated" />
+                        <Textarea {...field} placeholder="Short description in English" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -460,20 +306,16 @@ export default function AdminProductForm() {
                 />
               </div>
 
-              {/* Full Descriptions */}
+              {/* Vollständige Beschreibung */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
-                  name="descriptionDe"
+                  name="descriptionEs"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('descriptionDe')}</FormLabel>
+                      <FormLabel>Beschreibung (Spanisch)</FormLabel>
                       <FormControl>
-                        <RichTextEditor
-                          value={field.value || ''}
-                          onChange={field.onChange}
-                          placeholder="Deutsche Beschreibung"
-                        />
+                        <Textarea {...field} placeholder="Vollständige Beschreibung auf Spanisch" className="min-h-32" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -481,16 +323,12 @@ export default function AdminProductForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="descriptionEs"
+                  name="descriptionDe"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('descriptionEs')}</FormLabel>
+                      <FormLabel>Beschreibung (Deutsch)</FormLabel>
                       <FormControl>
-                        <RichTextEditor
-                          value={field.value || ''}
-                          onChange={field.onChange}
-                          placeholder="Automatisch übersetzt"
-                        />
+                        <Textarea {...field} placeholder="Vollständige Beschreibung auf Deutsch" className="min-h-32" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -501,13 +339,9 @@ export default function AdminProductForm() {
                   name="descriptionEn"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('descriptionEn')}</FormLabel>
+                      <FormLabel>Beschreibung (Englisch)</FormLabel>
                       <FormControl>
-                        <RichTextEditor
-                          value={field.value || ''}
-                          onChange={field.onChange}
-                          placeholder="Automatically translated"
-                        />
+                        <Textarea {...field} placeholder="Full description in English" className="min-h-32" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -515,14 +349,14 @@ export default function AdminProductForm() {
                 />
               </div>
 
-              {/* Category and Subcategory */}
+              {/* Kategorie und Unterkategorie */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="categoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('category')} *</FormLabel>
+                      <FormLabel>Kategorie *</FormLabel>
                       <Select
                         value={field.value?.toString() || ''}
                         onValueChange={(value) => {
@@ -532,7 +366,7 @@ export default function AdminProductForm() {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={t('selectCategory')} />
+                            <SelectValue placeholder="Kategorie auswählen" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -552,7 +386,7 @@ export default function AdminProductForm() {
                   name="subcategoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('subcategory')}</FormLabel>
+                      <FormLabel>Unterkategorie</FormLabel>
                       <Select
                         value={field.value?.toString() || ''}
                         onValueChange={(value) => field.onChange(parseInt(value))}
@@ -560,7 +394,7 @@ export default function AdminProductForm() {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={t('selectSubcategory')} />
+                            <SelectValue placeholder="Unterkategorie auswählen" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -577,14 +411,14 @@ export default function AdminProductForm() {
                 />
               </div>
 
-              {/* SKU and Price */}
+              {/* SKU und Preis */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
                   name="sku"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('sku')}</FormLabel>
+                      <FormLabel>Artikelnummer (SKU)</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="SKU-123" />
                       </FormControl>
@@ -597,9 +431,9 @@ export default function AdminProductForm() {
                   name="price"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('price')}</FormLabel>
+                      <FormLabel>Preis</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="z.B. 299.99" />
+                        <Input {...field} placeholder="299.99" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -610,7 +444,7 @@ export default function AdminProductForm() {
                   name="priceNote"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('priceNote')}</FormLabel>
+                      <FormLabel>Preisnotiz</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="z.B. zzgl. MwSt." />
                       </FormControl>
@@ -620,13 +454,13 @@ export default function AdminProductForm() {
                 />
               </div>
 
-              {/* Main Image */}
+              {/* Hauptbild */}
               <FormField
                 control={form.control}
                 name="mainImage"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('mainImage')}</FormLabel>
+                    <FormLabel>Hauptbild</FormLabel>
                     <FormControl>
                       <ImageUpload
                         value={field.value}
@@ -639,13 +473,13 @@ export default function AdminProductForm() {
                 )}
               />
 
-              {/* Additional Images */}
+              {/* Zusätzliche Bilder */}
               <FormField
                 control={form.control}
                 name="additionalImages"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('additionalImages')}</FormLabel>
+                    <FormLabel>Zusätzliche Bilder</FormLabel>
                     <FormControl>
                       <ImageUpload
                         value={field.value}
@@ -659,13 +493,13 @@ export default function AdminProductForm() {
                 )}
               />
 
-              {/* Stock Status */}
+              {/* Lagerstatus */}
               <FormField
                 control={form.control}
                 name="stockStatus"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('stockStatus')}</FormLabel>
+                    <FormLabel>Lagerstatus</FormLabel>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
@@ -673,9 +507,9 @@ export default function AdminProductForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="in_stock">{t('in_stock')}</SelectItem>
-                        <SelectItem value="out_of_stock">{t('out_of_stock')}</SelectItem>
-                        <SelectItem value="limited">{t('limited')}</SelectItem>
+                        <SelectItem value="in_stock">Auf Lager</SelectItem>
+                        <SelectItem value="out_of_stock">Nicht verfügbar</SelectItem>
+                        <SelectItem value="limited">Begrenzt verfügbar</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -683,16 +517,16 @@ export default function AdminProductForm() {
                 )}
               />
 
-              {/* Availability */}
+              {/* Verfügbarkeit */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
-                  name="availabilityDe"
+                  name="availabilityEs"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('availabilityDe')}</FormLabel>
+                      <FormLabel>Verfügbarkeit (Spanisch)</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="z.B. in 2 Wochen verfügbar" />
+                        <Input {...field} placeholder="z.B. disponible en 2 semanas" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -700,12 +534,12 @@ export default function AdminProductForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="availabilityEs"
+                  name="availabilityDe"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('availabilityEs')}</FormLabel>
+                      <FormLabel>Verfügbarkeit (Deutsch)</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Automatisch übersetzt" />
+                        <Input {...field} placeholder="z.B. in 2 Wochen verfügbar" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -716,9 +550,9 @@ export default function AdminProductForm() {
                   name="availabilityEn"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('availabilityEn')}</FormLabel>
+                      <FormLabel>Verfügbarkeit (Englisch)</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Automatically translated" />
+                        <Input {...field} placeholder="e.g. available in 2 weeks" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -726,7 +560,7 @@ export default function AdminProductForm() {
                 />
               </div>
 
-              {/* Switches */}
+              {/* Schalter */}
               <div className="flex items-center space-x-8">
                 <FormField
                   control={form.control}
@@ -739,7 +573,7 @@ export default function AdminProductForm() {
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>{t('active')}</FormLabel>
+                      <FormLabel>Produkt ist aktiv</FormLabel>
                     </FormItem>
                   )}
                 />
@@ -754,34 +588,26 @@ export default function AdminProductForm() {
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>
-                      <FormLabel>{t('featured')}</FormLabel>
+                      <FormLabel>Als Empfehlung anzeigen</FormLabel>
                     </FormItem>
                   )}
                 />
               </div>
 
-              {/* Translation Status */}
-              {isTranslating && (
-                <div className="text-sm text-blue-600 flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                  {t('translating')}
-                </div>
-              )}
-
-              {/* Submit Button */}
+              {/* Aktionen */}
               <div className="flex justify-end gap-4">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setLocation('/admin')}
                 >
-                  {t('cancel')}
+                  Abbrechen
                 </Button>
                 <Button
                   type="submit"
                   disabled={saveProductMutation.isPending}
                 >
-                  {saveProductMutation.isPending ? 'Speichere...' : t('save')}
+                  {saveProductMutation.isPending ? 'Speichere...' : 'Produkt speichern'}
                 </Button>
               </div>
             </form>
