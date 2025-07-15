@@ -199,6 +199,7 @@ export const translations = {
     formError: "Error al enviar formulario. Intente nuevamente.",
     
     // Products Page
+    selectCategory: "Seleccionar categoría",
     allCategories: "Todas las categorías",
     noProductsFound: "No se encontraron productos",
     noProductsMessage: "No hay productos disponibles en esta categoría.",
@@ -267,6 +268,8 @@ export const translations = {
     // Missing keys for Home page  
     ourServices: "Nuestros Servicios",
     contactDesc: "Con gusto le armamos el sistema solar que se adapte a sus necesidades",
+    international: "Internacional",
+    administration: "Administración",
     warehouse: "Recogida / Almacén",
     havanaLocation: "Habana del Este",
     emailLabel: "Contacto por Email:",
@@ -283,10 +286,10 @@ export const translations = {
     components: "Componentes Solares Individuales",
     solarSystemsDesc: "Sistemas solares completos de 3 a 30KW con componentes de alta calidad al mejor precio",
     componentsDesc: "Con nosotros obtiene todo para armar cualquier sistema solar según necesidades y deseos, configurado individualmente",
-    solarTechnicalSupport: "Soporte Técnico",
-    solarTechnicalSupportDesc: "24/7 para todas las áreas ofrecidas",
-    solarGenerators: "Gran oferta de Generadores Excalibur",
-    solarGeneratorsDesc: "Oferta integral Excalibur de 2kva-20kva para todas las aplicaciones",
+    technicalSupport: "Soporte Técnico",
+    technicalSupportDesc: "24/7 para todas las áreas ofrecidas",
+    generators: "Gran oferta de Generadores Excalibur",
+    generatorsDesc: "Oferta integral Excalibur de 2kva-20kva para todas las aplicaciones",
     constructionMaterials: "Materiales de construcción y otros materiales",
     constructionMaterialsDesc: "Materiales de construcción de alta calidad para sus proyectos",
     ourServicesForYou: "Unsere Leistungen für Sie",
@@ -296,6 +299,7 @@ export const translations = {
     
     // Product page translations
     productCount: "productos",
+    backToCategories: "Volver a categorías",
     inThisCategory: "en esta categoría",
     
     // Contact page
@@ -338,6 +342,7 @@ export const translations = {
     inactive: "Inactivo",
     new: "Nuevo",
     replied: "Respondido",
+    total: "total",
     online: "En Línea",
     systemRunning: "Sistema funcionando",
     manageProducts: "Gestionar Productos",
@@ -579,10 +584,10 @@ export const translations = {
     bestQualityDesc: "International zertifizierte Produkte zum besten Preis",
     fastDelivery: "Schnelle Verfügbarkeit",
     fastDeliveryDesc: "Schnelle Verfügbarkeit bei Selbstabholung - Habana del Este",
-    solarTechnicalSupport: "Technischer Support",
-    solarTechnicalSupportDesc: "24/7 für alle angebotenen Bereiche",
-    solarGenerators: "Großes Angebot an Excalibur Generatoren",
-    solarGeneratorsDesc: "Umfassendes Excalibur-Sortiment von 2kva-20kva für alle Anwendungen",
+    technicalSupport: "Technischer Support",
+    technicalSupportDesc: "24/7 für alle angebotenen Bereiche",
+    generators: "Großes Angebot an Excalibur Generatoren",
+    generatorsDesc: "Umfassendes Excalibur-Sortiment von 2kva-20kva für alle Anwendungen",
     
     // Products
     ourProducts: "UNSERE PRODUKTE",
@@ -787,7 +792,10 @@ export const translations = {
     // Additional SEO Content
     generatorsTitle: "Backup-Generatoren: Garantierte Energiesicherheit",
     generatorsDescription: "Wir ergänzen unsere Solarsysteme mit modernen geräuscharmen Generatoren und bieten eine integrierte Energielösung, die kontinuierliche Stromversorgung gewährleistet. Unsere Diesel- und Benzin-Generatoren bieten 2KVA bis 10KVA, ideal für Haushalte, kleine Unternehmen und industrielle Anwendungen.",
-
+    whyChooseTitle: "Warum Excalibur Power Cuba wählen?",
+    whyChooseDescription: "Mit 35 Jahren Erfahrung unseres deutschen Partners AFDL IMPORT & EXPORT bieten wir das beste Preis-Leistungs-Verhältnis für Solarkomponenten und Generatoren. Unser Engagement ist es, Kuba mit modernster Technologie und professionellem Service wieder zu erleuchten.",
+    monthlyImportsTitle: "Permanente Lieferungen",
+    monthlyImportsDescription: "Wir erhalten permanente Container-Lieferungen aus Deutschland und der ganzen Welt mit Produkten und der neuesten Markttechnologien. Unser Lager in Havanna del Este hält ein umfangreichen Bestand für Sie bereit, um die sofortige Nachfrage unserer Kunden zu erfüllen. Dies ermöglicht uns, wettbewerbsfähige Preise und eine sofortige oder zeitnahe Verfügbarkeit anzubieten.",
     
     // Footer
     quickLinks: "Schnellzugriff",
@@ -881,6 +889,7 @@ export const translations = {
     removeFromCart: "Entfernen",
     clearCart: "Alles löschen",
     quantity: "Menge",
+    total: "Gesamt",
     cartItems: "Artikel",
     myCart: "Mein Warenkorb",
     sendViaWhatsApp: "Über WhatsApp senden",
@@ -1242,6 +1251,11 @@ export const translations = {
     out_of_stock: "Out of stock",
     needCustomSolution: "Need a custom solution?",
     customSolutionDescription: "Our experts can design a specific solar system for your energy needs.",
+    
+    // Offline and Cookie Banner
+    offline: {
+      message: 'No internet connection'
+    },
     cookieBanner: {
       title: 'Cookie Usage',
       description: 'We use cookies to improve your experience on our website.',
@@ -1281,6 +1295,7 @@ export const translations = {
     technicalSupportExtended: "Specialized technical support available 24 hours a day.",
     supportChannels: "Support Channels",
     technicalDetails: "Technical Details",
+    certifications: "Certifications",
     certified: "Certified",
     ceCompliance: "CE Compliance",
     iecStandard: "IEC 61215 Standard",
@@ -1297,6 +1312,7 @@ export const translations = {
     aboutExcalibirDesc: "Official representatives of Excalibur Power Group in Cuba, providing high-quality energy solutions to illuminate Cuba's future.",
     
     // Navigation and Categories
+    backToCategories: "Back to Categories",
     productCount: "Products",
     inThisCategory: "in this category",
     
@@ -1308,8 +1324,11 @@ export const translations = {
     technicalAdvisoryPhone: "+49 160 323 9439",
     salesPhone: "+53 5878 1416", 
     deliveryPhone: "+53 54 73 14 90",
+    administration: "Administration", 
     cuba: "Cuba",
+    international: "International",
     warehouse: "Pickup / Warehouse",
+    warehouseDelivery: "Pickup / Warehouse",
     havanaLocation: "Havana del Este",
     emailLabel: "Email Contact:",
     
@@ -1341,6 +1360,10 @@ export const translations = {
     myCart: "My Cart",
     sendViaWhatsApp: "Send via WhatsApp",
     whatsAppMessage: "Hello, I'm interested in these products:",
+    technicalSupport: "Technical Support",
+    technicalSupportDesc: "24/7 for all offered areas",
+    generators: "Large range of Excalibur Generators",
+    generatorsDesc: "Comprehensive Excalibur range from 2kva-20kva for all applications",
     constructionMachines: "Construction materials and other materials",
     constructionMachinesDesc: "High-quality construction materials for your projects",
     
