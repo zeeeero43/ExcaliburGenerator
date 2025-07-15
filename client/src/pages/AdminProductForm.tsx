@@ -29,7 +29,7 @@ const productFormSchema = z.object({
   descriptionEs: z.string().optional(),
   descriptionEn: z.string().optional(),
   categoryId: z.number().min(1, 'Kategorie ist erforderlich'),
-  subcategoryId: z.number().optional(),
+  subcategoryId: z.number().min(0).optional(),
   sku: z.string().optional(),
   price: z.string().optional(),
   priceNote: z.string().optional(),
@@ -67,7 +67,7 @@ export default function AdminProductForm() {
       descriptionDe: '',
       descriptionEs: '',
       descriptionEn: '',
-      categoryId: 0,
+      categoryId: 1,
       subcategoryId: 0,
       sku: '',
       price: '',
@@ -199,7 +199,7 @@ export default function AdminProductForm() {
         descriptionDe: product.descriptionDe || '',
         descriptionEs: product.descriptionEs || '',
         descriptionEn: product.descriptionEn || '',
-        categoryId: product.categoryId || 0,
+        categoryId: product.categoryId || 1,
         subcategoryId: product.subcategoryId || 0,
         sku: product.sku || '',
         price: product.price || '',
@@ -231,6 +231,8 @@ export default function AdminProductForm() {
       const url = isEditing ? `/api/admin/products/${id}` : '/api/admin/products';
       const method = isEditing ? 'PUT' : 'POST';
       
+      console.log('🚀 Mutation starting:', { url, method, data });
+      
       const response = await fetch(url, {
         method,
         headers: {
@@ -239,12 +241,17 @@ export default function AdminProductForm() {
         body: JSON.stringify(data),
       });
 
+      console.log('🚀 API Response:', response.status, response.statusText);
+
       if (!response.ok) {
         const errorData = await response.json();
+        console.log('❌ API Error:', errorData);
         throw new Error(errorData.error || 'Fehler beim Speichern');
       }
 
-      return response.json();
+      const result = await response.json();
+      console.log('✅ API Success:', result);
+      return result;
     },
     onSuccess: () => {
       toast({
@@ -264,6 +271,21 @@ export default function AdminProductForm() {
   });
 
   const onSubmit = (data: ProductFormData) => {
+    console.log('🚀 Form submitted with data:', data);
+    console.log('🚀 Form errors:', form.formState.errors);
+    console.log('🚀 Form isValid:', form.formState.isValid);
+    
+    if (!form.formState.isValid) {
+      console.log('❌ Form is invalid, checking errors...');
+      console.log('Form errors:', form.formState.errors);
+      toast({
+        title: "Formular ungültig",
+        description: "Bitte überprüfen Sie alle Pflichtfelder",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     saveProductMutation.mutate(data);
   };
 
@@ -768,6 +790,11 @@ export default function AdminProductForm() {
                 <Button
                   type="submit"
                   disabled={saveProductMutation.isPending}
+                  onClick={() => {
+                    console.log('🚀 Submit button clicked');
+                    console.log('🚀 Form state:', form.formState);
+                    console.log('🚀 Form values:', form.getValues());
+                  }}
                 >
                   {saveProductMutation.isPending ? 'Speichere...' : 'Produkt speichern'}
                 </Button>
