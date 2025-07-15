@@ -12,20 +12,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation, useParams } from 'wouter';
-import { ArrowLeft, Upload, X, RefreshCw } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Info } from 'lucide-react';
 import type { Category, Subcategory, Product } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
+import { RichTextEditor } from '@/components/RichTextEditor';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
-// Vereinfachtes Schema für Produkterstellung
 const productFormSchema = z.object({
-  nameEs: z.string().min(1, 'Name ist erforderlich'),
-  nameDe: z.string().optional(),
+  nameDe: z.string().min(1, 'Produktname ist erforderlich'),
+  nameEs: z.string().optional(),
   nameEn: z.string().optional(),
-  shortDescriptionEs: z.string().min(1, 'Kurzbeschreibung ist erforderlich'),
-  shortDescriptionDe: z.string().optional(),
+  shortDescriptionDe: z.string().min(1, 'Kurzbeschreibung ist erforderlich'),
+  shortDescriptionEs: z.string().optional(),
   shortDescriptionEn: z.string().optional(),
-  descriptionEs: z.string().optional(),
   descriptionDe: z.string().optional(),
+  descriptionEs: z.string().optional(),
   descriptionEn: z.string().optional(),
   categoryId: z.number().min(1, 'Kategorie ist erforderlich'),
   subcategoryId: z.number().optional(),
@@ -49,20 +50,22 @@ export default function AdminProductForm() {
   const [location, setLocation] = useLocation();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [translationTimeout, setTranslationTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const isEditing = Boolean(id);
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productFormSchema),
     defaultValues: {
-      nameEs: '',
       nameDe: '',
+      nameEs: '',
       nameEn: '',
-      shortDescriptionEs: '',
       shortDescriptionDe: '',
+      shortDescriptionEs: '',
       shortDescriptionEn: '',
-      descriptionEs: '',
       descriptionDe: '',
+      descriptionEs: '',
       descriptionEn: '',
       categoryId: 0,
       subcategoryId: 0,
@@ -80,36 +83,121 @@ export default function AdminProductForm() {
     },
   });
 
-  // Daten laden
+  // Fetch product data for editing
   const { data: product, isLoading: isLoadingProduct } = useQuery({
     queryKey: [`/api/admin/products/${id}`],
     enabled: isEditing,
   });
 
+  // Fetch categories
   const { data: categories = [] } = useQuery({
     queryKey: ['/api/admin/categories'],
   });
 
+  // Fetch subcategories
   const { data: allSubcategories = [] } = useQuery({
     queryKey: ['/api/admin/subcategories'],
   });
 
-  // Unterkategorien filtern
+  // Filter subcategories based on selected category
   const selectedCategoryId = form.watch('categoryId');
   const subcategories = allSubcategories.filter(sub => sub.categoryId === selectedCategoryId);
 
-  // Formulardaten setzen beim Laden
+  // Auto-translation function
+  const handleAutoTranslation = async (germanText: string, toField: string) => {
+    if (!germanText || germanText.trim() === '') return;
+    
+    setIsTranslating(true);
+    
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: germanText,
+          from: 'de',
+          to: toField.includes('Es') ? 'es' : 'en',
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.translatedText && data.translatedText !== germanText) {
+          form.setValue(toField as keyof ProductFormData, data.translatedText);
+        }
+      }
+    } catch (error) {
+      console.error('Translation failed:', error);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
+  // Real-time translation with debounce for product name
+  useEffect(() => {
+    const germanName = form.watch('nameDe');
+    if (germanName) {
+      if (translationTimeout) {
+        clearTimeout(translationTimeout);
+      }
+      
+      const timeout = setTimeout(() => {
+        handleAutoTranslation(germanName, 'nameEs');
+        handleAutoTranslation(germanName, 'nameEn');
+      }, 1000);
+      
+      setTranslationTimeout(timeout);
+    }
+  }, [form.watch('nameDe')]);
+
+  // Real-time translation with debounce for short description
+  useEffect(() => {
+    const germanDesc = form.watch('shortDescriptionDe');
+    if (germanDesc) {
+      if (translationTimeout) {
+        clearTimeout(translationTimeout);
+      }
+      
+      const timeout = setTimeout(() => {
+        handleAutoTranslation(germanDesc, 'shortDescriptionEs');
+        handleAutoTranslation(germanDesc, 'shortDescriptionEn');
+      }, 1000);
+      
+      setTranslationTimeout(timeout);
+    }
+  }, [form.watch('shortDescriptionDe')]);
+
+  // Real-time translation with debounce for full description
+  useEffect(() => {
+    const germanFullDesc = form.watch('descriptionDe');
+    if (germanFullDesc) {
+      if (translationTimeout) {
+        clearTimeout(translationTimeout);
+      }
+      
+      const timeout = setTimeout(() => {
+        handleAutoTranslation(germanFullDesc, 'descriptionEs');
+        handleAutoTranslation(germanFullDesc, 'descriptionEn');
+      }, 1000);
+      
+      setTranslationTimeout(timeout);
+    }
+  }, [form.watch('descriptionDe')]);
+
+  // Set form data when product is loaded
   useEffect(() => {
     if (product) {
       form.reset({
-        nameEs: product.nameEs || '',
         nameDe: product.nameDe || '',
+        nameEs: product.nameEs || '',
         nameEn: product.nameEn || '',
-        shortDescriptionEs: product.shortDescriptionEs || '',
         shortDescriptionDe: product.shortDescriptionDe || '',
+        shortDescriptionEs: product.shortDescriptionEs || '',
         shortDescriptionEn: product.shortDescriptionEn || '',
-        descriptionEs: product.descriptionEs || '',
         descriptionDe: product.descriptionDe || '',
+        descriptionEs: product.descriptionEs || '',
         descriptionEn: product.descriptionEn || '',
         categoryId: product.categoryId || 0,
         subcategoryId: product.subcategoryId || 0,
@@ -128,7 +216,7 @@ export default function AdminProductForm() {
     }
   }, [product, form]);
 
-  // Daten neu laden
+  // Force refresh function
   const forceRefreshForm = () => {
     queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${id}`] });
     toast({
@@ -137,7 +225,7 @@ export default function AdminProductForm() {
     });
   };
 
-  // Speichern
+  // Save product mutation
   const saveProductMutation = useMutation({
     mutationFn: async (data: ProductFormData) => {
       const url = isEditing ? `/api/admin/products/${id}` : '/api/admin/products';
@@ -213,150 +301,73 @@ export default function AdminProductForm() {
         <CardHeader>
           <CardTitle>{isEditing ? 'Produkt bearbeiten' : 'Neues Produkt erstellen'}</CardTitle>
           <CardDescription>
-            Füllen Sie die Felder aus, um ein Produkt zu erstellen oder zu bearbeiten
+            Deutsch-zu-Spanisch Workflow für optimale Übersetzungen
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {/* German-First Workflow Info */}
+          <Alert className="mb-6 bg-blue-50 border-blue-200">
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Deutsch-zu-Spanisch Workflow</strong><br />
+              Nur 3 deutsche Eingaben erforderlich:
+              <ul className="list-disc ml-4 mt-1">
+                <li>Produktname (Deutsch) - wird automatisch übersetzt</li>
+                <li>Kurzbeschreibung (Deutsch) - wird automatisch übersetzt</li>
+                <li>Kategorie auswählen</li>
+              </ul>
+              Spanische und englische Versionen werden automatisch generiert.
+            </AlertDescription>
+          </Alert>
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               
-              {/* Produktname */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <FormField
-                  control={form.control}
-                  name="nameEs"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name (Spanisch) *</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Produktname auf Spanisch" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="nameDe"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name (Deutsch)</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Produktname auf Deutsch" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="nameEn"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name (Englisch)</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Product name in English" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              {/* Grundinformationen */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Grundinformationen</h3>
+                <p className="text-sm text-gray-600">Geben Sie die wichtigsten Produktinformationen ein</p>
+                
+                {/* 1. Produktname */}
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="nameDe"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>1. Produktname *</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Solar Panele 410Watt Pink, neueste Monokristelline, Halbzell PERC Technologie" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  {/* Auto-translated versions */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                    <div className="text-sm">
+                      <span className="text-gray-500">→ Automatisch übersetzt (Spanisch)</span>
+                      <div className="bg-gray-50 p-2 rounded text-sm">
+                        {form.watch('nameEs') || 'Paneles solares 410Watt Pink, última monocristalina...'}
+                      </div>
+                    </div>
+                    <div className="text-sm">
+                      <span className="text-gray-500">→ Automatisch übersetzt (Englisch)</span>
+                      <div className="bg-gray-50 p-2 rounded text-sm">
+                        {form.watch('nameEn') || 'Solar panels 410Watt Pink, latest monocrystalline...'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-              {/* Kurzbeschreibung */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <FormField
-                  control={form.control}
-                  name="shortDescriptionEs"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Kurzbeschreibung (Spanisch) *</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} placeholder="Kurze Beschreibung auf Spanisch" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="shortDescriptionDe"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Kurzbeschreibung (Deutsch)</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} placeholder="Kurze Beschreibung auf Deutsch" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="shortDescriptionEn"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Kurzbeschreibung (Englisch)</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} placeholder="Short description in English" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {/* Vollständige Beschreibung */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <FormField
-                  control={form.control}
-                  name="descriptionEs"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Beschreibung (Spanisch)</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} placeholder="Vollständige Beschreibung auf Spanisch" className="min-h-32" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="descriptionDe"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Beschreibung (Deutsch)</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} placeholder="Vollständige Beschreibung auf Deutsch" className="min-h-32" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="descriptionEn"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Beschreibung (Englisch)</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} placeholder="Full description in English" className="min-h-32" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {/* Kategorie und Unterkategorie */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* 2. Kategorie */}
                 <FormField
                   control={form.control}
                   name="categoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Kategorie *</FormLabel>
+                      <FormLabel>2. Kategorie *</FormLabel>
                       <Select
                         value={field.value?.toString() || ''}
                         onValueChange={(value) => {
@@ -381,12 +392,14 @@ export default function AdminProductForm() {
                     </FormItem>
                   )}
                 />
+
+                {/* 3. Unterkategorie (Optional) */}
                 <FormField
                   control={form.control}
                   name="subcategoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Unterkategorie</FormLabel>
+                      <FormLabel>3. Unterkategorie (Optional)</FormLabel>
                       <Select
                         value={field.value?.toString() || ''}
                         onValueChange={(value) => field.onChange(parseInt(value))}
@@ -394,7 +407,7 @@ export default function AdminProductForm() {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Unterkategorie auswählen" />
+                            <SelectValue placeholder="Unterkategorie wählen..." />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -411,148 +424,156 @@ export default function AdminProductForm() {
                 />
               </div>
 
-              {/* SKU und Preis */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Kurzbeschreibung */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Kurzbeschreibung</h3>
+                
                 <FormField
                   control={form.control}
-                  name="sku"
+                  name="shortDescriptionDe"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Artikelnummer (SKU)</FormLabel>
+                      <FormLabel>4. Beschreibung *</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="SKU-123" />
+                        <RichTextEditor
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                          placeholder="Test 1-2-3"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
+                <div className="text-sm text-gray-600 mb-2">Vorschau:</div>
+                <div className="bg-gray-50 p-3 rounded text-sm">
+                  {form.watch('shortDescriptionDe') || 'Test 1-2-3'}
+                </div>
+
+                {/* Auto-translated versions */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div className="space-y-2">
+                    <span className="text-sm text-gray-500">→ Automatisch übersetzt (Spanisch)</span>
+                    <div className="bg-gray-50 p-3 rounded text-sm min-h-[80px] relative">
+                      {form.watch('shortDescriptionEs') || 'Prueba 1-2-3'}
+                      <button type="button" className="absolute bottom-2 right-2 text-xs text-gray-400 hover:text-gray-600">
+                        ⛶
+                      </button>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-sm text-gray-500">→ Automatisch übersetzt (Englisch)</span>
+                    <div className="bg-gray-50 p-3 rounded text-sm min-h-[80px] relative">
+                      {form.watch('shortDescriptionEn') || 'Test 1-2-3'}
+                      <button type="button" className="absolute bottom-2 right-2 text-xs text-gray-400 hover:text-gray-600">
+                        ⛶
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Produktdetails */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Produktdetails</h3>
+                <p className="text-sm text-gray-600">Zusätzliche Informationen und Spezifikationen</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="sku"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>SKU/Artikelnummer</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="EXC-001" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="price"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Preis (USD)</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="999.99" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="priceNote"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Preishinweis</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Preis auf Anfrage" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              {/* Produktbild hochladen */}
+              <div className="space-y-4">
+                <Alert className="bg-blue-50 border-blue-200">
+                  <Info className="h-4 w-4" />
+                  <AlertDescription>
+                    <strong>📸 Produktbild hochladen</strong><br />
+                    Wichtig: Laden Sie hier das Hauptbild für Ihr Produkt hoch. Dieses wird auf der Website angezeigt.
+                  </AlertDescription>
+                </Alert>
+
                 <FormField
                   control={form.control}
-                  name="price"
+                  name="mainImage"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Preis</FormLabel>
+                      <FormLabel>Hauptbild *</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="299.99" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="priceNote"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Preisnotiz</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="z.B. zzgl. MwSt." />
+                        <ImageUpload
+                          value={field.value}
+                          onChange={field.onChange}
+                          maxFiles={1}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-
-              {/* Hauptbild */}
-              <FormField
-                control={form.control}
-                name="mainImage"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Hauptbild</FormLabel>
-                    <FormControl>
-                      <ImageUpload
-                        value={field.value}
-                        onChange={field.onChange}
-                        maxFiles={1}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
               {/* Zusätzliche Bilder */}
-              <FormField
-                control={form.control}
-                name="additionalImages"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Zusätzliche Bilder</FormLabel>
-                    <FormControl>
-                      <ImageUpload
-                        value={field.value}
-                        onChange={field.onChange}
-                        maxFiles={5}
-                        multiple
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="space-y-4">
+                <Alert className="bg-green-50 border-green-200">
+                  <Info className="h-4 w-4" />
+                  <AlertDescription>
+                    <strong>🖼️ Zusätzliche Bilder</strong><br />
+                    Zusätzliche Bilder für die Produktgalerie. Diese werden auf der Produktdetailseite angezeigt.
+                  </AlertDescription>
+                </Alert>
 
-              {/* Lagerstatus */}
-              <FormField
-                control={form.control}
-                name="stockStatus"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Lagerstatus</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="in_stock">Auf Lager</SelectItem>
-                        <SelectItem value="out_of_stock">Nicht verfügbar</SelectItem>
-                        <SelectItem value="limited">Begrenzt verfügbar</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Verfügbarkeit */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
-                  name="availabilityEs"
+                  name="additionalImages"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Verfügbarkeit (Spanisch)</FormLabel>
+                      <FormLabel>Zusätzliche Bilder</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="z.B. disponible en 2 semanas" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="availabilityDe"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Verfügbarkeit (Deutsch)</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="z.B. in 2 Wochen verfügbar" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="availabilityEn"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Verfügbarkeit (Englisch)</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="e.g. available in 2 weeks" />
+                        <ImageUpload
+                          value={field.value}
+                          onChange={field.onChange}
+                          maxFiles={5}
+                          multiple
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -560,41 +581,126 @@ export default function AdminProductForm() {
                 />
               </div>
 
-              {/* Schalter */}
-              <div className="flex items-center space-x-8">
-                <FormField
-                  control={form.control}
-                  name="isActive"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center space-x-2">
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel>Produkt ist aktiv</FormLabel>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="isFeatured"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center space-x-2">
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel>Als Empfehlung anzeigen</FormLabel>
-                    </FormItem>
-                  )}
-                />
+              {/* Status-Einstellungen */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Status-Einstellungen</h3>
+                <p className="text-sm text-gray-600">Verfügbarkeit und Sichtbarkeitseinstellungen</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="isActive"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel>Aktiv</FormLabel>
+                        <div className="flex items-center space-x-2">
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </div>
+                        <p className="text-xs text-gray-500">Produkt ist auf der Website sichtbar</p>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="isFeatured"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel>Empfohlen</FormLabel>
+                        <div className="flex items-center space-x-2">
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </div>
+                        <p className="text-xs text-gray-500">Auf der Startseite hervorheben</p>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="stockStatus"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel>Auf Lager</FormLabel>
+                        <div className="flex items-center space-x-2">
+                          <FormControl>
+                            <Switch
+                              checked={field.value === 'in_stock'}
+                              onCheckedChange={(checked) => 
+                                field.onChange(checked ? 'in_stock' : 'out_of_stock')
+                              }
+                            />
+                          </FormControl>
+                        </div>
+                        <p className="text-xs text-gray-500">Produkt ist verfügbar</p>
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
 
-              {/* Aktionen */}
+              {/* Verfügbarkeit (wenn nicht auf Lager) */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Verfügbarkeit (wenn nicht auf Lager)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="availabilityDe"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Verfügbarkeit (Deutsch)</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="z.B. in 2 Wochen verfügbar" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="availabilityEs"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Verfügbarkeit (Spanisch)</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="z.B. disponible en 2 semanas" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="availabilityEn"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Verfügbarkeit (Englisch)</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="e.g. available in 2 weeks" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              {/* Translation Status */}
+              {isTranslating && (
+                <div className="text-sm text-blue-600 flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                  Übersetze automatisch...
+                </div>
+              )}
+
+              {/* Submit Button */}
               <div className="flex justify-end gap-4">
                 <Button
                   type="button"
