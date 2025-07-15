@@ -29,7 +29,7 @@ const productFormSchema = z.object({
   descriptionEs: z.string().optional(),
   descriptionEn: z.string().optional(),
   categoryId: z.number().min(1, 'Kategorie ist erforderlich'),
-  subcategoryId: z.number().optional(),
+  subcategoryId: z.number().min(1, 'Unterkategorie ist erforderlich'),
   sku: z.string().optional(),
   price: z.string().optional(),
   priceNote: z.string().optional(),
@@ -68,7 +68,7 @@ export default function AdminProductForm() {
       descriptionEs: '',
       descriptionEn: '',
       categoryId: 1,
-      subcategoryId: 0,
+      subcategoryId: 1,
       sku: '',
       price: '',
       priceNote: '',
@@ -200,7 +200,7 @@ export default function AdminProductForm() {
         descriptionEs: product.descriptionEs || '',
         descriptionEn: product.descriptionEn || '',
         categoryId: product.categoryId || 1,
-        subcategoryId: product.subcategoryId || 0,
+        subcategoryId: product.subcategoryId || 1,
         sku: product.sku || '',
         price: product.price || '',
         priceNote: product.priceNote || '',
@@ -399,7 +399,7 @@ export default function AdminProductForm() {
                         value={field.value?.toString() || ''}
                         onValueChange={(value) => {
                           field.onChange(parseInt(value));
-                          form.setValue('subcategoryId', 0);
+                          form.setValue('subcategoryId', 1);
                         }}
                       >
                         <FormControl>
@@ -426,10 +426,10 @@ export default function AdminProductForm() {
                   name="subcategoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>3. Unterkategorie (Optional)</FormLabel>
+                      <FormLabel>3. Unterkategorie *</FormLabel>
                       <Select
                         value={field.value?.toString() || ''}
-                        onValueChange={(value) => field.onChange(value === '' ? 0 : parseInt(value))}
+                        onValueChange={(value) => field.onChange(parseInt(value))}
                         disabled={!selectedCategoryId || subcategories.length === 0}
                       >
                         <FormControl>
