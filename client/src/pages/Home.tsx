@@ -1,21 +1,18 @@
-import { Shield, Truck, Users, CheckCircle, Zap, Ship, Warehouse, MessageCircle } from 'lucide-react';
+import { Shield, Truck, Users, CheckCircle, Zap, Ship, Warehouse, MessageCircle, Eye } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { HeroSlider } from '../components/HeroSlider';
 import { ProductCard } from '../components/ProductCard';
 import { FormattedText } from '../components/FormattedText';
 import { Button } from '../components/ui/button';
+import { Card, CardContent } from '../components/ui/card';
 import { Link } from 'wouter';
 import type { Product, Category } from '@shared/schema';
 
 export default function Home() {
   const { t, currentLanguage } = useLanguage();
   
-  // Fetch featured products and categories from database
-  const { data: featuredProducts = [] } = useQuery<Product[]>({
-    queryKey: ['/api/products/featured'],
-  });
-
+  // Fetch categories from database (same as Products.tsx)
   const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ['/api/categories'],
   });
@@ -32,77 +29,61 @@ export default function Home() {
     return setting?.value || fallback;
   };
 
+  // Helper function to get localized text (same as Products.tsx)
+  const getLocalizedText = (item: any, field: string) => {
+    if (!item) return '';
+    const langField = `${field}${currentLanguage === 'es' ? 'Es' : currentLanguage === 'de' ? 'De' : currentLanguage === 'en' ? 'En' : ''}`;
+    return item[langField] || item[field] || '';
+  };
+
   return (
     <div>
       {/* Hero Section */}
       <HeroSlider />
 
-      {/* Product Categories */}
+      {/* Categories Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-8">
-              {t('ourProducts')}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Only show products that are explicitly featured by admin */}
-            {featuredProducts.length > 0 ? (
-              featuredProducts.map((product) => {
-                let title: string;
-                let description: string;
-                
-                switch (currentLanguage) {
-                  case 'de':
-                    title = product.nameDe || product.nameEs || '';
-                    description = product.shortDescriptionDe || product.shortDescriptionEs || '';
-                    break;
-                  case 'en':
-                    title = product.nameEn || product.nameEs || '';
-                    description = product.shortDescriptionEn || product.shortDescriptionEs || '';
-                    break;
-                  default:
-                    title = product.nameEs || '';
-                    description = product.shortDescriptionEs || '';
-                }
-                
-                // Limit description length for better display - use FormattedText for proper rendering
-                const shouldTruncate = description && description.length > 120;
-                const displayDescription = shouldTruncate ? `${description.substring(0, 120)}...` : description;
-
-                return (
-                  <ProductCard
-                    key={product.id}
-                    title={title}
-                    description={description}
-                    image={product.mainImage || "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"}
-                    linkText={t('viewDetails')}
-                    category={product.slug}
-                  />
-                );
-              })
-            ) : (
-              /* Show fallback products when no featured products are available */
-              <div className="col-span-full text-center py-16">
-                <div className="bg-blue-50 rounded-lg p-8 max-w-md mx-auto">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="w-8 h-8 text-blue-600" />
+          {/* Categories Grid - same as Products.tsx */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categories.map((category) => (
+              <Card 
+                key={category.id} 
+                className="hover:shadow-lg transition-shadow cursor-pointer group"
+                onClick={() => window.location.href = '/products'}
+              >
+                <CardContent className="p-0">
+                  {/* Category Image */}
+                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden">
+                    <img
+                      src={category.image}
+                      alt={getLocalizedText(category, 'name')}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
+                      }}
+                    />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                    {t('ourProducts')}
-                  </h3>
-                  <Link href="/products">
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                      {t('viewProducts')}
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            )}
+                  
+                  {/* Category Info */}
+                  <div className="p-4">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                      {getLocalizedText(category, 'name')}
+                    </h3>
+                    
+                    {/* Category Action */}
+                    <div className="flex items-center justify-end">
+                      <Button variant="ghost" size="sm" className="group-hover:bg-excalibur-blue group-hover:text-white">
+                        <Eye className="w-4 h-4 mr-2" />
+                        {t('viewDetails')}
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-
-
         </div>
       </section>
 
