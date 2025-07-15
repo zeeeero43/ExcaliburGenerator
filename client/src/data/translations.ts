@@ -296,7 +296,6 @@ export const translations = {
     
     // Product page translations
     productCount: "productos",
-    backToCategories: "Volver a categorías",
     inThisCategory: "en esta categoría",
     
     // Contact page
@@ -339,7 +338,6 @@ export const translations = {
     inactive: "Inactivo",
     new: "Nuevo",
     replied: "Respondido",
-    total: "total",
     online: "En Línea",
     systemRunning: "Sistema funcionando",
     manageProducts: "Gestionar Productos",
@@ -789,10 +787,7 @@ export const translations = {
     // Additional SEO Content
     generatorsTitle: "Backup-Generatoren: Garantierte Energiesicherheit",
     generatorsDescription: "Wir ergänzen unsere Solarsysteme mit modernen geräuscharmen Generatoren und bieten eine integrierte Energielösung, die kontinuierliche Stromversorgung gewährleistet. Unsere Diesel- und Benzin-Generatoren bieten 2KVA bis 10KVA, ideal für Haushalte, kleine Unternehmen und industrielle Anwendungen.",
-    whyChooseTitle: "Warum Excalibur Power Cuba wählen?",
-    whyChooseDescription: "Mit 35 Jahren Erfahrung unseres deutschen Partners AFDL IMPORT & EXPORT bieten wir das beste Preis-Leistungs-Verhältnis für Solarkomponenten und Generatoren. Unser Engagement ist es, Kuba mit modernster Technologie und professionellem Service wieder zu erleuchten.",
-    monthlyImportsTitle: "Permanente Lieferungen",
-    monthlyImportsDescription: "Wir erhalten permanente Container-Lieferungen aus Deutschland und der ganzen Welt mit Produkten und der neuesten Markttechnologien. Unser Lager in Havanna del Este hält ein umfangreichen Bestand für Sie bereit, um die sofortige Nachfrage unserer Kunden zu erfüllen. Dies ermöglicht uns, wettbewerbsfähige Preise und eine sofortige oder zeitnahe Verfügbarkeit anzubieten.",
+
     
     // Footer
     quickLinks: "Schnellzugriff",
@@ -886,7 +881,6 @@ export const translations = {
     removeFromCart: "Entfernen",
     clearCart: "Alles löschen",
     quantity: "Menge",
-    total: "Gesamt",
     cartItems: "Artikel",
     myCart: "Mein Warenkorb",
     sendViaWhatsApp: "Über WhatsApp senden",
@@ -1248,11 +1242,6 @@ export const translations = {
     out_of_stock: "Out of stock",
     needCustomSolution: "Need a custom solution?",
     customSolutionDescription: "Our experts can design a specific solar system for your energy needs.",
-    
-    // Offline and Cookie Banner
-    offline: {
-      message: 'No internet connection'
-    },
     cookieBanner: {
       title: 'Cookie Usage',
       description: 'We use cookies to improve your experience on our website.',
@@ -1292,7 +1281,6 @@ export const translations = {
     technicalSupportExtended: "Specialized technical support available 24 hours a day.",
     supportChannels: "Support Channels",
     technicalDetails: "Technical Details",
-    certifications: "Certifications",
     certified: "Certified",
     ceCompliance: "CE Compliance",
     iecStandard: "IEC 61215 Standard",
@@ -1309,7 +1297,6 @@ export const translations = {
     aboutExcalibirDesc: "Official representatives of Excalibur Power Group in Cuba, providing high-quality energy solutions to illuminate Cuba's future.",
     
     // Navigation and Categories
-    backToCategories: "Back to Categories",
     productCount: "Products",
     inThisCategory: "in this category",
     
@@ -1321,7 +1308,6 @@ export const translations = {
     technicalAdvisoryPhone: "+49 160 323 9439",
     salesPhone: "+53 5878 1416", 
     deliveryPhone: "+53 54 73 14 90",
-    administration: "Administration", 
     cuba: "Cuba",
     warehouse: "Pickup / Warehouse",
     havanaLocation: "Havana del Este",
@@ -1355,7 +1341,6 @@ export const translations = {
     myCart: "My Cart",
     sendViaWhatsApp: "Send via WhatsApp",
     whatsAppMessage: "Hello, I'm interested in these products:",
-    generatorsDesc: "Comprehensive Excalibur range from 2kva-20kva for all applications",
     constructionMachines: "Construction materials and other materials",
     constructionMachinesDesc: "High-quality construction materials for your projects",
     
