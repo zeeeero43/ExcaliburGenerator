@@ -492,6 +492,12 @@ Changelog:
   * Added public product cache invalidation to AdminProductForm save mutation
   * Added public product cache invalidation to AdminDashboard duplicate and delete mutations
   * Products now appear immediately on website after being activated in admin panel
+- July 15, 2025 (subcategory duplication fix). Fixed subcategory selection in product duplication:
+  * Made subcategory field mandatory instead of optional in product forms
+  * Fixed form data loading to properly preserve subcategoryId during product duplication
+  * Added debugging logs to track subcategory selection during form loading
+  * Enhanced category change logic to prevent subcategory reset during product editing
+  * Created comprehensive UPDATE_DEPLOYMENT_GUIDE.md and QUICK_UPDATE_GUIDE.md for production updates
 ```
 
 ## User Preferences
