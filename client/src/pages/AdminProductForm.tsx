@@ -102,6 +102,12 @@ export default function AdminProductForm() {
   // Filter subcategories based on selected category
   const selectedCategoryId = form.watch('categoryId');
   const subcategories = allSubcategories.filter(sub => sub.categoryId === selectedCategoryId);
+  
+  // Debug subcategory filtering
+  console.log('🔄 Selected category ID:', selectedCategoryId);
+  console.log('🔄 All subcategories:', allSubcategories);
+  console.log('🔄 Filtered subcategories:', subcategories);
+  console.log('🔄 Current subcategoryId value:', form.watch('subcategoryId'));
 
   // Auto-translation function
   const handleAutoTranslation = async (germanText: string, toField: string) => {
@@ -189,6 +195,9 @@ export default function AdminProductForm() {
   // Set form data when product is loaded
   useEffect(() => {
     if (product) {
+      console.log('🔄 Loading product into form:', product);
+      console.log('🔄 Product subcategoryId:', product.subcategoryId);
+      
       form.reset({
         nameDe: product.nameDe || '',
         nameEs: product.nameEs || '',
@@ -213,6 +222,14 @@ export default function AdminProductForm() {
         availabilityDe: product.availabilityDe || '',
         availabilityEn: product.availabilityEn || '',
       });
+
+      // Ensure subcategory is properly set after category is set
+      setTimeout(() => {
+        if (product.subcategoryId) {
+          form.setValue('subcategoryId', product.subcategoryId);
+          console.log('🔄 Setting subcategoryId after delay:', product.subcategoryId);
+        }
+      }, 100);
     }
   }, [product, form]);
 
@@ -399,7 +416,10 @@ export default function AdminProductForm() {
                         value={field.value?.toString() || ''}
                         onValueChange={(value) => {
                           field.onChange(parseInt(value));
-                          form.setValue('subcategoryId', 1);
+                          // Only reset subcategoryId if this is not an existing product being loaded
+                          if (!isEditing || !product) {
+                            form.setValue('subcategoryId', 1);
+                          }
                         }}
                       >
                         <FormControl>
@@ -429,7 +449,10 @@ export default function AdminProductForm() {
                       <FormLabel>3. Unterkategorie *</FormLabel>
                       <Select
                         value={field.value?.toString() || ''}
-                        onValueChange={(value) => field.onChange(parseInt(value))}
+                        onValueChange={(value) => {
+                          console.log('🔄 Subcategory changed to:', value);
+                          field.onChange(parseInt(value));
+                        }}
                         disabled={!selectedCategoryId || subcategories.length === 0}
                       >
                         <FormControl>
