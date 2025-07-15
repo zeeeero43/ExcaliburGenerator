@@ -498,6 +498,12 @@ Changelog:
   * Added debugging logs to track subcategory selection during form loading
   * Enhanced category change logic to prevent subcategory reset during product editing
   * Created comprehensive UPDATE_DEPLOYMENT_GUIDE.md and QUICK_UPDATE_GUIDE.md for production updates
+- July 15, 2025 (subcategory product listing layout optimization). Improved product display in subcategory views:
+  * Removed product descriptions from subcategory product listing for cleaner layout
+  * Moved "In den Warenkorb" button to bottom right corner of product images
+  * Moved "Details anzeigen" button to bottom left corner of product images
+  * Reduced spacing between product cards from gap-8 to gap-4 for more compact display
+  * Streamlined product card layout with buttons overlaid on images for better space utilization
 ```
 
 ## User Preferences

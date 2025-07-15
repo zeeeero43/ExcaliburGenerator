@@ -362,77 +362,82 @@ export default function Products() {
           </div>
         ) : (
           <div className={viewMode === 'grid' 
-            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" 
-            : "space-y-6"
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" 
+            : "space-y-4"
           }>
             {filteredProducts.map((product) => (
               <div key={product.id} className="group">
-                <Link to={`/product/${product.slug}`}>
-                  <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1 cursor-pointer">
-                    <div className="relative overflow-hidden rounded-t-lg">
-                      <img
-                        src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
-                        alt={getLocalizedText(product, 'name')}
-                        className="w-full h-48 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
-                        loading="lazy"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = 'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=500&fit=crop';
-                        }}
-                      />
-                      {product.isFeatured && (
-                        <Badge className="absolute top-3 left-3 bg-excalibur-orange text-white">
-                          {t('featured')}
-                        </Badge>
-                      )}
-                      <Badge 
-                        className={`absolute top-3 right-3 ${
-                          getEffectiveStockStatus(product) === 'in_stock' 
-                            ? 'bg-green-500' 
-                            : getEffectiveStockStatus(product) === 'limited'
-                            ? 'bg-yellow-500'
-                            : 'bg-red-500'
-                        } text-white`}
-                      >
-                        {getAvailabilityText(product)}
+                <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1 cursor-pointer">
+                  <div className="relative overflow-hidden rounded-t-lg">
+                    <img
+                      src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
+                      alt={getLocalizedText(product, 'name')}
+                      className="w-full h-48 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=500&fit=crop';
+                      }}
+                    />
+                    {product.isFeatured && (
+                      <Badge className="absolute top-3 left-3 bg-excalibur-orange text-white">
+                        {t('featured')}
                       </Badge>
+                    )}
+                    <Badge 
+                      className={`absolute top-3 right-3 ${
+                        getEffectiveStockStatus(product) === 'in_stock' 
+                          ? 'bg-green-500' 
+                          : getEffectiveStockStatus(product) === 'limited'
+                          ? 'bg-yellow-500'
+                          : 'bg-red-500'
+                      } text-white`}
+                    >
+                      {getAvailabilityText(product)}
+                    </Badge>
+                    
+                    {/* Details Button - Bottom Left */}
+                    <div className="absolute bottom-2 left-2">
+                      <Link to={`/product/${product.slug}`}>
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          className="bg-excalibur-blue text-white hover:bg-blue-700 shadow-lg"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          {t('viewDetails')}
+                        </Button>
+                      </Link>
                     </div>
                     
-                    <CardHeader>
-                      <CardTitle className="text-xl group-hover:text-excalibur-blue transition-colors">
-                        {getLocalizedText(product, 'name')}
-                      </CardTitle>
-                    </CardHeader>
-                    
-                    <CardContent>
-                      <div className="text-gray-600 mb-4 line-clamp-3">
-                        <FormattedText 
-                          text={getLocalizedText(product, 'shortDescription')} 
-                          className="text-gray-600"
+                    {/* Cart Button - Bottom Right */}
+                    <div className="absolute bottom-2 right-2">
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <AddToCartButton 
+                          product={product}
+                          size="sm"
+                          variant="default"
+                          className="bg-green-600 text-white hover:bg-green-700 shadow-lg"
                         />
                       </div>
-                      
-                      {product.price && (
-                        <div className="text-2xl font-bold text-excalibur-blue mb-2">
-                          {product.price}€
-                        </div>
-                      )}
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="text-excalibur-orange font-semibold group-hover:underline">
-                          {t('viewDetails')} →
-                        </div>
-                        <div onClick={(e) => e.stopPropagation()}>
-                          <AddToCartButton 
-                            product={product}
-                            size="sm"
-                            variant="outline"
-                          />
-                        </div>
+                    </div>
+                  </div>
+                  
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg group-hover:text-excalibur-blue transition-colors">
+                      {getLocalizedText(product, 'name')}
+                    </CardTitle>
+                  </CardHeader>
+                  
+                  <CardContent className="pt-0">
+                    {product.price && (
+                      <div className="text-xl font-bold text-excalibur-blue">
+                        {product.price}€
                       </div>
-                    </CardContent>
-                  </Card>
-                </Link>
+                    )}
+                  </CardContent>
+                </Card>
               </div>
             ))}
           </div>
