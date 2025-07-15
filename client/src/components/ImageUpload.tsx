@@ -197,6 +197,8 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
   };
 
   const handleImageSelect = (url: string) => {
+    console.log('handleImageSelect called with URL:', url);
+    console.log('onImageSelect function:', onImageSelect);
     onImageSelect(url);
     setIsOpen(false);
     toast({
@@ -266,14 +268,33 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
     });
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button type="button" variant="outline" className="w-full">
-          <Upload className="w-4 h-4 mr-2" />
-          Bild aus Mediathek wählen
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-7xl h-[90vh] flex flex-col">
+    <div className="space-y-3">
+      {/* Current Image Display */}
+      {currentImage && (
+        <div className="p-3 border rounded-lg bg-gray-50">
+          <Label className="text-sm font-medium text-gray-700 mb-2 block">Aktuelles Bild:</Label>
+          <div className="flex items-center gap-3">
+            <img 
+              src={currentImage} 
+              alt="Aktuelles Bild" 
+              className="w-20 h-20 object-cover rounded border"
+            />
+            <div className="flex-1">
+              <p className="text-sm text-gray-600 break-all">{currentImage}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Bild-Auswahl Dialog */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          <Button type="button" variant="outline" className="w-full">
+            <Upload className="w-4 h-4 mr-2" />
+            Bild aus Mediathek wählen
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-7xl h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Image className="w-5 h-5" />
@@ -692,5 +713,6 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
         </Dialog>
       </DialogContent>
     </Dialog>
+    </div>
   );
 }

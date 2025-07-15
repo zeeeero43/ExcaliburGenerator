@@ -539,10 +539,22 @@ export default function AdminProductForm() {
                     <FormItem>
                       <FormLabel>Hauptbild *</FormLabel>
                       <FormControl>
-                        <ImageUpload
-                          onImageSelect={field.onChange}
-                          currentImage={field.value}
-                        />
+                        <div className="space-y-2">
+                          <ImageUpload
+                            onImageSelect={(url) => {
+                              console.log('ImageUpload onImageSelect called with:', url);
+                              field.onChange(url);
+                            }}
+                            currentImage={field.value}
+                          />
+                          <div className="text-sm text-gray-600">oder URL eingeben:</div>
+                          <Input 
+                            value={field.value || ''}
+                            onChange={(e) => field.onChange(e.target.value)}
+                            placeholder="https://example.com/image.jpg"
+                            className="mt-1"
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -654,9 +666,15 @@ export default function AdminProductForm() {
                           <FormControl>
                             <Switch
                               checked={field.value === 'in_stock'}
-                              onCheckedChange={(checked) => 
-                                field.onChange(checked ? 'in_stock' : 'out_of_stock')
-                              }
+                              onCheckedChange={(checked) => {
+                                field.onChange(checked ? 'in_stock' : 'out_of_stock');
+                                // Wenn "auf Lager" gesetzt wird, Verfügbarkeitsdaten löschen
+                                if (checked) {
+                                  form.setValue('availabilityDe', '');
+                                  form.setValue('availabilityEs', '');
+                                  form.setValue('availabilityEn', '');
+                                }
+                              }}
                             />
                           </FormControl>
                         </div>
@@ -668,7 +686,7 @@ export default function AdminProductForm() {
               </div>
 
               {/* Verfügbarkeit (wenn nicht auf Lager) */}
-              <div className="space-y-4">
+              <div className={`space-y-4 ${form.watch('stockStatus') === 'in_stock' ? 'opacity-50 pointer-events-none' : ''}`}>
                 <h3 className="text-lg font-semibold">Verfügbarkeit (wenn nicht auf Lager)</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
@@ -678,7 +696,11 @@ export default function AdminProductForm() {
                       <FormItem>
                         <FormLabel>Verfügbarkeit (Deutsch)</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="z.B. in 2 Wochen verfügbar" />
+                          <Input 
+                            {...field} 
+                            placeholder="z.B. in 2 Wochen verfügbar" 
+                            disabled={form.watch('stockStatus') === 'in_stock'}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -691,7 +713,11 @@ export default function AdminProductForm() {
                       <FormItem>
                         <FormLabel>Verfügbarkeit (Spanisch)</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="z.B. disponible en 2 semanas" />
+                          <Input 
+                            {...field} 
+                            placeholder="z.B. disponible en 2 semanas" 
+                            disabled={form.watch('stockStatus') === 'in_stock'}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -704,13 +730,22 @@ export default function AdminProductForm() {
                       <FormItem>
                         <FormLabel>Verfügbarkeit (Englisch)</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="e.g. available in 2 weeks" />
+                          <Input 
+                            {...field} 
+                            placeholder="e.g. available in 2 weeks" 
+                            disabled={form.watch('stockStatus') === 'in_stock'}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
+                {form.watch('stockStatus') === 'in_stock' && (
+                  <p className="text-sm text-gray-500 italic">
+                    Diese Felder sind deaktiviert, da das Produkt auf Lager ist.
+                  </p>
+                )}
               </div>
 
               {/* Translation Status */}
