@@ -19,274 +19,114 @@ import { ExpandableTextarea } from '@/components/ExpandableTextarea';
 import { RichTextEditor } from '@/components/RichTextEditor';
 import { translateProductData } from '@/lib/translation';
 
-// Admin Translation Hook
-function useAdminTranslation() {
-  const [adminLanguage] = useState(() => 
-    localStorage.getItem('admin-language') || 'de'
-  );
-
-  const t = (key: string): string => {
-    const translations: Record<string, Record<string, string>> = {
-      de: {
-        // Form labels
-        productNameEs: 'Produktname (Spanisch) - automatisch übersetzt',
-        productNameDe: 'Produktname (Deutsch) - Haupteingabe', 
-        productNameEn: 'Produktname (Englisch) - automatisch übersetzt',
-        shortDescEs: 'Kurzbeschreibung (Spanisch) - automatisch übersetzt',
-        shortDescDe: 'Kurzbeschreibung (Deutsch) - Haupteingabe',
-        shortDescEn: 'Kurzbeschreibung (Englisch) - automatisch übersetzt',
-        descriptionEs: 'Beschreibung (Spanisch) - automatisch übersetzt',
-        descriptionDe: 'Beschreibung (Deutsch) - Haupteingabe',
-        descriptionEn: 'Beschreibung (Englisch) - automatisch übersetzt',
-        category: 'Kategorie',
-        subcategory: 'Unterkategorie',
-        sku: 'Artikelnummer',
-        price: 'Preis',
-        priceNote: 'Preishinweis',
-        mainImage: 'Hauptbild',
-        additionalImages: 'Zusätzliche Bilder',
-        addImage: 'Bild hinzufügen',
-        removeImage: 'Bild entfernen',
-        active: 'Aktiv',
-        featured: 'Empfohlen',
-        stockStatus: 'Lagerbestand',
-        inStock: 'Auf Lager',
-        availabilityEs: 'Verfügbarkeit (Spanisch)',
-        availabilityDe: 'Verfügbarkeit (Deutsch)',
-        availabilityEn: 'Verfügbarkeit (Englisch)',
-        specifications: 'Spezifikationen',
-        
-        // Stock status
-        in_stock: 'Auf Lager',
-        out_of_stock: 'Nicht verfügbar',
-        limited: 'Begrenzt verfügbar',
-        
-        // Actions
-        backToDashboard: 'Zurück zum Dashboard',
-        addProduct: 'Produkt hinzufügen',
-        editProduct: 'Produkt bearbeiten',
-        saveProduct: 'Produkt speichern',
-        selectCategory: 'Kategorie auswählen',
-        selectSubcategory: 'Unterkategorie auswählen',
-        selectImage: 'Bild auswählen',
-        
-        // Validation messages
-        nameRequired: 'Name ist erforderlich',
-        shortDescRequired: 'Kurzbeschreibung ist erforderlich',
-        categoryRequired: 'Kategorie ist erforderlich',
-        
-        // Success/Error
-        productSaved: 'Produkt erfolgreich gespeichert',
-        productError: 'Fehler beim Speichern des Produkts',
-        translating: 'Übersetze...',
-        translationComplete: 'Übersetzung abgeschlossen!',
-        translationError: 'Fehler bei der Übersetzung'
-      },
-      es: {
-        // Form labels
-        productNameEs: 'Nombre del Producto (Español) - traducido automáticamente',
-        productNameDe: 'Nombre del Producto (Alemán) - entrada principal', 
-        productNameEn: 'Nombre del Producto (Inglés) - traducido automáticamente',
-        shortDescEs: 'Descripción Corta (Español) - traducido automáticamente',
-        shortDescDe: 'Descripción Corta (Alemán) - entrada principal',
-        shortDescEn: 'Descripción Corta (Inglés) - traducido automáticamente',
-        descriptionEs: 'Descripción (Español) - traducido automáticamente',
-        descriptionDe: 'Descripción (Alemán) - entrada principal',
-        descriptionEn: 'Descripción (Inglés)',
-        category: 'Categoría',
-        subcategory: 'Subcategoría',
-        sku: 'Código de Producto',
-        price: 'Precio',
-        priceNote: 'Nota de Precio',
-        mainImage: 'Imagen Principal',
-        additionalImages: 'Imágenes Adicionales',
-        addImage: 'Agregar Imagen',
-        removeImage: 'Eliminar Imagen',
-        active: 'Activo',
-        featured: 'Destacado',
-        stockStatus: 'Estado de Stock',
-        inStock: 'En Stock',
-        availabilityEs: 'Disponibilidad (Español)',
-        availabilityDe: 'Disponibilidad (Alemán)',
-        availabilityEn: 'Disponibilidad (Inglés)',
-        specifications: 'Especificaciones',
-        
-        // Stock status
-        in_stock: 'En Stock',
-        out_of_stock: 'Agotado',
-        limited: 'Stock Limitado',
-        
-        // Actions
-        backToDashboard: 'Volver al Panel',
-        addProduct: 'Agregar Producto',
-        editProduct: 'Editar Producto',
-        saveProduct: 'Guardar Producto',
-        selectCategory: 'Seleccionar categoría',
-        selectSubcategory: 'Seleccionar subcategoría',
-        selectImage: 'Seleccionar imagen',
-        
-        // Validation messages
-        nameRequired: 'El nombre es requerido',
-        shortDescRequired: 'La descripción corta es requerida',
-        categoryRequired: 'La categoría es requerida',
-        
-        // Success/Error
-        productSaved: 'Producto guardado exitosamente',
-        productError: 'Error al guardar el producto'
-      }
-    };
+// German translations for the admin form
+const adminTexts = {
+  de: {
+    // Form labels
+    productNameEs: 'Produktname (Spanisch) - automatisch übersetzt',
+    productNameDe: 'Produktname (Deutsch) - Haupteingabe',
+    productNameEn: 'Produktname (Englisch) - automatisch übersetzt',
+    shortDescEs: 'Kurzbeschreibung (Spanisch) - automatisch übersetzt',
+    shortDescDe: 'Kurzbeschreibung (Deutsch) - Haupteingabe',
+    shortDescEn: 'Kurzbeschreibung (Englisch) - automatisch übersetzt',
+    descriptionEs: 'Beschreibung (Spanisch) - automatisch übersetzt',
+    descriptionDe: 'Beschreibung (Deutsch) - Haupteingabe',
+    descriptionEn: 'Beschreibung (Englisch)',
+    category: 'Kategorie',
+    subcategory: 'Unterkategorie',
+    sku: 'Artikelnummer',
+    price: 'Preis',
+    priceNote: 'Preisnotiz',
+    mainImage: 'Hauptbild',
+    additionalImages: 'Weitere Bilder',
+    addImage: 'Bild hinzufügen',
+    removeImage: 'Bild entfernen',
+    active: 'Aktiv',
+    featured: 'Vorgestellt',
+    stockStatus: 'Lagerstatus',
+    inStock: 'Auf Lager',
+    availabilityEs: 'Verfügbarkeit (Spanisch)',
+    availabilityDe: 'Verfügbarkeit (Deutsch)',
+    availabilityEn: 'Verfügbarkeit (Englisch)',
     
-    return translations[adminLanguage]?.[key] || translations.de[key] || key;
-  };
+    // Stock status
+    in_stock: 'Auf Lager',
+    out_of_stock: 'Nicht verfügbar',
+    limited: 'Begrenzt verfügbar',
+    
+    // Form actions
+    save: 'Produkt speichern',
+    cancel: 'Abbrechen',
+    edit: 'Bearbeiten',
+    create: 'Erstellen',
+    forceRefresh: '🔄 Daten neu laden',
+    backToDashboard: 'Zurück zum Dashboard',
+    selectCategory: 'Kategorie auswählen',
+    selectSubcategory: 'Unterkategorie auswählen',
+    selectImage: 'Bild auswählen',
+    
+    // Form titles
+    newProduct: 'Neues Produkt',
+    editProduct: 'Produkt bearbeiten',
+    
+    // Messages
+    noCategories: 'Keine Kategorien verfügbar',
+    noSubcategories: 'Keine Unterkategorien verfügbar',
+    categoryRequired: 'Kategorie ist erforderlich',
+    nameRequired: 'Name ist erforderlich',
+    shortDescRequired: 'Kurzbeschreibung ist erforderlich',
+    
+    // Success/Error
+    productSaved: 'Produkt erfolgreich gespeichert',
+    productError: 'Fehler beim Speichern des Produkts',
+    translating: 'Übersetze...',
+    translationComplete: 'Übersetzung abgeschlossen!',
+    translationError: 'Fehler bei der Übersetzung'
+  }
+};
 
-  return { t, currentLanguage: adminLanguage };
-}
+const t = (key: string) => adminTexts.de[key] || key;
 
-// German-first workflow - only German required for creation
-function createProductSchema(t: (key: string) => string) {
-  return z.object({
-    nameEs: z.string().optional(),
-    nameDe: z.string().min(1, 'Produktname (Deutsch) ist erforderlich'),
-    nameEn: z.string().optional(),
-    shortDescriptionEs: z.string().optional(),
-    shortDescriptionDe: z.string().min(1, 'Kurzbeschreibung (Deutsch) ist erforderlich'),
-    shortDescriptionEn: z.string().optional(),
-    descriptionEs: z.string().optional(),
-    descriptionDe: z.string().optional(),
-    descriptionEn: z.string().optional(),
-    categoryId: z.coerce.number().min(1, 'Kategorie ist erforderlich'),
-    subcategoryId: z.coerce.number().optional(),
-    sku: z.string().optional(),
-    price: z.string().optional(),
-    priceNote: z.string().optional(),
-    mainImage: z.string().optional(),
-    images: z.array(z.string()).optional(),
-    isActive: z.boolean().default(true),
-    isFeatured: z.boolean().default(false),
-    stockStatus: z.enum(['in_stock', 'out_of_stock', 'limited']).default('in_stock'),
-    inStock: z.boolean().default(true),
-    availabilityTextEs: z.string().optional(),
-    availabilityTextDe: z.string().optional(),
-    availabilityTextEn: z.string().optional(),
-    sortOrder: z.number().default(0),
-    specifications: z.record(z.string()).optional(),
-  });
-}
+// Form validation schema
+const productFormSchema = z.object({
+  nameEs: z.string().min(1, t('nameRequired')),
+  nameDe: z.string().optional(),
+  nameEn: z.string().optional(),
+  shortDescriptionEs: z.string().min(1, t('shortDescRequired')),
+  shortDescriptionDe: z.string().optional(),
+  shortDescriptionEn: z.string().optional(),
+  descriptionEs: z.string().optional(),
+  descriptionDe: z.string().optional(),
+  descriptionEn: z.string().optional(),
+  categoryId: z.number().min(1, t('categoryRequired')),
+  subcategoryId: z.number().optional(),
+  sku: z.string().optional(),
+  price: z.string().optional(),
+  priceNote: z.string().optional(),
+  mainImage: z.string().optional(),
+  additionalImages: z.array(z.string()).optional(),
+  isActive: z.boolean().default(true),
+  isFeatured: z.boolean().default(false),
+  stockStatus: z.enum(['in_stock', 'out_of_stock', 'limited']).default('in_stock'),
+  availabilityEs: z.string().optional(),
+  availabilityDe: z.string().optional(),
+  availabilityEn: z.string().optional(),
+});
+
+type ProductFormData = z.infer<typeof productFormSchema>;
 
 export default function AdminProductForm() {
-  const [, setLocation] = useLocation();
-  const params = useParams();
   const { toast } = useToast();
-  const { t } = useAdminTranslation();
-  
-  const productSchema = createProductSchema(t);
-  type ProductForm = z.infer<typeof productSchema>;
+  const [location, setLocation] = useLocation();
+  const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
-  // Removed selectedCategoryId state
-  
-  // Removed formInitialized state - using simple reset logic like AdminCategoryForm
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [translationTimeout, setTranslationTimeout] = useState<NodeJS.Timeout | null>(null);
 
+  const isEditing = Boolean(id);
 
-
-  // Get product ID from params - FIX FOR WOUTER ROUTING
-  const productId = params.id;
-  const isEdit = productId && productId !== 'new';
-  
-  console.log('🔍 DEBUG ProductForm INIT:', { 
-    params, 
-    productId, 
-    isEdit,
-    pathname: window.location.pathname 
-  });
-
-
-
-  // Real-time translation function with improved long text handling
-  const handleRealTimeTranslation = async (germanValue: string, fieldType: 'name' | 'shortDescription' | 'description') => {
-    if (!germanValue.trim()) return;
-    
-    try {
-      console.log(`🔄 Starting translation for ${fieldType} (${germanValue.length} chars)...`);
-      
-      // Show loading toast for long texts
-      if (germanValue.length > 200) {
-        toast({
-          title: "🔄 Übersetzung läuft...",
-          description: `Langer Text wird übersetzt (${germanValue.length} Zeichen)...`,
-        });
-      }
-      
-      const germanData = {
-        [fieldType]: germanValue,
-        name: fieldType === 'name' ? germanValue : '',
-        shortDescription: fieldType === 'shortDescription' ? germanValue : '',
-        description: fieldType === 'description' ? germanValue : '',
-      };
-      
-      const { spanish, english } = await translateProductData(germanData);
-      
-      // Update form with translations based on field type
-      if (fieldType === 'name') {
-        if (spanish.name) form.setValue('nameEs', spanish.name);
-        if (english.name) form.setValue('nameEn', english.name);
-        console.log('✅ Name translated:', { de: germanValue, es: spanish.name, en: english.name });
-      } else if (fieldType === 'shortDescription') {
-        if (spanish.shortDescription) form.setValue('shortDescriptionEs', spanish.shortDescription);
-        if (english.shortDescription) form.setValue('shortDescriptionEn', english.shortDescription);
-        console.log('✅ Short description translated:', { de: germanValue.substring(0, 50) + '...', es: spanish.shortDescription?.substring(0, 50) + '...', en: english.shortDescription?.substring(0, 50) + '...' });
-      } else if (fieldType === 'description') {
-        if (spanish.description) form.setValue('descriptionEs', spanish.description);
-        if (english.description) form.setValue('descriptionEn', english.description);
-        console.log('✅ Full description translated:', { 
-          originalLength: germanValue.length, 
-          spanishLength: spanish.description?.length, 
-          englishLength: english.description?.length 
-        });
-      }
-      
-      // Success toast with character count for long texts
-      const charInfo = germanValue.length > 200 ? ` (${germanValue.length} Zeichen verarbeitet)` : '';
-      toast({
-        title: "🌍 Automatische Übersetzung abgeschlossen",
-        description: `${fieldType} wurde ins Spanische und Englische übersetzt${charInfo}.`,
-      });
-      
-    } catch (error) {
-      console.error('Real-time translation failed:', error);
-      toast({
-        title: "⚠️ Übersetzung fehlgeschlagen",
-        description: "Die automatische Übersetzung ist vorübergehend nicht verfügbar. Versuchen Sie es erneut oder geben Sie die Übersetzungen manuell ein.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Debounced translation
-  const [translationTimeouts, setTranslationTimeouts] = useState<Record<string, NodeJS.Timeout>>({});
-
-  const debounceTranslation = (value: string, fieldType: 'name' | 'shortDescription' | 'description') => {
-    // Clear existing timeout
-    if (translationTimeouts[fieldType]) {
-      clearTimeout(translationTimeouts[fieldType]);
-    }
-    
-    // Set longer timeout for longer texts to allow user to finish typing
-    const delay = value.length > 200 ? 2500 : 1500; // 2.5s for long texts, 1.5s for short
-    
-    // Set new timeout
-    const timeoutId = setTimeout(() => {
-      handleRealTimeTranslation(value, fieldType);
-    }, delay);
-    
-    setTranslationTimeouts(prev => ({
-      ...prev,
-      [fieldType]: timeoutId
-    }));
-  };
-
-  const form = useForm<ProductForm>({
-    resolver: zodResolver(productSchema),
-    mode: 'onChange', // CRITICAL: Enable live validation for better form behavior
+  const form = useForm<ProductFormData>({
+    resolver: zodResolver(productFormSchema),
     defaultValues: {
       nameEs: '',
       nameDe: '',
@@ -297,910 +137,657 @@ export default function AdminProductForm() {
       descriptionEs: '',
       descriptionDe: '',
       descriptionEn: '',
+      categoryId: 0,
+      subcategoryId: 0,
       sku: '',
       price: '',
       priceNote: '',
       mainImage: '',
-      images: [],
+      additionalImages: [],
       isActive: true,
       isFeatured: false,
       stockStatus: 'in_stock',
-      inStock: true,
-      availabilityTextEs: '',
-      availabilityTextDe: '',
-      availabilityTextEn: '',
-      sortOrder: 0,
-      categoryId: undefined,
-      subcategoryId: undefined,
+      availabilityEs: '',
+      availabilityDe: '',
+      availabilityEn: '',
     },
   });
 
-  // Fetch existing product data for editing - SAME LOGIC AS AdminCategoryForm
-  const { data: existingProduct, isLoading: isLoadingProduct, error: productError } = useQuery<Product>({
-    queryKey: [`/api/admin/products/${productId}`],
-    enabled: isEdit && !!productId,
-  });
-  
-  console.log('🔍 DEBUG QUERY:', { 
-    existingProduct, 
-    isLoadingProduct, 
-    productError,
-    queryEnabled: isEdit && !!productId 
+  // Fetch product data for editing
+  const { data: product, isLoading: isLoadingProduct } = useQuery({
+    queryKey: [`/api/admin/products/${id}`],
+    enabled: isEditing,
   });
 
   // Fetch categories
-  const { data: categories = [] } = useQuery<Category[]>({
+  const { data: categories = [] } = useQuery({
     queryKey: ['/api/admin/categories'],
   });
 
   // Fetch subcategories
-  const { data: subcategories = [] } = useQuery<Subcategory[]>({
+  const { data: allSubcategories = [] } = useQuery({
     queryKey: ['/api/admin/subcategories'],
   });
 
-  // Force refresh function for debugging customer issues
-  const forceRefreshForm = () => {
-    console.log('🔄 FORCE REFRESH TRIGGERED');
-    queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${productId}`] });
+  // Filter subcategories based on selected category
+  const selectedCategoryId = form.watch('categoryId');
+  const subcategories = allSubcategories.filter(sub => sub.categoryId === selectedCategoryId);
+
+  // Auto-translation function
+  const handleAutoTranslation = async (germanText: string, fromField: string, toField: string) => {
+    if (!germanText || germanText.trim() === '') return;
     
-    // Also force reset if data is already available
-    if (existingProduct && isEdit) {
-      const formData = {
-        nameEs: existingProduct.nameEs || '',
-        nameDe: existingProduct.nameDe || existingProduct.name || '',
-        nameEn: existingProduct.nameEn || '',
-        shortDescriptionEs: existingProduct.shortDescriptionEs || '',
-        shortDescriptionDe: existingProduct.shortDescriptionDe || existingProduct.shortDescription || '',
-        shortDescriptionEn: existingProduct.shortDescriptionEn || '',
-        descriptionEs: existingProduct.descriptionEs || '',
-        descriptionDe: existingProduct.descriptionDe || existingProduct.description || '',
-        descriptionEn: existingProduct.descriptionEn || '',
-        price: existingProduct.price ? String(existingProduct.price) : '',
-        categoryId: existingProduct.categoryId || undefined,
-        mainImage: existingProduct.mainImage || '',
-        images: (existingProduct.images && Array.isArray(existingProduct.images)) ? existingProduct.images : [],
-        sku: existingProduct.sku || '',
-        priceNote: existingProduct.priceNote || '',
-        isFeatured: Boolean(existingProduct.isFeatured),
-        isActive: existingProduct.isActive !== false,
-        stockStatus: (existingProduct.stockStatus as 'in_stock' | 'out_of_stock' | 'limited') || 'in_stock',
-        inStock: existingProduct.inStock !== false,
-        availabilityTextEs: existingProduct.availabilityTextEs || '',
-        availabilityTextDe: existingProduct.availabilityTextDe || '',
-        availabilityTextEn: existingProduct.availabilityTextEn || '',
-        sortOrder: existingProduct.sortOrder || 0,
-      };
-      
-      form.reset(formData);
-      toast({
-        title: "🔄 Formular neu geladen",
-        description: "Die Produktdaten wurden erfolgreich neu geladen.",
+    setIsTranslating(true);
+    
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: germanText,
+          from: 'de',
+          to: toField.includes('Es') ? 'es' : 'en',
+        }),
       });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.translatedText && data.translatedText !== germanText) {
+          form.setValue(toField as keyof ProductFormData, data.translatedText);
+        }
+      }
+    } catch (error) {
+      console.error('Translation failed:', error);
+    } finally {
+      setIsTranslating(false);
     }
   };
 
-  // Update form when product data loads - ENHANCED WITH FORCE REFRESH
+  // Real-time translation with debounce
   useEffect(() => {
-    console.log('🔍 DEBUG useEffect TRIGGERED:', { 
-      existingProduct: !!existingProduct, 
-      isEdit, 
-      productId,
-      productData: existingProduct
-    });
-    
-    if (existingProduct && isEdit) {
-      console.log('🔄 DEBUG: Resetting form with product data:', {
-        id: existingProduct.id,
-        nameDe: existingProduct.nameDe,
-        nameEs: existingProduct.nameEs,
-        shortDescriptionDe: existingProduct.shortDescriptionDe,
-        categoryId: existingProduct.categoryId
-      });
+    const germanName = form.watch('nameDe');
+    if (germanName) {
+      if (translationTimeout) {
+        clearTimeout(translationTimeout);
+      }
       
-      const formData = {
-        nameEs: existingProduct.nameEs || '',
-        nameDe: existingProduct.nameDe || existingProduct.name || '',
-        nameEn: existingProduct.nameEn || '',
-        shortDescriptionEs: existingProduct.shortDescriptionEs || '',
-        shortDescriptionDe: existingProduct.shortDescriptionDe || existingProduct.shortDescription || '',
-        shortDescriptionEn: existingProduct.shortDescriptionEn || '',
-        descriptionEs: existingProduct.descriptionEs || '',
-        descriptionDe: existingProduct.descriptionDe || existingProduct.description || '',
-        descriptionEn: existingProduct.descriptionEn || '',
-        price: existingProduct.price ? String(existingProduct.price) : '',
-        categoryId: existingProduct.categoryId || undefined,
-        mainImage: existingProduct.mainImage || '',
-        images: (existingProduct.images && Array.isArray(existingProduct.images)) ? existingProduct.images : [],
-        sku: existingProduct.sku || '',
-        priceNote: existingProduct.priceNote || '',
-        isFeatured: Boolean(existingProduct.isFeatured),
-        isActive: existingProduct.isActive !== false,
-        stockStatus: (existingProduct.stockStatus as 'in_stock' | 'out_of_stock' | 'limited') || 'in_stock',
-        inStock: existingProduct.inStock !== false,
-        availabilityTextEs: existingProduct.availabilityTextEs || '',
-        availabilityTextDe: existingProduct.availabilityTextDe || '',
-        availabilityTextEn: existingProduct.availabilityTextEn || '',
-        sortOrder: existingProduct.sortOrder || 0,
-      };
+      const timeout = setTimeout(() => {
+        handleAutoTranslation(germanName, 'nameDe', 'nameEs');
+        handleAutoTranslation(germanName, 'nameDe', 'nameEn');
+      }, 1000);
       
-      console.log('🔄 DEBUG: Form data prepared:', formData);
-      form.reset(formData);
-      console.log('✅ DEBUG: Form reset completed');
-      console.log('📝 DEBUG: Current form values:', form.getValues());
+      setTranslationTimeout(timeout);
     }
-  }, [existingProduct, isEdit, form]);
+  }, [form.watch('nameDe')]);
 
-  // Removed subcategory functionality - no need to watch category changes
+  useEffect(() => {
+    const germanDesc = form.watch('shortDescriptionDe');
+    if (germanDesc) {
+      if (translationTimeout) {
+        clearTimeout(translationTimeout);
+      }
+      
+      const timeout = setTimeout(() => {
+        handleAutoTranslation(germanDesc, 'shortDescriptionDe', 'shortDescriptionEs');
+        handleAutoTranslation(germanDesc, 'shortDescriptionDe', 'shortDescriptionEn');
+      }, 1000);
+      
+      setTranslationTimeout(timeout);
+    }
+  }, [form.watch('shortDescriptionDe')]);
 
-  // Create/Update mutation
+  useEffect(() => {
+    const germanFullDesc = form.watch('descriptionDe');
+    if (germanFullDesc) {
+      if (translationTimeout) {
+        clearTimeout(translationTimeout);
+      }
+      
+      const timeout = setTimeout(() => {
+        handleAutoTranslation(germanFullDesc, 'descriptionDe', 'descriptionEs');
+        handleAutoTranslation(germanFullDesc, 'descriptionDe', 'descriptionEn');
+      }, 1000);
+      
+      setTranslationTimeout(timeout);
+    }
+  }, [form.watch('descriptionDe')]);
+
+  // Set form data when product is loaded
+  useEffect(() => {
+    if (product) {
+      form.reset({
+        nameEs: product.nameEs || '',
+        nameDe: product.nameDe || '',
+        nameEn: product.nameEn || '',
+        shortDescriptionEs: product.shortDescriptionEs || '',
+        shortDescriptionDe: product.shortDescriptionDe || '',
+        shortDescriptionEn: product.shortDescriptionEn || '',
+        descriptionEs: product.descriptionEs || '',
+        descriptionDe: product.descriptionDe || '',
+        descriptionEn: product.descriptionEn || '',
+        categoryId: product.categoryId || 0,
+        subcategoryId: product.subcategoryId || 0,
+        sku: product.sku || '',
+        price: product.price || '',
+        priceNote: product.priceNote || '',
+        mainImage: product.mainImage || '',
+        additionalImages: product.additionalImages || [],
+        isActive: product.isActive,
+        isFeatured: product.isFeatured,
+        stockStatus: product.stockStatus || 'in_stock',
+        availabilityEs: product.availabilityEs || '',
+        availabilityDe: product.availabilityDe || '',
+        availabilityEn: product.availabilityEn || '',
+      });
+    }
+  }, [product, form]);
+
+  // Force refresh function
+  const forceRefreshForm = () => {
+    queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${id}`] });
+    toast({
+      title: "Daten aktualisiert",
+      description: "Formulardaten wurden neu geladen",
+    });
+  };
+
+  // Save product mutation
   const saveProductMutation = useMutation({
-    mutationFn: async (data: ProductForm) => {
-      const productData = {
-        ...data,
-        price: data.price ? data.price.toString() : undefined,
-      };
-
-      const url = isEdit ? `/api/admin/products/${productId}` : '/api/admin/products';
-      const method = isEdit ? 'PUT' : 'POST';
-
-      console.log('📤 Sende Produktdaten:', productData);
-      console.log('🌐 URL:', url, 'Method:', method);
-
+    mutationFn: async (data: ProductFormData) => {
+      const url = isEditing ? `/api/admin/products/${id}` : '/api/admin/products';
+      const method = isEditing ? 'PUT' : 'POST';
+      
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
-
-      console.log('📥 Server Response Status:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('📛 Server-Fehler-Details:', errorData);
-        
-        let errorMessage = errorData.error || 'Failed to save product';
-        if (errorData.details) {
-          errorMessage += ` - Details: ${errorData.details}`;
-        }
-        if (errorData.fields) {
-          errorMessage += ` - Betroffene Felder: ${errorData.fields.join(', ')}`;
-        }
-        
-        throw new Error(errorMessage);
+        throw new Error(errorData.error || 'Failed to save product');
       }
 
-      const result = await response.json();
-      console.log('✅ Erfolgreich gespeichert:', result);
-      return result;
+      return response.json();
     },
-    onSuccess: (result) => {
-      // Success feedback
-      const actionText = isEdit ? 'aktualisiert' : 'erstellt';
+    onSuccess: () => {
       toast({
-        title: `✅ Produkt erfolgreich ${actionText}!`,
-        description: `Das Produkt wurde erfolgreich gespeichert und ist jetzt verfügbar.`,
-        variant: "default",
-
+        title: t('productSaved'),
+        description: isEditing ? t('editProduct') : t('newProduct'),
       });
-      
-      // Invalidate and refresh queries
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
-      if (isEdit) {
-        queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${params.id}`] });
-      }
-      
-      // Navigate back to admin dashboard after brief delay
-      setTimeout(() => {
-        setLocation('/admin');
-      }, 1500);
+      setLocation('/admin');
     },
-    onError: (error: any) => {
-      console.error('🚨 PRODUKTERSTELLUNG FEHLGESCHLAGEN:', error);
-      
-      let errorMessage = "Unbekannter Fehler beim Speichern des Produkts.";
-      let debugInfo = "";
-      
-      // Detaillierte Fehleranalyse
-      if (error.message) {
-        console.log('📋 Fehlermeldung:', error.message);
-        
-        if (error.message.includes('Validation error')) {
-          errorMessage = `❌ Validierungsfehler: ${error.message.split('details: ')[1] || error.message}`;
-          debugInfo = "Überprüfen Sie alle Pflichtfelder (rot markiert)";
-        } else if (error.message.includes('Required')) {
-          errorMessage = "Pflichtfelder fehlen. Bitte überprüfen Sie alle erforderlichen Felder.";
-        } else if (error.message.includes('unique constraint')) {
-          errorMessage = "Ein Produkt mit diesem Namen oder SKU existiert bereits.";
-        } else if (error.message.includes('value too long')) {
-          errorMessage = "Ein Textfeld ist zu lang. Bitte kürzen Sie die Eingaben.";
-        } else if (error.message.includes('401')) {
-          errorMessage = "Nicht autorisiert. Bitte melden Sie sich neu an.";
-        } else if (error.message.includes('500')) {
-          errorMessage = "Server-Fehler. Bitte versuchen Sie es erneut.";
-        } else {
-          errorMessage = `Fehler: ${error.message}`;
-        }
-      }
-      
+    onError: (error: Error) => {
       toast({
-        title: "❌ Produkterstellung fehlgeschlagen",
-        description: errorMessage,
-        variant: "destructive",
+        title: t('productError'),
+        description: error.message,
+        variant: 'destructive',
       });
-      
-
     },
   });
 
-  const onSubmit = (data: ProductForm) => {
-    // Basic validation
-    if (!data.nameDe) {
-      toast({
-        title: "Fehlende Angabe",
-        description: "Produktname (Deutsch) ist erforderlich",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if (!data.shortDescriptionDe) {
-      toast({
-        title: "Fehlende Angabe",
-        description: "Beschreibung (Deutsch) ist erforderlich",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if (!data.categoryId) {
-      toast({
-        title: "Fehlende Angabe",
-        description: "Kategorie auswählen ist erforderlich", 
-        variant: "destructive",
-      });
-      return;
-    }
-    
+  const onSubmit = (data: ProductFormData) => {
     saveProductMutation.mutate(data);
   };
 
-
+  if (isLoadingProduct) {
+    return <div className="p-6">Lade Produktdaten...</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <Button
-              variant="ghost"
-              onClick={() => setLocation('/admin')}
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Zurück zum Dashboard
-            </Button>
-            {isEdit && (
-              <Button
-                variant="outline"
-                onClick={forceRefreshForm}
-                className="bg-blue-50 text-blue-600 hover:bg-blue-100"
-              >
-                🔄 Daten neu laden
-              </Button>
-            )}
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            {isEdit ? 'Produkt bearbeiten' : 'Neues Produkt erstellen'}
-          </h1>
-          <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 mt-4">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">Deutsch-zu-Spanisch Workflow</h2>
-            <p className="text-gray-700 text-sm">
-              Nur 3 deutsche Eingaben erforderlich:
-            </p>
-            <ul className="text-gray-700 text-sm mt-2 list-disc ml-5">
-              <li>Produktname (Deutsch) - wird automatisch übersetzt</li>
-              <li>Kurzbeschreibung (Deutsch) - wird automatisch übersetzt</li>
-              <li>Kategorie auswählen</li>
-            </ul>
-            <p className="text-gray-700 text-sm mt-2">
-              Spanische und englische Versionen werden automatisch generiert.
-            </p>
-          </div>
-        </div>
+    <div className="container mx-auto p-6 max-w-4xl">
+      <div className="flex items-center gap-4 mb-6">
+        <Button
+          variant="outline"
+          onClick={() => setLocation('/admin')}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          {t('backToDashboard')}
+        </Button>
+        <h1 className="text-2xl font-bold">
+          {isEditing ? t('editProduct') : t('newProduct')}
+        </h1>
+        {isEditing && (
+          <Button
+            variant="outline"
+            onClick={forceRefreshForm}
+            className="ml-auto"
+          >
+            {t('forceRefresh')}
+          </Button>
+        )}
+      </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* Basic Information */}
-            <Card className={`${(form.formState.errors.nameDe || form.formState.errors.categoryId || form.formState.errors.shortDescriptionDe) ? 'border-red-500 border-2' : ''}`}>
-              <CardHeader>
-                <CardTitle>Grundinformationen</CardTitle>
-                <CardDescription>
-                  Geben Sie die wichtigsten Produktinformationen ein
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Product Names */}
-                <div className="grid grid-cols-1 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="nameDe"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-800 font-bold text-lg">1. Produktname <span className="text-red-500">*</span></FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            placeholder="z.B. 300W Monokristallines Solarpanel" 
-                            className="text-lg p-3 border-2 border-gray-300 focus:border-gray-600"
-                            onChange={(e) => {
-                              field.onChange(e);
-                              debounceTranslation(e.target.value, 'name');
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
-                    <FormField
-                      control={form.control}
-                      name="nameEs"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-600">→ Automatisch übersetzt (Spanisch)</FormLabel>
-                          <FormControl>
-                            <Input 
-                              {...field} 
-                              placeholder="Wird automatisch übersetzt..." 
-                              className="bg-gray-100 border-gray-200"
-                              readOnly
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="nameEn"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-600">→ Automatisch übersetzt (Englisch)</FormLabel>
-                          <FormControl>
-                            <Input 
-                              {...field} 
-                              placeholder="Wird automatisch übersetzt..." 
-                              className="bg-gray-100 border-gray-200"
-                              readOnly
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-
-                {/* Category Selection */}
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="categoryId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-800 font-bold text-lg">2. Kategorie <span className="text-red-500">*</span></FormLabel>
-                        <Select 
-                          onValueChange={field.onChange} 
-                          value={field.value?.toString()}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="text-lg p-3 border-2 border-gray-300 focus:border-gray-600">
-                              <SelectValue placeholder="Kategorie wählen..." />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {categories.length === 0 ? (
-                              <SelectItem value="" disabled>
-                                Keine Kategorien verfügbar
-                              </SelectItem>
-                            ) : (
-                              categories.map((category) => (
-                                <SelectItem key={category.id} value={category.id.toString()}>
-                                  {category.nameDe || category.nameEs || category.name}
-                                </SelectItem>
-                              ))
-                            )}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="subcategoryId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-800 font-bold text-lg">3. Unterkategorie (Optional)</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value?.toString()}>
-                          <FormControl>
-                            <SelectTrigger className="text-lg p-3 border-2 border-gray-300 focus:border-gray-600">
-                              <SelectValue placeholder="Unterkategorie wählen..." />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {subcategories
-                              .filter(sub => sub.categoryId === Number(form.watch('categoryId')))
-                              .map((subcategory) => (
-                                <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
-                                  {subcategory.nameDe || subcategory.nameEs || subcategory.name}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Short Descriptions */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Kurzbeschreibung</h3>
-                  <div className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="shortDescriptionDe"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-800 font-bold text-lg">4. Beschreibung <span className="text-red-500">*</span></FormLabel>
-                          <FormControl>
-                            <RichTextEditor
-                              label=""
-                              value={field.value || ''}
-                              onChange={(value) => {
-                                field.onChange(value);
-                                debounceTranslation(value, 'shortDescription');
-                              }}
-                              placeholder="Produktbeschreibung mit Formatierung eingeben..."
-                              required
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
-                      <FormField
-                        control={form.control}
-                        name="shortDescriptionEs"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-600">→ Automatisch übersetzt (Spanisch)</FormLabel>
-                            <FormControl>
-                              <ExpandableTextarea 
-                                value={field.value || ''}
-                                onChange={field.onChange}
-                                placeholder="Wird automatisch übersetzt..." 
-                                className="bg-gray-100 border-gray-200"
-                                label="Kurzbeschreibung (Spanisch)"
-                                rows={3}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="shortDescriptionEn"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-600">→ Automatisch übersetzt (Englisch)</FormLabel>
-                            <FormControl>
-                              <ExpandableTextarea 
-                                value={field.value || ''}
-                                onChange={field.onChange}
-                                placeholder="Wird automatisch übersetzt..."
-                                className="bg-gray-100 border-gray-200"
-                                label="Kurzbeschreibung (Englisch)"
-                                rows={3}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-
-
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Product Details */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Produktdetails</CardTitle>
-                <CardDescription>
-                  Zusätzliche Informationen und Spezifikationen
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* SKU and Price */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="sku"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>SKU/Artikelnummer</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="EXC-001" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Preis (USD)</FormLabel>
-                        <FormControl>
-                          <Input {...field} type="number" step="0.01" placeholder="999.99" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="priceNote"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Preishinweis</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="Preis auf Anfrage" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Main Image */}
-                <Card className="bg-blue-50 border-blue-200">
-                  <CardHeader>
-                    <CardTitle className="text-lg text-blue-800">📸 Produktbild hochladen</CardTitle>
-                    <CardDescription className="text-blue-600">
-                      Wichtig: Laden Sie hier das Hauptbild für Ihr Produkt hoch. Dieses wird auf der Website angezeigt.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <FormField
-                      control={form.control}
-                      name="mainImage"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-base font-medium">Hauptbild *</FormLabel>
-                          <div className="space-y-2">
-                            <ImageUpload 
-                              onImageSelect={field.onChange}
-                              currentImage={field.value}
-                            />
-                            <FormControl>
-                              <Input 
-                                {...field} 
-                                placeholder="Oder URL eingeben: https://..." 
-                                className="mt-2"
-                              />
-                            </FormControl>
-                            {field.value && (
-                              <div className="mt-2">
-                                <img 
-                                  src={field.value} 
-                                  alt="Produktbild Vorschau" 
-                                  className="max-w-xs max-h-48 object-contain rounded border"
-                                  style={{ aspectRatio: 'auto' }}
-                                />
-                              </div>
-                            )}
-                          </div>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </CardContent>
-                </Card>
-
-                {/* Additional Images */}
-                <Card className="bg-green-50 border-green-200">
-                  <CardHeader>
-                    <CardTitle className="text-lg text-green-800">🖼️ {t('additionalImages')}</CardTitle>
-                    <CardDescription className="text-green-600">
-                      Zusätzliche Bilder für die Produktgalerie. Diese werden auf der Produktdetailseite angezeigt.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <FormField
-                      control={form.control}
-                      name="images"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-base font-medium">{t('additionalImages')}</FormLabel>
-                          <div className="space-y-4">
-                            {/* Display existing images */}
-                            {field.value && field.value.length > 0 && (
-                              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                                {field.value.map((imageUrl: string, index: number) => (
-                                  <div key={index} className="relative group">
-                                    <img 
-                                      src={imageUrl} 
-                                      alt={`Zusätzliches Bild ${index + 1}`}
-                                      className="w-full h-20 sm:h-24 object-contain bg-gray-100 rounded border"
-                                    />
-                                    <Button
-                                      type="button"
-                                      variant="destructive"
-                                      size="sm"
-                                      className="absolute top-1 right-1 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6"
-                                      onClick={() => {
-                                        const newImages = [...(field.value || [])];
-                                        newImages.splice(index, 1);
-                                        field.onChange(newImages);
-                                      }}
-                                    >
-                                      <X className="h-3 w-3" />
-                                    </Button>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                            
-                            {/* Add new image */}
-                            <div className="border-2 border-dashed border-green-300 rounded-lg p-4">
-                              <div className="text-center space-y-2">
-                                <ImageUpload 
-                                  onImageSelect={(imageUrl) => {
-                                    const currentImages = field.value || [];
-                                    field.onChange([...currentImages, imageUrl]);
-                                  }}
-                                />
-                                <p className="text-sm text-gray-600">oder URL eingeben:</p>
-                                <div className="flex flex-col sm:flex-row gap-2">
-                                  <Input 
-                                    placeholder="https://..." 
-                                    id="additional-image-url"
-                                    className="flex-1"
-                                  />
-                                  <Button
-                                    type="button"
-                                    variant="outline"
-                                    className="w-full sm:w-auto"
-                                    onClick={() => {
-                                      const input = document.getElementById('additional-image-url') as HTMLInputElement;
-                                      if (input?.value) {
-                                        const currentImages = field.value || [];
-                                        field.onChange([...currentImages, input.value]);
-                                        input.value = '';
-                                      }
-                                    }}
-                                  >
-                                    {t('addImage')}
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </CardContent>
-                </Card>
-
-
-              </CardContent>
-            </Card>
-
-            {/* Status Settings */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Status-Einstellungen</CardTitle>
-                <CardDescription>
-                  Verfügbarkeit und Sichtbarkeitseinstellungen
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="isActive"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                        <div className="space-y-0.5">
-                          <FormLabel className="text-base">Aktiv</FormLabel>
-                          <div className="text-sm text-muted-foreground">
-                            Produkt ist auf der Website sichtbar
-                          </div>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="isFeatured"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                        <div className="space-y-0.5">
-                          <FormLabel className="text-base">Empfohlen</FormLabel>
-                          <div className="text-sm text-muted-foreground">
-                            Auf der Startseite hervorheben
-                          </div>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="inStock"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                        <div className="space-y-0.5">
-                          <FormLabel className="text-base">Auf Lager</FormLabel>
-                          <div className="text-sm text-muted-foreground">
-                            Produkt ist verfügbar
-                          </div>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Verfügbarkeit */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Verfügbarkeit (wenn nicht auf Lager)</h3>
-                  <div className="grid grid-cols-1 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="availabilityTextEs"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Verfügbarkeit (Spanisch)</FormLabel>
-                          <FormControl>
-                            <Input {...field} placeholder="z.B. 2-3 semanas, 1-2 meses" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="availabilityTextDe"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Verfügbarkeit (Deutsch)</FormLabel>
-                          <FormControl>
-                            <Input {...field} placeholder="z.B. 2-3 Wochen, 1-2 Monate" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="availabilityTextEn"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Verfügbarkeit (Englisch)</FormLabel>
-                          <FormControl>
-                            <Input {...field} placeholder="e.g. 2-3 weeks, 1-2 months" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Sort Order */}
-            <Card className="bg-green-50 border-green-200">
-              <CardHeader>
-                <CardTitle className="text-lg text-green-800">📊 Reihenfolge des Produkts</CardTitle>
-                <CardDescription className="text-green-600">
-                  Bestimmen Sie die Reihenfolge mit Zahlen (1-2-3-4-5-6-7-8 etc.). Niedrigere Zahlen erscheinen zuerst in der Kategorie.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
+      <Card>
+        <CardHeader>
+          <CardTitle>{isEditing ? t('editProduct') : t('newProduct')}</CardTitle>
+          <CardDescription>
+            Alle Felder werden automatisch vom Deutschen ins Spanische und Englische übersetzt
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Product Names */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
-                  name="sortOrder"
+                  name="nameDe"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base font-medium">Reihenfolge-Nummer</FormLabel>
+                      <FormLabel>{t('productNameDe')} *</FormLabel>
                       <FormControl>
-                        <Input 
-                          type="number"
-                          min="0"
-                          max="999"
-                          placeholder="z.B. 1 für erste Position in der Kategorie, 2 für zweite Position..."
-                          {...field}
-                          value={field.value || ''}
-                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : 0)}
-                          className="w-32"
-                        />
+                        <Input {...field} placeholder="Deutscher Produktname" />
                       </FormControl>
-                      <div className="text-sm text-green-600 mt-1">
-                        💡 Tipp: Verwenden Sie 1 für das wichtigste Produkt der Kategorie, 2 für das zweitwichtigste, etc.
-                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </CardContent>
-            </Card>
+                <FormField
+                  control={form.control}
+                  name="nameEs"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('productNameEs')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Automatisch übersetzt" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="nameEn"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('productNameEn')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Automatically translated" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            {/* Submit Buttons */}
-            <div className="flex justify-end space-x-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setLocation('/admin')}
-                disabled={saveProductMutation.isPending}
-              >
-                Abbrechen
-              </Button>
-              <Button
-                type="submit"
-                disabled={saveProductMutation.isPending}
-                className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3 text-lg font-bold"
-              >
-                {saveProductMutation.isPending 
-                  ? 'Speichern...' 
-                  : isEdit 
-                    ? 'Produkt aktualisieren'
-                    : 'Neues Produkt erstellen'
-                }
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </div>
+              {/* Short Descriptions */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="shortDescriptionDe"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('shortDescDe')} *</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} placeholder="Deutsche Kurzbeschreibung" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="shortDescriptionEs"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('shortDescEs')}</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} placeholder="Automatisch übersetzt" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="shortDescriptionEn"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('shortDescEn')}</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} placeholder="Automatically translated" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Full Descriptions */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="descriptionDe"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('descriptionDe')}</FormLabel>
+                      <FormControl>
+                        <RichTextEditor
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                          placeholder="Deutsche Beschreibung"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="descriptionEs"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('descriptionEs')}</FormLabel>
+                      <FormControl>
+                        <RichTextEditor
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                          placeholder="Automatisch übersetzt"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="descriptionEn"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('descriptionEn')}</FormLabel>
+                      <FormControl>
+                        <RichTextEditor
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                          placeholder="Automatically translated"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Category and Subcategory */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="categoryId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('category')} *</FormLabel>
+                      <Select
+                        value={field.value?.toString() || ''}
+                        onValueChange={(value) => {
+                          field.onChange(parseInt(value));
+                          form.setValue('subcategoryId', 0);
+                        }}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t('selectCategory')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categories.map((category: Category) => (
+                            <SelectItem key={category.id} value={category.id.toString()}>
+                              {category.nameDe || category.nameEs}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="subcategoryId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('subcategory')}</FormLabel>
+                      <Select
+                        value={field.value?.toString() || ''}
+                        onValueChange={(value) => field.onChange(parseInt(value))}
+                        disabled={!selectedCategoryId || subcategories.length === 0}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t('selectSubcategory')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {subcategories.map((subcategory: Subcategory) => (
+                            <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
+                              {subcategory.nameDe || subcategory.nameEs}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* SKU and Price */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="sku"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('sku')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="SKU-123" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('price')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="z.B. 299.99" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="priceNote"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('priceNote')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="z.B. zzgl. MwSt." />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Main Image */}
+              <FormField
+                control={form.control}
+                name="mainImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('mainImage')}</FormLabel>
+                    <FormControl>
+                      <ImageUpload
+                        value={field.value}
+                        onChange={field.onChange}
+                        maxFiles={1}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Additional Images */}
+              <FormField
+                control={form.control}
+                name="additionalImages"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('additionalImages')}</FormLabel>
+                    <FormControl>
+                      <ImageUpload
+                        value={field.value}
+                        onChange={field.onChange}
+                        maxFiles={5}
+                        multiple
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Stock Status */}
+              <FormField
+                control={form.control}
+                name="stockStatus"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('stockStatus')}</FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="in_stock">{t('in_stock')}</SelectItem>
+                        <SelectItem value="out_of_stock">{t('out_of_stock')}</SelectItem>
+                        <SelectItem value="limited">{t('limited')}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Availability */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="availabilityDe"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('availabilityDe')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="z.B. in 2 Wochen verfügbar" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="availabilityEs"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('availabilityEs')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Automatisch übersetzt" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="availabilityEn"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('availabilityEn')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Automatically translated" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Switches */}
+              <div className="flex items-center space-x-8">
+                <FormField
+                  control={form.control}
+                  name="isActive"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2">
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel>{t('active')}</FormLabel>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="isFeatured"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2">
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel>{t('featured')}</FormLabel>
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Translation Status */}
+              {isTranslating && (
+                <div className="text-sm text-blue-600 flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                  {t('translating')}
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <div className="flex justify-end gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setLocation('/admin')}
+                >
+                  {t('cancel')}
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={saveProductMutation.isPending}
+                >
+                  {saveProductMutation.isPending ? 'Speichere...' : t('save')}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

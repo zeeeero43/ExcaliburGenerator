@@ -9,7 +9,6 @@ import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage, Phone, Layers, ArrowUpDown } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useLanguage } from '@/hooks/useLanguage';
 import type { Category, Product, Inquiry, AdminUser, Subcategory } from '@shared/schema';
 
 // Check if user is authenticated
@@ -36,25 +35,6 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { t, switchLanguage } = useLanguage();
-  const [adminLanguage, setAdminLanguage] = useState(() => 
-    localStorage.getItem('admin-language') || 'de'
-  );
-
-  // Force admin dashboard to German on load
-  useEffect(() => {
-    if (adminLanguage !== 'de') {
-      setAdminLanguage('de');
-      localStorage.setItem('admin-language', 'de');
-      switchLanguage('de');
-    }
-  }, []);
-
-  const handleLanguageChange = (lang: string) => {
-    setAdminLanguage(lang);
-    localStorage.setItem('admin-language', lang);
-    switchLanguage(lang as 'es' | 'de' | 'en');
-  };
 
 
 
@@ -232,6 +212,90 @@ export default function AdminDashboard() {
     },
   });
 
+  // Duplicate product mutation
+  const duplicateProductMutation = useMutation({
+    mutationFn: async (productId: number) => {
+      const response = await fetch(`/api/admin/products/${productId}/duplicate`, {
+        method: 'POST',
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to duplicate product');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
+      toast({
+        title: "Produkt dupliziert",
+        description: "Das Produkt wurde erfolgreich dupliziert.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fehler beim Duplizieren",
+        description: "Das Produkt konnte nicht dupliziert werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Duplicate category mutation
+  const duplicateCategoryMutation = useMutation({
+    mutationFn: async (categoryId: number) => {
+      const response = await fetch(`/api/admin/categories/${categoryId}/duplicate`, {
+        method: 'POST',
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to duplicate category');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
+      toast({
+        title: "Kategorie dupliziert",
+        description: "Die Kategorie wurde erfolgreich dupliziert.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fehler beim Duplizieren",
+        description: "Die Kategorie konnte nicht dupliziert werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Duplicate subcategory mutation
+  const duplicateSubcategoryMutation = useMutation({
+    mutationFn: async (subcategoryId: number) => {
+      const response = await fetch(`/api/admin/subcategories/${subcategoryId}/duplicate`, {
+        method: 'POST',
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to duplicate subcategory');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/subcategories'] });
+      toast({
+        title: "Unterkategorie dupliziert",
+        description: "Die Unterkategorie wurde erfolgreich dupliziert.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fehler beim Duplizieren",
+        description: "Die Unterkategorie konnte nicht dupliziert werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -260,22 +324,10 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center py-4 space-y-4 lg:space-y-0">
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-gray-900">{t('dashboard')}</h1>
-              <p className="text-sm text-gray-600">{t('welcome')}, {(user as AdminUser)?.firstName || (user as AdminUser)?.username || 'Admin'}!</p>
+              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+              <p className="text-sm text-gray-600">Willkommen, {(user as AdminUser)?.firstName || (user as AdminUser)?.username || 'Admin'}!</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-              <Select value={adminLanguage} onValueChange={handleLanguageChange}>
-                <SelectTrigger className="w-full sm:w-auto min-w-[140px]">
-                  <div className="flex items-center gap-2">
-                    <Languages className="w-4 h-4" />
-                    <SelectValue />
-                  </div>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="de">Deutsch</SelectItem>
-                  <SelectItem value="es">Español</SelectItem>
-                </SelectContent>
-              </Select>
               
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex gap-2 lg:gap-3 w-full sm:w-auto">
                 <Button
@@ -285,7 +337,7 @@ export default function AdminDashboard() {
                   className="text-xs sm:text-sm whitespace-nowrap"
                 >
                   <BarChart className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">{t('analytics')}</span>
+                  <span className="hidden sm:inline">Analytics</span>
                   <span className="sm:hidden">Analytics</span>
                 </Button>
                 <Button
@@ -295,7 +347,7 @@ export default function AdminDashboard() {
                   className="text-xs sm:text-sm whitespace-nowrap"
                 >
                   <Image className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">{t('websiteImages')}</span>
+                  <span className="hidden sm:inline">Website-Bilder</span>
                   <span className="sm:hidden">Website</span>
                 </Button>
                 <Button
@@ -305,7 +357,7 @@ export default function AdminDashboard() {
                   className="text-xs sm:text-sm whitespace-nowrap"
                 >
                   <FileImage className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">{t('imageManager')}</span>
+                  <span className="hidden sm:inline">Bildverwaltung</span>
                   <span className="sm:hidden">Bilder</span>
                 </Button>
                 <Button
@@ -325,7 +377,7 @@ export default function AdminDashboard() {
                   className="text-xs sm:text-sm whitespace-nowrap"
                 >
                   <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">{t('viewWebsite')}</span>
+                  <span className="hidden sm:inline">Website ansehen</span>
                   <span className="sm:hidden">Seite</span>
                 </Button>
                 <Button
@@ -336,7 +388,7 @@ export default function AdminDashboard() {
                   className="text-xs sm:text-sm col-span-2 sm:col-span-1 whitespace-nowrap"
                 >
                   <LogOut className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">{t('logout')}</span>
+                  <span className="hidden sm:inline">Abmelden</span>
                   <span className="sm:hidden">Logout</span>
                 </Button>
               </div>
@@ -350,12 +402,12 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('categories')}</CardTitle>
+              <CardTitle className="text-sm font-medium">Kategorien</CardTitle>
               <Grid3X3 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{categories.length}</div>
-              <p className="text-xs text-muted-foreground">{t('activeCategories')}</p>
+              <p className="text-xs text-muted-foreground">Aktive Kategorien</p>
             </CardContent>
           </Card>
           <Card>
@@ -371,33 +423,33 @@ export default function AdminDashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('products')}</CardTitle>
+              <CardTitle className="text-sm font-medium">Produkte</CardTitle>
               <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{activeProducts}</div>
-              <p className="text-xs text-muted-foreground">{totalProducts} {t('total')}</p>
+              <p className="text-xs text-muted-foreground">{totalProducts} insgesamt</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('newInquiries')}</CardTitle>
+              <CardTitle className="text-sm font-medium">Neue Anfragen</CardTitle>
               <MessageSquare className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{pendingInquiries}</div>
-              <p className="text-xs text-muted-foreground">{inquiries.length} {t('total')}</p>
+              <p className="text-xs text-muted-foreground">{inquiries.length} insgesamt</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('status')}</CardTitle>
+              <CardTitle className="text-sm font-medium">Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{t('online')}</div>
-              <p className="text-xs text-muted-foreground">{t('systemRunning')}</p>
+              <div className="text-2xl font-bold text-green-600">Online</div>
+              <p className="text-xs text-muted-foreground">System läuft</p>
             </CardContent>
           </Card>
         </div>
@@ -405,10 +457,10 @@ export default function AdminDashboard() {
         {/* Main Content */}
         <Tabs defaultValue="products" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="products">{t('manageProducts')}</TabsTrigger>
-            <TabsTrigger value="categories">{t('manageCategories')}</TabsTrigger>
+            <TabsTrigger value="products">Produkte verwalten</TabsTrigger>
+            <TabsTrigger value="categories">Kategorien verwalten</TabsTrigger>
             <TabsTrigger value="subcategories">Unterkategorien</TabsTrigger>
-            <TabsTrigger value="inquiries">{t('customerInquiries')}</TabsTrigger>
+            <TabsTrigger value="inquiries">Kundenanfragen</TabsTrigger>
           </TabsList>
 
           {/* Products Tab */}
@@ -461,6 +513,14 @@ export default function AdminDashboard() {
                           onClick={() => setLocation(`/admin/products/${product.id}/edit`)}
                         >
                           <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => duplicateProductMutation.mutate(product.id)}
+                          disabled={duplicateProductMutation.isPending}
+                        >
+                          <ArrowUpDown className="w-4 h-4" />
                         </Button>
                         <Button
                           variant="outline"
@@ -541,6 +601,14 @@ export default function AdminDashboard() {
                           onClick={() => setLocation(`/admin/categories/${category.id}/edit`)}
                         >
                           <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => duplicateCategoryMutation.mutate(category.id)}
+                          disabled={duplicateCategoryMutation.isPending}
+                        >
+                          <ArrowUpDown className="w-4 h-4" />
                         </Button>
                         <Button
                           variant="outline"
@@ -642,6 +710,14 @@ export default function AdminDashboard() {
                               onClick={() => setLocation(`/admin/subcategories/${subcategory.id}/edit`)}
                             >
                               <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => duplicateSubcategoryMutation.mutate(subcategory.id)}
+                              disabled={duplicateSubcategoryMutation.isPending}
+                            >
+                              <ArrowUpDown className="w-4 h-4" />
                             </Button>
                             <Button
                               variant="outline"
