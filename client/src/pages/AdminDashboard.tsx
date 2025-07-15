@@ -495,7 +495,11 @@ export default function AdminDashboard() {
                         />
                         <div>
                           <h3 className="font-medium">{product.nameDe || product.nameEs}</h3>
-                          <p className="text-sm text-gray-600">{product.shortDescriptionDe || product.shortDescriptionEs}</p>
+                          <p className="text-sm text-gray-600">
+                            {((product.shortDescriptionDe || product.shortDescriptionEs) || '').length > 80 
+                              ? `${((product.shortDescriptionDe || product.shortDescriptionEs) || '').substring(0, 80)}...` 
+                              : (product.shortDescriptionDe || product.shortDescriptionEs)}
+                          </p>
                           <div className="flex items-center space-x-2 mt-1">
                             <Badge variant={product.isActive ? "default" : "secondary"}>
                               {product.isActive ? "Aktiv" : "Inaktiv"}
