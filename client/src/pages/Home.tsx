@@ -70,7 +70,7 @@ export default function Home() {
                       <Button 
                         variant="default" 
                         size="sm" 
-                        className="bg-excalibur-blue text-white hover:bg-excalibur-blue/90 shadow-lg"
+                        className="bg-green-600 text-white hover:bg-green-700 shadow-lg"
                         onClick={(e) => {
                           e.stopPropagation();
                           window.location.href = '/products';
