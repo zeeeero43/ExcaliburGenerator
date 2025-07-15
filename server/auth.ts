@@ -24,7 +24,7 @@ export function setupSession(app: express.Application) {
       secret: process.env.SESSION_SECRET || "your-secret-key-change-in-production",
       resave: false,
       saveUninitialized: false,
-      name: 'excalibur.sid',
+      name: 'excalibur-session',
       cookie: {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,

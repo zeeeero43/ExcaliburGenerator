@@ -258,7 +258,10 @@ export default function AdminProductForm() {
         title: "Produkt gespeichert",
         description: isEditing ? "Produkt wurde aktualisiert" : "Neues Produkt wurde erstellt",
       });
+      // Invalidate both admin and public product caches
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/products'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/products/featured'] });
       setLocation('/admin');
     },
     onError: (error: Error) => {

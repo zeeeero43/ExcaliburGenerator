@@ -482,6 +482,16 @@ Changelog:
   * Changed button colors from blue to green for better visibility and user preference
   * Eliminated redundant step where users had to select the same category twice
   * Navigation now flows: Homepage → Select Category → View Subcategories directly
+- July 15, 2025 (admin panel cleanup). Removed duplicate functionality per user request:
+  * Removed duplicate buttons from categories and subcategories in admin dashboard
+  * Removed duplicate mutations from AdminDashboard component
+  * Removed duplicate API routes from server routes for both categories and subcategories
+  * Simplified admin interface by removing redundant functionality
+- July 15, 2025 (product activation cache fix). Fixed issue where activated products don't appear immediately:
+  * Fixed cache invalidation for duplicated products after activation
+  * Added public product cache invalidation to AdminProductForm save mutation
+  * Added public product cache invalidation to AdminDashboard duplicate and delete mutations
+  * Products now appear immediately on website after being activated in admin panel
 ```
 
 ## User Preferences

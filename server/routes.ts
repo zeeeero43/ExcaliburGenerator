@@ -387,40 +387,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Duplicate subcategory
-  app.post("/api/admin/subcategories/:id/duplicate", isAuthenticated, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const originalSubcategory = await storage.getSubcategoryById(id);
-      
-      if (!originalSubcategory) {
-        return res.status(404).json({ error: "Subcategory not found" });
-      }
 
-      // Create duplicated subcategory with modified names
-      const duplicatedSubcategory = {
-        ...originalSubcategory,
-        nameEs: `${originalSubcategory.nameEs} - Kopie`,
-        nameDe: `${originalSubcategory.nameDe} - Kopie`,
-        nameEn: `${originalSubcategory.nameEn} - Copy`,
-        name: `${originalSubcategory.name} - Kopie`,
-        slug: `${originalSubcategory.slug}-kopie-${Date.now()}`,
-        isActive: false, // Set as inactive by default
-        sortOrder: originalSubcategory.sortOrder + 1, // Place after original
-      };
-
-      // Remove the id so it gets auto-generated
-      delete duplicatedSubcategory.id;
-      delete duplicatedSubcategory.createdAt;
-      delete duplicatedSubcategory.updatedAt;
-
-      const newSubcategory = await storage.createSubcategory(duplicatedSubcategory);
-      res.json(newSubcategory);
-    } catch (error) {
-      console.error("Error duplicating subcategory:", error);
-      res.status(500).json({ error: "Failed to duplicate subcategory" });
-    }
-  });
 
   app.get("/api/admin/categories", isAuthenticated, async (req, res) => {
     try {
@@ -505,39 +472,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Duplicate category
-  app.post("/api/admin/categories/:id/duplicate", isAuthenticated, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const originalCategory = await storage.getCategoryById(id);
-      
-      if (!originalCategory) {
-        return res.status(404).json({ error: "Category not found" });
-      }
 
-      // Create duplicated category with modified names
-      const duplicatedCategory = {
-        ...originalCategory,
-        nameEs: `${originalCategory.nameEs} - Kopie`,
-        nameDe: `${originalCategory.nameDe} - Kopie`,
-        nameEn: `${originalCategory.nameEn} - Copy`,
-        name: `${originalCategory.name} - Kopie`,
-        slug: `${originalCategory.slug}-kopie-${Date.now()}`,
-        isActive: false, // Set as inactive by default
-      };
-
-      // Remove the id so it gets auto-generated
-      delete duplicatedCategory.id;
-      delete duplicatedCategory.createdAt;
-      delete duplicatedCategory.updatedAt;
-
-      const newCategory = await storage.createCategory(duplicatedCategory);
-      res.json(newCategory);
-    } catch (error) {
-      console.error("Error duplicating category:", error);
-      res.status(500).json({ error: "Failed to duplicate category" });
-    }
-  });
 
 
 

@@ -86,7 +86,10 @@ export default function AdminDashboard() {
       return response.json();
     },
     onSuccess: () => {
+      // Invalidate both admin and public product caches
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/products'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/products/featured'] });
       toast({
         title: "Produkt gelöscht",
         description: "Das Produkt wurde erfolgreich entfernt.",
@@ -225,7 +228,10 @@ export default function AdminDashboard() {
       return response.json();
     },
     onSuccess: () => {
+      // Invalidate both admin and public product caches
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/products'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/products/featured'] });
       toast({
         title: "Produkt dupliziert",
         description: "Das Produkt wurde erfolgreich dupliziert.",
@@ -240,61 +246,7 @@ export default function AdminDashboard() {
     },
   });
 
-  // Duplicate category mutation
-  const duplicateCategoryMutation = useMutation({
-    mutationFn: async (categoryId: number) => {
-      const response = await fetch(`/api/admin/categories/${categoryId}/duplicate`, {
-        method: 'POST',
-      });
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to duplicate category');
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
-      toast({
-        title: "Kategorie dupliziert",
-        description: "Die Kategorie wurde erfolgreich dupliziert.",
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Fehler beim Duplizieren",
-        description: "Die Kategorie konnte nicht dupliziert werden.",
-        variant: "destructive",
-      });
-    },
-  });
 
-  // Duplicate subcategory mutation
-  const duplicateSubcategoryMutation = useMutation({
-    mutationFn: async (subcategoryId: number) => {
-      const response = await fetch(`/api/admin/subcategories/${subcategoryId}/duplicate`, {
-        method: 'POST',
-      });
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to duplicate subcategory');
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/subcategories'] });
-      toast({
-        title: "Unterkategorie dupliziert",
-        description: "Die Unterkategorie wurde erfolgreich dupliziert.",
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Fehler beim Duplizieren",
-        description: "Die Unterkategorie konnte nicht dupliziert werden.",
-        variant: "destructive",
-      });
-    },
-  });
 
   if (isLoading) {
     return (
@@ -606,14 +558,7 @@ export default function AdminDashboard() {
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => duplicateCategoryMutation.mutate(category.id)}
-                          disabled={duplicateCategoryMutation.isPending}
-                        >
-                          <Copy className="w-4 h-4" />
-                        </Button>
+
                         <Button
                           variant="outline"
                           size="sm"
@@ -715,14 +660,7 @@ export default function AdminDashboard() {
                             >
                               <Edit className="w-4 h-4" />
                             </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => duplicateSubcategoryMutation.mutate(subcategory.id)}
-                              disabled={duplicateSubcategoryMutation.isPending}
-                            >
-                              <Copy className="w-4 h-4" />
-                            </Button>
+
                             <Button
                               variant="outline"
                               size="sm"
