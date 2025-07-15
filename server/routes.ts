@@ -671,6 +671,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         price: req.body.price ? req.body.price.toString() : null,
         shortDescription: req.body.shortDescriptionEs,
         description: req.body.descriptionEs,
+        subcategoryId: req.body.subcategoryId === 0 ? null : req.body.subcategoryId, // Convert 0 to null
       };
       
       const productData = insertProductSchema.parse(transformedData);
@@ -706,6 +707,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
+      if (error.code === '23503') { // PostgreSQL foreign key constraint violation
+        return res.status(400).json({ 
+          error: "Foreign key constraint error",
+          details: "Die ausgewählte Kategorie oder Unterkategorie existiert nicht."
+        });
+      }
+      
       res.status(500).json({ 
         error: "Failed to create product",
         details: error.message || "Unbekannter Server-Fehler"
@@ -727,6 +735,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         price: req.body.price ? req.body.price.toString() : null,
         shortDescription: req.body.shortDescriptionEs,
         description: req.body.descriptionEs,
+        subcategoryId: req.body.subcategoryId === 0 ? null : req.body.subcategoryId, // Convert 0 to null
       };
       
       const product = await storage.updateProduct(id, transformedData);
@@ -744,6 +753,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           error: "Validation error", 
           details: validationErrors,
           fields: error.errors.map((e: any) => e.path.join('.'))
+        });
+      }
+      
+      if (error.code === '23503') { // PostgreSQL foreign key constraint violation
+        return res.status(400).json({ 
+          error: "Foreign key constraint error",
+          details: "Die ausgewählte Kategorie oder Unterkategorie existiert nicht."
         });
       }
       
