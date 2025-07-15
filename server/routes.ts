@@ -387,6 +387,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Duplicate subcategory
+  app.post("/api/admin/subcategories/:id/duplicate", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const originalSubcategory = await storage.getSubcategoryById(id);
+      
+      if (!originalSubcategory) {
+        return res.status(404).json({ error: "Subcategory not found" });
+      }
+
+      // Create duplicated subcategory with modified name
+      const duplicatedSubcategory = await storage.createSubcategory({
+        categoryId: originalSubcategory.categoryId,
+        name: `${originalSubcategory.name} (Copy)`,
+        nameEs: originalSubcategory.nameEs ? `${originalSubcategory.nameEs} (Copia)` : '',
+        nameDe: originalSubcategory.nameDe ? `${originalSubcategory.nameDe} (Kopie)` : '',
+        nameEn: originalSubcategory.nameEn ? `${originalSubcategory.nameEn} (Copy)` : '',
+        description: originalSubcategory.description || '',
+        descriptionEs: originalSubcategory.descriptionEs || '',
+        descriptionDe: originalSubcategory.descriptionDe || '',
+        descriptionEn: originalSubcategory.descriptionEn || '',
+        image: originalSubcategory.image || '',
+        sortOrder: originalSubcategory.sortOrder || 0,
+        isActive: originalSubcategory.isActive,
+        slug: `${originalSubcategory.slug}-copy-${Date.now()}`
+      });
+
+      res.json(duplicatedSubcategory);
+    } catch (error) {
+      console.error("Error duplicating subcategory:", error);
+      res.status(500).json({ error: "Failed to duplicate subcategory" });
+    }
+  });
+
   app.get("/api/admin/categories", isAuthenticated, async (req, res) => {
     try {
       const categories = await storage.getCategories();
@@ -467,6 +501,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting category:", error);
       res.status(500).json({ error: "Failed to delete category" });
+    }
+  });
+
+  // Duplicate category
+  app.post("/api/admin/categories/:id/duplicate", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const originalCategory = await storage.getCategoryById(id);
+      
+      if (!originalCategory) {
+        return res.status(404).json({ error: "Category not found" });
+      }
+
+      // Create duplicated category with modified name
+      const duplicatedCategory = await storage.createCategory({
+        name: `${originalCategory.name} (Copy)`,
+        nameEs: originalCategory.nameEs ? `${originalCategory.nameEs} (Copia)` : '',
+        nameDe: originalCategory.nameDe ? `${originalCategory.nameDe} (Kopie)` : '',
+        nameEn: originalCategory.nameEn ? `${originalCategory.nameEn} (Copy)` : '',
+        description: originalCategory.description || '',
+        descriptionEs: originalCategory.descriptionEs || '',
+        descriptionDe: originalCategory.descriptionDe || '',
+        descriptionEn: originalCategory.descriptionEn || '',
+        image: originalCategory.image || '',
+        sortOrder: originalCategory.sortOrder || 0,
+        isActive: originalCategory.isActive,
+        slug: `${originalCategory.slug}-copy-${Date.now()}`
+      });
+
+      res.json(duplicatedCategory);
+    } catch (error) {
+      console.error("Error duplicating category:", error);
+      res.status(500).json({ error: "Failed to duplicate category" });
     }
   });
 
@@ -690,6 +757,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting product:", error);
       res.status(500).json({ error: "Failed to delete product" });
+    }
+  });
+
+  // Duplicate product
+  app.post("/api/admin/products/:id/duplicate", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const originalProduct = await storage.getProductById(id);
+      
+      if (!originalProduct) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      // Create duplicated product with modified name and slug
+      const duplicatedProduct = await storage.createProduct({
+        categoryId: originalProduct.categoryId,
+        subcategoryId: originalProduct.subcategoryId,
+        name: `${originalProduct.name} (Copy)`,
+        nameEs: originalProduct.nameEs ? `${originalProduct.nameEs} (Copia)` : '',
+        nameDe: originalProduct.nameDe ? `${originalProduct.nameDe} (Kopie)` : '',
+        nameEn: originalProduct.nameEn ? `${originalProduct.nameEn} (Copy)` : '',
+        slug: `${originalProduct.slug}-copy-${Date.now()}`,
+        shortDescription: originalProduct.shortDescription || '',
+        shortDescriptionEs: originalProduct.shortDescriptionEs || '',
+        shortDescriptionDe: originalProduct.shortDescriptionDe || '',
+        shortDescriptionEn: originalProduct.shortDescriptionEn || '',
+        description: originalProduct.description || '',
+        descriptionEs: originalProduct.descriptionEs || '',
+        descriptionDe: originalProduct.descriptionDe || '',
+        descriptionEn: originalProduct.descriptionEn || '',
+        price: originalProduct.price || null,
+        stockStatus: originalProduct.stockStatus || 'in_stock',
+        availabilityTextEs: originalProduct.availabilityTextEs || '',
+        availabilityTextDe: originalProduct.availabilityTextDe || '',
+        availabilityTextEn: originalProduct.availabilityTextEn || '',
+        images: originalProduct.images || [],
+        isFeatured: originalProduct.isFeatured || false,
+        isActive: originalProduct.isActive || true,
+        metaTitle: originalProduct.metaTitle || '',
+        metaDescription: originalProduct.metaDescription || '',
+        tags: originalProduct.tags || []
+      });
+
+      res.json(duplicatedProduct);
+    } catch (error) {
+      console.error("Error duplicating product:", error);
+      res.status(500).json({ error: "Failed to duplicate product" });
     }
   });
 

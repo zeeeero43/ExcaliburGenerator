@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, getQueryFn } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
-import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage, Phone, Layers, ArrowUpDown } from 'lucide-react';
+import { Plus, Package, Grid3X3, MessageSquare, LogOut, Edit, Trash2, Eye, BarChart, Image, Languages, FileImage, Phone, Layers, ArrowUpDown, Copy } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { Category, Product, Inquiry, AdminUser, Subcategory } from '@shared/schema';
@@ -227,6 +227,90 @@ export default function AdminDashboard() {
       toast({
         title: "Fehler beim Löschen",
         description: "Die Anfrage konnte nicht gelöscht werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Duplicate product mutation
+  const duplicateProductMutation = useMutation({
+    mutationFn: async (productId: number) => {
+      const response = await fetch(`/api/admin/products/${productId}/duplicate`, {
+        method: 'POST',
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to duplicate product');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
+      toast({
+        title: "Produkt dupliziert",
+        description: "Das Produkt wurde erfolgreich dupliziert.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fehler beim Duplizieren",
+        description: "Das Produkt konnte nicht dupliziert werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Duplicate category mutation
+  const duplicateCategoryMutation = useMutation({
+    mutationFn: async (categoryId: number) => {
+      const response = await fetch(`/api/admin/categories/${categoryId}/duplicate`, {
+        method: 'POST',
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to duplicate category');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
+      toast({
+        title: "Kategorie dupliziert",
+        description: "Die Kategorie wurde erfolgreich dupliziert.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fehler beim Duplizieren",
+        description: "Die Kategorie konnte nicht dupliziert werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Duplicate subcategory mutation
+  const duplicateSubcategoryMutation = useMutation({
+    mutationFn: async (subcategoryId: number) => {
+      const response = await fetch(`/api/admin/subcategories/${subcategoryId}/duplicate`, {
+        method: 'POST',
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to duplicate subcategory');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/subcategories'] });
+      toast({
+        title: "Unterkategorie dupliziert",
+        description: "Die Unterkategorie wurde erfolgreich dupliziert.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fehler beim Duplizieren",
+        description: "Die Unterkategorie konnte nicht dupliziert werden.",
         variant: "destructive",
       });
     },
@@ -466,6 +550,17 @@ export default function AdminDashboard() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
+                            if (confirm('Sind Sie sicher, dass Sie dieses Produkt duplizieren möchten?')) {
+                              duplicateProductMutation.mutate(product.id);
+                            }
+                          }}
+                        >
+                          <Copy className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
                             if (confirm('Sind Sie sicher, dass Sie dieses Produkt löschen möchten?')) {
                               deleteProductMutation.mutate(product.id);
                             }
@@ -541,6 +636,17 @@ export default function AdminDashboard() {
                           onClick={() => setLocation(`/admin/categories/${category.id}/edit`)}
                         >
                           <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            if (confirm('Sind Sie sicher, dass Sie diese Kategorie duplizieren möchten?')) {
+                              duplicateCategoryMutation.mutate(category.id);
+                            }
+                          }}
+                        >
+                          <Copy className="w-4 h-4" />
                         </Button>
                         <Button
                           variant="outline"
@@ -642,6 +748,17 @@ export default function AdminDashboard() {
                               onClick={() => setLocation(`/admin/subcategories/${subcategory.id}/edit`)}
                             >
                               <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                if (confirm('Sind Sie sicher, dass Sie diese Unterkategorie duplizieren möchten?')) {
+                                  duplicateSubcategoryMutation.mutate(subcategory.id);
+                                }
+                              }}
+                            >
+                              <Copy className="w-4 h-4" />
                             </Button>
                             <Button
                               variant="outline"
