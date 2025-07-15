@@ -50,7 +50,7 @@ export default function Home() {
               <Card 
                 key={category.id} 
                 className="hover:shadow-lg transition-shadow cursor-pointer group relative"
-                onClick={() => window.location.href = '/products'}
+                onClick={() => window.location.href = `/products?category=${category.id}`}
               >
                 <CardContent className="p-0">
                   {/* Category Image with overlay button */}
@@ -73,7 +73,7 @@ export default function Home() {
                         className="bg-green-600 text-white hover:bg-green-700 shadow-lg"
                         onClick={(e) => {
                           e.stopPropagation();
-                          window.location.href = '/products';
+                          window.location.href = `/products?category=${category.id}`;
                         }}
                       >
                         <Eye className="w-4 h-4 mr-1" />

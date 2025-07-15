@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Filter, Grid, List, ArrowLeft, Eye } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
@@ -40,6 +40,28 @@ export default function Products() {
     const langField = `${field}${currentLanguage === 'es' ? 'Es' : currentLanguage === 'de' ? 'De' : currentLanguage === 'en' ? 'En' : ''}`;
     return item[langField] || item[field] || '';
   };
+
+  // Handle category selection
+  const selectCategory = (categoryId: number, categoryName: string) => {
+    setSelectedCategory(categoryId);
+    setShowCategories(false);
+    setShowSubcategories(true);
+    window.scrollTo(0, 0);
+  };
+
+  // Handle URL parameters on initial load
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+    
+    if (categoryParam && categories.length > 0) {
+      const categoryId = parseInt(categoryParam);
+      const category = categories.find(c => c.id === categoryId);
+      if (category) {
+        selectCategory(categoryId, getLocalizedText(category, 'name'));
+      }
+    }
+  }, [categories]); // Depends on categories being loaded
 
   // Helper function to get availability text (custom or default)
   const getAvailabilityText = (product: any) => {
@@ -89,14 +111,6 @@ export default function Products() {
         product.isActive && product.subcategoryId === selectedSubcategory
       )
     : [];
-
-  // Handle category selection
-  const selectCategory = (categoryId: number, categoryName: string) => {
-    setSelectedCategory(categoryId);
-    setShowCategories(false);
-    setShowSubcategories(true);
-    window.scrollTo(0, 0);
-  };
 
   // Handle subcategory selection
   const selectSubcategory = (subcategoryId: number, subcategoryName: string) => {

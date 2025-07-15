@@ -475,6 +475,13 @@ Changelog:
   * Added excalibur-blue button styling with white text and shadow for better visibility
   * Applied consistent layout changes across homepage categories, products page categories, and subcategories
   * Significantly reduced scrolling by making category cards more compact while maintaining functionality
+- July 15, 2025 (direct navigation optimization). Improved navigation flow from homepage to subcategories:
+  * Fixed redundant category display by enabling direct navigation from homepage to subcategories
+  * Homepage category buttons now navigate directly to `/products?category=${categoryId}` instead of `/products`
+  * Added URL parameter handling in Products page to automatically select and display subcategories on load
+  * Changed button colors from blue to green for better visibility and user preference
+  * Eliminated redundant step where users had to select the same category twice
+  * Navigation now flows: Homepage → Select Category → View Subcategories directly
 ```
 
 ## User Preferences
