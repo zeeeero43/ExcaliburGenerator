@@ -117,8 +117,8 @@ export default function AdminProductForm() {
         },
         body: JSON.stringify({
           text: germanText,
-          from: 'de',
-          to: toField.includes('Es') ? 'es' : 'en',
+          fromLang: 'de',
+          toLang: toField.includes('Es') ? 'es' : 'en',
         }),
       });
 
@@ -540,9 +540,8 @@ export default function AdminProductForm() {
                       <FormLabel>Hauptbild *</FormLabel>
                       <FormControl>
                         <ImageUpload
-                          value={field.value}
-                          onChange={field.onChange}
-                          maxFiles={1}
+                          onImageSelect={field.onChange}
+                          currentImage={field.value}
                         />
                       </FormControl>
                       <FormMessage />
@@ -568,12 +567,34 @@ export default function AdminProductForm() {
                     <FormItem>
                       <FormLabel>Zusätzliche Bilder</FormLabel>
                       <FormControl>
-                        <ImageUpload
-                          value={field.value}
-                          onChange={field.onChange}
-                          maxFiles={5}
-                          multiple
-                        />
+                        <div className="space-y-2">
+                          <ImageUpload
+                            onImageSelect={(url) => {
+                              const current = field.value || [];
+                              field.onChange([...current, url]);
+                            }}
+                            currentImage=""
+                          />
+                          {field.value && field.value.length > 0 && (
+                            <div className="grid grid-cols-3 gap-2">
+                              {field.value.map((url: string, index: number) => (
+                                <div key={index} className="relative">
+                                  <img src={url} alt={`Zusätzliches Bild ${index + 1}`} className="w-full h-20 object-cover rounded" />
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const newImages = field.value.filter((_: string, i: number) => i !== index);
+                                      field.onChange(newImages);
+                                    }}
+                                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                                  >
+                                    ×
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
