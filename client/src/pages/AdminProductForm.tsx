@@ -29,7 +29,7 @@ const productFormSchema = z.object({
   descriptionEs: z.string().optional(),
   descriptionEn: z.string().optional(),
   categoryId: z.number().min(1, 'Kategorie ist erforderlich'),
-  subcategoryId: z.number().min(0).optional(),
+  subcategoryId: z.number().optional(),
   sku: z.string().optional(),
   price: z.string().optional(),
   priceNote: z.string().optional(),
@@ -275,17 +275,19 @@ export default function AdminProductForm() {
     console.log('🚀 Form errors:', form.formState.errors);
     console.log('🚀 Form isValid:', form.formState.isValid);
     
-    if (!form.formState.isValid) {
-      console.log('❌ Form is invalid, checking errors...');
-      console.log('Form errors:', form.formState.errors);
+    // Manuelle Validierung für kritische Felder
+    if (!data.nameDe || !data.shortDescriptionDe || !data.categoryId || data.categoryId < 1) {
+      console.log('❌ Manual validation failed');
       toast({
         title: "Formular ungültig",
-        description: "Bitte überprüfen Sie alle Pflichtfelder",
+        description: "Produktname, Kurzbeschreibung und Kategorie sind erforderlich",
         variant: "destructive"
       });
       return;
     }
     
+    // Ignore form.formState.isValid - proceed with submission
+    console.log('✅ Manual validation passed, proceeding with submission');
     saveProductMutation.mutate(data);
   };
 
@@ -424,7 +426,7 @@ export default function AdminProductForm() {
                       <FormLabel>3. Unterkategorie (Optional)</FormLabel>
                       <Select
                         value={field.value?.toString() || ''}
-                        onValueChange={(value) => field.onChange(parseInt(value))}
+                        onValueChange={(value) => field.onChange(value === '' ? 0 : parseInt(value))}
                         disabled={!selectedCategoryId || subcategories.length === 0}
                       >
                         <FormControl>
