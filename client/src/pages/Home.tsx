@@ -49,12 +49,12 @@ export default function Home() {
             {categories.map((category) => (
               <Card 
                 key={category.id} 
-                className="hover:shadow-lg transition-shadow cursor-pointer group"
+                className="hover:shadow-lg transition-shadow cursor-pointer group relative"
                 onClick={() => window.location.href = '/products'}
               >
                 <CardContent className="p-0">
-                  {/* Category Image */}
-                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden">
+                  {/* Category Image with overlay button */}
+                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
                       src={category.image}
                       alt={getLocalizedText(category, 'name')}
@@ -64,21 +64,29 @@ export default function Home() {
                         target.src = 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
                       }}
                     />
-                  </div>
-                  
-                  {/* Category Info */}
-                  <div className="p-4">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      {getLocalizedText(category, 'name')}
-                    </h3>
                     
-                    {/* Category Action */}
-                    <div className="flex items-center justify-end">
-                      <Button variant="ghost" size="sm" className="group-hover:bg-excalibur-blue group-hover:text-white">
-                        <Eye className="w-4 h-4 mr-2" />
+                    {/* Button positioned top-right over image */}
+                    <div className="absolute top-2 right-2">
+                      <Button 
+                        variant="default" 
+                        size="sm" 
+                        className="bg-excalibur-blue text-white hover:bg-excalibur-blue/90 shadow-lg"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.location.href = '/products';
+                        }}
+                      >
+                        <Eye className="w-4 h-4 mr-1" />
                         {t('viewDetails')}
                       </Button>
                     </div>
+                  </div>
+                  
+                  {/* Category Info - smaller padding */}
+                  <div className="p-3">
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      {getLocalizedText(category, 'name')}
+                    </h3>
                   </div>
                 </CardContent>
               </Card>

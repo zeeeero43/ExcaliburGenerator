@@ -467,6 +467,14 @@ Changelog:
   * Created forceRefreshForm() function to manually refresh product data and reset form
   * Added comprehensive debugging guide (CUSTOMER_DEBUGGING_GUIDE.md) for troubleshooting browser cache problems
   * Problem identified as browser cache/timing issue, not server-side bug - force refresh button provides immediate solution
+- July 15, 2025 (homepage and category layout optimization). Improved homepage and category display:
+  * Removed "Unsere Produkte" title from homepage as requested
+  * Replaced featured products with all categories display (same order as /products page)
+  * Repositioned "Details anzeigen" buttons to top-right over images for more compact layout
+  * Reduced card padding (p-4 to p-3) and title size (text-xl to text-lg) for better space utilization
+  * Added excalibur-blue button styling with white text and shadow for better visibility
+  * Applied consistent layout changes across homepage categories, products page categories, and subcategories
+  * Significantly reduced scrolling by making category cards more compact while maintaining functionality
 ```
 
 ## User Preferences
