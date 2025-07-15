@@ -461,6 +461,12 @@ Changelog:
   * Reduced hero title size from text-7xl to text-6xl for better mobile display
   * Removed description text from ProductCard component for cleaner "Title → Details" layout
   * Fixed navigation flow to automatically position user at top of page after category selection
+- July 15, 2025 (product editing cache fix). Resolved customer issue with product editing form:
+  * Added "🔄 Daten neu laden" force-refresh button to AdminProductForm for debugging customer cache issues
+  * Enhanced useEffect with additional debugging logs to track form data loading
+  * Created forceRefreshForm() function to manually refresh product data and reset form
+  * Added comprehensive debugging guide (CUSTOMER_DEBUGGING_GUIDE.md) for troubleshooting browser cache problems
+  * Problem identified as browser cache/timing issue, not server-side bug - force refresh button provides immediate solution
 ```
 
 ## User Preferences

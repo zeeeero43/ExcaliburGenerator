@@ -338,7 +338,48 @@ export default function AdminProductForm() {
     queryKey: ['/api/admin/subcategories'],
   });
 
-  // Update form when product data loads - SAME LOGIC AS AdminCategoryForm
+  // Force refresh function for debugging customer issues
+  const forceRefreshForm = () => {
+    console.log('🔄 FORCE REFRESH TRIGGERED');
+    queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${productId}`] });
+    
+    // Also force reset if data is already available
+    if (existingProduct && isEdit) {
+      const formData = {
+        nameEs: existingProduct.nameEs || '',
+        nameDe: existingProduct.nameDe || existingProduct.name || '',
+        nameEn: existingProduct.nameEn || '',
+        shortDescriptionEs: existingProduct.shortDescriptionEs || '',
+        shortDescriptionDe: existingProduct.shortDescriptionDe || existingProduct.shortDescription || '',
+        shortDescriptionEn: existingProduct.shortDescriptionEn || '',
+        descriptionEs: existingProduct.descriptionEs || '',
+        descriptionDe: existingProduct.descriptionDe || existingProduct.description || '',
+        descriptionEn: existingProduct.descriptionEn || '',
+        price: existingProduct.price ? String(existingProduct.price) : '',
+        categoryId: existingProduct.categoryId || undefined,
+        mainImage: existingProduct.mainImage || '',
+        images: (existingProduct.images && Array.isArray(existingProduct.images)) ? existingProduct.images : [],
+        sku: existingProduct.sku || '',
+        priceNote: existingProduct.priceNote || '',
+        isFeatured: Boolean(existingProduct.isFeatured),
+        isActive: existingProduct.isActive !== false,
+        stockStatus: (existingProduct.stockStatus as 'in_stock' | 'out_of_stock' | 'limited') || 'in_stock',
+        inStock: existingProduct.inStock !== false,
+        availabilityTextEs: existingProduct.availabilityTextEs || '',
+        availabilityTextDe: existingProduct.availabilityTextDe || '',
+        availabilityTextEn: existingProduct.availabilityTextEn || '',
+        sortOrder: existingProduct.sortOrder || 0,
+      };
+      
+      form.reset(formData);
+      toast({
+        title: "🔄 Formular neu geladen",
+        description: "Die Produktdaten wurden erfolgreich neu geladen.",
+      });
+    }
+  };
+
+  // Update form when product data loads - ENHANCED WITH FORCE REFRESH
   useEffect(() => {
     console.log('🔍 DEBUG useEffect TRIGGERED:', { 
       existingProduct: !!existingProduct, 
@@ -530,14 +571,24 @@ export default function AdminProductForm() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => setLocation('/admin')}
-            className="mb-4"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Zurück zum Dashboard
-          </Button>
+          <div className="flex items-center justify-between mb-4">
+            <Button
+              variant="ghost"
+              onClick={() => setLocation('/admin')}
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Zurück zum Dashboard
+            </Button>
+            {isEdit && (
+              <Button
+                variant="outline"
+                onClick={forceRefreshForm}
+                className="bg-blue-50 text-blue-600 hover:bg-blue-100"
+              >
+                🔄 Daten neu laden
+              </Button>
+            )}
+          </div>
           <h1 className="text-3xl font-bold text-gray-900">
             {isEdit ? 'Produkt bearbeiten' : 'Neues Produkt erstellen'}
           </h1>
