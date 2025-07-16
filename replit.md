@@ -504,6 +504,11 @@ Changelog:
   * Moved "Details anzeigen" button to bottom left corner of product images
   * Reduced spacing between product cards from gap-8 to gap-4 for more compact display
   * Streamlined product card layout with buttons overlaid on images for better space utilization
+- July 15, 2025 (product interaction and scroll improvements). Enhanced user experience:
+  * Made entire product cards clickable again - clicking on image, title, or card opens product details
+  * Added scroll-to-top functionality for back navigation (backToCategories and backToSubcategories)
+  * Maintained existing scroll-to-top for category and subcategory selection
+  * Fixed footer layout on mobile devices - contact information now appears under quick links section
 ```
 
 ## User Preferences
