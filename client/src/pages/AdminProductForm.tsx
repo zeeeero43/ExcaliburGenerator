@@ -192,6 +192,23 @@ export default function AdminProductForm() {
     }
   }, [form.watch('descriptionDe')]);
 
+  // Real-time translation with debounce for availability field
+  useEffect(() => {
+    const germanAvailability = form.watch('availabilityDe');
+    if (germanAvailability) {
+      if (translationTimeout) {
+        clearTimeout(translationTimeout);
+      }
+      
+      const timeout = setTimeout(() => {
+        handleAutoTranslation(germanAvailability, 'availabilityEs');
+        handleAutoTranslation(germanAvailability, 'availabilityEn');
+      }, 1000);
+      
+      setTranslationTimeout(timeout);
+    }
+  }, [form.watch('availabilityDe')]);
+
   // Set form data when product is loaded
   useEffect(() => {
     if (product) {
@@ -738,13 +755,14 @@ export default function AdminProductForm() {
               {/* Verfügbarkeit (wenn nicht auf Lager) */}
               <div className={`space-y-4 ${form.watch('stockStatus') === 'in_stock' ? 'opacity-50 pointer-events-none' : ''}`}>
                 <h3 className="text-lg font-semibold">Verfügbarkeit (wenn nicht auf Lager)</h3>
+                <p className="text-sm text-gray-600">Nur Deutsch eingeben - automatische Übersetzung erfolgt in Echtzeit</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
                     name="availabilityDe"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Verfügbarkeit (Deutsch)</FormLabel>
+                        <FormLabel>Verfügbarkeit (Deutsch) *</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
@@ -752,6 +770,7 @@ export default function AdminProductForm() {
                             disabled={form.watch('stockStatus') === 'in_stock'}
                           />
                         </FormControl>
+                        <p className="text-xs text-gray-500">Nur Deutsch eingeben - wird automatisch übersetzt</p>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -767,8 +786,10 @@ export default function AdminProductForm() {
                             {...field} 
                             placeholder="z.B. disponible en 2 semanas" 
                             disabled={form.watch('stockStatus') === 'in_stock'}
+                            readOnly
                           />
                         </FormControl>
+                        <p className="text-xs text-gray-500">Automatisch übersetzt aus Deutsch</p>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -784,8 +805,10 @@ export default function AdminProductForm() {
                             {...field} 
                             placeholder="e.g. available in 2 weeks" 
                             disabled={form.watch('stockStatus') === 'in_stock'}
+                            readOnly
                           />
                         </FormControl>
+                        <p className="text-xs text-gray-500">Automatisch übersetzt aus Deutsch</p>
                         <FormMessage />
                       </FormItem>
                     )}

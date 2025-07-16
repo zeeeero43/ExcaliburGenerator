@@ -519,6 +519,11 @@ Changelog:
   * Removed price display from product listing - now only on detail pages
   * Made details button smaller (size="xs" with smaller text and icons)
   * Improved image space utilization by removing right-side badges that were too wide
+- July 16, 2025 (automatic availability translation and button styling). Enhanced admin panel and product display:
+  * Added automatic translation for availability field in product creation - only German input required, auto-translates to Spanish and English
+  * Changed product details button from bottom-left blue to top-right green, matching category button style
+  * Improved admin workflow with German-first availability input and real-time translation
+  * Enhanced UX consistency by matching button positioning across categories and products
 ```
 
 ## User Preferences

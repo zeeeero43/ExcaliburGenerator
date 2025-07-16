@@ -388,12 +388,12 @@ export default function Products() {
                         </Badge>
                       )}
                       
-                      {/* Details Button - Bottom Left */}
-                      <div className="absolute bottom-2 left-2">
+                      {/* Details Button - Top Right */}
+                      <div className="absolute top-2 right-2">
                         <Button 
                           variant="default" 
                           size="xs" 
-                          className="bg-excalibur-blue text-white hover:bg-blue-700 shadow-lg text-xs px-2 py-1"
+                          className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs px-2 py-1"
                           onClick={(e) => e.stopPropagation()}
                         >
                           <Eye className="w-3 h-3 mr-1" />
