@@ -513,6 +513,12 @@ Changelog:
   * Removed "In den Warenkorb" button from product images in subcategory view
   * Only "Details anzeigen" button remains on product images
   * Shopping cart functionality still available on individual product detail pages
+- July 16, 2025 (comprehensive product listing improvements). Implemented customer feedback for cleaner product display:
+  * Changed "Details anzeigen" to "Details" in all languages (German, Spanish, English)
+  * Removed availability badges (green/yellow/red) from product listing - now only on detail pages
+  * Removed price display from product listing - now only on detail pages
+  * Made details button smaller (size="xs" with smaller text and icons)
+  * Improved image space utilization by removing right-side badges that were too wide
 ```
 
 ## User Preferences

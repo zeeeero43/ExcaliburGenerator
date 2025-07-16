@@ -387,27 +387,16 @@ export default function Products() {
                           {t('featured')}
                         </Badge>
                       )}
-                      <Badge 
-                        className={`absolute top-3 right-3 ${
-                          getEffectiveStockStatus(product) === 'in_stock' 
-                            ? 'bg-green-500' 
-                            : getEffectiveStockStatus(product) === 'limited'
-                            ? 'bg-yellow-500'
-                            : 'bg-red-500'
-                        } text-white`}
-                      >
-                        {getAvailabilityText(product)}
-                      </Badge>
                       
                       {/* Details Button - Bottom Left */}
                       <div className="absolute bottom-2 left-2">
                         <Button 
                           variant="default" 
-                          size="sm" 
-                          className="bg-excalibur-blue text-white hover:bg-blue-700 shadow-lg"
+                          size="xs" 
+                          className="bg-excalibur-blue text-white hover:bg-blue-700 shadow-lg text-xs px-2 py-1"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          <Eye className="w-4 h-4 mr-1" />
+                          <Eye className="w-3 h-3 mr-1" />
                           {t('viewDetails')}
                         </Button>
                       </div>
@@ -420,11 +409,7 @@ export default function Products() {
                     </CardHeader>
                     
                     <CardContent className="pt-0">
-                      {product.price && (
-                        <div className="text-xl font-bold text-excalibur-blue">
-                          {product.price}€
-                        </div>
-                      )}
+                      {/* Price removed as per customer feedback */}
                     </CardContent>
                   </Card>
                 </Link>
