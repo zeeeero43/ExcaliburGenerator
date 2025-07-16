@@ -411,18 +411,6 @@ export default function Products() {
                           {t('viewDetails')}
                         </Button>
                       </div>
-                      
-                      {/* Cart Button - Bottom Right */}
-                      <div className="absolute bottom-2 right-2">
-                        <div onClick={(e) => e.stopPropagation()}>
-                          <AddToCartButton 
-                            product={product}
-                            size="sm"
-                            variant="default"
-                            className="bg-green-600 text-white hover:bg-green-700 shadow-lg"
-                          />
-                        </div>
-                      </div>
                     </div>
                     
                     <CardHeader className="pb-2">

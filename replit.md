@@ -509,6 +509,10 @@ Changelog:
   * Added scroll-to-top functionality for back navigation (backToCategories and backToSubcategories)
   * Maintained existing scroll-to-top for category and subcategory selection
   * Fixed footer layout on mobile devices - contact information now appears under quick links section
+- July 15, 2025 (cart button removal from subcategory view). Simplified subcategory product display:
+  * Removed "In den Warenkorb" button from product images in subcategory view
+  * Only "Details anzeigen" button remains on product images
+  * Shopping cart functionality still available on individual product detail pages
 ```
 
 ## User Preferences
