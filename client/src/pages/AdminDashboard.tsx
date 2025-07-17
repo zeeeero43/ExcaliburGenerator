@@ -437,61 +437,104 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {products.map((product: Product) => (
-                    <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-4">
-                        <img
-                          src={product.mainImage || '/placeholder-product.jpg'}
-                          alt={product.nameEs}
-                          className="w-24 h-24 object-contain bg-gray-100 rounded"
-                        />
-                        <div>
-                          <h3 className="font-medium">{product.nameDe || product.nameEs}</h3>
-                          <p className="text-sm text-gray-600">
-                            {((product.shortDescriptionDe || product.shortDescriptionEs) || '').length > 80 
-                              ? `${((product.shortDescriptionDe || product.shortDescriptionEs) || '').substring(0, 80)}...` 
-                              : (product.shortDescriptionDe || product.shortDescriptionEs)}
-                          </p>
-                          <div className="flex items-center space-x-2 mt-1">
-                            <Badge variant={product.isActive ? "default" : "secondary"}>
-                              {product.isActive ? "Aktiv" : "Inaktiv"}
-                            </Badge>
-                            {product.isFeatured && (
-                              <Badge variant="outline">Empfohlen</Badge>
-                            )}
+                  {products
+                    .sort((a, b) => {
+                      // Sort by category first, then by subcategory, then by sortOrder
+                      const categoryA = categories.find(c => c.id === a.categoryId)?.nameDe || '';
+                      const categoryB = categories.find(c => c.id === b.categoryId)?.nameDe || '';
+                      
+                      if (categoryA !== categoryB) {
+                        return categoryA.localeCompare(categoryB);
+                      }
+                      
+                      const subcategoryA = subcategories.find(s => s.id === a.subcategoryId)?.nameDe || '';
+                      const subcategoryB = subcategories.find(s => s.id === b.subcategoryId)?.nameDe || '';
+                      
+                      if (subcategoryA !== subcategoryB) {
+                        return subcategoryA.localeCompare(subcategoryB);
+                      }
+                      
+                      // Sort by sortOrder (0 means no order, goes to end)
+                      if (a.sortOrder && b.sortOrder) {
+                        return a.sortOrder - b.sortOrder;
+                      }
+                      if (a.sortOrder && !b.sortOrder) return -1;
+                      if (!a.sortOrder && b.sortOrder) return 1;
+                      return 0;
+                    })
+                    .map((product: Product) => {
+                      const category = categories.find(c => c.id === product.categoryId);
+                      const subcategory = subcategories.find(s => s.id === product.subcategoryId);
+                      
+                      return (
+                        <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg">
+                          <div className="flex items-center space-x-4">
+                            <img
+                              src={product.mainImage || '/placeholder-product.jpg'}
+                              alt={product.nameEs}
+                              className="w-24 h-24 object-contain bg-gray-100 rounded"
+                            />
+                            <div>
+                              <h3 className="font-medium">{product.nameDe || product.nameEs}</h3>
+                              <p className="text-sm text-gray-600">
+                                {((product.shortDescriptionDe || product.shortDescriptionEs) || '').length > 80 
+                                  ? `${((product.shortDescriptionDe || product.shortDescriptionEs) || '').substring(0, 80)}...` 
+                                  : (product.shortDescriptionDe || product.shortDescriptionEs)}
+                              </p>
+                              <div className="flex items-center space-x-2 mt-1">
+                                <Badge variant={product.isActive ? "default" : "secondary"}>
+                                  {product.isActive ? "Aktiv" : "Inaktiv"}
+                                </Badge>
+                                {product.isFeatured && (
+                                  <Badge variant="outline">Empfohlen</Badge>
+                                )}
+                                <Badge variant="outline" className="bg-blue-50">
+                                  {category?.nameDe || 'Keine Kategorie'}
+                                </Badge>
+                                {subcategory && (
+                                  <Badge variant="outline" className="bg-green-50">
+                                    {subcategory.nameDe}
+                                  </Badge>
+                                )}
+                                {product.sortOrder && product.sortOrder > 0 && (
+                                  <Badge variant="outline" className="bg-yellow-50">
+                                    #{product.sortOrder}
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setLocation(`/admin/products/${product.id}/edit`)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => duplicateProductMutation.mutate(product.id)}
+                              disabled={duplicateProductMutation.isPending}
+                            >
+                              <Copy className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                if (confirm('Sind Sie sicher, dass Sie dieses Produkt löschen möchten?')) {
+                                  deleteProductMutation.mutate(product.id);
+                                }
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
                         </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setLocation(`/admin/products/${product.id}/edit`)}
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => duplicateProductMutation.mutate(product.id)}
-                          disabled={duplicateProductMutation.isPending}
-                        >
-                          <Copy className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            if (confirm('Sind Sie sicher, dass Sie dieses Produkt löschen möchten?')) {
-                              deleteProductMutation.mutate(product.id);
-                            }
-                          }}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                      );
+                    })}
                   
                   {products.length === 0 && (
                     <div className="text-center py-8">
