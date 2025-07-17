@@ -41,6 +41,7 @@ const productFormSchema = z.object({
   availabilityEs: z.string().optional(),
   availabilityDe: z.string().optional(),
   availabilityEn: z.string().optional(),
+  sortOrder: z.number().optional(),
 });
 
 type ProductFormData = z.infer<typeof productFormSchema>;
@@ -80,6 +81,7 @@ export default function AdminProductForm() {
       availabilityEs: '',
       availabilityDe: '',
       availabilityEn: '',
+      sortOrder: 0,
     },
   });
 
@@ -238,6 +240,7 @@ export default function AdminProductForm() {
         availabilityEs: product.availabilityEs || '',
         availabilityDe: product.availabilityDe || '',
         availabilityEn: product.availabilityEn || '',
+        sortOrder: product.sortOrder || 0,
       });
 
       // Ensure subcategory is properly set after category is set
@@ -457,13 +460,36 @@ export default function AdminProductForm() {
                   )}
                 />
 
-                {/* 3. Unterkategorie (Optional) */}
+                {/* 3. Sortierung */}
+                <FormField
+                  control={form.control}
+                  name="sortOrder"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>3. Sortierung (optional)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          {...field} 
+                          placeholder="z.B. 1, 2, 3... (niedrige Zahl = weiter oben)"
+                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : 0)}
+                        />
+                      </FormControl>
+                      <p className="text-xs text-gray-500">
+                        Produkte ohne Nummer kommen automatisch nach denen mit Nummer
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* 4. Unterkategorie (Optional) */}
                 <FormField
                   control={form.control}
                   name="subcategoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>3. Unterkategorie *</FormLabel>
+                      <FormLabel>4. Unterkategorie *</FormLabel>
                       <Select
                         value={field.value?.toString() || ''}
                         onValueChange={(value) => {

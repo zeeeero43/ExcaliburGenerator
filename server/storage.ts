@@ -263,7 +263,12 @@ export class DatabaseStorage implements IStorage {
       query = query.where(and(...conditions));
     }
 
-    const result = await query.orderBy(products.sortOrder, desc(products.createdAt));
+    // Custom sorting: Products with sortOrder > 0 first (ascending), then products without sortOrder (0 or null) by creation date
+    const result = await query.orderBy(
+      sql`CASE WHEN ${products.sortOrder} > 0 THEN 0 ELSE 1 END`,
+      products.sortOrder,
+      desc(products.createdAt)
+    );
     return result;
   }
 

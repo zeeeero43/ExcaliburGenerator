@@ -524,6 +524,11 @@ Changelog:
   * Changed product details button from bottom-left blue to top-right green, matching category button style
   * Improved admin workflow with German-first availability input and real-time translation
   * Enhanced UX consistency by matching button positioning across categories and products
+- July 17, 2025 (product sorting restoration). Restored product sorting functionality:
+  * Added sortOrder field back to AdminProductForm for product priority management
+  * Implemented smart sorting logic: products with sortOrder > 0 show first (ascending), then products without sortOrder (0 or null) by creation date
+  * Products can now be prioritized with numbers (1, 2, 3...) with lower numbers appearing first
+  * Products without sortOrder automatically appear after numbered products as requested
 ```
 
 ## User Preferences
