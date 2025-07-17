@@ -35,6 +35,7 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [sortBy, setSortBy] = useState<'position' | 'category'>('position');
 
 
 
@@ -422,10 +423,24 @@ export default function AdminDashboard() {
                 <h2 className="text-xl font-semibold">Produktverwaltung</h2>
                 <p className="text-gray-600">Verwalten Sie Ihre Produkte einfach und schnell</p>
               </div>
-              <Button onClick={() => setLocation('/admin/products/new')}>
-                <Plus className="w-4 h-4 mr-2" />
-                Neues Produkt
-              </Button>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600">Sortieren nach:</span>
+                  <Select value={sortBy} onValueChange={(value: 'position' | 'category') => setSortBy(value)}>
+                    <SelectTrigger className="w-40">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="position">Platz</SelectItem>
+                      <SelectItem value="category">Kategorie</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button onClick={() => setLocation('/admin/products/new')}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Neues Produkt
+                </Button>
+              </div>
             </div>
 
             <Card>
@@ -439,28 +454,38 @@ export default function AdminDashboard() {
                 <div className="space-y-4">
                   {products
                     .sort((a, b) => {
-                      // Sort by category first, then by subcategory, then by sortOrder
-                      const categoryA = categories.find(c => c.id === a.categoryId)?.nameDe || '';
-                      const categoryB = categories.find(c => c.id === b.categoryId)?.nameDe || '';
-                      
-                      if (categoryA !== categoryB) {
-                        return categoryA.localeCompare(categoryB);
+                      if (sortBy === 'position') {
+                        // Sort by position first
+                        if (a.sortOrder && b.sortOrder) {
+                          return a.sortOrder - b.sortOrder;
+                        }
+                        if (a.sortOrder && !b.sortOrder) return -1;
+                        if (!a.sortOrder && b.sortOrder) return 1;
+                        return 0;
+                      } else {
+                        // Sort by category first, then by subcategory, then by sortOrder
+                        const categoryA = categories.find(c => c.id === a.categoryId)?.nameDe || '';
+                        const categoryB = categories.find(c => c.id === b.categoryId)?.nameDe || '';
+                        
+                        if (categoryA !== categoryB) {
+                          return categoryA.localeCompare(categoryB);
+                        }
+                        
+                        const subcategoryA = subcategories.find(s => s.id === a.subcategoryId)?.nameDe || '';
+                        const subcategoryB = subcategories.find(s => s.id === b.subcategoryId)?.nameDe || '';
+                        
+                        if (subcategoryA !== subcategoryB) {
+                          return subcategoryA.localeCompare(subcategoryB);
+                        }
+                        
+                        // Sort by sortOrder (0 means no order, goes to end)
+                        if (a.sortOrder && b.sortOrder) {
+                          return a.sortOrder - b.sortOrder;
+                        }
+                        if (a.sortOrder && !b.sortOrder) return -1;
+                        if (!a.sortOrder && b.sortOrder) return 1;
+                        return 0;
                       }
-                      
-                      const subcategoryA = subcategories.find(s => s.id === a.subcategoryId)?.nameDe || '';
-                      const subcategoryB = subcategories.find(s => s.id === b.subcategoryId)?.nameDe || '';
-                      
-                      if (subcategoryA !== subcategoryB) {
-                        return subcategoryA.localeCompare(subcategoryB);
-                      }
-                      
-                      // Sort by sortOrder (0 means no order, goes to end)
-                      if (a.sortOrder && b.sortOrder) {
-                        return a.sortOrder - b.sortOrder;
-                      }
-                      if (a.sortOrder && !b.sortOrder) return -1;
-                      if (!a.sortOrder && b.sortOrder) return 1;
-                      return 0;
                     })
                     .map((product: Product) => {
                       const category = categories.find(c => c.id === product.categoryId);

@@ -557,6 +557,8 @@ Changelog:
   * Added position number display with "Platz: " prefix for products with sortOrder
   * Badge colors: Blue for category, Green for subcategory, Orange for position
   * Products now organized visually with clear category/subcategory/position hierarchy
+  * Added red "Keinen Platz vergeben" badge for products without sortOrder
+  * Implemented sortable dropdown: default "Platz" sorting or "Kategorie" sorting options
 ```
 
 ## User Preferences
