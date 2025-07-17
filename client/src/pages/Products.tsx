@@ -198,7 +198,7 @@ export default function Products() {
               >
                 <CardContent className="p-0">
                   {/* Subcategory Image with overlay button */}
-                  <div className="aspect-square bg-gray-100 rounded-t-lg overflow-hidden relative">
+                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
                       src={subcategory.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
                       alt={getLocalizedText(subcategory, 'name')}
@@ -265,7 +265,7 @@ export default function Products() {
               >
                 <CardContent className="p-0">
                   {/* Category Image with overlay button */}
-                  <div className="aspect-square bg-gray-100 rounded-t-lg overflow-hidden relative">
+                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
                       src={category.image}
                       alt={getLocalizedText(category, 'name')}

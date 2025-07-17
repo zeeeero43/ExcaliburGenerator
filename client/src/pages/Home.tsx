@@ -54,7 +54,7 @@ export default function Home() {
               >
                 <CardContent className="p-0">
                   {/* Category Image with overlay button */}
-                  <div className="aspect-square bg-gray-100 rounded-t-lg overflow-hidden relative">
+                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
                       src={category.image}
                       alt={getLocalizedText(category, 'name')}
