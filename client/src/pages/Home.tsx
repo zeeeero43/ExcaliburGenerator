@@ -43,9 +43,9 @@ export default function Home() {
 
       {/* Categories Section */}
       <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 lg:px-1 xl:px-0">
+        <div className="container mx-auto px-2 lg:px-0">
           {/* Categories Grid - same as Products.tsx */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
             {categories.map((category) => (
               <Card 
                 key={category.id} 
