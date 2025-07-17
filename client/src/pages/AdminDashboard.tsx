@@ -488,17 +488,17 @@ export default function AdminDashboard() {
                                 {product.isFeatured && (
                                   <Badge variant="outline">Empfohlen</Badge>
                                 )}
-                                <Badge variant="outline" className="bg-blue-50">
+                                <Badge variant="default" className="bg-blue-600 hover:bg-blue-700">
                                   {category?.nameDe || 'Keine Kategorie'}
                                 </Badge>
                                 {subcategory && (
-                                  <Badge variant="outline" className="bg-green-50">
+                                  <Badge variant="default" className="bg-green-600 hover:bg-green-700">
                                     {subcategory.nameDe}
                                   </Badge>
                                 )}
                                 {product.sortOrder && product.sortOrder > 0 && (
-                                  <Badge variant="outline" className="bg-yellow-50">
-                                    #{product.sortOrder}
+                                  <Badge variant="default" className="bg-orange-600 hover:bg-orange-700">
+                                    Platz: {product.sortOrder}
                                   </Badge>
                                 )}
                               </div>

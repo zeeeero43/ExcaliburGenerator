@@ -551,6 +551,12 @@ Changelog:
   * Products can now have identical names without conflicts, automatically generating unique slugs
   * Product editing now properly persists changes when re-editing the same product
   * All cache invalidation issues resolved for seamless admin workflow
+- July 17, 2025 (admin dashboard product display enhancements). Improved admin dashboard product overview:
+  * Added category and subcategory display as colored badges matching "Aktiv" badge style
+  * Implemented smart sorting: products sorted by Category → Subcategory → Position number
+  * Added position number display with "Platz: " prefix for products with sortOrder
+  * Badge colors: Blue for category, Green for subcategory, Orange for position
+  * Products now organized visually with clear category/subcategory/position hierarchy
 ```
 
 ## User Preferences
