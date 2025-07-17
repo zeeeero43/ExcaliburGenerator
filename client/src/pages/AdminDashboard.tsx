@@ -496,9 +496,13 @@ export default function AdminDashboard() {
                                     {subcategory.nameDe}
                                   </Badge>
                                 )}
-                                {product.sortOrder && product.sortOrder > 0 && (
+                                {product.sortOrder && product.sortOrder > 0 ? (
                                   <Badge variant="default" className="bg-orange-600 hover:bg-orange-700">
                                     Platz: {product.sortOrder}
+                                  </Badge>
+                                ) : (
+                                  <Badge variant="default" className="bg-red-600 hover:bg-red-700">
+                                    Keinen Platz vergeben
                                   </Badge>
                                 )}
                               </div>
