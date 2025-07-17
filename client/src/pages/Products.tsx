@@ -152,11 +152,11 @@ export default function Products() {
   if (isLoading) {
     return (
       <div className="py-16 bg-white min-h-screen">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 lg:px-2 xl:px-1">
           <div className="text-center">
             <div className="animate-pulse">
               <div className="h-8 bg-gray-200 rounded w-64 mx-auto mb-8"></div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <div key={i} className="h-64 bg-gray-200 rounded"></div>
                 ))}
@@ -172,7 +172,7 @@ export default function Products() {
   if (showSubcategories) {
     return (
       <div className="py-16 bg-white min-h-screen">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 lg:px-2 xl:px-1">
           {/* Header */}
           <div className="text-center mb-8">
             <Button 
@@ -189,7 +189,7 @@ export default function Products() {
           </div>
 
           {/* Subcategories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {filteredSubcategories.map((subcategory) => (
               <Card 
                 key={subcategory.id} 
@@ -198,7 +198,7 @@ export default function Products() {
               >
                 <CardContent className="p-0">
                   {/* Subcategory Image with overlay button */}
-                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
+                  <div className="aspect-square bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
                       src={subcategory.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
                       alt={getLocalizedText(subcategory, 'name')}
@@ -247,7 +247,7 @@ export default function Products() {
   if (showCategories) {
     return (
       <div className="py-16 bg-white min-h-screen">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 lg:px-2 xl:px-1">
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-800 mb-8">
@@ -256,7 +256,7 @@ export default function Products() {
           </div>
 
           {/* Categories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {categories.map((category) => (
               <Card 
                 key={category.id} 
@@ -265,7 +265,7 @@ export default function Products() {
               >
                 <CardContent className="p-0">
                   {/* Category Image with overlay button */}
-                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
+                  <div className="aspect-square bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
                       src={category.image}
                       alt={getLocalizedText(category, 'name')}
@@ -313,7 +313,7 @@ export default function Products() {
   // Products View for Selected Category
   return (
     <div className="py-16 bg-white min-h-screen">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 lg:px-2 xl:px-1">
         {/* Header with Back Button */}
         <div className="mb-8">
           <Button
@@ -364,7 +364,7 @@ export default function Products() {
           </div>
         ) : (
           <div className={viewMode === 'grid' 
-            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4" 
             : "space-y-4"
           }>
             {filteredProducts.map((product) => (
@@ -375,7 +375,7 @@ export default function Products() {
                       <img
                         src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
                         alt={getLocalizedText(product, 'name')}
-                        className="w-full h-48 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-56 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;

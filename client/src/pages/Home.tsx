@@ -43,9 +43,9 @@ export default function Home() {
 
       {/* Categories Section */}
       <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 lg:px-2 xl:px-1">
           {/* Categories Grid - same as Products.tsx */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {categories.map((category) => (
               <Card 
                 key={category.id} 
@@ -54,7 +54,7 @@ export default function Home() {
               >
                 <CardContent className="p-0">
                   {/* Category Image with overlay button */}
-                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
+                  <div className="aspect-square bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
                       src={category.image}
                       alt={getLocalizedText(category, 'name')}

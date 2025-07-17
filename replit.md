@@ -529,6 +529,12 @@ Changelog:
   * Implemented smart sorting logic: products with sortOrder > 0 show first (ascending), then products without sortOrder (0 or null) by creation date
   * Products can now be prioritized with numbers (1, 2, 3...) with lower numbers appearing first
   * Products without sortOrder automatically appear after numbered products as requested
+- July 17, 2025 (PC layout optimization). Optimized layout for desktop viewing:
+  * Reduced side margins on PC screens: px-4 changed to px-4 lg:px-2 xl:px-1
+  * Increased grid columns on large screens: lg:grid-cols-3 changed to lg:grid-cols-4 xl:grid-cols-5
+  * Changed image aspect ratio from aspect-video to aspect-square for better space utilization
+  * Increased product image height from h-48 to h-56 for better visibility
+  * Applied consistent layout changes across Home page and Products page
 ```
 
 ## User Preferences
