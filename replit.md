@@ -535,6 +535,22 @@ Changelog:
   * Changed image aspect ratio from aspect-video to aspect-square for better space utilization
   * Increased product image height from h-48 to h-56 for better visibility
   * Applied consistent layout changes across Home page and Products page
+- July 17, 2025 (dramatic layout changes). Implemented major layout improvements based on user feedback:
+  * Changed category images back to large format (aspect-video) while maintaining other optimizations
+  * Drastically reduced side margins to minimal (px-2 lg:px-0) for maximum space utilization
+  * Reduced grid columns to 2 on desktop, 3 on XL screens for larger display
+  * Minimized gaps between items (gap-3) for more compact layout
+  * Increased product image height to h-64 for better visibility on desktop
+  * Applied changes consistently across Home page, Products page, and all subcategory views
+- July 17, 2025 (comprehensive form and persistence fixes). Fixed three critical admin panel issues:
+  * Fixed product form field ordering: moved sortOrder field below subcategoryId field as requested
+  * Resolved duplicate product name issue: enhanced slug generation with timestamp to ensure uniqueness
+  * Fixed product editing persistence: added proper cache invalidation for individual product queries
+  * Enhanced error handling with specific messages for duplicate names and validation errors
+  * Product form now shows: Category → Subcategory → Sorting → Description in correct order
+  * Products can now have identical names without conflicts, automatically generating unique slugs
+  * Product editing now properly persists changes when re-editing the same product
+  * All cache invalidation issues resolved for seamless admin workflow
 ```
 
 ## User Preferences

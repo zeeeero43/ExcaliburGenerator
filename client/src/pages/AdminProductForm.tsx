@@ -299,6 +299,10 @@ export default function AdminProductForm() {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
       queryClient.invalidateQueries({ queryKey: ['/api/products'] });
       queryClient.invalidateQueries({ queryKey: ['/api/products/featured'] });
+      // Invalidate the specific product cache if editing
+      if (isEditing && id) {
+        queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${id}`] });
+      }
       setLocation('/admin');
     },
     onError: (error: Error) => {
@@ -460,36 +464,13 @@ export default function AdminProductForm() {
                   )}
                 />
 
-                {/* 3. Sortierung */}
-                <FormField
-                  control={form.control}
-                  name="sortOrder"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>3. Sortierung (optional)</FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="number" 
-                          {...field} 
-                          placeholder="z.B. 1, 2, 3... (niedrige Zahl = weiter oben)"
-                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : 0)}
-                        />
-                      </FormControl>
-                      <p className="text-xs text-gray-500">
-                        Produkte ohne Nummer kommen automatisch nach denen mit Nummer
-                      </p>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* 4. Unterkategorie (Optional) */}
+                {/* 3. Unterkategorie (Optional) */}
                 <FormField
                   control={form.control}
                   name="subcategoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>4. Unterkategorie *</FormLabel>
+                      <FormLabel>3. Unterkategorie *</FormLabel>
                       <Select
                         value={field.value?.toString() || ''}
                         onValueChange={(value) => {
@@ -515,6 +496,29 @@ export default function AdminProductForm() {
                     </FormItem>
                   )}
                 />
+
+                {/* 4. Sortierung */}
+                <FormField
+                  control={form.control}
+                  name="sortOrder"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>4. Sortierung (optional)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          {...field} 
+                          placeholder="z.B. 1, 2, 3... (niedrige Zahl = weiter oben)"
+                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : 0)}
+                        />
+                      </FormControl>
+                      <p className="text-xs text-gray-500">
+                        Produkte ohne Nummer kommen automatisch nach denen mit Nummer
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               {/* Kurzbeschreibung */}
@@ -526,7 +530,7 @@ export default function AdminProductForm() {
                   name="shortDescriptionDe"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>4. Beschreibung *</FormLabel>
+                      <FormLabel>5. Beschreibung *</FormLabel>
                       <FormControl>
                         <RichTextEditor
                           value={field.value || ''}

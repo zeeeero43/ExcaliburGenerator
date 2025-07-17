@@ -96,12 +96,16 @@ async function getCountryFromIP(ip: string): Promise<string | null> {
 
 // Helper function to generate slug from text
 function generateSlug(text: string): string {
-  return text
+  const baseSlug = text
     .toLowerCase()
     .replace(/[^a-z0-9 -]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .trim();
+  
+  // Add timestamp to make it unique
+  const timestamp = Date.now();
+  return `${baseSlug}-${timestamp}`;
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -631,27 +635,117 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (error.code === '23505') { // PostgreSQL unique constraint violation
         return res.status(409).json({ 
           error: "Conflict error",
-          details: "Ein Produkt mit diesem Namen oder SKU existiert bereits."
+          details: "Ein Produkt mit diesem Namen existiert bereits. Bitte wählen Sie einen anderen Namen."
         });
       }
       
-      if (error.code === '23502') { // PostgreSQL not null constraint violation
+      res.status(500).json({ 
+        error: "Server error",
+        details: error.message || "Unbekannter Server-Fehler"
+      });
+    }
+  });
+
+  app.put("/api/admin/products/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      // Transform the request body to match the schema (same as create)
+      const transformedData = {
+        ...req.body,
+        name: req.body.nameEs, // Use Spanish name as main name
+        slug: req.body.slug || generateSlug(req.body.nameEs),
+        price: req.body.price ? req.body.price.toString() : null,
+        shortDescription: req.body.shortDescriptionEs,
+        description: req.body.descriptionEs,
+        subcategoryId: req.body.subcategoryId === 0 ? null : req.body.subcategoryId, // Convert 0 to null
+      };
+      
+      const product = await storage.updateProduct(id, transformedData);
+      res.json(product);
+    } catch (error: any) {
+      console.error("Error updating product:", error);
+      
+      if (error.name === 'ZodError') {
+        const validationErrors = error.errors.map((e: any) => {
+          const field = e.path.join('.');
+          return `${field}: ${e.message}`;
+        }).join(', ');
+        
         return res.status(400).json({ 
-          error: "Required field missing",
-          details: "Ein Pflichtfeld fehlt oder ist leer."
+          error: "Validation error", 
+          details: validationErrors,
+          fields: error.errors.map((e: any) => e.path.join('.'))
+        });
+      }
+      
+      if (error.code === '23505') { // PostgreSQL unique constraint violation
+        return res.status(409).json({ 
+          error: "Conflict error",
+          details: "Ein Produkt mit diesem Namen existiert bereits. Bitte wählen Sie einen anderen Namen."
         });
       }
       
       if (error.code === '23503') { // PostgreSQL foreign key constraint violation
         return res.status(400).json({ 
-          error: "Foreign key constraint error",
-          details: "Die ausgewählte Kategorie oder Unterkategorie existiert nicht."
+          error: "Invalid reference",
+          details: "Ungültige Kategorie oder Unterkategorie ausgewählt."
         });
       }
       
       res.status(500).json({ 
-        error: "Failed to create product",
+        error: "Server error",
         details: error.message || "Unbekannter Server-Fehler"
+      });
+    }
+  });
+
+  app.delete("/api/admin/products/:id", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteProduct(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      res.status(500).json({ error: "Failed to delete product" });
+    }
+  });
+
+  // Duplicate product
+  app.post("/api/admin/products/:id/duplicate", isAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const originalProduct = await storage.getProductById(id);
+      
+      if (!originalProduct) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      // Create duplicated product with modified names
+      const duplicatedProduct = {
+        ...originalProduct,
+        nameEs: `${originalProduct.nameEs} - Kopie`,
+        nameDe: `${originalProduct.nameDe} - Kopie`,
+        nameEn: `${originalProduct.nameEn} - Copy`,
+        name: `${originalProduct.name} - Kopie`,
+        slug: `${originalProduct.slug}-kopie-${Date.now()}`,
+        isActive: false, // Set as inactive by default
+        isFeatured: false, // Remove featured status
+        sku: originalProduct.sku ? `${originalProduct.sku}-COPY` : null,
+      };
+
+      // Remove the id so it gets auto-generated
+      delete duplicatedProduct.id;
+      delete duplicatedProduct.createdAt;
+      delete duplicatedProduct.updatedAt;
+
+      const newProduct = await storage.createProduct(duplicatedProduct);
+      res.json(newProduct);
+    } catch (error: any) {
+      console.error("Error duplicating product:", error);
+      res.status(500).json({ 
+        error: "Server error",
+        details: error.message || "Fehler beim Duplizieren des Produkts"
       });
     }
   });
