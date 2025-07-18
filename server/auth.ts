@@ -14,6 +14,8 @@ declare module "express-session" {
 export function setupSession(app: express.Application) {
   const pgSession = connectPg(session);
   
+  console.log("🔧 SESSION: Setting up session middleware with cookies");
+  
   app.use(
     session({
       store: new pgSession({
@@ -23,16 +25,31 @@ export function setupSession(app: express.Application) {
       }),
       secret: process.env.SESSION_SECRET || "your-secret-key-change-in-production",
       resave: false,
-      saveUninitialized: false,
+      saveUninitialized: true, // TEMP FIX: Save uninitialized sessions for debugging
       name: 'excalibur-session',
       cookie: {
         secure: false, // TEMP FIX: Disable secure cookies for debugging
-        httpOnly: true,
+        httpOnly: false, // TEMP FIX: Allow JavaScript access for debugging
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
         sameSite: 'lax',
+        domain: undefined, // Allow all domains for development
+        path: '/', // Ensure cookie works on all paths
       },
     })
   );
+  
+  // Debug middleware
+  app.use((req, res, next) => {
+    console.log("🔍 SESSION MIDDLEWARE:", {
+      url: req.url,
+      method: req.method,
+      sessionID: req.sessionID,
+      hasSession: !!req.session,
+      sessionUserId: req.session?.userId,
+      cookies: req.headers.cookie
+    });
+    next();
+  });
 }
 
 export async function isAuthenticated(

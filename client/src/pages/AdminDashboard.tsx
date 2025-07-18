@@ -21,6 +21,13 @@ function useAdminAuth() {
     retry: false,
   });
 
+  console.log('🔍 AUTH HOOK:', {
+    user: user?.username,
+    isLoading,
+    error: error?.message,
+    isAuthenticated: !!user
+  });
+
   useEffect(() => {
     if (!isLoading && !user && error) {
       setLocation('/admin/login');
@@ -40,19 +47,28 @@ export default function AdminDashboard() {
 
 
   // Fetch data
-  const { data: categories = [] } = useQuery<Category[]>({
+  const { data: categories = [], isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ['/api/admin/categories'],
     enabled: isAuthenticated,
   });
 
-  const { data: subcategories = [] } = useQuery<Subcategory[]>({
+  const { data: subcategories = [], isLoading: subcategoriesLoading } = useQuery<Subcategory[]>({
     queryKey: ['/api/admin/subcategories'],
     enabled: isAuthenticated,
   });
 
-  const { data: products = [] } = useQuery<Product[]>({
+  const { data: products = [], isLoading: productsLoading, error: productsError } = useQuery<Product[]>({
     queryKey: ['/api/admin/products'],
     enabled: isAuthenticated,
+  });
+
+  // Debug logging
+  console.log('🔍 ADMIN DASHBOARD:', {
+    isAuthenticated,
+    productsLength: products.length,
+    productsLoading,
+    productsError: productsError?.message,
+    user: user?.username
   });
 
   const { data: inquiries = [] } = useQuery<Inquiry[]>({

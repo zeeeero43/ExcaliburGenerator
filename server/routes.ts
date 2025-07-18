@@ -293,8 +293,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/admin/user", isAuthenticated, async (req, res) => {
-    const { password: _, ...userWithoutPassword } = req.session.user!;
-    res.json(userWithoutPassword);
+    console.log("🔍 ADMIN USER: Request reached /api/admin/user");
+    console.log("🔍 ADMIN USER: Session user exists:", !!req.session?.user);
+    try {
+      const { password: _, ...userWithoutPassword } = req.session.user!;
+      console.log("🔍 ADMIN USER: Returning user:", userWithoutPassword.username);
+      res.json(userWithoutPassword);
+    } catch (error) {
+      console.error("🔍 ADMIN USER: Error fetching current user:", error);
+      res.status(500).json({ error: "Failed to fetch user" });
+    }
   });
 
   // Categories API
