@@ -594,6 +594,13 @@ Changelog:
   * Updated subcategory records with proper German/Spanish/English names
   * All 47 products remain safe in database - issue was authentication/display related, not data loss
   * System ready for VPS deployment after GitHub update with improved error tracking
+- July 18, 2025 (critical VPS database schema fix). Identified and resolved production database schema mismatch:
+  * CRITICAL ISSUE: VPS database missing "old_price" column causing admin products API to fail
+  * Error: "column old_price does not exist" prevented loading any products in admin dashboard
+  * Root cause: Development database has "oldPrice: decimal("old_price")" but VPS database schema outdated
+  * Solution: Run "npm run db:push" on VPS to sync database schema or manually add column via SQL
+  * All 47 products safe - issue is purely database schema synchronization, not data corruption
+  * VPS deployment process updated to include mandatory database schema updates
 ```
 
 ## User Preferences
