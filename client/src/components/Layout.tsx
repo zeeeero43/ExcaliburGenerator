@@ -12,19 +12,17 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
 
-  // Track page views globally for all pages
+  // Track page views globally for all pages - only real user pages
   useEffect(() => {
     const trackPageView = async () => {
       try {
-        // Only track actual page URLs, not development/build files
-        if (location && 
-            !location.includes('/src/') && 
-            !location.includes('.tsx') && 
-            !location.includes('.css') &&
-            !location.includes('/@') && // Vite development URLs
-            !location.includes('/node_modules/') &&
-            !location.includes('.js') &&
-            !location.includes('.mjs')) {
+        // Only track actual user-facing pages, not development files
+        const validPages = ['/', '/products', '/about', '/contact', '/impressum', '/datenschutz'];
+        const isProductPage = location.startsWith('/products/') || location.startsWith('/product/');
+        const isAdminPage = location.startsWith('/admin') && !location.includes('/admin/login');
+        
+        // Track only if it's a valid page, product page, or admin page
+        if (validPages.includes(location) || isProductPage || isAdminPage) {
           await fetch('/api/track', {
             method: 'POST',
             headers: {
