@@ -9,7 +9,6 @@ import { Button } from '../components/ui/button';
 import { Link } from 'wouter';
 
 interface AnalyticsData {
-  totalViews: number;
   uniqueVisitors: number;
   topProducts: Array<{ product: string; views: number; id: number }>;
   topCountries: Array<{ country: string; uniqueVisitors: number }>;
@@ -127,9 +126,9 @@ export default function AdminAnalytics() {
           <h3 className="font-medium">Analytics-Information</h3>
         </div>
         <p className="text-blue-700 mt-2 text-sm">
-          Analytics werden in Echtzeit verfolgt und zeigen echte Besucherdaten an. 
+          Analytics zeigen eindeutige Besucher basierend auf IP-Adressen an. 
           Daten werden automatisch alle 60 Sekunden aktualisiert. 
-          Die Statistiken umfassen nur tatsächliche Besucher Ihrer Website.
+          Keine Gesamtaufrufe - nur echte, eindeutige Besucher werden getrackt.
         </p>
       </div>
 
@@ -137,13 +136,13 @@ export default function AdminAnalytics() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tatsächliche Besucher</CardTitle>
+            <CardTitle className="text-sm font-medium">Eindeutige Besucher</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.uniqueVisitors || 0}</div>
             <p className="text-xs text-muted-foreground">
-              Einzigartige Besucher basierend auf IP-Adressen
+              Verschiedene IP-Adressen
             </p>
           </CardContent>
         </Card>

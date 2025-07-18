@@ -394,7 +394,6 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAnalytics(period: 'day' | 'month' | 'year'): Promise<{
-    totalViews: number;
     uniqueVisitors: number;
     topProducts: Array<{ product: string; views: number; id: number }>;
     topCountries: Array<{ country: string; uniqueVisitors: number }>;
@@ -413,12 +412,6 @@ export class DatabaseStorage implements IStorage {
         startDate = new Date(now.getFullYear(), 0, 1);
         break;
     }
-
-    // Total views from PAGE VIEWS (all pages)
-    const [totalViewsResult] = await db
-      .select({ count: count() })
-      .from(pageViews)
-      .where(gte(pageViews.viewedAt, startDate));
 
     // Unique visitors from PAGE VIEWS (based on IP)
     const [uniqueVisitorsResult] = await db
@@ -463,7 +456,6 @@ export class DatabaseStorage implements IStorage {
     `);
 
     return {
-      totalViews: totalViewsResult.count || 0,
       uniqueVisitors: uniqueVisitorsResult.count || 0,
       topProducts: topProductsResult.map(p => ({ 
         product: p.productNameDe || p.productNameEs || 'Unknown Product', // Prefer German, fallback to Spanish
