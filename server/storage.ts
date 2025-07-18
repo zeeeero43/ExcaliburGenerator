@@ -82,6 +82,10 @@ export interface IStorage {
   deleteUploadedImage(id: number): Promise<void>;
   
   // Analytics
+  getAnalytics(period: string): Promise<any>;
+  trackPageView(pageViewData: InsertPageView): Promise<PageView>;
+  
+  // Analytics
   createPageView(pageView: InsertPageView): Promise<PageView>;
   getAnalytics(period: 'day' | 'month' | 'year'): Promise<{
     totalViews: number;

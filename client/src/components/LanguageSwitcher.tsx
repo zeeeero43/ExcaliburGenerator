@@ -1,8 +1,17 @@
 import { useLanguage } from '../hooks/useLanguage';
 import { Button } from './ui/button';
+import { useQuery } from '@tanstack/react-query';
 
 export function LanguageSwitcher() {
   const { currentLanguage, switchLanguage } = useLanguage();
+  
+  // Check if user is admin
+  const { data: adminUser } = useQuery({
+    queryKey: ['/api/admin/user'],
+    retry: false,
+  });
+  
+  const isAdmin = !!adminUser;
 
   const handleLanguageChange = (lang: 'es' | 'de' | 'en') => {
     switchLanguage(lang);
@@ -22,14 +31,17 @@ export function LanguageSwitcher() {
       >
         ES
       </Button>
-      <Button
-        variant={currentLanguage === 'de' ? 'default' : 'ghost'}
-        size="sm"
-        onClick={() => handleLanguageChange('de')}
-        className="px-2 py-1"
-      >
-        DE
-      </Button>
+      {/* DE Button - nur für Admins sichtbar */}
+      {isAdmin && (
+        <Button
+          variant={currentLanguage === 'de' ? 'default' : 'ghost'}
+          size="sm"
+          onClick={() => handleLanguageChange('de')}
+          className="px-2 py-1"
+        >
+          DE
+        </Button>
+      )}
       <Button
         variant={currentLanguage === 'en' ? 'default' : 'ghost'}
         size="sm"

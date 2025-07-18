@@ -25,6 +25,7 @@ import NotFound from "./pages/not-found";
 
 import { OfflineIndicator } from "./components/OfflineIndicator";
 import { CartProvider } from "./contexts/CartContext";
+import { PageViewTracker } from "./components/PageViewTracker";
 
 function Router() {
   const { isLoading } = useLanguage();
@@ -142,6 +143,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <CartProvider>
+          <PageViewTracker />
           <OfflineIndicator />
           <Router />
           <Toaster />

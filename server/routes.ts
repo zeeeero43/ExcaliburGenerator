@@ -27,15 +27,15 @@ if (!fs.existsSync(uploadsDir)) {
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB per file
+    fileSize: 15 * 1024 * 1024, // 15MB per file (für A4 JPG Datenblätter)
     files: 10, // Max 10 files per upload for better batch processing
   },
   fileFilter: (req, file, cb) => {
-    const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid file type. Only JPEG, PNG, and WebP images are allowed.') as any, false);
+      cb(new Error('Ungültiger Dateityp. Nur JPEG, PNG, WebP und GIF Bilder sind erlaubt.') as any, false);
     }
   }
 });
@@ -47,10 +47,10 @@ async function compressAndSaveImage(buffer: Buffer, originalName: string): Promi
   const filename = `${Date.now()}-${fileId}.jpg`; // Always save as jpg for better compression
   const filepath = path.join(uploadsDir, filename);
 
-  // Compress image with sharp - optimized for speed
+  // Compress image with sharp - optimized for A4 documents
   await sharp(buffer)
-    .resize(800, 600, { fit: 'inside', withoutEnlargement: true })
-    .jpeg({ quality: 78, progressive: true })
+    .resize(1200, 1600, { fit: 'inside', withoutEnlargement: true }) // A4 format support
+    .jpeg({ quality: 85, progressive: true })
     .toFile(filepath);
 
   return filename;
@@ -889,14 +889,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Analytics API - Website visitor tracking
+  app.get("/api/admin/analytics", isAuthenticated, async (req, res) => {
+    try {
+      const period = req.query.period || 'month';
+      const analytics = await storage.getAnalytics(period as string);
+      res.json(analytics);
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      res.status(500).json({ error: "Failed to fetch analytics" });
+    }
+  });
+
+  // Track page views
+  app.post("/api/track", async (req, res) => {
+    try {
+      const { page, userAgent, referrer } = req.body;
+      const ip = req.ip || req.connection.remoteAddress || 'unknown';
+      const country = await getCountryFromIP(ip);
+      
+      await storage.createPageView({
+        page,
+        ipAddress: ip,
+        country: country || 'DE',
+        userAgent,
+        referrer,
+        viewedAt: new Date()
+      });
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error tracking page view:", error);
+      res.status(500).json({ error: "Failed to track page view" });
+    }
+  });
+
   // Geolocation endpoint for language detection
   app.get("/api/geolocation", async (req, res) => {
     try {
       const ip = req.ip || req.connection.remoteAddress || 'unknown';
       const country = await getCountryFromIP(ip);
       
-      // Map countries to languages - Default to German for German market
-      let language = 'de'; // Default to German instead of Spanish
+      // Map countries to languages - Default to Spanish for Cuban market
+      let language = 'es'; // Default to Spanish for Cuban market
       
       if (country) {
         switch(country) {
@@ -916,12 +951,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
             language = 'en';
             break;
           default:
-            language = 'de'; // German as primary default
+            language = 'es'; // Spanish as primary default for Cuban market
         }
       }
       
       res.json({ 
-        country: country || 'DE', // Default to Germany
+        country: country || 'CU', // Default to Cuba
         language 
       });
     } catch (error) {
