@@ -568,6 +568,14 @@ Changelog:
   * Analytics now correctly shows: total views, unique visitors by IP, top countries, time periods (all from Page Views) plus most viewed products (from Product Views)
   * Time period selection (day/month/year) works correctly with proper database queries
   * All analytics requirements fulfilled: country tracking, unique visitor tracking, popular products display, time period filtering
+- July 18, 2025 (critical analytics over-tracking fix). Resolved analytics system tracking fake/development data:
+  * Fixed root cause: useEffect in Layout.tsx was tracking development files and running on every re-render
+  * Removed 1,520+ fake analytics entries including .tsx, .js, /@vite, Hot Module Replacement, and development files
+  * Implemented robust tracking system with useRef to prevent duplicate calls and stricter filtering
+  * Added comprehensive blacklist for development files and whitelist for real user pages only
+  * Analytics now show realistic numbers: 148 views, 2 unique visitors instead of inflated 700+ views
+  * System now tracks only genuine user interactions on real pages (/, /products, /about, product detail pages)
+  * Debug logging added to verify only authentic page visits are tracked
 ```
 
 ## User Preferences
