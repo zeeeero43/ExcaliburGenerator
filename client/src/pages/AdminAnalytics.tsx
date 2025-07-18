@@ -11,7 +11,7 @@ import { Link } from 'wouter';
 interface AnalyticsData {
   totalViews: number;
   uniqueVisitors: number;
-  topPages: Array<{ page: string; views: number }>;
+  topProducts: Array<{ product: string; views: number; id: number }>;
   topCountries: Array<{ country: string; views: number }>;
   viewsByPeriod: Array<{ period: string; views: number }>;
 }
@@ -177,13 +177,13 @@ export default function AdminAnalytics() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Beliebte Seiten</CardTitle>
+            <CardTitle className="text-sm font-medium">Beliebte Produkte</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analytics?.topPages.length || 0}</div>
+            <div className="text-2xl font-bold">{analytics?.topProducts.length || 0}</div>
             <p className="text-xs text-muted-foreground">
-              Verschiedene Seiten besucht
+              Verschiedene Produkte besucht
             </p>
           </CardContent>
         </Card>
@@ -243,26 +243,26 @@ export default function AdminAnalytics() {
           </CardContent>
         </Card>
 
-        {/* Top Pages */}
+        {/* Top Products */}
         <Card>
           <CardHeader>
-            <CardTitle>Beliebteste Seiten</CardTitle>
-            <CardDescription>Die meistbesuchten Seiten Ihrer Website</CardDescription>
+            <CardTitle>Meistgesehene Produkte</CardTitle>
+            <CardDescription>Die meistbesuchten Produkte Ihrer Website</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {analytics?.topPages.slice(0, 8).map((page, index) => (
-                <div key={page.page} className="flex items-center justify-between">
+              {analytics?.topProducts.slice(0, 8).map((product, index) => (
+                <div key={product.id} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="text-xs">
                       #{index + 1}
                     </Badge>
                     <span className="font-medium">
-                      {page.page === '/' ? 'Startseite' : page.page}
+                      {product.product}
                     </span>
                   </div>
                   <Badge variant="secondary">
-                    {page.views} Aufrufe
+                    {product.views} Aufrufe
                   </Badge>
                 </div>
               ))}

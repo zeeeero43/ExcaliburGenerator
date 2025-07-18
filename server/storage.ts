@@ -7,6 +7,7 @@ import {
   siteSettings,
   uploadedImages,
   pageViews,
+  productViews,
   type AdminUser,
   type InsertAdminUser,
   type Category,
@@ -23,6 +24,8 @@ import {
   type InsertUploadedImage,
   type PageView,
   type InsertPageView,
+  type ProductView,
+  type InsertProductView,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, or, ilike, count, countDistinct, sql, gte, isNotNull } from "drizzle-orm";
@@ -82,15 +85,12 @@ export interface IStorage {
   deleteUploadedImage(id: number): Promise<void>;
   
   // Analytics
-  getAnalytics(period: string): Promise<any>;
-  trackPageView(pageViewData: InsertPageView): Promise<PageView>;
-  
-  // Analytics
   createPageView(pageView: InsertPageView): Promise<PageView>;
+  createProductView(productView: InsertProductView): Promise<ProductView>;
   getAnalytics(period: 'day' | 'month' | 'year'): Promise<{
     totalViews: number;
     uniqueVisitors: number;
-    topPages: Array<{ page: string; views: number }>;
+    topProducts: Array<{ product: string; views: number; id: number }>;
     topCountries: Array<{ country: string; views: number }>;
     viewsByPeriod: Array<{ period: string; views: number }>;
   }>;
@@ -388,10 +388,15 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
+  async createProductView(productView: InsertProductView): Promise<ProductView> {
+    const [created] = await db.insert(productViews).values(productView).returning();
+    return created;
+  }
+
   async getAnalytics(period: 'day' | 'month' | 'year'): Promise<{
     totalViews: number;
     uniqueVisitors: number;
-    topPages: Array<{ page: string; views: number }>;
+    topProducts: Array<{ product: string; views: number; id: number }>;
     topCountries: Array<{ country: string; views: number }>;
     viewsByPeriod: Array<{ period: string; views: number }>;
   }> {
@@ -417,43 +422,45 @@ export class DatabaseStorage implements IStorage {
     // Total views
     const [totalViewsResult] = await db
       .select({ count: count() })
-      .from(pageViews)
-      .where(gte(pageViews.viewedAt, startDate));
+      .from(productViews)
+      .where(gte(productViews.viewedAt, startDate));
 
     // Unique visitors (based on IP)
     const [uniqueVisitorsResult] = await db
-      .select({ count: countDistinct(pageViews.ipAddress) })
-      .from(pageViews)
-      .where(gte(pageViews.viewedAt, startDate));
+      .select({ count: countDistinct(productViews.ipAddress) })
+      .from(productViews)
+      .where(gte(productViews.viewedAt, startDate));
 
-    // Top pages
-    const topPagesResult = await db
+    // Top products with product names
+    const topProductsResult = await db
       .select({
-        page: pageViews.page,
+        productId: productViews.productId,
+        productName: products.name,
         views: count()
       })
-      .from(pageViews)
-      .where(gte(pageViews.viewedAt, startDate))
-      .groupBy(pageViews.page)
+      .from(productViews)
+      .leftJoin(products, eq(productViews.productId, products.id))
+      .where(gte(productViews.viewedAt, startDate))
+      .groupBy(productViews.productId, products.name)
       .orderBy(desc(count()))
       .limit(10);
 
     // Top countries
     const topCountriesResult = await db
       .select({
-        country: pageViews.country,
+        country: productViews.country,
         views: count()
       })
-      .from(pageViews)
-      .where(and(gte(pageViews.viewedAt, startDate), isNotNull(pageViews.country)))
-      .groupBy(pageViews.country)
+      .from(productViews)
+      .where(and(gte(productViews.viewedAt, startDate), isNotNull(productViews.country)))
+      .groupBy(productViews.country)
       .orderBy(desc(count()))
       .limit(10);
 
     // Views by period (using raw SQL for date formatting)
     const viewsByPeriodResult = await db.execute(sql`
       SELECT ${sql.raw(groupByFormat)} as period, COUNT(*) as views
-      FROM page_views 
+      FROM product_views 
       WHERE viewed_at >= ${startDate}
       GROUP BY ${sql.raw(groupByFormat)}
       ORDER BY period
@@ -462,7 +469,11 @@ export class DatabaseStorage implements IStorage {
     return {
       totalViews: totalViewsResult.count || 0,
       uniqueVisitors: uniqueVisitorsResult.count || 0,
-      topPages: topPagesResult.map(p => ({ page: p.page, views: Number(p.views) })),
+      topProducts: topProductsResult.map(p => ({ 
+        product: p.productName || 'Unknown Product', 
+        views: Number(p.views),
+        id: p.productId || 0
+      })),
       topCountries: topCountriesResult.map(c => ({ country: c.country || 'Unknown', views: Number(c.views) })),
       viewsByPeriod: viewsByPeriodResult.rows.map((row: any) => ({ 
         period: row.period, 

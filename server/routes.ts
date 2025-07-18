@@ -882,6 +882,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Track product views
+  app.post("/api/track/product", async (req, res) => {
+    try {
+      const { productId, userAgent, referrer } = req.body;
+      const ip = req.ip || req.connection.remoteAddress || 'unknown';
+      const country = await getCountryFromIP(ip);
+      
+      await storage.createProductView({
+        productId: parseInt(productId),
+        ipAddress: ip,
+        country: country || 'DE',
+        userAgent,
+        referrer,
+        viewedAt: new Date()
+      });
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error tracking product view:", error);
+      res.status(500).json({ error: "Failed to track product view" });
+    }
+  });
+
   // Geolocation endpoint for language detection
   app.get("/api/geolocation", async (req, res) => {
     try {

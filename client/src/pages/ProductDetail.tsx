@@ -1,6 +1,6 @@
 import { useParams, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowLeft, Check, Phone, Mail, MessageCircle, Star, ShoppingCart, Shield, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
@@ -25,6 +25,30 @@ export default function ProductDetail() {
     enabled: !!params.slug,
     retry: false,
   });
+
+  // Track product view
+  useEffect(() => {
+    if (product) {
+      const trackProductView = async () => {
+        try {
+          await fetch('/api/track/product', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              productId: product.id,
+              userAgent: navigator.userAgent,
+              referrer: document.referrer,
+            }),
+          });
+        } catch (error) {
+          console.error('Error tracking product view:', error);
+        }
+      };
+      trackProductView();
+    }
+  }, [product]);
 
   if (isLoading) {
     return (

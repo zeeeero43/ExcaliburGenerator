@@ -161,6 +161,19 @@ export const pageViews = pgTable("page_views", {
   viewedAt: timestamp("viewed_at").defaultNow(),
 });
 
+// Product views tracking table
+export const productViews = pgTable("product_views", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id").references(() => products.id, { onDelete: "cascade" }).notNull(),
+  ipAddress: varchar("ip_address", { length: 45 }).notNull(),
+  userAgent: text("user_agent"),
+  country: varchar("country", { length: 2 }),
+  city: varchar("city", { length: 100 }),
+  referrer: varchar("referrer", { length: 1000 }),
+  language: varchar("language", { length: 10 }),
+  viewedAt: timestamp("viewed_at").defaultNow(),
+});
+
 // Relations
 export const categoriesRelations = relations(categories, ({ many }) => ({
   subcategories: many(subcategories),
@@ -249,3 +262,6 @@ export type InsertUploadedImage = typeof uploadedImages.$inferInsert;
 
 export type PageView = typeof pageViews.$inferSelect;
 export type InsertPageView = typeof pageViews.$inferInsert;
+
+export type ProductView = typeof productViews.$inferSelect;
+export type InsertProductView = typeof productViews.$inferInsert;
