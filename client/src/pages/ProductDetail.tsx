@@ -258,16 +258,27 @@ export default function ProductDetail() {
               </div>
 
               {/* Price */}
-              <div className="text-3xl font-bold text-blue-600 mb-4">
+              <div className="text-3xl font-bold mb-4">
                 {product.priceOnRequest ? (
                   <span className="text-blue-600">{t('priceOnRequest')}</span>
-                ) : product.price ? (
-                  <>
-                    ${product.price}
-                    {product.priceNote && product.priceNote.trim() && (
-                      <span className="text-sm text-gray-500 ml-2">({product.priceNote})</span>
+                ) : product.newPrice ? (
+                  // Show discounted price with crossed out old price
+                  <div className="space-y-2">
+                    <div className="text-red-600 font-bold">
+                      ${product.newPrice}
+                      <span className="text-sm bg-red-100 text-red-800 px-2 py-1 rounded ml-2">
+                        {t('onSale')}
+                      </span>
+                    </div>
+                    {product.oldPrice && (
+                      <div className="text-gray-500 text-xl line-through">
+                        ${product.oldPrice}
+                      </div>
                     )}
-                  </>
+                  </div>
+                ) : product.oldPrice ? (
+                  // Show normal price
+                  <span className="text-blue-600">${product.oldPrice}</span>
                 ) : (
                   <span className="text-blue-600">{t('priceOnRequest')}</span>
                 )}

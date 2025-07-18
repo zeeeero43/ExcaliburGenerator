@@ -31,8 +31,8 @@ const productFormSchema = z.object({
   categoryId: z.number().min(1, 'Kategorie ist erforderlich'),
   subcategoryId: z.number().min(1, 'Unterkategorie ist erforderlich'),
   sku: z.string().optional(),
-  price: z.string().optional(),
-  priceNote: z.string().optional(),
+  oldPrice: z.string().optional(),
+  newPrice: z.string().optional(),
   priceOnRequest: z.boolean().default(false),
   mainImage: z.string().optional(),
   additionalImages: z.array(z.string()).optional(),
@@ -72,8 +72,8 @@ export default function AdminProductForm() {
       categoryId: 1,
       subcategoryId: 1,
       sku: '',
-      price: '',
-      priceNote: '',
+      oldPrice: '',
+      newPrice: '',
       priceOnRequest: false,
       mainImage: '',
       additionalImages: [],
@@ -234,8 +234,8 @@ export default function AdminProductForm() {
       });
       const englishData = await englishResult.json();
       
-      // Set translations
-      form.setValue('priceNote', spanishData.translatedText || 'Precio bajo consulta');
+      // Price on request doesn't need translation for pricing fields anymore
+      // Just clear the prices
       
       toast({
         title: "Übersetzt",
@@ -266,8 +266,8 @@ export default function AdminProductForm() {
         categoryId: product.categoryId || 1,
         subcategoryId: product.subcategoryId || 1,
         sku: product.sku || '',
-        price: product.price || '',
-        priceNote: product.priceNote || '',
+        oldPrice: product.oldPrice || product.price || '',
+        newPrice: product.newPrice || '',
         priceOnRequest: product.priceOnRequest || false,
         mainImage: product.mainImage || '',
         additionalImages: product.additionalImages || [],
@@ -634,13 +634,11 @@ export default function AdminProductForm() {
                             onCheckedChange={(checked) => {
                               field.onChange(checked);
                               if (checked) {
-                                // Clear price when enabling price on request
-                                form.setValue('price', '');
+                                // Clear prices when enabling price on request
+                                form.setValue('oldPrice', '');
+                                form.setValue('newPrice', '');
                                 // Auto-translate "Preis auf Anfrage"
                                 handlePriceOnRequestTranslation();
-                              } else {
-                                // Clear price on request texts when disabling
-                                form.setValue('priceNote', '');
                               }
                             }}
                           />
@@ -665,10 +663,38 @@ export default function AdminProductForm() {
                     />
                     <FormField
                       control={form.control}
-                      name="price"
+                      name="newPrice"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Preis (USD)</FormLabel>
+                          <FormLabel>Neuer Preis (USD)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              placeholder="799.99"
+                              disabled={form.watch('priceOnRequest')}
+                              className={form.watch('priceOnRequest') ? 'opacity-50 cursor-not-allowed' : ''}
+                              onChange={(e) => {
+                                field.onChange(e);
+                                // If new price is empty, copy old price value
+                                if (!e.target.value && form.watch('oldPrice')) {
+                                  // This is handled in display logic, not here
+                                }
+                              }}
+                            />
+                          </FormControl>
+                          <div className="text-xs text-gray-500 mt-1">
+                            Leer lassen für normalen Preis, ausfüllen für reduzierten Preis
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="oldPrice"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Alter Preis (USD)</FormLabel>
                           <FormControl>
                             <Input 
                               {...field} 
@@ -677,24 +703,9 @@ export default function AdminProductForm() {
                               className={form.watch('priceOnRequest') ? 'opacity-50 cursor-not-allowed' : ''}
                             />
                           </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="priceNote"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Preishinweis</FormLabel>
-                          <FormControl>
-                            <Input 
-                              {...field} 
-                              placeholder="Im Angebot, Reduziert, etc."
-                              disabled={form.watch('priceOnRequest')}
-                              className={form.watch('priceOnRequest') ? 'opacity-50 cursor-not-allowed' : ''}
-                            />
-                          </FormControl>
+                          <div className="text-xs text-gray-500 mt-1">
+                            Originalpreis oder aktueller Preis wenn nicht reduziert
+                          </div>
                           <FormMessage />
                         </FormItem>
                       )}

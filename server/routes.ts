@@ -607,7 +607,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...req.body,
         name: req.body.nameEs, // Use Spanish name as main name
         slug: req.body.slug || generateSlug(req.body.nameEs),
-        price: req.body.price ? req.body.price.toString() : null,
+        oldPrice: req.body.oldPrice ? req.body.oldPrice.toString() : null,
+        newPrice: req.body.newPrice ? req.body.newPrice.toString() : null,
         shortDescription: req.body.shortDescriptionEs,
         description: req.body.descriptionEs,
         subcategoryId: req.body.subcategoryId === 0 ? null : req.body.subcategoryId, // Convert 0 to null
@@ -655,7 +656,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...req.body,
         name: req.body.nameEs, // Use Spanish name as main name
         slug: req.body.slug || generateSlug(req.body.nameEs),
-        price: req.body.price ? req.body.price.toString() : null,
+        oldPrice: req.body.oldPrice ? req.body.oldPrice.toString() : null,
+        newPrice: req.body.newPrice ? req.body.newPrice.toString() : null,
         shortDescription: req.body.shortDescriptionEs,
         description: req.body.descriptionEs,
         subcategoryId: req.body.subcategoryId === 0 ? null : req.body.subcategoryId, // Convert 0 to null
@@ -751,50 +753,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
 
-
-  app.put("/api/admin/products/:id", isAuthenticated, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      
-      // Transform the request body to match the schema (same as create)
-      const transformedData = {
-        ...req.body,
-        name: req.body.nameEs, // Use Spanish name as main name
-        slug: req.body.slug || generateSlug(req.body.nameEs),
-        price: req.body.price ? req.body.price.toString() : null,
-        shortDescription: req.body.shortDescriptionEs,
-        description: req.body.descriptionEs,
-        subcategoryId: req.body.subcategoryId === 0 ? null : req.body.subcategoryId, // Convert 0 to null
-      };
-      
-      const product = await storage.updateProduct(id, transformedData);
-      res.json(product);
-    } catch (error: any) {
-      console.error("Error updating product:", error);
-      
-      if (error.name === 'ZodError') {
-        const validationErrors = error.errors.map((e: any) => {
-          const field = e.path.join('.');
-          return `${field}: ${e.message}`;
-        }).join(', ');
-        
-        return res.status(400).json({ 
-          error: "Validation error", 
-          details: validationErrors,
-          fields: error.errors.map((e: any) => e.path.join('.'))
-        });
-      }
-      
-      if (error.code === '23503') { // PostgreSQL foreign key constraint violation
-        return res.status(400).json({ 
-          error: "Foreign key constraint error",
-          details: "Die ausgewählte Kategorie oder Unterkategorie existiert nicht."
-        });
-      }
-      
-      res.status(500).json({ error: "Failed to update product" });
-    }
-  });
 
   app.delete("/api/admin/products/:id", isAuthenticated, async (req, res) => {
     try {
