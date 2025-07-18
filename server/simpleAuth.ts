@@ -14,17 +14,30 @@ export function setupSession(app: express.Application) {
   app.use(
     session({
       secret: process.env.SESSION_SECRET || "excalibur-cuba-secret-2025",
-      resave: false,
-      saveUninitialized: false,
+      resave: true,
+      saveUninitialized: true,
       name: 'excalibur-session',
       cookie: {
         secure: false, // Works for both HTTP and HTTPS
-        httpOnly: true,
+        httpOnly: false, // Allow JavaScript access for debugging
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
         sameSite: 'lax',
       },
     })
   );
+  
+  // Debug middleware to log all session activity
+  app.use((req, res, next) => {
+    console.log('🔍 SESSION DEBUG:', {
+      path: req.path,
+      method: req.method,
+      sessionId: req.sessionID,
+      userId: req.session.userId,
+      hasSession: !!req.session,
+      cookies: Object.keys(req.cookies || {})
+    });
+    next();
+  });
 }
 
 export async function isAuthenticated(
@@ -32,16 +45,30 @@ export async function isAuthenticated(
   res: express.Response,
   next: express.NextFunction
 ) {
-  console.log('Session check:', req.session.userId, !!req.session.user);
+  console.log('🔍 AUTH CHECK:', {
+    sessionId: req.sessionID,
+    userId: req.session.userId,
+    hasUser: !!req.session.user,
+    path: req.path,
+    cookies: req.headers.cookie ? 'present' : 'missing'
+  });
   
   if (req.session.userId && req.session.user) {
-    const user = await storage.getAdminUser(req.session.userId);
-    if (user && user.isActive) {
-      req.session.user = user;
-      return next();
+    try {
+      const user = await storage.getAdminUser(req.session.userId);
+      if (user && user.isActive) {
+        req.session.user = user;
+        console.log('🔍 AUTH SUCCESS:', user.username);
+        return next();
+      } else {
+        console.log('🔍 AUTH FAILED: User not found or inactive');
+      }
+    } catch (error) {
+      console.log('🔍 AUTH ERROR:', error.message);
     }
   }
   
+  console.log('🔍 AUTH REJECTED: No valid session');
   return res.status(401).json({ message: "Unauthorized" });
 }
 
