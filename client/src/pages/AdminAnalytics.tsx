@@ -12,8 +12,7 @@ interface AnalyticsData {
   totalViews: number;
   uniqueVisitors: number;
   topProducts: Array<{ product: string; views: number; id: number }>;
-  topCountries: Array<{ country: string; views: number }>;
-  viewsByPeriod: Array<{ period: string; views: number }>;
+  topCountries: Array<{ country: string; uniqueVisitors: number }>;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
@@ -177,27 +176,6 @@ export default function AdminAnalytics() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Page Views Chart */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Besucher über Zeit</CardTitle>
-            <CardDescription>
-              Besucher im {selectedPeriod === 'day' ? 'Tagesverlauf' : selectedPeriod === 'month' ? 'Monatsverlauf' : 'Jahresverlauf'}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={analytics?.viewsByPeriod || []}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="period" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="views" fill="#3b82f6" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
         {/* Countries Pie Chart */}
         <Card>
           <CardHeader>
@@ -218,7 +196,7 @@ export default function AdminAnalytics() {
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   outerRadius={80}
                   fill="#8884d8"
-                  dataKey="views"
+                  dataKey="uniqueVisitors"
                 >
                   {analytics?.topCountries.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -277,7 +255,7 @@ export default function AdminAnalytics() {
                     <span className="text-xs text-gray-500">({country.country})</span>
                   </div>
                   <Badge variant="secondary">
-                    {country.views} Besucher
+                    {country.uniqueVisitors} Besucher
                   </Badge>
                 </div>
               ))}

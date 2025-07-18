@@ -397,25 +397,20 @@ export class DatabaseStorage implements IStorage {
     totalViews: number;
     uniqueVisitors: number;
     topProducts: Array<{ product: string; views: number; id: number }>;
-    topCountries: Array<{ country: string; views: number }>;
-    viewsByPeriod: Array<{ period: string; views: number }>;
+    topCountries: Array<{ country: string; uniqueVisitors: number }>;
   }> {
     const now = new Date();
     let startDate: Date;
-    let groupByFormat: string;
 
     switch (period) {
       case 'day':
         startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-        groupByFormat = "TO_CHAR(viewed_at, 'HH24:00')";
         break;
       case 'month':
         startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-        groupByFormat = "TO_CHAR(viewed_at, 'MM-DD')";
         break;
       case 'year':
         startDate = new Date(now.getFullYear(), 0, 1);
-        groupByFormat = "TO_CHAR(viewed_at, 'MM')";
         break;
     }
 
@@ -446,26 +441,17 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(count()))
       .limit(10);
 
-    // Top countries from PAGE VIEWS
+    // Top countries - UNIQUE VISITORS only, not total views
     const topCountriesResult = await db
       .select({
         country: pageViews.country,
-        views: count()
+        uniqueVisitors: countDistinct(pageViews.ipAddress)
       })
       .from(pageViews)
       .where(and(gte(pageViews.viewedAt, startDate), isNotNull(pageViews.country)))
       .groupBy(pageViews.country)
-      .orderBy(desc(count()))
+      .orderBy(desc(countDistinct(pageViews.ipAddress)))
       .limit(10);
-
-    // Views by period from PAGE VIEWS (using raw SQL for date formatting)
-    const viewsByPeriodResult = await db.execute(sql`
-      SELECT ${sql.raw(groupByFormat)} as period, COUNT(*) as views
-      FROM page_views 
-      WHERE viewed_at >= ${startDate}
-      GROUP BY ${sql.raw(groupByFormat)}
-      ORDER BY period
-    `);
 
     return {
       totalViews: totalViewsResult.count || 0,
@@ -475,11 +461,7 @@ export class DatabaseStorage implements IStorage {
         views: Number(p.views),
         id: p.productId || 0
       })),
-      topCountries: topCountriesResult.map(c => ({ country: c.country || 'Unknown', views: Number(c.views) })),
-      viewsByPeriod: viewsByPeriodResult.rows.map((row: any) => ({ 
-        period: row.period, 
-        views: Number(row.views) 
-      }))
+      topCountries: topCountriesResult.map(c => ({ country: c.country || 'Unknown', uniqueVisitors: Number(c.uniqueVisitors) }))
     };
   }
 }
