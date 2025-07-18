@@ -50,30 +50,37 @@ export default function AdminDashboard() {
   const { data: categories = [], isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ['/api/admin/categories'],
     enabled: isAuthenticated,
+    retry: 3,
   });
 
   const { data: subcategories = [], isLoading: subcategoriesLoading } = useQuery<Subcategory[]>({
     queryKey: ['/api/admin/subcategories'],
     enabled: isAuthenticated,
+    retry: 3,
   });
 
-  const { data: products = [], isLoading: productsLoading, error: productsError } = useQuery<Product[]>({
+  const { data: products = [], isLoading: productsLoading, error: productsError, refetch: refetchProducts } = useQuery<Product[]>({
     queryKey: ['/api/admin/products'],
     enabled: isAuthenticated,
+    staleTime: 0, // Force fresh data
+    refetchOnMount: true, // Always refetch when component mounts
+    retry: 3,
   });
 
   // Debug logging
-  console.log('🔍 ADMIN DASHBOARD:', {
+  console.log('🔍 PRODUCTS QUERY:', {
     isAuthenticated,
     productsLength: products.length,
     productsLoading,
     productsError: productsError?.message,
-    user: user?.username
+    categoriesLength: categories.length,
+    subcategoriesLength: subcategories.length
   });
 
   const { data: inquiries = [] } = useQuery<Inquiry[]>({
     queryKey: ['/api/admin/inquiries'],
     enabled: isAuthenticated,
+    retry: 3,
   });
 
   // Logout mutation
@@ -581,15 +588,22 @@ export default function AdminDashboard() {
                       );
                     })}
                   
-                  {products.length === 0 && (
+                  {products.length === 0 && !productsLoading && (
                     <div className="text-center py-8">
                       <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-900 mb-2">Keine Produkte gefunden</h3>
-                      <p className="text-gray-600 mb-4">Erstellen Sie Ihr erstes Produkt</p>
-                      <Button onClick={() => setLocation('/admin/products/new')}>
-                        <Plus className="w-4 h-4 mr-2" />
-                        Erstes Produkt erstellen
-                      </Button>
+                      <p className="text-gray-600 mb-4">
+                        {productsError ? `Fehler: ${productsError.message}` : 'Erstellen Sie Ihr erstes Produkt'}
+                      </p>
+                      <div className="space-x-2">
+                        <Button onClick={() => setLocation('/admin/products/new')}>
+                          <Plus className="w-4 h-4 mr-2" />
+                          Erstes Produkt erstellen
+                        </Button>
+                        <Button variant="outline" onClick={() => refetchProducts()}>
+                          🔄 Neu laden
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
