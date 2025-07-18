@@ -962,8 +962,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Geolocation error:", error);
       res.json({ 
-        country: 'DE', // Default to Germany on error
-        language: 'de' // Default to German on error
+        country: 'CU', // Default to Cuba on error
+        language: 'es' // Default to Spanish on error
       });
     }
   });

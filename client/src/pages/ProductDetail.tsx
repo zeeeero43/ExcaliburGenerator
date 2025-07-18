@@ -258,14 +258,20 @@ export default function ProductDetail() {
               </div>
 
               {/* Price */}
-              {product.price && (
-                <div className="text-3xl font-bold text-blue-600 mb-4">
-                  ${product.price}
-                  {product.priceNote && product.priceNote.trim() && (
-                    <span className="text-sm text-gray-500 ml-2">({product.priceNote})</span>
-                  )}
-                </div>
-              )}
+              <div className="text-3xl font-bold text-blue-600 mb-4">
+                {product.priceOnRequest ? (
+                  <span className="text-blue-600">{t('priceOnRequest')}</span>
+                ) : product.price ? (
+                  <>
+                    ${product.price}
+                    {product.priceNote && product.priceNote.trim() && (
+                      <span className="text-sm text-gray-500 ml-2">({product.priceNote})</span>
+                    )}
+                  </>
+                ) : (
+                  <span className="text-blue-600">{t('priceOnRequest')}</span>
+                )}
+              </div>
             </div>
 
 

@@ -87,6 +87,10 @@ export const products = pgTable("products", {
   sku: varchar("sku", { length: 100 }),
   price: decimal("price", { precision: 10, scale: 2 }),
   priceNote: varchar("price_note", { length: 200 }),
+  priceOnRequest: boolean("price_on_request").default(false),
+  priceOnRequestTextEs: varchar("price_on_request_text_es", { length: 100 }),
+  priceOnRequestTextDe: varchar("price_on_request_text_de", { length: 100 }),
+  priceOnRequestTextEn: varchar("price_on_request_text_en", { length: 100 }),
 
   images: jsonb("images").default([]),
   mainImage: varchar("main_image", { length: 500 }),

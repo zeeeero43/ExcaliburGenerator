@@ -388,8 +388,23 @@ export default function Products() {
                         </Badge>
                       )}
                       
-                      {/* Details Button - Top Right */}
+                      {/* Availability Info - Top Right */}
                       <div className="absolute top-2 right-2">
+                        {(() => {
+                          const availabilityText = getLocalizedText(product, 'availabilityText');
+                          if (availabilityText) {
+                            return (
+                              <Badge className="bg-yellow-500 text-white text-xs px-2 py-1">
+                                {availabilityText}
+                              </Badge>
+                            );
+                          }
+                          return null;
+                        })()}
+                      </div>
+                      
+                      {/* Details Button - Bottom Left */}
+                      <div className="absolute bottom-2 left-2">
                         <Button 
                           variant="default" 
                           size="xs" 

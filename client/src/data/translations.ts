@@ -816,7 +816,7 @@ export const translations = {
     seaTransport: "Auf dem Seeweg",
     priceOnRequest: "Preis auf Anfrage",
     onSale: "Im Angebot",
-    wattPeak: "Watt Piek",
+    wattPeak: "Watt Peak",
     needCustomSolution: "Benötigen Sie eine maßgeschneiderte Lösung?",
     customSolutionDescription: "Unsere Experten können ein spezifisches Solarsystem für Ihre Energiebedürfnisse entwerfen.",
     

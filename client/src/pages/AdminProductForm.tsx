@@ -33,6 +33,7 @@ const productFormSchema = z.object({
   sku: z.string().optional(),
   price: z.string().optional(),
   priceNote: z.string().optional(),
+  priceOnRequest: z.boolean().default(false),
   mainImage: z.string().optional(),
   additionalImages: z.array(z.string()).optional(),
   isActive: z.boolean().default(true),
@@ -73,6 +74,7 @@ export default function AdminProductForm() {
       sku: '',
       price: '',
       priceNote: '',
+      priceOnRequest: false,
       mainImage: '',
       additionalImages: [],
       isActive: true,
@@ -211,6 +213,40 @@ export default function AdminProductForm() {
     }
   }, [form.watch('availabilityTextDe')]);
 
+  // Handle price on request translation
+  const handlePriceOnRequestTranslation = async () => {
+    try {
+      const germanText = 'Preis auf Anfrage';
+      
+      // Translate to Spanish
+      const spanishResult = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: germanText, targetLanguage: 'es' })
+      });
+      const spanishData = await spanishResult.json();
+      
+      // Translate to English
+      const englishResult = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: germanText, targetLanguage: 'en' })
+      });
+      const englishData = await englishResult.json();
+      
+      // Set translations
+      form.setValue('priceNote', spanishData.translatedText || 'Precio bajo consulta');
+      
+      toast({
+        title: "Übersetzt",
+        description: "\"Preis auf Anfrage\" wurde automatisch übersetzt",
+      });
+    } catch (error) {
+      console.error('Translation error:', error);
+      form.setValue('priceNote', 'Precio bajo consulta');
+    }
+  };
+
   // Set form data when product is loaded
   useEffect(() => {
     if (product) {
@@ -232,6 +268,7 @@ export default function AdminProductForm() {
         sku: product.sku || '',
         price: product.price || '',
         priceNote: product.priceNote || '',
+        priceOnRequest: product.priceOnRequest || false,
         mainImage: product.mainImage || '',
         additionalImages: product.additionalImages || [],
         isActive: product.isActive,
@@ -576,46 +613,93 @@ export default function AdminProductForm() {
                 <h3 className="text-lg font-semibold">Produktdetails</h3>
                 <p className="text-sm text-gray-600">Zusätzliche Informationen und Spezifikationen</p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-4">
+                  {/* Preis-auf-Anfrage Checkbox */}
                   <FormField
                     control={form.control}
-                    name="sku"
+                    name="priceOnRequest"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>SKU/Artikelnummer</FormLabel>
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <FormLabel className="text-base font-medium">
+                            Preis auf Anfrage
+                          </FormLabel>
+                          <div className="text-sm text-gray-600">
+                            Aktiviere diese Option, wenn der Preis auf Anfrage ist. Wird automatisch übersetzt.
+                          </div>
+                        </div>
                         <FormControl>
-                          <Input {...field} placeholder="EXC-001" />
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={(checked) => {
+                              field.onChange(checked);
+                              if (checked) {
+                                // Clear price when enabling price on request
+                                form.setValue('price', '');
+                                // Auto-translate "Preis auf Anfrage"
+                                handlePriceOnRequestTranslation();
+                              } else {
+                                // Clear price on request texts when disabling
+                                form.setValue('priceNote', '');
+                              }
+                            }}
+                          />
                         </FormControl>
-                        <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Preis (USD)</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="999.99" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="priceNote"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Preishinweis</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="Preis auf Anfrage" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="sku"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>SKU/Artikelnummer</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="EXC-001" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="price"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Preis (USD)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              placeholder="999.99"
+                              disabled={form.watch('priceOnRequest')}
+                              className={form.watch('priceOnRequest') ? 'opacity-50 cursor-not-allowed' : ''}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="priceNote"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Preishinweis</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              placeholder="Im Angebot, Reduziert, etc."
+                              disabled={form.watch('priceOnRequest')}
+                              className={form.watch('priceOnRequest') ? 'opacity-50 cursor-not-allowed' : ''}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
 
