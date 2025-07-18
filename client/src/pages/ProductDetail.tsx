@@ -264,9 +264,9 @@ export default function ProductDetail() {
                 ) : product.newPrice ? (
                   // Show discounted price with crossed out old price
                   <div className="space-y-2">
-                    <div className="text-red-600 font-bold">
+                    <div className="text-green-600 font-bold">
                       ${product.newPrice}
-                      <span className="text-sm bg-red-100 text-red-800 px-2 py-1 rounded ml-2">
+                      <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded ml-2">
                         {t('onSale')}
                       </span>
                     </div>

@@ -39,9 +39,9 @@ const productFormSchema = z.object({
   isActive: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   stockStatus: z.enum(['in_stock', 'out_of_stock', 'limited']).default('in_stock'),
-  availabilityEs: z.string().optional(),
-  availabilityDe: z.string().optional(),
-  availabilityEn: z.string().optional(),
+  availabilityTextEs: z.string().optional(),
+  availabilityTextDe: z.string().optional(),
+  availabilityTextEn: z.string().optional(),
   sortOrder: z.number().optional(),
 });
 
