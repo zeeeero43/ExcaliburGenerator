@@ -135,29 +135,16 @@ export default function AdminAnalytics() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Gesamtaufrufe</CardTitle>
-            <Eye className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analytics?.totalViews || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              Alle Seitenaufrufe im {selectedPeriod === 'day' ? 'letzten Tag' : selectedPeriod === 'month' ? 'aktuellen Monat' : 'aktuellen Jahr'}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Einzigartige Besucher</CardTitle>
+            <CardTitle className="text-sm font-medium">Tatsächliche Besucher</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.uniqueVisitors || 0}</div>
             <p className="text-xs text-muted-foreground">
-              Basierend auf IP-Adressen
+              Einzigartige Besucher basierend auf IP-Adressen
             </p>
           </CardContent>
         </Card>
@@ -193,9 +180,9 @@ export default function AdminAnalytics() {
         {/* Page Views Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>Aufrufe über Zeit</CardTitle>
+            <CardTitle>Besucher über Zeit</CardTitle>
             <CardDescription>
-              Seitenaufrufe im {selectedPeriod === 'day' ? 'Tagesverlauf' : selectedPeriod === 'month' ? 'Monatsverlauf' : 'Jahresverlauf'}
+              Besucher im {selectedPeriod === 'day' ? 'Tagesverlauf' : selectedPeriod === 'month' ? 'Monatsverlauf' : 'Jahresverlauf'}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -215,7 +202,7 @@ export default function AdminAnalytics() {
         <Card>
           <CardHeader>
             <CardTitle>Besucher nach Ländern</CardTitle>
-            <CardDescription>Verteilung der Besucher nach Herkunftsländern</CardDescription>
+            <CardDescription>Verteilung der {analytics?.uniqueVisitors || 0} einzigartigen Besucher nach Ländern</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -274,7 +261,7 @@ export default function AdminAnalytics() {
         <Card>
           <CardHeader>
             <CardTitle>Länder-Details</CardTitle>
-            <CardDescription>Detaillierte Aufschlüsselung nach Ländern</CardDescription>
+            <CardDescription>Verteilung der {analytics?.uniqueVisitors || 0} Besucher nach Ländern</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -290,7 +277,7 @@ export default function AdminAnalytics() {
                     <span className="text-xs text-gray-500">({country.country})</span>
                   </div>
                   <Badge variant="secondary">
-                    {country.views} Aufrufe
+                    {country.views} Besucher
                   </Badge>
                 </div>
               ))}

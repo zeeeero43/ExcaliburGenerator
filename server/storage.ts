@@ -431,17 +431,18 @@ export class DatabaseStorage implements IStorage {
       .from(pageViews)
       .where(gte(pageViews.viewedAt, startDate));
 
-    // Top products with product names
+    // Top products with GERMAN product names (fallback to Spanish if German not available)
     const topProductsResult = await db
       .select({
         productId: productViews.productId,
-        productName: products.name,
+        productNameDe: products.nameDe,
+        productNameEs: products.name,
         views: count()
       })
       .from(productViews)
       .leftJoin(products, eq(productViews.productId, products.id))
       .where(gte(productViews.viewedAt, startDate))
-      .groupBy(productViews.productId, products.name)
+      .groupBy(productViews.productId, products.nameDe, products.name)
       .orderBy(desc(count()))
       .limit(10);
 
@@ -470,7 +471,7 @@ export class DatabaseStorage implements IStorage {
       totalViews: totalViewsResult.count || 0,
       uniqueVisitors: uniqueVisitorsResult.count || 0,
       topProducts: topProductsResult.map(p => ({ 
-        product: p.productName || 'Unknown Product', 
+        product: p.productNameDe || p.productNameEs || 'Unknown Product', // Prefer German, fallback to Spanish
         views: Number(p.views),
         id: p.productId || 0
       })),
