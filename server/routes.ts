@@ -251,27 +251,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/login", async (req, res) => {
     try {
       const { username, password } = req.body;
-      console.log("Login attempt for username:", username);
+      console.log("🔍 LOGIN: Login attempt for username:", username);
+      console.log("🔍 LOGIN: Session ID before login:", req.sessionID);
       
       if (!username || !password) {
-        console.log("Missing username or password");
+        console.log("🔍 LOGIN: Missing username or password");
         return res.status(400).json({ error: "Username and password required" });
       }
 
-      console.log("Calling loginUser function...");
+      console.log("🔍 LOGIN: Calling loginUser function...");
       const user = await loginUser(req, username, password);
-      console.log("loginUser result:", user ? "SUCCESS" : "FAILED");
+      console.log("🔍 LOGIN: loginUser result:", user ? "SUCCESS" : "FAILED");
       
       if (user) {
         const { password: _, ...userWithoutPassword } = user;
-        console.log("Login successful for user:", userWithoutPassword.username);
+        console.log("🔍 LOGIN: Login successful for user:", userWithoutPassword.username);
+        console.log("🔍 LOGIN: Session after login:", {
+          sessionID: req.sessionID,
+          userId: req.session.userId,
+          hasUser: !!req.session.user
+        });
         res.json({ success: true, user: userWithoutPassword });
       } else {
-        console.log("Login failed - invalid credentials");
+        console.log("🔍 LOGIN: Login failed - invalid credentials");
         res.status(401).json({ error: "Invalid credentials" });
       }
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("🔍 LOGIN: Login error:", error);
       res.status(500).json({ error: "Login failed" });
     }
   });
@@ -585,6 +591,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/admin/products", isAuthenticated, async (req, res) => {
+    console.log("🔍 ADMIN PRODUCTS: Request reached products endpoint");
     try {
       const filters = {
         categoryId: req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined,
@@ -592,10 +599,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         isActive: req.query.isActive !== undefined ? req.query.isActive === 'true' : undefined
       };
       
+      console.log("🔍 ADMIN PRODUCTS: Applying filters:", filters);
       const products = await storage.getProducts(filters);
+      console.log("🔍 ADMIN PRODUCTS: Found products count:", products.length);
       res.json(products);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("🔍 ADMIN PRODUCTS: Error fetching products:", error);
       res.status(500).json({ error: "Failed to fetch products" });
     }
   });

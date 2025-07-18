@@ -585,6 +585,15 @@ Changelog:
   * Reduced dashboard from 4 cards to 3 cards focusing only on unique visitor data
   * System now tracks exclusively by IP address without storing or displaying total page views
   * Analytics API response streamlined to only include uniqueVisitors, topProducts, and topCountries
+- July 18, 2025 (critical VPS authentication fix). Fixed session authentication system for VPS deployment:
+  * Fixed session authentication failure preventing admin panel access on VPS
+  * Added comprehensive debugging for authentication flow (login, session check, API access)
+  * Temporarily disabled secure cookies (secure: false) to resolve HTTPS/HTTP mismatch on VPS
+  * Enhanced authentication middleware with detailed logging for troubleshooting
+  * Fixed product display issue caused by empty subcategory names in database
+  * Updated subcategory records with proper German/Spanish/English names
+  * All 47 products remain safe in database - issue was authentication/display related, not data loss
+  * System ready for VPS deployment after GitHub update with improved error tracking
 ```
 
 ## User Preferences

@@ -26,7 +26,7 @@ export function setupSession(app: express.Application) {
       saveUninitialized: false,
       name: 'excalibur-session',
       cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: false, // TEMP FIX: Disable secure cookies for debugging
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
         sameSite: 'lax',
@@ -40,15 +40,23 @@ export async function isAuthenticated(
   res: express.Response,
   next: express.NextFunction
 ) {
+  console.log("🔍 AUTH CHECK: Session exists:", !!req.session);
+  console.log("🔍 AUTH CHECK: Session ID:", req.sessionID);
+  console.log("🔍 AUTH CHECK: Session userId:", req.session?.userId);
+  console.log("🔍 AUTH CHECK: Session user:", !!req.session?.user);
+  
   if (req.session.userId && req.session.user) {
     // Verify user still exists and is active
     const user = await storage.getAdminUser(req.session.userId);
+    console.log("🔍 AUTH CHECK: User from DB:", !!user);
+    console.log("🔍 AUTH CHECK: User active:", user?.isActive);
     if (user && user.isActive) {
       req.session.user = user; // Update session with fresh user data
       return next();
     }
   }
   
+  console.log("🔍 AUTH CHECK: UNAUTHORIZED - returning 401");
   return res.status(401).json({ message: "Unauthorized" });
 }
 
