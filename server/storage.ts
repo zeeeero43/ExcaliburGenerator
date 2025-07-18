@@ -441,17 +441,26 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(count()))
       .limit(10);
 
-    // Top countries - UNIQUE VISITORS only, not total views
-    const topCountriesResult = await db
-      .select({
-        country: pageViews.country,
-        uniqueVisitors: countDistinct(pageViews.ipAddress)
-      })
-      .from(pageViews)
-      .where(and(gte(pageViews.viewedAt, startDate), isNotNull(pageViews.country)))
-      .groupBy(pageViews.country)
-      .orderBy(desc(countDistinct(pageViews.ipAddress)))
-      .limit(10);
+    // Top countries - Get most recent country per IP (avoid duplicate counting)
+    const topCountriesResult = await db.execute(sql`
+      WITH latest_country_per_ip AS (
+        SELECT DISTINCT ON (ip_address) 
+          ip_address, 
+          country,
+          viewed_at
+        FROM page_views 
+        WHERE viewed_at >= ${startDate} 
+          AND country IS NOT NULL
+        ORDER BY ip_address, viewed_at DESC
+      )
+      SELECT 
+        country, 
+        COUNT(DISTINCT ip_address) as unique_visitors
+      FROM latest_country_per_ip
+      GROUP BY country
+      ORDER BY COUNT(DISTINCT ip_address) DESC
+      LIMIT 10
+    `);
 
     return {
       totalViews: totalViewsResult.count || 0,
@@ -461,7 +470,7 @@ export class DatabaseStorage implements IStorage {
         views: Number(p.views),
         id: p.productId || 0
       })),
-      topCountries: topCountriesResult.map(c => ({ country: c.country || 'Unknown', uniqueVisitors: Number(c.uniqueVisitors) }))
+      topCountries: topCountriesResult.rows.map((row: any) => ({ country: row.country || 'Unknown', uniqueVisitors: Number(row.unique_visitors) }))
     };
   }
 }
