@@ -16,17 +16,27 @@ export function Layout({ children }: LayoutProps) {
   useEffect(() => {
     const trackPageView = async () => {
       try {
-        await fetch('/api/track', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            page: location,
-            userAgent: navigator.userAgent,
-            referrer: document.referrer,
-          }),
-        });
+        // Only track actual page URLs, not development/build files
+        if (location && 
+            !location.includes('/src/') && 
+            !location.includes('.tsx') && 
+            !location.includes('.css') &&
+            !location.includes('/@') && // Vite development URLs
+            !location.includes('/node_modules/') &&
+            !location.includes('.js') &&
+            !location.includes('.mjs')) {
+          await fetch('/api/track', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              page: location,
+              userAgent: navigator.userAgent,
+              referrer: document.referrer,
+            }),
+          });
+        }
       } catch (error) {
         console.error('Error tracking page view:', error);
       }
