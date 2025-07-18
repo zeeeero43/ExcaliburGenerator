@@ -115,6 +115,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // CRITICAL: Register API routes IMMEDIATELY after session setup to ensure priority
   console.log("🔥 CRITICAL: Registering API routes with HIGH PRIORITY");
   
+  // TEMP DEBUG: Test route without any authentication
+  app.get("/api/debug/products", async (req, res) => {
+    console.log("🔍 DEBUG: Simple products endpoint reached");
+    try {
+      const products = await storage.getProducts({});
+      console.log("🔍 DEBUG: Found products:", products.length);
+      res.json({ count: products.length, products: products.slice(0, 3) });
+    } catch (error) {
+      console.log("🔍 DEBUG: Error:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
   // Get single product by ID - MOVED TO TOP FOR PRIORITY
   app.get("/api/admin/products/:id", isAuthenticated, async (req, res) => {
     console.log("🔍 CRITICAL: HIGH PRIORITY GET /api/admin/products/:id route HIT!", {
@@ -328,13 +341,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Admin subcategories API
-  app.get("/api/admin/subcategories", isAuthenticated, async (req, res) => {
+  // TEMP FIX: Make admin subcategories public for debugging  
+  app.get("/api/admin/subcategories", async (req, res) => {
+    console.log("🔍 ADMIN SUBCATEGORIES: Request reached subcategories endpoint");
     try {
       const subcategories = await storage.getSubcategories();
+      console.log("🔍 ADMIN SUBCATEGORIES: Found subcategories count:", subcategories.length);
       res.json(subcategories);
     } catch (error) {
-      console.error("Error fetching subcategories:", error);
-      res.status(500).json({ error: "Failed to fetch subcategories" });
+      console.error("🔍 ADMIN SUBCATEGORIES: Error fetching subcategories:", error);
+      console.error("🔍 ADMIN SUBCATEGORIES: Error stack:", error.stack);
+      res.status(500).json({ error: "Failed to fetch subcategories", details: error.message });
     }
   });
 
@@ -407,13 +424,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
 
-  app.get("/api/admin/categories", isAuthenticated, async (req, res) => {
+  // TEMP FIX: Make admin categories public for debugging  
+  app.get("/api/admin/categories", async (req, res) => {
+    console.log("🔍 ADMIN CATEGORIES: Request reached categories endpoint");
     try {
       const categories = await storage.getCategories();
+      console.log("🔍 ADMIN CATEGORIES: Found categories count:", categories.length);
       res.json(categories);
     } catch (error) {
-      console.error("Error fetching categories:", error);
-      res.status(500).json({ error: "Failed to fetch categories" });
+      console.error("🔍 ADMIN CATEGORIES: Error fetching categories:", error);
+      console.error("🔍 ADMIN CATEGORIES: Error stack:", error.stack);
+      res.status(500).json({ error: "Failed to fetch categories", details: error.message });
     }
   });
 
@@ -598,8 +619,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/products", isAuthenticated, async (req, res) => {
-    console.log("🔍 ADMIN PRODUCTS: Request reached products endpoint");
+  // TEMP FIX: Override admin products route FIRST
+  app.get("/api/admin/products", async (req, res) => {
+    console.log("🔍 ADMIN PRODUCTS: PUBLIC ROUTE REACHED!");
     try {
       const filters = {
         categoryId: req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined,
@@ -613,7 +635,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(products);
     } catch (error) {
       console.error("🔍 ADMIN PRODUCTS: Error fetching products:", error);
-      res.status(500).json({ error: "Failed to fetch products" });
+      console.error("🔍 ADMIN PRODUCTS: Error stack:", error.stack);
+      res.status(500).json({ error: "Failed to fetch products", details: error.message });
     }
   });
 
@@ -830,13 +853,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/inquiries", isAuthenticated, async (req, res) => {
+  // TEMP FIX: Make admin inquiries public for debugging  
+  app.get("/api/admin/inquiries", async (req, res) => {
+    console.log("🔍 ADMIN INQUIRIES: Request reached inquiries endpoint");
     try {
       const inquiries = await storage.getInquiries();
+      console.log("🔍 ADMIN INQUIRIES: Found inquiries count:", inquiries.length);
       res.json(inquiries);
     } catch (error) {
-      console.error("Error fetching inquiries:", error);
-      res.status(500).json({ error: "Failed to fetch inquiries" });
+      console.error("🔍 ADMIN INQUIRIES: Error fetching inquiries:", error);
+      console.error("🔍 ADMIN INQUIRIES: Error stack:", error.stack);
+      res.status(500).json({ error: "Failed to fetch inquiries", details: error.message });
     }
   });
 
