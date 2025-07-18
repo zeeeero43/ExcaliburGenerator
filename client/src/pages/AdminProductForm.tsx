@@ -196,20 +196,20 @@ export default function AdminProductForm() {
 
   // Real-time translation with debounce for availability field
   useEffect(() => {
-    const germanAvailability = form.watch('availabilityDe');
+    const germanAvailability = form.watch('availabilityTextDe');
     if (germanAvailability) {
       if (translationTimeout) {
         clearTimeout(translationTimeout);
       }
       
       const timeout = setTimeout(() => {
-        handleAutoTranslation(germanAvailability, 'availabilityEs');
-        handleAutoTranslation(germanAvailability, 'availabilityEn');
+        handleAutoTranslation(germanAvailability, 'availabilityTextEs');
+        handleAutoTranslation(germanAvailability, 'availabilityTextEn');
       }, 1000);
       
       setTranslationTimeout(timeout);
     }
-  }, [form.watch('availabilityDe')]);
+  }, [form.watch('availabilityTextDe')]);
 
   // Set form data when product is loaded
   useEffect(() => {
@@ -237,9 +237,9 @@ export default function AdminProductForm() {
         isActive: product.isActive,
         isFeatured: product.isFeatured,
         stockStatus: product.stockStatus || 'in_stock',
-        availabilityEs: product.availabilityEs || '',
-        availabilityDe: product.availabilityDe || '',
-        availabilityEn: product.availabilityEn || '',
+        availabilityTextEs: product.availabilityTextEs || '',
+        availabilityTextDe: product.availabilityTextDe || '',
+        availabilityTextEn: product.availabilityTextEn || '',
         sortOrder: product.sortOrder || 0,
       });
 
@@ -767,9 +767,9 @@ export default function AdminProductForm() {
                                 field.onChange(checked ? 'in_stock' : 'out_of_stock');
                                 // Wenn "auf Lager" gesetzt wird, Verfügbarkeitsdaten löschen
                                 if (checked) {
-                                  form.setValue('availabilityDe', '');
-                                  form.setValue('availabilityEs', '');
-                                  form.setValue('availabilityEn', '');
+                                  form.setValue('availabilityTextDe', '');
+                                  form.setValue('availabilityTextEs', '');
+                                  form.setValue('availabilityTextEn', '');
                                 }
                               }}
                             />
@@ -789,7 +789,7 @@ export default function AdminProductForm() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
-                    name="availabilityDe"
+                    name="availabilityTextDe"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Verfügbarkeit (Deutsch) *</FormLabel>
@@ -807,7 +807,7 @@ export default function AdminProductForm() {
                   />
                   <FormField
                     control={form.control}
-                    name="availabilityEs"
+                    name="availabilityTextEs"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Verfügbarkeit (Spanisch)</FormLabel>
@@ -826,7 +826,7 @@ export default function AdminProductForm() {
                   />
                   <FormField
                     control={form.control}
-                    name="availabilityEn"
+                    name="availabilityTextEn"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Verfügbarkeit (Englisch)</FormLabel>
