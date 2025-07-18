@@ -419,17 +419,17 @@ export class DatabaseStorage implements IStorage {
         break;
     }
 
-    // Total views
+    // Total views from PAGE VIEWS (all pages)
     const [totalViewsResult] = await db
       .select({ count: count() })
-      .from(productViews)
-      .where(gte(productViews.viewedAt, startDate));
+      .from(pageViews)
+      .where(gte(pageViews.viewedAt, startDate));
 
-    // Unique visitors (based on IP)
+    // Unique visitors from PAGE VIEWS (based on IP)
     const [uniqueVisitorsResult] = await db
-      .select({ count: countDistinct(productViews.ipAddress) })
-      .from(productViews)
-      .where(gte(productViews.viewedAt, startDate));
+      .select({ count: countDistinct(pageViews.ipAddress) })
+      .from(pageViews)
+      .where(gte(pageViews.viewedAt, startDate));
 
     // Top products with product names
     const topProductsResult = await db
@@ -445,22 +445,22 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(count()))
       .limit(10);
 
-    // Top countries
+    // Top countries from PAGE VIEWS
     const topCountriesResult = await db
       .select({
-        country: productViews.country,
+        country: pageViews.country,
         views: count()
       })
-      .from(productViews)
-      .where(and(gte(productViews.viewedAt, startDate), isNotNull(productViews.country)))
-      .groupBy(productViews.country)
+      .from(pageViews)
+      .where(and(gte(pageViews.viewedAt, startDate), isNotNull(pageViews.country)))
+      .groupBy(pageViews.country)
       .orderBy(desc(count()))
       .limit(10);
 
-    // Views by period (using raw SQL for date formatting)
+    // Views by period from PAGE VIEWS (using raw SQL for date formatting)
     const viewsByPeriodResult = await db.execute(sql`
       SELECT ${sql.raw(groupByFormat)} as period, COUNT(*) as views
-      FROM product_views 
+      FROM page_views 
       WHERE viewed_at >= ${startDate}
       GROUP BY ${sql.raw(groupByFormat)}
       ORDER BY period
