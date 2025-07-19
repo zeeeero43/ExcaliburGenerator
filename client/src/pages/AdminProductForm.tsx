@@ -35,7 +35,7 @@ const productFormSchema = z.object({
   newPrice: z.string().optional(),
   priceOnRequest: z.boolean().default(false),
   mainImage: z.string().optional(),
-  additionalImages: z.array(z.string()).optional(),
+  images: z.array(z.string()).optional(),
   isActive: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   stockStatus: z.enum(['in_stock', 'out_of_stock', 'limited']).default('in_stock'),
@@ -76,7 +76,7 @@ export default function AdminProductForm() {
       newPrice: '',
       priceOnRequest: false,
       mainImage: '',
-      additionalImages: [],
+      images: [],
       isActive: true,
       isFeatured: false,
       stockStatus: 'in_stock',
@@ -270,7 +270,7 @@ export default function AdminProductForm() {
         newPrice: product.newPrice || '',
         priceOnRequest: product.priceOnRequest || false,
         mainImage: product.mainImage || '',
-        additionalImages: product.additionalImages || [],
+        images: product.images || [],
         isActive: product.isActive,
         isFeatured: product.isFeatured,
         stockStatus: product.stockStatus || 'in_stock',
@@ -780,10 +780,10 @@ export default function AdminProductForm() {
 
                 <FormField
                   control={form.control}
-                  name="additionalImages"
+                  name="images"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Zusätzliche Bilder</FormLabel>
+                      <FormLabel>Zusätzliche Bilder (Galerie)</FormLabel>
                       <FormControl>
                         <div className="space-y-2">
                           <ImageUpload
@@ -797,7 +797,7 @@ export default function AdminProductForm() {
                             <div className="grid grid-cols-3 gap-2">
                               {field.value.map((url: string, index: number) => (
                                 <div key={index} className="relative">
-                                  <img src={url} alt={`Zusätzliches Bild ${index + 1}`} className="w-full h-20 object-cover rounded" />
+                                  <img src={url} alt={`Zusätzliches Bild ${index + 1}`} className="w-full h-20 object-contain bg-gray-100 rounded border" />
                                   <button
                                     type="button"
                                     onClick={() => {

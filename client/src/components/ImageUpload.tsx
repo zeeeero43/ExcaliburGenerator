@@ -566,7 +566,7 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
                                 <img
                                   src={image.url}
                                   alt={image.filename}
-                                  className="w-full h-full object-cover"
+                                  className="w-full h-full object-contain bg-gray-100 rounded"
                                 />
                                 
                                 {isSelected && (
@@ -634,7 +634,7 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
                               <img
                                 src={image.url}
                                 alt={image.filename}
-                                className="w-16 h-16 object-cover rounded-md"
+                                className="w-20 h-20 object-contain bg-gray-100 rounded border"
                               />
                               
                               <div className="flex-1 ml-4">
