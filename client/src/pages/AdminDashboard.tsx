@@ -103,11 +103,19 @@ export default function AdminDashboard() {
   // Delete product mutation
   const deleteProductMutation = useMutation({
     mutationFn: async (productId: number) => {
+      console.log('🗑️ DELETE PRODUCT: Starting deletion for ID:', productId);
       const response = await fetch(`/api/admin/products/${productId}`, {
         method: 'DELETE',
       });
-      if (!response.ok) throw new Error('Failed to delete product');
-      return response.json();
+      console.log('🗑️ DELETE PRODUCT: Response status:', response.status);
+      if (!response.ok) {
+        const error = await response.json();
+        console.log('🗑️ DELETE PRODUCT: Error response:', error);
+        throw new Error(error.error || 'Failed to delete product');
+      }
+      const result = await response.json();
+      console.log('🗑️ DELETE PRODUCT: Success response:', result);
+      return result;
     },
     onSuccess: () => {
       // Invalidate both admin and public product caches
@@ -119,10 +127,11 @@ export default function AdminDashboard() {
         description: "Das Produkt wurde erfolgreich entfernt.",
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      console.error('🗑️ DELETE PRODUCT: Mutation error:', error);
       toast({
         title: "Fehler beim Löschen",
-        description: "Das Produkt konnte nicht gelöscht werden.",
+        description: `Das Produkt konnte nicht gelöscht werden: ${error.message}`,
         variant: "destructive",
       });
     },
@@ -131,26 +140,33 @@ export default function AdminDashboard() {
   // Delete category mutation
   const deleteCategoryMutation = useMutation({
     mutationFn: async (categoryId: number) => {
+      console.log('🗑️ DELETE CATEGORY: Starting deletion for ID:', categoryId);
       const response = await fetch(`/api/admin/categories/${categoryId}`, {
         method: 'DELETE',
       });
+      console.log('🗑️ DELETE CATEGORY: Response status:', response.status);
       if (!response.ok) {
         const error = await response.json();
+        console.log('🗑️ DELETE CATEGORY: Error response:', error);
         throw new Error(error.error || 'Failed to delete category');
       }
-      return response.json();
+      const result = await response.json();
+      console.log('🗑️ DELETE CATEGORY: Success response:', result);
+      return result;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/categories'] });
       toast({
         title: "Kategorie gelöscht",
         description: "Die Kategorie wurde erfolgreich entfernt.",
       });
     },
     onError: (error: any) => {
+      console.error('🗑️ DELETE CATEGORY: Mutation error:', error);
       toast({
         title: "Fehler beim Löschen",
-        description: "Die Kategorie konnte nicht gelöscht werden.",
+        description: `Die Kategorie konnte nicht gelöscht werden: ${error.message}`,
         variant: "destructive",
       });
     },
@@ -159,14 +175,19 @@ export default function AdminDashboard() {
   // Delete subcategory mutation
   const deleteSubcategoryMutation = useMutation({
     mutationFn: async (subcategoryId: number) => {
+      console.log('🗑️ DELETE SUBCATEGORY: Starting deletion for ID:', subcategoryId);
       const response = await fetch(`/api/admin/subcategories/${subcategoryId}`, {
         method: 'DELETE',
       });
+      console.log('🗑️ DELETE SUBCATEGORY: Response status:', response.status);
       if (!response.ok) {
         const error = await response.json();
+        console.log('🗑️ DELETE SUBCATEGORY: Error response:', error);
         throw new Error(error.error || 'Failed to delete subcategory');
       }
-      return response.json();
+      const result = await response.json();
+      console.log('🗑️ DELETE SUBCATEGORY: Success response:', result);
+      return result;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/subcategories'] });
@@ -176,9 +197,10 @@ export default function AdminDashboard() {
       });
     },
     onError: (error: any) => {
+      console.error('🗑️ DELETE SUBCATEGORY: Mutation error:', error);
       toast({
         title: "Fehler beim Löschen",
-        description: "Die Unterkategorie konnte nicht gelöscht werden.",
+        description: `Die Unterkategorie konnte nicht gelöscht werden: ${error.message}`,
         variant: "destructive",
       });
     },
