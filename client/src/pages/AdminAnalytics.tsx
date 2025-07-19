@@ -112,11 +112,14 @@ export default function AdminAnalytics() {
         <div className="flex items-center gap-4">
           <Button 
             variant="outline" 
-            onClick={() => refetch()}
+            onClick={() => {
+              console.log('🔄 REFRESH BUTTON: Manual refresh triggered');
+              refetch();
+            }}
             disabled={analyticsLoading}
             className="flex items-center gap-2"
           >
-            🔄 Aktualisieren
+            {analyticsLoading ? '⏳ Lädt...' : '🔄 Aktualisieren'}
           </Button>
           <Tabs value={selectedPeriod} onValueChange={handlePeriodChange}>
             <TabsList>
