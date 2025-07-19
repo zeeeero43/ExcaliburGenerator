@@ -1037,14 +1037,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { page, userAgent, referrer } = req.body;
       const ip = req.ip || req.connection.remoteAddress || 'unknown';
       
-      // VPS-COMPATIBLE: Use simple fallback instead of external APIs
-      let country = 'CU'; // Default to Cuba for VPS
-      try {
-        const geoResult = await getCountryFromIP(ip);
-        country = geoResult || 'CU';
-      } catch (geoError) {
-        console.log("🌍 VPS Analytics: Using default country CU (geolocation unavailable)");
-        country = 'CU';
+      console.log(`🌍 PAGE TRACKING: IP=${ip}`);
+      
+      // Use geoip-lite for geolocation (offline, no external APIs)
+      let country = 'CU'; // Default to Cuba
+      if (ip !== 'unknown' && ip !== '127.0.0.1' && !ip.startsWith('192.168.') && !ip.startsWith('10.') && !ip.startsWith('172.')) {
+        const geo = geoip.lookup(ip);
+        if (geo && geo.country) {
+          country = geo.country;
+          console.log(`🌍 GEOIP SUCCESS: IP ${ip} → ${country} (${geo.city || 'Unknown city'})`);
+        } else {
+          console.log(`🌍 GEOIP FAILED: IP ${ip} not in database, using default CU`);
+        }
+      } else {
+        console.log(`🌍 LOCAL IP: Using default DE for development IP ${ip}`);
+        country = 'DE'; // Development default
       }
       
       await storage.createPageView({
@@ -1058,8 +1065,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json({ success: true });
     } catch (error) {
-      console.error("❌ Analytics Error:", error);
-      // Always return success to prevent frontend errors
+      console.error("❌ ANALYTICS ERROR:", error);
       res.json({ success: true, warning: "Analytics partially failed" });
     }
   });
@@ -1070,14 +1076,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { productId, userAgent, referrer } = req.body;
       const ip = req.ip || req.connection.remoteAddress || 'unknown';
       
-      // VPS-COMPATIBLE: Use simple fallback instead of external APIs
-      let country = 'CU'; // Default to Cuba for VPS
-      try {
-        const geoResult = await getCountryFromIP(ip);
-        country = geoResult || 'CU';
-      } catch (geoError) {
-        console.log("🌍 VPS Analytics: Using default country CU (geolocation unavailable)");
-        country = 'CU';
+      console.log(`📊 PRODUCT TRACKING: Product ${productId}, IP=${ip}`);
+      
+      // Use geoip-lite for geolocation (offline, no external APIs)
+      let country = 'CU'; // Default to Cuba
+      if (ip !== 'unknown' && ip !== '127.0.0.1' && !ip.startsWith('192.168.') && !ip.startsWith('10.') && !ip.startsWith('172.')) {
+        const geo = geoip.lookup(ip);
+        if (geo && geo.country) {
+          country = geo.country;
+          console.log(`📊 PRODUCT GEOIP SUCCESS: IP ${ip} → ${country} for product ${productId}`);
+        } else {
+          console.log(`📊 PRODUCT GEOIP FAILED: IP ${ip} not in database, using default CU`);
+        }
+      } else {
+        console.log(`📊 LOCAL PRODUCT VIEW: Using default DE for development IP ${ip}`);
+        country = 'DE'; // Development default
       }
       
       await storage.createProductView({
@@ -1089,11 +1102,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         viewedAt: new Date()
       });
       
+      console.log(`📊 PRODUCT VIEW SAVED: Product ${productId} from ${country}`);
       res.json({ success: true });
     } catch (error) {
-      console.error("❌ Product Analytics Error:", error);
-      // Always return success to prevent frontend errors
-      res.json({ success: true, warning: "Analytics partially failed" });
+      console.error("❌ PRODUCT TRACKING ERROR:", error);
+      console.error("❌ PRODUCT ERROR STACK:", error.stack);
+      res.json({ success: true, warning: "Product tracking failed" });
     }
   });
 

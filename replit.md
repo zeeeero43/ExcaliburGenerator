@@ -659,6 +659,8 @@ Changelog:
   * DATABASE CONFIRMED: Analytics tables (page_views, product_views) exist and contain data
   * VPS DEPLOYMENT SUCCESS: Analytics now showing realistic international traffic distribution
   * PRODUCTION ANALYTICS VERIFIED: CN(14), US(6), DE(5), FI(1), GB(1), PH(1), DZ(1), CU visitors tracked accurately
+  * GEOLOCATION FIX: Replaced broken getCountryFromIP() with direct geoip-lite for Turkey and all countries
+  * PRODUCT TRACKING FIX: Enhanced product view tracking with detailed logging and improved country detection
 ```
 
 ## User Preferences

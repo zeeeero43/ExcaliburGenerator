@@ -31,7 +31,8 @@ export default function ProductDetail() {
     if (product) {
       const trackProductView = async () => {
         try {
-          await fetch('/api/track/product', {
+          console.log(`📊 FRONTEND: Tracking view for product ${product.id} (${product.nameEs})`);
+          const response = await fetch('/api/track/product', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -42,8 +43,10 @@ export default function ProductDetail() {
               referrer: document.referrer,
             }),
           });
+          const result = await response.json();
+          console.log(`📊 FRONTEND: Product tracking result:`, result);
         } catch (error) {
-          console.error('Error tracking product view:', error);
+          console.error('📊 FRONTEND: Error tracking product view:', error);
         }
       };
       trackProductView();
