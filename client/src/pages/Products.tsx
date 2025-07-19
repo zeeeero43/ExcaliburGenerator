@@ -112,6 +112,15 @@ export default function Products() {
       )
     : [];
 
+  // Filter products without subcategory (direct category products)
+  const directCategoryProducts = selectedCategory && !selectedSubcategory
+    ? products.filter(product => 
+        product.isActive && 
+        product.categoryId === selectedCategory && 
+        (!product.subcategoryId || product.subcategoryId === null)
+      )
+    : [];
+
   // Handle subcategory selection
   const selectSubcategory = (subcategoryId: number, subcategoryName: string) => {
     setSelectedSubcategory(subcategoryId);
@@ -188,54 +197,123 @@ export default function Products() {
             </h1>
           </div>
 
-          {/* Subcategories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
-            {filteredSubcategories.map((subcategory) => (
-              <Card 
-                key={subcategory.id} 
-                className="hover:shadow-lg transition-shadow cursor-pointer group relative"
-                onClick={() => selectSubcategory(subcategory.id, getLocalizedText(subcategory, 'name'))}
-              >
-                <CardContent className="p-0">
-                  {/* Subcategory Image with overlay button */}
-                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
-                    <img
-                      src={subcategory.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
-                      alt={getLocalizedText(subcategory, 'name')}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
-                      }}
-                    />
-                    
-                    {/* Button positioned top-right over image */}
-                    <div className="absolute top-2 right-2">
-                      <Button 
-                        variant="default" 
-                        size="sm" 
-                        className="bg-green-600 text-white hover:bg-green-700 shadow-lg"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          selectSubcategory(subcategory.id, getLocalizedText(subcategory, 'name'));
-                        }}
-                      >
-                        <Eye className="w-4 h-4 mr-1" />
-                        {t('viewDetails')}
-                      </Button>
-                    </div>
+          {/* Subcategories Section */}
+          {filteredSubcategories.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-6">Unterkategorien</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
+                {filteredSubcategories.map((subcategory) => (
+                  <Card 
+                    key={subcategory.id} 
+                    className="hover:shadow-lg transition-shadow cursor-pointer group relative"
+                    onClick={() => selectSubcategory(subcategory.id, getLocalizedText(subcategory, 'name'))}
+                  >
+                    <CardContent className="p-0">
+                      {/* Subcategory Image with overlay button */}
+                      <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
+                        <img
+                          src={subcategory.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
+                          alt={getLocalizedText(subcategory, 'name')}
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop';
+                          }}
+                        />
+                        
+                        {/* Button positioned top-right over image */}
+                        <div className="absolute top-2 right-2">
+                          <Button 
+                            variant="default" 
+                            size="sm" 
+                            className="bg-green-600 text-white hover:bg-green-700 shadow-lg"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              selectSubcategory(subcategory.id, getLocalizedText(subcategory, 'name'));
+                            }}
+                          >
+                            <Eye className="w-4 h-4 mr-1" />
+                            {t('viewDetails')}
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      {/* Subcategory Info - smaller padding */}
+                      <div className="p-3">
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          {getLocalizedText(subcategory, 'name')}
+                        </h3>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Direct Category Products Section */}
+          {directCategoryProducts.length > 0 && (
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                {filteredSubcategories.length > 0 ? 'Weitere Produkte' : 'Produkte'}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
+                {directCategoryProducts.map((product) => (
+                  <div key={product.id} className="group">
+                    <Link to={`/product/${product.slug}`}>
+                      <Card className="h-full hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1 cursor-pointer">
+                        <div className="relative overflow-hidden rounded-t-lg">
+                          <img
+                            src={product.mainImage || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=500&fit=crop'}
+                            alt={getLocalizedText(product, 'name')}
+                            className="w-full h-64 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = 'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=500&fit=crop';
+                            }}
+                          />
+                          
+                          {/* Button positioned top-right over image */}
+                          <div className="absolute top-2 right-2">
+                            <Link to={`/product/${product.slug}`}>
+                              <Button 
+                                variant="default" 
+                                size="xs" 
+                                className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <Eye className="w-3 h-3 mr-1" />
+                                Details
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                        
+                        <CardContent className="p-3">
+                          <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+                            {getLocalizedText(product, 'name')}
+                          </h3>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   </div>
-                  
-                  {/* Subcategory Info - smaller padding */}
-                  <div className="p-3">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      {getLocalizedText(subcategory, 'name')}
-                    </h3>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* No Content Message */}
+          {filteredSubcategories.length === 0 && directCategoryProducts.length === 0 && (
+            <div className="text-center py-16">
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                Keine Inhalte gefunden
+              </h3>
+              <p className="text-gray-500">
+                Diese Kategorie enthält aktuell keine Unterkategorien oder Produkte.
+              </p>
+            </div>
+          )}
 
 
         </div>

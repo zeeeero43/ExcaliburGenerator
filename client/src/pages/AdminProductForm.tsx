@@ -29,7 +29,7 @@ const productFormSchema = z.object({
   descriptionEs: z.string().optional(),
   descriptionEn: z.string().optional(),
   categoryId: z.number().min(1, 'Kategorie ist erforderlich'),
-  subcategoryId: z.number().min(1, 'Unterkategorie ist erforderlich'),
+  subcategoryId: z.number().optional(),
   sku: z.string().optional(),
   oldPrice: z.string().optional(),
   newPrice: z.string().optional(),
@@ -70,7 +70,7 @@ export default function AdminProductForm() {
       descriptionEs: '',
       descriptionEn: '',
       categoryId: 1,
-      subcategoryId: 1,
+      subcategoryId: undefined,
       sku: '',
       oldPrice: '',
       newPrice: '',
@@ -264,7 +264,7 @@ export default function AdminProductForm() {
         descriptionEs: product.descriptionEs || '',
         descriptionEn: product.descriptionEn || '',
         categoryId: product.categoryId || 1,
-        subcategoryId: product.subcategoryId || 1,
+        subcategoryId: product.subcategoryId || undefined,
         sku: product.sku || '',
         oldPrice: product.oldPrice || product.price || '',
         newPrice: product.newPrice || '',
@@ -479,7 +479,7 @@ export default function AdminProductForm() {
                           field.onChange(parseInt(value));
                           // Only reset subcategoryId if this is not an existing product being loaded
                           if (!isEditing || !product) {
-                            form.setValue('subcategoryId', 1);
+                            form.setValue('subcategoryId', undefined);
                           }
                         }}
                       >
@@ -507,14 +507,18 @@ export default function AdminProductForm() {
                   name="subcategoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>3. Unterkategorie *</FormLabel>
+                      <FormLabel>3. Unterkategorie (optional)</FormLabel>
                       <Select
-                        value={field.value?.toString() || ''}
+                        value={field.value?.toString() || 'none'}
                         onValueChange={(value) => {
                           console.log('🔄 Subcategory changed to:', value);
-                          field.onChange(parseInt(value));
+                          if (value === 'none') {
+                            field.onChange(undefined);
+                          } else {
+                            field.onChange(parseInt(value));
+                          }
                         }}
-                        disabled={!selectedCategoryId || subcategories.length === 0}
+                        disabled={!selectedCategoryId}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -522,6 +526,9 @@ export default function AdminProductForm() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                          <SelectItem value="none">
+                            <span className="text-gray-500">Keine Unterkategorie</span>
+                          </SelectItem>
                           {subcategories.map((subcategory: Subcategory) => (
                             <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
                               {subcategory.nameDe || subcategory.nameEs}
@@ -529,6 +536,9 @@ export default function AdminProductForm() {
                           ))}
                         </SelectContent>
                       </Select>
+                      <p className="text-xs text-gray-500">
+                        Ohne Unterkategorie erscheint das Produkt direkt unter der Kategorie
+                      </p>
                       <FormMessage />
                     </FormItem>
                   )}
