@@ -56,9 +56,44 @@ sudo journalctl -u excalibur-cuba -f
 ✅ STORAGE: Category 16 and all related data deleted successfully
 ```
 
+## VPS DATABASE SCHEMA FIX - Analytics Tables Missing
+
+### Problem: "visitors" table does not exist
+```
+{"error":"Failed to fetch analytics","details":"relation \"visitors\" does not exist"}
+```
+
+### FIXED: SQL Commands to Create Missing Tables
+```sql
+-- Create visitors table
+CREATE TABLE IF NOT EXISTS "visitors" (
+  "id" serial PRIMARY KEY NOT NULL,
+  "ip_address" varchar(45) NOT NULL UNIQUE,
+  "country" varchar(2) NOT NULL,
+  "first_visit" timestamp DEFAULT now() NOT NULL,
+  "last_visit" timestamp DEFAULT now() NOT NULL
+);
+
+-- Create product clicks table  
+CREATE TABLE IF NOT EXISTS "product_clicks" (
+  "id" serial PRIMARY KEY NOT NULL,
+  "visitor_id" integer NOT NULL,
+  "product_id" integer NOT NULL,
+  "clicked_at" timestamp DEFAULT now() NOT NULL,
+  CONSTRAINT "product_clicks_visitor_id_visitors_id_fk" FOREIGN KEY ("visitor_id") REFERENCES "visitors"("id") ON DELETE no action ON UPDATE no action,
+  CONSTRAINT "product_clicks_product_id_products_id_fk" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE no action ON UPDATE no action
+);
+```
+
+### VPS Command to Execute:
+```bash
+# Connect to PostgreSQL and run the SQL commands above
+sudo -u postgres psql excalibur_cuba < schema_fix.sql
+```
+
 ## Expected Error Types
 
-### Database Schema Mismatch
+### Database Schema Mismatch  
 ```
 error: column "field_name" does not exist
 ```
