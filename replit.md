@@ -616,6 +616,8 @@ Changelog:
   * Identified deletion works in development but fails on VPS with 500 Internal Server Error
   * Created CRITICAL_PRODUCTION_FIXES.md with deployment steps and debugging guide
   * Improved client-side error messages to include backend error details for better troubleshooting
+  * BREAKTHROUGH: subcategoryId NaN bug fix resolved VPS deletion issues - category deletion now working correctly
+  * Root cause identified: Invalid subcategoryId values (NaN) caused foreign key constraint violations during product deletion cascade
 ```
 
 ## User Preferences
