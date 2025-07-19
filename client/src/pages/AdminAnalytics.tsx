@@ -46,7 +46,9 @@ export default function AdminAnalytics() {
     selectedPeriod,
     analyticsLoading,
     analytics,
-    error
+    error,
+    geoipWorking: analytics?.topCountries?.some(c => c.country !== 'CU'),
+    countryCount: analytics?.topCountries?.length
   });
 
   if (authLoading) {
