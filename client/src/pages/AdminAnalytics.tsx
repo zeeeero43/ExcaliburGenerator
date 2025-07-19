@@ -158,18 +158,7 @@ export default function AdminAnalytics() {
             <p className="text-xs text-muted-foreground">
               Verschiedene IP-Adressen
             </p>
-            {/* DEBUG INFO */}
-            {process.env.NODE_ENV === 'development' && (
-              <div className="mt-2 text-xs text-gray-500 border p-2 rounded">
-                DEBUG: {JSON.stringify({ 
-                  uniqueVisitors: analytics?.uniqueVisitors, 
-                  hasData: !!analytics,
-                  topCountries: analytics?.topCountries?.length,
-                  topProducts: analytics?.topProducts?.length,
-                  rawData: analytics 
-                }, null, 2)}
-              </div>
-            )}
+
           </CardContent>
         </Card>
 
