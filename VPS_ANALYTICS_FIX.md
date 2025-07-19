@@ -1,9 +1,10 @@
-# VPS ANALYTICS FIX - Missing Tables
+# VPS ANALYTICS FIX - Missing Analytics Tables
 
 ## PROBLEM IDENTIFIED
 - Frontend Error: `"relation \"product_views\" does not exist"`
-- Analytics tables are defined in schema but missing from database
-- drizzle-kit push says "No changes detected" but tables don't exist
+- VPS already has geoip-lite package 
+- Analytics tables (page_views, product_views) missing from VPS database
+- Development has tables, production does not
 
 ## DATABASE TABLE CREATION
 
@@ -49,11 +50,11 @@ CREATE INDEX IF NOT EXISTS idx_product_views_viewed_at ON product_views(viewed_a
 
 ### 1. Connect to VPS Database
 ```bash
-# SSH to VPS
-ssh root@your-vps-ip
+# SSH to VPS (if not already connected)
+# ssh root@your-vps-ip
 
-# Connect to PostgreSQL
-sudo -u postgres psql excalibur_cuba_db
+# Connect to PostgreSQL database
+sudo -u postgres psql -d excalibur_cuba_db
 ```
 
 ### 2. Create Missing Tables
