@@ -1,0 +1,98 @@
+Jul 19 00:08:27 srv896300 node[3151]: 🔍 ADMIN PRODUCTS: Error stack: error: column "new_price" does not exist
+Jul 19 00:08:27 srv896300 node[3151]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 00:08:27 srv896300 node[3151]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 00:08:27 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/node_modules/drizzle-orm/node-postgres/session.js:83:22
+Jul 19 00:08:27 srv896300 node[3151]:     at async DatabaseStorage.getProducts (file:///var/www/excalibur-cuba/dist/index.js:390:20)
+Jul 19 00:08:27 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/dist/index.js:1258:25
+Jul 19 00:08:27 srv896300 node[3151]: 12:08:27 AM [express] GET /api/admin/products 500 in 3ms :: {"error":"Failed to fetch products","deta…
+Jul 19 00:08:29 srv896300 node[3151]: 🔍 SESSION DEBUG: {
+Jul 19 00:08:29 srv896300 node[3151]:   path: '/api/admin/products',
+Jul 19 00:08:29 srv896300 node[3151]:   method: 'GET',
+Jul 19 00:08:29 srv896300 node[3151]:   sessionId: 'rgzQYoWq6jljo7Lbwt_3dBNC6Wn7YUU7',
+Jul 19 00:08:29 srv896300 node[3151]:   userId: 1,
+Jul 19 00:08:29 srv896300 node[3151]:   hasSession: true,
+Jul 19 00:08:29 srv896300 node[3151]:   cookies: []
+Jul 19 00:08:29 srv896300 node[3151]: }
+Jul 19 00:08:29 srv896300 node[3151]: 🔍 ADMIN PRODUCTS: PUBLIC ROUTE REACHED!
+Jul 19 00:08:29 srv896300 node[3151]: 🔍 ADMIN PRODUCTS: Applying filters: {
+Jul 19 00:08:29 srv896300 node[3151]:   categoryId: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   subcategoryId: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   isActive: undefined
+Jul 19 00:08:29 srv896300 node[3151]: }
+Jul 19 00:08:29 srv896300 node[3151]: 🔍 ADMIN PRODUCTS: Error fetching products: error: column "new_price" does not exist
+Jul 19 00:08:29 srv896300 node[3151]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 00:08:29 srv896300 node[3151]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 00:08:29 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/node_modules/drizzle-orm/node-postgres/session.js:83:22
+Jul 19 00:08:29 srv896300 node[3151]:     at async DatabaseStorage.getProducts (file:///var/www/excalibur-cuba/dist/index.js:390:20)
+Jul 19 00:08:29 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/dist/index.js:1258:25 {
+Jul 19 00:08:29 srv896300 node[3151]:   length: 175,
+Jul 19 00:08:29 srv896300 node[3151]:   severity: 'ERROR',
+Jul 19 00:08:29 srv896300 node[3151]:   code: '42703',
+Jul 19 00:08:29 srv896300 node[3151]:   detail: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   hint: 'Perhaps you meant to reference the column "products.old_price".',
+Jul 19 00:08:29 srv896300 node[3151]:   position: '278',
+Jul 19 00:08:29 srv896300 node[3151]:   internalPosition: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   internalQuery: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   where: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   schema: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   table: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   column: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   dataType: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   constraint: undefined,
+Jul 19 00:08:29 srv896300 node[3151]:   file: 'parse_relation.c',
+Jul 19 00:08:29 srv896300 node[3151]:   line: '3647',
+Jul 19 00:08:29 srv896300 node[3151]:   routine: 'errorMissingColumn'
+Jul 19 00:08:29 srv896300 node[3151]: }
+Jul 19 00:08:29 srv896300 node[3151]: 🔍 ADMIN PRODUCTS: Error stack: error: column "new_price" does not exist
+Jul 19 00:08:29 srv896300 node[3151]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 00:08:29 srv896300 node[3151]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 00:08:29 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/node_modules/drizzle-orm/node-postgres/session.js:83:22
+Jul 19 00:08:29 srv896300 node[3151]:     at async DatabaseStorage.getProducts (file:///var/www/excalibur-cuba/dist/index.js:390:20)
+Jul 19 00:08:29 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/dist/index.js:1258:25
+Jul 19 00:08:29 srv896300 node[3151]: 12:08:29 AM [express] GET /api/admin/products 500 in 10ms :: {"error":"Failed to fetch products","det…
+Jul 19 00:08:33 srv896300 node[3151]: 🔍 SESSION DEBUG: {
+Jul 19 00:08:33 srv896300 node[3151]:   path: '/api/admin/products',
+Jul 19 00:08:33 srv896300 node[3151]:   method: 'GET',
+Jul 19 00:08:33 srv896300 node[3151]:   sessionId: 'rgzQYoWq6jljo7Lbwt_3dBNC6Wn7YUU7',
+Jul 19 00:08:33 srv896300 node[3151]:   userId: 1,
+Jul 19 00:08:33 srv896300 node[3151]:   hasSession: true,
+Jul 19 00:08:33 srv896300 node[3151]:   cookies: []
+Jul 19 00:08:33 srv896300 node[3151]: }
+Jul 19 00:08:33 srv896300 node[3151]: 🔍 ADMIN PRODUCTS: PUBLIC ROUTE REACHED!
+Jul 19 00:08:33 srv896300 node[3151]: 🔍 ADMIN PRODUCTS: Applying filters: {
+Jul 19 00:08:33 srv896300 node[3151]:   categoryId: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   subcategoryId: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   isActive: undefined
+Jul 19 00:08:33 srv896300 node[3151]: }
+Jul 19 00:08:33 srv896300 node[3151]: 🔍 ADMIN PRODUCTS: Error fetching products: error: column "new_price" does not exist
+Jul 19 00:08:33 srv896300 node[3151]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 00:08:33 srv896300 node[3151]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 00:08:33 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/node_modules/drizzle-orm/node-postgres/session.js:83:22
+Jul 19 00:08:33 srv896300 node[3151]:     at async DatabaseStorage.getProducts (file:///var/www/excalibur-cuba/dist/index.js:390:20)
+Jul 19 00:08:33 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/dist/index.js:1258:25 {
+Jul 19 00:08:33 srv896300 node[3151]:   length: 175,
+Jul 19 00:08:33 srv896300 node[3151]:   severity: 'ERROR',
+Jul 19 00:08:33 srv896300 node[3151]:   code: '42703',
+Jul 19 00:08:33 srv896300 node[3151]:   detail: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   hint: 'Perhaps you meant to reference the column "products.old_price".',
+Jul 19 00:08:33 srv896300 node[3151]:   position: '278',
+Jul 19 00:08:33 srv896300 node[3151]:   internalPosition: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   internalQuery: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   where: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   schema: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   table: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   column: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   dataType: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   constraint: undefined,
+Jul 19 00:08:33 srv896300 node[3151]:   file: 'parse_relation.c',
+Jul 19 00:08:33 srv896300 node[3151]:   line: '3647',
+Jul 19 00:08:33 srv896300 node[3151]:   routine: 'errorMissingColumn'
+Jul 19 00:08:33 srv896300 node[3151]: }
+Jul 19 00:08:33 srv896300 node[3151]: 🔍 ADMIN PRODUCTS: Error stack: error: column "new_price" does not exist
+Jul 19 00:08:33 srv896300 node[3151]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 00:08:33 srv896300 node[3151]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 00:08:33 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/node_modules/drizzle-orm/node-postgres/session.js:83:22
+Jul 19 00:08:33 srv896300 node[3151]:     at async DatabaseStorage.getProducts (file:///var/www/excalibur-cuba/dist/index.js:390:20)
+Jul 19 00:08:33 srv896300 node[3151]:     at async file:///var/www/excalibur-cuba/dist/index.js:1258:25
+Jul 19 00:08:33 srv896300 node[3151]: 12:08:33 AM [express] GET /api/admin/products 500 in 10ms :: {"error":"Failed to fetch products","det…
+
