@@ -1,12 +1,24 @@
-# CRITICAL VPS PERFORMANCE & DEBUGGING FIXES - July 19, 2025
+# CRITICAL VPS DELETION FIX - July 19, 2025
 
-## Problems Fixed
-1. ✅ **Category deletion** - subcategoryId NaN bug resolved
-2. ✅ **Performance issue** - excessive debug logging removed
+## CRITICAL ISSUE RESOLVED
+**Category deletion foreign key constraint violation**
 
-## Solutions Implemented
-1. Fixed subcategoryId null handling (resolved deletion cascades)
-2. Disabled debug middleware in production (major performance improvement)
+**Root Cause:** storage.ts deleteCategory() function was incomplete - only deleted category without removing related subcategories and products first.
+
+**Solution:** Fixed deleteCategory() to delete in correct order:
+1. Delete all products in category
+2. Delete all subcategories in category  
+3. Delete category itself
+
+## Image Upload Authentication Fixed
+**Issue:** Image uploads failing with 401 Unauthorized
+**Solution:** Added `credentials: 'include'` to all image API calls in:
+- ImageUpload.tsx (upload, delete, batch delete)
+- AdminImageManager.tsx (upload, delete, batch delete)
+
+## Performance Issues Fixed  
+1. ✅ **Translation system** - reduced timeouts, added fallbacks
+2. ✅ **Debug logging** - disabled excessive session logs
 
 ## Deployment Steps
 
@@ -25,17 +37,23 @@ sudo systemctl restart excalibur-cuba
 sudo journalctl -u excalibur-cuba -f
 ```
 
-### 2. Test Deletion and Check Logs
+### 2. Test Category Deletion
 1. **Admin Panel Login**: Go to `https://www.excalibur-cuba.com/admin`
-2. **Try Category Deletion**: Categories → Delete any category
-3. **Monitor Server Logs**: `sudo journalctl -u excalibur-cuba -f`
+2. **Try Category Deletion**: Categories → Delete category 16
+3. **Monitor Success Logs**: `sudo journalctl -u excalibur-cuba -f`
 
-### 3. Look for These Log Messages
+### 3. Test Image Upload System
+1. **Admin Panel Login**: Go to `https://www.excalibur-cuba.com/admin`
+2. **Test Product Form**: Produkte → Add/Edit → Try uploading main image
+3. **Test Image Manager**: Website-Bilder → Try uploading images
+4. **Verify**: Images should upload successfully without 401 errors
+
+### 4. Expected SUCCESS Log Messages
 ```
-🗑️ SERVER DELETE CATEGORY: Starting deletion for category ID: [number]
-🗑️ SERVER DELETE CATEGORY: Fetching products for category [number]
-🗑️ SERVER DELETE CATEGORY: Found [X] products to delete
-🗑️ SERVER DELETE CATEGORY: CRITICAL ERROR: [error details]
+🗑️ STORAGE: Deleting all products for category 16
+🗑️ STORAGE: Deleting all subcategories for category 16  
+🗑️ STORAGE: Deleting category 16
+✅ STORAGE: Category 16 and all related data deleted successfully
 ```
 
 ## Expected Error Types

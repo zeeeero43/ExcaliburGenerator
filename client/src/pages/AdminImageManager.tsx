@@ -45,6 +45,7 @@ export default function AdminImageManager() {
       const response = await fetch('/api/admin/images/upload', {
         method: 'POST',
         body: formData,
+        credentials: 'include', // CRITICAL FIX: Include cookies for authentication
       });
       
       if (!response.ok) {
@@ -75,6 +76,7 @@ export default function AdminImageManager() {
     mutationFn: async (imageId: number) => {
       const response = await fetch(`/api/admin/images/${imageId}`, {
         method: 'DELETE',
+        credentials: 'include', // CRITICAL FIX: Include cookies for authentication
       });
 
       if (!response.ok) {
@@ -105,7 +107,10 @@ export default function AdminImageManager() {
   const batchDeleteMutation = useMutation({
     mutationFn: async (imageIds: number[]) => {
       const deletePromises = imageIds.map(id => 
-        fetch(`/api/admin/images/${id}`, { method: 'DELETE' })
+        fetch(`/api/admin/images/${id}`, { 
+          method: 'DELETE',
+          credentials: 'include' // CRITICAL FIX: Include cookies for authentication
+        })
       );
       
       const responses = await Promise.all(deletePromises);

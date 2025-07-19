@@ -49,6 +49,7 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
       const response = await fetch('/api/admin/images/upload', {
         method: 'POST',
         body: formData,
+        credentials: 'include', // CRITICAL FIX: Include cookies for authentication
       });
 
       if (!response.ok) {
@@ -79,6 +80,7 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
     mutationFn: async (imageId: string) => {
       const response = await fetch(`/api/admin/images/${imageId}`, {
         method: 'DELETE',
+        credentials: 'include', // CRITICAL FIX: Include cookies for authentication
       });
 
       if (!response.ok) {
@@ -108,7 +110,10 @@ export function ImageUpload({ onImageSelect, currentImage }: ImageUploadProps) {
   const batchDeleteMutation = useMutation({
     mutationFn: async (imageIds: string[]) => {
       const deletePromises = imageIds.map(id => 
-        fetch(`/api/admin/images/${id}`, { method: 'DELETE' })
+        fetch(`/api/admin/images/${id}`, { 
+          method: 'DELETE',
+          credentials: 'include' // CRITICAL FIX: Include cookies for authentication
+        })
       );
       
       const responses = await Promise.all(deletePromises);

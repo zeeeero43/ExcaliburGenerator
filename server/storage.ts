@@ -186,7 +186,21 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteCategory(id: number): Promise<void> {
+    // CRITICAL FIX: Delete in correct order to avoid foreign key violations
+    
+    // First: Delete all products in this category (including those in subcategories)
+    console.log(`🗑️ STORAGE: Deleting all products for category ${id}`);
+    await db.delete(products).where(eq(products.categoryId, id));
+    
+    // Second: Delete all subcategories in this category
+    console.log(`🗑️ STORAGE: Deleting all subcategories for category ${id}`);
+    await db.delete(subcategories).where(eq(subcategories.categoryId, id));
+    
+    // Third: Finally delete the category itself
+    console.log(`🗑️ STORAGE: Deleting category ${id}`);
     await db.delete(categories).where(eq(categories.id, id));
+    
+    console.log(`✅ STORAGE: Category ${id} and all related data deleted successfully`);
   }
 
   // Subcategories

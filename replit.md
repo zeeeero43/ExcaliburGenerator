@@ -631,6 +631,18 @@ Changelog:
   * Critical UI elements now always translate even when external APIs fail
   * Translation requests now complete faster with improved error handling
   * VPS deployment successful: MyMemory API working with 200 status, translations completing in under 1 second
+- July 19, 2025 (critical deletion fix). Fixed category deletion foreign key constraint violation:
+  * CRITICAL ISSUE: deleteCategory() in storage.ts was incomplete, causing "violates foreign key constraint" errors
+  * Root cause: Function only deleted category without removing related subcategories and products first
+  * Fixed with proper deletion order: products → subcategories → category
+  * Category deletion now works correctly on VPS by avoiding foreign key violations
+  * Added detailed logging to track successful deletion cascade
+- July 19, 2025 (image upload authentication fix). Fixed image upload system authentication failure:
+  * CRITICAL ISSUE: Image uploads failing with 401 Unauthorized due to missing session cookies
+  * Root cause: fetch() calls in ImageUpload and AdminImageManager missing credentials: 'include'
+  * Fixed all image upload, delete, and batch operations in both components
+  * All image management functionality now works properly with authentication system
+  * Upload system ready for VPS deployment after authentication fix
 ```
 
 ## User Preferences

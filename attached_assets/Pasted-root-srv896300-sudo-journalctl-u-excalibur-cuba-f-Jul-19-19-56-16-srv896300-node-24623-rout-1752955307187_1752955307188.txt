@@ -1,0 +1,241 @@
+root@srv896300:~# sudo journalctl -u excalibur-cuba -f
+Jul 19 19:56:16 srv896300 node[24623]:   routine: 'ri_ReportViolation'
+Jul 19 19:56:16 srv896300 node[24623]: }
+Jul 19 19:56:16 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error name: error
+Jul 19 19:56:16 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error message: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:56:16 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error stack: error: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:56:16 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:56:16 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:56:16 srv896300 node[24623]:     at async DatabaseStorage.deleteCategory (file:///var/www/excalibur-cuba/dist/index.js:331:5)
+Jul 19 19:56:16 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1272:7
+Jul 19 19:56:16 srv896300 node[24623]: 7:56:16 PM [express] DELETE /api/admin/categories/16 500 in 14ms :: {"error":"Failed to delete categ…
+Jul 19 19:56:21 srv896300 node[24623]: 🔍 AUTH SUCCESS: excalibur_admin
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Starting deletion for category ID: 16
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Fetching products for category 16
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Found 0 products to delete
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: All products deleted successfully
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Fetching subcategories for category 16
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Found 0 subcategories to delete
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: All subcategories deleted successfully
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Deleting category 16
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: CRITICAL ERROR: error: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:56:21 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:56:21 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:56:21 srv896300 node[24623]:     at async DatabaseStorage.deleteCategory (file:///var/www/excalibur-cuba/dist/index.js:331:5)
+Jul 19 19:56:21 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1272:7 {
+Jul 19 19:56:21 srv896300 node[24623]:   length: 339,
+Jul 19 19:56:21 srv896300 node[24623]:   severity: 'ERROR',
+Jul 19 19:56:21 srv896300 node[24623]:   code: '23503',
+Jul 19 19:56:21 srv896300 node[24623]:   detail: 'Key (id)=(16) is still referenced from table "subcategories".',
+Jul 19 19:56:21 srv896300 node[24623]:   hint: undefined,
+Jul 19 19:56:21 srv896300 node[24623]:   position: undefined,
+Jul 19 19:56:21 srv896300 node[24623]:   internalPosition: undefined,
+Jul 19 19:56:21 srv896300 node[24623]:   internalQuery: undefined,
+Jul 19 19:56:21 srv896300 node[24623]:   where: undefined,
+Jul 19 19:56:21 srv896300 node[24623]:   schema: 'public',
+Jul 19 19:56:21 srv896300 node[24623]:   table: 'subcategories',
+Jul 19 19:56:21 srv896300 node[24623]:   column: undefined,
+Jul 19 19:56:21 srv896300 node[24623]:   dataType: undefined,
+Jul 19 19:56:21 srv896300 node[24623]:   constraint: 'subcategories_category_id_categories_id_fk',
+Jul 19 19:56:21 srv896300 node[24623]:   file: 'ri_triggers.c',
+Jul 19 19:56:21 srv896300 node[24623]:   line: '2541',
+Jul 19 19:56:21 srv896300 node[24623]:   routine: 'ri_ReportViolation'
+Jul 19 19:56:21 srv896300 node[24623]: }
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error name: error
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error message: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:56:21 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error stack: error: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:56:21 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:56:21 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:56:21 srv896300 node[24623]:     at async DatabaseStorage.deleteCategory (file:///var/www/excalibur-cuba/dist/index.js:331:5)
+Jul 19 19:56:21 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1272:7
+Jul 19 19:56:21 srv896300 node[24623]: 7:56:21 PM [express] DELETE /api/admin/categories/16 500 in 11ms :: {"error":"Failed to delete categ…
+Jul 19 19:57:18 srv896300 node[24623]: 🔍 AUTH SUCCESS: excalibur_admin
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Starting deletion for category ID: 16
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Fetching products for category 16
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Found 0 products to delete
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: All products deleted successfully
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Fetching subcategories for category 16
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Found 0 subcategories to delete
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: All subcategories deleted successfully
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Deleting category 16
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: CRITICAL ERROR: error: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:57:18 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:57:18 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:57:18 srv896300 node[24623]:     at async DatabaseStorage.deleteCategory (file:///var/www/excalibur-cuba/dist/index.js:331:5)
+Jul 19 19:57:18 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1272:7 {
+Jul 19 19:57:18 srv896300 node[24623]:   length: 339,
+Jul 19 19:57:18 srv896300 node[24623]:   severity: 'ERROR',
+Jul 19 19:57:18 srv896300 node[24623]:   code: '23503',
+Jul 19 19:57:18 srv896300 node[24623]:   detail: 'Key (id)=(16) is still referenced from table "subcategories".',
+Jul 19 19:57:18 srv896300 node[24623]:   hint: undefined,
+Jul 19 19:57:18 srv896300 node[24623]:   position: undefined,
+Jul 19 19:57:18 srv896300 node[24623]:   internalPosition: undefined,
+Jul 19 19:57:18 srv896300 node[24623]:   internalQuery: undefined,
+Jul 19 19:57:18 srv896300 node[24623]:   where: undefined,
+Jul 19 19:57:18 srv896300 node[24623]:   schema: 'public',
+Jul 19 19:57:18 srv896300 node[24623]:   table: 'subcategories',
+Jul 19 19:57:18 srv896300 node[24623]:   column: undefined,
+Jul 19 19:57:18 srv896300 node[24623]:   dataType: undefined,
+Jul 19 19:57:18 srv896300 node[24623]:   constraint: 'subcategories_category_id_categories_id_fk',
+Jul 19 19:57:18 srv896300 node[24623]:   file: 'ri_triggers.c',
+Jul 19 19:57:18 srv896300 node[24623]:   line: '2541',
+Jul 19 19:57:18 srv896300 node[24623]:   routine: 'ri_ReportViolation'
+Jul 19 19:57:18 srv896300 node[24623]: }
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error name: error
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error message: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:57:18 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error stack: error: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:57:18 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:57:18 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:57:18 srv896300 node[24623]:     at async DatabaseStorage.deleteCategory (file:///var/www/excalibur-cuba/dist/index.js:331:5)
+Jul 19 19:57:18 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1272:7
+Jul 19 19:57:18 srv896300 node[24623]: 7:57:18 PM [express] DELETE /api/admin/categories/16 500 in 13ms :: {"error":"Failed to delete categ…
+Jul 19 19:57:22 srv896300 node[24623]: 🔍 AUTH SUCCESS: excalibur_admin
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Starting deletion for category ID: 16
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Fetching products for category 16
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Found 0 products to delete
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: All products deleted successfully
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Fetching subcategories for category 16
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Found 0 subcategories to delete
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: All subcategories deleted successfully
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Deleting category 16
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: CRITICAL ERROR: error: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:57:22 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:57:22 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:57:22 srv896300 node[24623]:     at async DatabaseStorage.deleteCategory (file:///var/www/excalibur-cuba/dist/index.js:331:5)
+Jul 19 19:57:22 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1272:7 {
+Jul 19 19:57:22 srv896300 node[24623]:   length: 339,
+Jul 19 19:57:22 srv896300 node[24623]:   severity: 'ERROR',
+Jul 19 19:57:22 srv896300 node[24623]:   code: '23503',
+Jul 19 19:57:22 srv896300 node[24623]:   detail: 'Key (id)=(16) is still referenced from table "subcategories".',
+Jul 19 19:57:22 srv896300 node[24623]:   hint: undefined,
+Jul 19 19:57:22 srv896300 node[24623]:   position: undefined,
+Jul 19 19:57:22 srv896300 node[24623]:   internalPosition: undefined,
+Jul 19 19:57:22 srv896300 node[24623]:   internalQuery: undefined,
+Jul 19 19:57:22 srv896300 node[24623]:   where: undefined,
+Jul 19 19:57:22 srv896300 node[24623]:   schema: 'public',
+Jul 19 19:57:22 srv896300 node[24623]:   table: 'subcategories',
+Jul 19 19:57:22 srv896300 node[24623]:   column: undefined,
+Jul 19 19:57:22 srv896300 node[24623]:   dataType: undefined,
+Jul 19 19:57:22 srv896300 node[24623]:   constraint: 'subcategories_category_id_categories_id_fk',
+Jul 19 19:57:22 srv896300 node[24623]:   file: 'ri_triggers.c',
+Jul 19 19:57:22 srv896300 node[24623]:   line: '2541',
+Jul 19 19:57:22 srv896300 node[24623]:   routine: 'ri_ReportViolation'
+Jul 19 19:57:22 srv896300 node[24623]: }
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error name: error
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error message: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:57:22 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error stack: error: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:57:22 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:57:22 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:57:22 srv896300 node[24623]:     at async DatabaseStorage.deleteCategory (file:///var/www/excalibur-cuba/dist/index.js:331:5)
+Jul 19 19:57:22 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1272:7
+Jul 19 19:57:22 srv896300 node[24623]: 7:57:22 PM [express] DELETE /api/admin/categories/16 500 in 13ms :: {"error":"Failed to delete categ…
+Jul 19 19:57:34 srv896300 node[24623]: 🔍 AUTH SUCCESS: excalibur_admin
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Starting deletion for category ID: 16
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Fetching products for category 16
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Found 0 products to delete
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: All products deleted successfully
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Fetching subcategories for category 16
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Found 0 subcategories to delete
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: All subcategories deleted successfully
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Deleting category 16
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: CRITICAL ERROR: error: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:57:34 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:57:34 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:57:34 srv896300 node[24623]:     at async DatabaseStorage.deleteCategory (file:///var/www/excalibur-cuba/dist/index.js:331:5)
+Jul 19 19:57:34 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1272:7 {
+Jul 19 19:57:34 srv896300 node[24623]:   length: 339,
+Jul 19 19:57:34 srv896300 node[24623]:   severity: 'ERROR',
+Jul 19 19:57:34 srv896300 node[24623]:   code: '23503',
+Jul 19 19:57:34 srv896300 node[24623]:   detail: 'Key (id)=(16) is still referenced from table "subcategories".',
+Jul 19 19:57:34 srv896300 node[24623]:   hint: undefined,
+Jul 19 19:57:34 srv896300 node[24623]:   position: undefined,
+Jul 19 19:57:34 srv896300 node[24623]:   internalPosition: undefined,
+Jul 19 19:57:34 srv896300 node[24623]:   internalQuery: undefined,
+Jul 19 19:57:34 srv896300 node[24623]:   where: undefined,
+Jul 19 19:57:34 srv896300 node[24623]:   schema: 'public',
+Jul 19 19:57:34 srv896300 node[24623]:   table: 'subcategories',
+Jul 19 19:57:34 srv896300 node[24623]:   column: undefined,
+Jul 19 19:57:34 srv896300 node[24623]:   dataType: undefined,
+Jul 19 19:57:34 srv896300 node[24623]:   constraint: 'subcategories_category_id_categories_id_fk',
+Jul 19 19:57:34 srv896300 node[24623]:   file: 'ri_triggers.c',
+Jul 19 19:57:34 srv896300 node[24623]:   line: '2541',
+Jul 19 19:57:34 srv896300 node[24623]:   routine: 'ri_ReportViolation'
+Jul 19 19:57:34 srv896300 node[24623]: }
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error name: error
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error message: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:57:34 srv896300 node[24623]: 🗑️ SERVER DELETE CATEGORY: Error stack: error: update or delete on table "categories" violates foreign key constraint "subcategories_category_id_categories_id_fk" on table "subcategories"
+Jul 19 19:57:34 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:57:34 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:57:34 srv896300 node[24623]:     at async DatabaseStorage.deleteCategory (file:///var/www/excalibur-cuba/dist/index.js:331:5)
+Jul 19 19:57:34 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1272:7
+Jul 19 19:57:34 srv896300 node[24623]: 7:57:34 PM [express] DELETE /api/admin/categories/16 500 in 13ms :: {"error":"Failed to delete categ…
+Jul 19 19:58:46 srv896300 node[24623]: 7:58:46 PM [express] POST /api/track 200 in 2ms :: {"success":true}
+Jul 19 19:58:46 srv896300 node[24623]: 🔍 AUTH REJECTED: No valid session
+Jul 19 19:58:46 srv896300 node[24623]: 7:58:46 PM [express] GET /api/admin/user 401 in 1ms :: {"message":"Unauthorized"}
+Jul 19 19:58:47 srv896300 node[24623]: 7:58:47 PM [express] POST /api/track 200 in 3ms :: {"success":true}
+Jul 19 19:58:47 srv896300 node[24623]: 7:58:47 PM [express] GET /api/categories 304 in 3ms :: [{"id":20,"name":"ST","nameEs":"SOLAR TOTAL",…
+Jul 19 19:58:47 srv896300 node[24623]: 7:58:47 PM [express] GET /api/subcategories 304 in 1ms :: [{"id":28,"categoryId":11,"name":"Standard…
+Jul 19 19:58:47 srv896300 node[24623]: 7:58:47 PM [express] GET /api/products 200 in 7ms :: [{"id":110,"categoryId":20,"subcategoryId":null…
+Jul 19 19:58:50 srv896300 node[24623]: 7:58:50 PM [express] POST /api/track 200 in 3ms :: {"success":true}
+Jul 19 19:58:50 srv896300 node[24623]: 7:58:50 PM [express] GET /api/products/neptun-original-trailer-de-coches-236x-129cm-cargando-superfi…
+Jul 19 19:58:50 srv896300 node[24623]: 7:58:50 PM [express] POST /api/track 200 in 7ms :: {"success":true}
+Jul 19 19:58:50 srv896300 node[24623]: Error tracking product view: error: relation "product_views" does not exist
+Jul 19 19:58:50 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:58:50 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:58:50 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/node_modules/drizzle-orm/node-postgres/session.js:83:22
+Jul 19 19:58:50 srv896300 node[24623]:     at async DatabaseStorage.createProductView (file:///var/www/excalibur-cuba/dist/index.js:477:23)
+Jul 19 19:58:50 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1637:7 {
+Jul 19 19:58:50 srv896300 node[24623]:   length: 112,
+Jul 19 19:58:50 srv896300 node[24623]:   severity: 'ERROR',
+Jul 19 19:58:50 srv896300 node[24623]:   code: '42P01',
+Jul 19 19:58:50 srv896300 node[24623]:   detail: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   hint: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   position: '13',
+Jul 19 19:58:50 srv896300 node[24623]:   internalPosition: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   internalQuery: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   where: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   schema: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   table: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   column: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   dataType: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   constraint: undefined,
+Jul 19 19:58:50 srv896300 node[24623]:   file: 'parse_relation.c',
+Jul 19 19:58:50 srv896300 node[24623]:   line: '1381',
+Jul 19 19:58:50 srv896300 node[24623]:   routine: 'parserOpenTable'
+Jul 19 19:58:50 srv896300 node[24623]: }
+Jul 19 19:58:50 srv896300 node[24623]: 7:58:50 PM [express] POST /api/track/product 500 in 3ms :: {"error":"Failed to track product view"}
+Jul 19 19:59:42 srv896300 node[24623]: 7:59:42 PM [express] POST /api/track 200 in 3ms :: {"success":true}
+Jul 19 19:59:42 srv896300 node[24623]: 🔍 AUTH REJECTED: No valid session
+Jul 19 19:59:42 srv896300 node[24623]: 7:59:42 PM [express] GET /api/admin/user 401 in 1ms :: {"message":"Unauthorized"}
+Jul 19 19:59:42 srv896300 node[24623]: 7:59:42 PM [express] GET /api/products/neptun-original-trailer-de-coches-236x-129cm-cargando-superfi…
+Jul 19 19:59:42 srv896300 node[24623]: 7:59:42 PM [express] POST /api/track 200 in 7ms :: {"success":true}
+Jul 19 19:59:42 srv896300 node[24623]: 7:59:42 PM [express] POST /api/track 200 in 2ms :: {"success":true}
+Jul 19 19:59:42 srv896300 node[24623]: 🔍 AUTH REJECTED: No valid session
+Jul 19 19:59:42 srv896300 node[24623]: 7:59:42 PM [express] GET /api/admin/user 401 in 1ms :: {"message":"Unauthorized"}
+Jul 19 19:59:42 srv896300 node[24623]: 7:59:42 PM [express] GET /api/products/neptun-original-trailer-de-coches-236x-129cm-cargando-superfi…
+Jul 19 19:59:42 srv896300 node[24623]: 7:59:42 PM [express] POST /api/track 200 in 1ms :: {"success":true}
+Jul 19 19:59:42 srv896300 node[24623]: Error tracking product view: error: relation "product_views" does not exist
+Jul 19 19:59:42 srv896300 node[24623]:     at /var/www/excalibur-cuba/node_modules/pg-pool/index.js:45:11
+Jul 19 19:59:42 srv896300 node[24623]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Jul 19 19:59:42 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/node_modules/drizzle-orm/node-postgres/session.js:83:22
+Jul 19 19:59:42 srv896300 node[24623]:     at async DatabaseStorage.createProductView (file:///var/www/excalibur-cuba/dist/index.js:477:23)
+Jul 19 19:59:42 srv896300 node[24623]:     at async file:///var/www/excalibur-cuba/dist/index.js:1637:7 {
+Jul 19 19:59:42 srv896300 node[24623]:   length: 112,
+Jul 19 19:59:42 srv896300 node[24623]:   severity: 'ERROR',
+Jul 19 19:59:42 srv896300 node[24623]:   code: '42P01',
+Jul 19 19:59:42 srv896300 node[24623]:   detail: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   hint: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   position: '13',
+Jul 19 19:59:42 srv896300 node[24623]:   internalPosition: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   internalQuery: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   where: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   schema: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   table: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   column: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   dataType: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   constraint: undefined,
+Jul 19 19:59:42 srv896300 node[24623]:   file: 'parse_relation.c',
+Jul 19 19:59:42 srv896300 node[24623]:   line: '1381',
+Jul 19 19:59:42 srv896300 node[24623]:   routine: 'parserOpenTable'
+Jul 19 19:59:42 srv896300 node[24623]: }
+Jul 19 19:59:42 srv896300 node[24623]: 7:59:42 PM [express] POST /api/track/product 500 in 1ms :: {"error":"Failed to track product view"}
