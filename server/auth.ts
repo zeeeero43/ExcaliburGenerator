@@ -38,18 +38,23 @@ export function setupSession(app: express.Application) {
     })
   );
   
-  // Debug middleware
-  app.use((req, res, next) => {
-    console.log("🔍 SESSION MIDDLEWARE:", {
-      url: req.url,
-      method: req.method,
-      sessionID: req.sessionID,
-      hasSession: !!req.session,
-      sessionUserId: req.session?.userId,
-      cookies: req.headers.cookie
+  // Debug middleware (DISABLED for production performance)
+  if (process.env.NODE_ENV === 'development') {
+    app.use((req, res, next) => {
+      // Only log important requests in development
+      if (req.url.startsWith('/api/admin') || req.url.includes('delete')) {
+        console.log("🔍 SESSION MIDDLEWARE:", {
+          url: req.url,
+          method: req.method,
+          sessionID: req.sessionID,
+          hasSession: !!req.session,
+          sessionUserId: req.session?.userId,
+          cookies: req.headers.cookie
+        });
+      }
+      next();
     });
-    next();
-  });
+  }
 }
 
 export async function isAuthenticated(

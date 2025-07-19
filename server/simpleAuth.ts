@@ -26,18 +26,23 @@ export function setupSession(app: express.Application) {
     })
   );
   
-  // Debug middleware to log all session activity
-  app.use((req, res, next) => {
-    console.log('🔍 SESSION DEBUG:', {
-      path: req.path,
-      method: req.method,
-      sessionId: req.sessionID,
-      userId: req.session.userId,
-      hasSession: !!req.session,
-      cookies: Object.keys(req.cookies || {})
+  // Debug middleware to log all session activity (DISABLED for production performance)
+  if (process.env.NODE_ENV === 'development') {
+    app.use((req, res, next) => {
+      // Only log in development
+      if (req.path.startsWith('/api/admin') || req.path.includes('delete')) {
+        console.log('🔍 SESSION DEBUG:', {
+          path: req.path,
+          method: req.method,
+          sessionId: req.sessionID,
+          userId: req.session.userId,
+          hasSession: !!req.session,
+          cookies: Object.keys(req.cookies || {})
+        });
+      }
+      next();
     });
-    next();
-  });
+  }
 }
 
 export async function isAuthenticated(
@@ -45,13 +50,16 @@ export async function isAuthenticated(
   res: express.Response,
   next: express.NextFunction
 ) {
-  console.log('🔍 AUTH CHECK:', {
-    sessionId: req.sessionID,
-    userId: req.session.userId,
-    hasUser: !!req.session.user,
-    path: req.path,
-    cookies: req.headers.cookie ? 'present' : 'missing'
-  });
+  // Only log auth checks in development or for deletion operations
+  if (process.env.NODE_ENV === 'development' || req.path.includes('delete')) {
+    console.log('🔍 AUTH CHECK:', {
+      sessionId: req.sessionID,
+      userId: req.session.userId,
+      hasUser: !!req.session.user,
+      path: req.path,
+      cookies: req.headers.cookie ? 'present' : 'missing'
+    });
+  }
   
   if (req.session.userId && req.session.user) {
     try {

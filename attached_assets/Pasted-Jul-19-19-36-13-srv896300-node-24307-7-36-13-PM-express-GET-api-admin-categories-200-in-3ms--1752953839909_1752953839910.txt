@@ -1,0 +1,33 @@
+Jul 19 19:36:13 srv896300 node[24307]: 7:36:13 PM [express] GET /api/admin/categories 200 in 3ms :: [{"id":20,"name":"ST","nameEs":"SOLAR T…
+Jul 19 19:36:36 srv896300 node[24307]: 🔍 SESSION DEBUG: {
+Jul 19 19:36:36 srv896300 node[24307]:   path: '/wp-admin/setup-config.php',
+Jul 19 19:36:36 srv896300 node[24307]:   method: 'GET',
+Jul 19 19:36:36 srv896300 node[24307]:   sessionId: 'C6u69FjVn9TgqkuG9JEPbLGVW3YXX2kk',
+Jul 19 19:36:36 srv896300 node[24307]:   userId: undefined,
+Jul 19 19:36:36 srv896300 node[24307]:   hasSession: true,
+Jul 19 19:36:36 srv896300 node[24307]:   cookies: []
+Jul 19 19:36:36 srv896300 node[24307]: }
+Jul 19 19:36:39 srv896300 node[24307]: 🔍 SESSION DEBUG: {
+Jul 19 19:36:39 srv896300 node[24307]:   path: '/uploads/1752408986438-a9de4f97-4167-4b42-aec1-f60d5ab8f28e.jpg',
+Jul 19 19:36:39 srv896300 node[24307]:   method: 'GET',
+Jul 19 19:36:39 srv896300 node[24307]:   sessionId: '8B2P_dBXGqKOH8ijuDPMbZ_r8IbkSs9v',
+Jul 19 19:36:39 srv896300 node[24307]:   userId: 1,
+Jul 19 19:36:39 srv896300 node[24307]:   hasSession: true,
+Jul 19 19:36:39 srv896300 node[24307]:   cookies: []
+Jul 19 19:36:39 srv896300 node[24307]: }
+Jul 19 19:36:39 srv896300 node[24307]: 🔍 SESSION DEBUG: {
+Jul 19 19:36:39 srv896300 node[24307]:   path: '/uploads/1752610587400-f2fa71f7-bce3-4cec-9df2-2ca44afadf29.jpg',
+Jul 19 19:36:39 srv896300 node[24307]:   method: 'GET',
+Jul 19 19:36:39 srv896300 node[24307]:   sessionId: '8B2P_dBXGqKOH8ijuDPMbZ_r8IbkSs9v',
+Jul 19 19:36:39 srv896300 node[24307]:   userId: 1,
+Jul 19 19:36:39 srv896300 node[24307]:   hasSession: true,
+Jul 19 19:36:39 srv896300 node[24307]:   cookies: []
+Jul 19 19:36:39 srv896300 node[24307]: }
+Jul 19 19:36:39 srv896300 node[24307]: 🔍 SESSION DEBUG: {
+Jul 19 19:36:39 srv896300 node[24307]:   path: '/uploads/1752268796342-c671fc58-859d-40da-b530-be12de4dcc4a.jpg',
+Jul 19 19:36:39 srv896300 node[24307]:   method: 'GET',
+Jul 19 19:36:39 srv896300 node[24307]:   sessionId: '8B2P_dBXGqKOH8ijuDPMbZ_r8IbkSs9v',
+Jul 19 19:36:39 srv896300 node[24307]:   userId: 1,
+Jul 19 19:36:39 srv896300 node[24307]:   hasSession: true,
+Jul 19 19:36:39 srv896300 node[24307]:   cookies: []
+Jul 19 19:36:39 srv896300 node[24307]: }

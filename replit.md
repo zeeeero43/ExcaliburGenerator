@@ -618,6 +618,11 @@ Changelog:
   * Improved client-side error messages to include backend error details for better troubleshooting
   * BREAKTHROUGH: subcategoryId NaN bug fix resolved VPS deletion issues - category deletion now working correctly
   * Root cause identified: Invalid subcategoryId values (NaN) caused foreign key constraint violations during product deletion cascade
+- July 19, 2025 (server performance optimization). Removed excessive debug middleware that was logging every request per second:
+  * Fixed critical performance issue: disabled session debug middleware in production mode
+  * Reduced auth logging to only deletion operations and development mode
+  * Debug logs now only show for admin operations, not every page request or image load
+  * Major performance improvement for VPS production environment
 ```
 
 ## User Preferences

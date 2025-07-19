@@ -1,12 +1,12 @@
-# CRITICAL VPS DEBUGGING FIXES - July 19, 2025
+# CRITICAL VPS PERFORMANCE & DEBUGGING FIXES - July 19, 2025
 
-## Problem Description
-- Category deletion works on development server
-- Category deletion fails on VPS with 500 Internal Server Error
-- Need to identify exact backend error causing the failure
+## Problems Fixed
+1. ✅ **Category deletion** - subcategoryId NaN bug resolved
+2. ✅ **Performance issue** - excessive debug logging removed
 
-## Solution Implemented
-Enhanced backend logging for all deletion operations to identify the exact error.
+## Solutions Implemented
+1. Fixed subcategoryId null handling (resolved deletion cascades)
+2. Disabled debug middleware in production (major performance improvement)
 
 ## Deployment Steps
 
