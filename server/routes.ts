@@ -15,6 +15,40 @@ import sharp from "sharp";
 import { v4 as uuidv4 } from "uuid";
 import geoip from 'geoip-lite';
 
+// CHINA BLOCKING MIDDLEWARE - Blocks all Chinese IP addresses
+function blockChinaMiddleware(req: any, res: any, next: any) {
+  // Get real IP address (handle proxy headers)
+  const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
+  const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
+  
+  // Skip blocking for local/development IPs
+  if (clientIp === '127.0.0.1' || clientIp.startsWith('192.168.') || clientIp.startsWith('10.') || clientIp === 'unknown') {
+    return next();
+  }
+  
+  // Check if IP is from China
+  const geo = geoip.lookup(clientIp);
+  if (geo && geo.country === 'CN') {
+    console.log(`🚫 CHINA BLOCKED: IP ${clientIp} from ${geo.city || 'China'} - Access denied`);
+    
+    // Return simple blocked message
+    return res.status(403).send(`
+      <!DOCTYPE html>
+      <html>
+      <head><title>Access Denied</title></head>
+      <body style="font-family: Arial; text-align: center; padding: 50px;">
+        <h1>Access Denied</h1>
+        <p>This website is not available in your region.</p>
+        <p>IP: ${clientIp}</p>
+      </body>
+      </html>
+    `);
+  }
+  
+  // Allow all other countries
+  next();
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -183,6 +217,10 @@ function simpleTranslation(text: string, fromLang: string, toLang: string): stri
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup session middleware
   setupSession(app);
+
+  // CHINA BLOCKING: Apply to ALL routes - must be before other routes
+  app.use(blockChinaMiddleware);
+  console.log("🚫 CHINA BLOCKING: Middleware activated for all routes");
 
   // CRITICAL: Register API routes IMMEDIATELY after session setup to ensure priority
   console.log("🔥 CRITICAL: Registering API routes with HIGH PRIORITY");
