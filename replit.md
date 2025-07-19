@@ -610,6 +610,12 @@ Changelog:
   * Fixed data loading: Proper null preservation when editing existing products
   * Fixed server routes: Enhanced null/undefined/NaN handling in both CREATE and UPDATE endpoints
   * Optional subcategory system now fully functional - products can be assigned to categories without subcategories
+- July 19, 2025 (VPS deletion debugging). Enhanced deletion system with comprehensive error logging:
+  * Added detailed server-side logging for category and subcategory deletion operations
+  * Enhanced error reporting with exact error names, messages, and stack traces for VPS debugging
+  * Identified deletion works in development but fails on VPS with 500 Internal Server Error
+  * Created CRITICAL_PRODUCTION_FIXES.md with deployment steps and debugging guide
+  * Improved client-side error messages to include backend error details for better troubleshooting
 ```
 
 ## User Preferences

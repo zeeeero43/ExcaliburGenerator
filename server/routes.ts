@@ -406,19 +406,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/admin/subcategories/:id", isAuthenticated, async (req, res) => {
     try {
       const subcategoryId = parseInt(req.params.id);
+      console.log(`🗑️ SERVER DELETE SUBCATEGORY: Starting deletion for subcategory ID: ${subcategoryId}`);
       
       // First update all products in this subcategory to remove subcategory reference
+      console.log(`🗑️ SERVER DELETE SUBCATEGORY: Fetching products for subcategory ${subcategoryId}`);
       const products = await storage.getProducts({ subcategoryId });
+      console.log(`🗑️ SERVER DELETE SUBCATEGORY: Found ${products.length} products to update`);
+      
       for (const product of products) {
+        console.log(`🗑️ SERVER DELETE SUBCATEGORY: Updating product ${product.id} to remove subcategory reference`);
         await storage.updateProduct(product.id, { subcategoryId: null });
       }
+      console.log(`🗑️ SERVER DELETE SUBCATEGORY: All products updated successfully`);
       
       // Then delete the subcategory
+      console.log(`🗑️ SERVER DELETE SUBCATEGORY: Deleting subcategory ${subcategoryId}`);
       await storage.deleteSubcategory(subcategoryId);
+      console.log(`🗑️ SERVER DELETE SUBCATEGORY: Subcategory ${subcategoryId} deleted successfully`);
+      
       res.json({ success: true });
     } catch (error) {
-      console.error("Error deleting subcategory:", error);
-      res.status(500).json({ error: "Failed to delete subcategory" });
+      console.error("🗑️ SERVER DELETE SUBCATEGORY: CRITICAL ERROR:", error);
+      console.error("🗑️ SERVER DELETE SUBCATEGORY: Error name:", error.name);
+      console.error("🗑️ SERVER DELETE SUBCATEGORY: Error message:", error.message);
+      console.error("🗑️ SERVER DELETE SUBCATEGORY: Error stack:", error.stack);
+      res.status(500).json({ error: "Failed to delete subcategory", details: error.message });
     }
   });
 
@@ -489,25 +501,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/admin/categories/:id", isAuthenticated, async (req, res) => {
     try {
       const categoryId = parseInt(req.params.id);
+      console.log(`🗑️ SERVER DELETE CATEGORY: Starting deletion for category ID: ${categoryId}`);
       
       // First delete all products in this category to avoid foreign key constraints
+      console.log(`🗑️ SERVER DELETE CATEGORY: Fetching products for category ${categoryId}`);
       const products = await storage.getProducts({ categoryId });
+      console.log(`🗑️ SERVER DELETE CATEGORY: Found ${products.length} products to delete`);
+      
       for (const product of products) {
+        console.log(`🗑️ SERVER DELETE CATEGORY: Deleting product ${product.id} (${product.nameEs})`);
         await storage.deleteProduct(product.id);
       }
+      console.log(`🗑️ SERVER DELETE CATEGORY: All products deleted successfully`);
       
       // Delete all subcategories in this category
+      console.log(`🗑️ SERVER DELETE CATEGORY: Fetching subcategories for category ${categoryId}`);
       const subcategories = await storage.getSubcategories(categoryId);
+      console.log(`🗑️ SERVER DELETE CATEGORY: Found ${subcategories.length} subcategories to delete`);
+      
       for (const subcategory of subcategories) {
+        console.log(`🗑️ SERVER DELETE CATEGORY: Deleting subcategory ${subcategory.id} (${subcategory.nameEs})`);
         await storage.deleteSubcategory(subcategory.id);
       }
+      console.log(`🗑️ SERVER DELETE CATEGORY: All subcategories deleted successfully`);
       
       // Now delete the category
+      console.log(`🗑️ SERVER DELETE CATEGORY: Deleting category ${categoryId}`);
       await storage.deleteCategory(categoryId);
+      console.log(`🗑️ SERVER DELETE CATEGORY: Category ${categoryId} deleted successfully`);
+      
       res.json({ success: true });
     } catch (error) {
-      console.error("Error deleting category:", error);
-      res.status(500).json({ error: "Failed to delete category" });
+      console.error("🗑️ SERVER DELETE CATEGORY: CRITICAL ERROR:", error);
+      console.error("🗑️ SERVER DELETE CATEGORY: Error name:", error.name);
+      console.error("🗑️ SERVER DELETE CATEGORY: Error message:", error.message);
+      console.error("🗑️ SERVER DELETE CATEGORY: Error stack:", error.stack);
+      res.status(500).json({ error: "Failed to delete category", details: error.message });
     }
   });
 
