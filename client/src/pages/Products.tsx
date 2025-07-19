@@ -273,20 +273,38 @@ export default function Products() {
                               target.src = 'https://images.unsplash.com/photo-1559302504-64aae6ca6834?w=500&h=500&fit=crop';
                             }}
                           />
+                          {product.isFeatured && (
+                            <Badge className="absolute top-3 left-3 bg-excalibur-orange text-white">
+                              {t('featured')}
+                            </Badge>
+                          )}
                           
-                          {/* Button positioned top-right over image */}
+                          {/* Availability Info - Top Right */}
                           <div className="absolute top-2 right-2">
-                            <Link to={`/product/${product.slug}`}>
-                              <Button 
-                                variant="default" 
-                                size="xs" 
-                                className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <Eye className="w-3 h-3 mr-1" />
-                                Details
-                              </Button>
-                            </Link>
+                            {(() => {
+                              const availabilityText = getAvailabilityText(product);
+                              if (availabilityText && availabilityText !== t('in_stock')) {
+                                return (
+                                  <Badge className="bg-yellow-500 text-white text-xs px-2 py-1">
+                                    {availabilityText}
+                                  </Badge>
+                                );
+                              }
+                              return null;
+                            })()}
+                          </div>
+                          
+                          {/* Details Button - Bottom Left */}
+                          <div className="absolute bottom-2 left-2">
+                            <Button 
+                              variant="default" 
+                              size="xs" 
+                              className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs px-2 py-1"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Eye className="w-3 h-3 mr-1" />
+                              Details
+                            </Button>
                           </div>
                         </div>
                         

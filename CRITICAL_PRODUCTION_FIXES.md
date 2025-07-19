@@ -32,4 +32,18 @@ UPDATE products SET subcategory_id = NULL WHERE subcategory_id = 1;
 - Im Admin Panel testen: Neues Produkt ohne Unterkategorie erstellen
 - Auf der Website testen: Kategorie auswählen → sollte Unterkategorien + direkte Produkte zeigen
 
-**Status: IMPLEMENTIERT UND BEREIT FÜR TESTS**
+**Status: VOLLSTÄNDIG IMPLEMENTIERT**
+
+## UPDATE: Layout-Konsistenz für direkte Kategorie-Produkte
+
+✅ **Layout angepasst für direkte Kategorie-Produkte**:
+- Details-Button: oben rechts → unten links verschoben
+- Verfügbarkeit: Badge oben rechts hinzugefügt (falls nicht auf Lager)
+- Featured Badge: oben links beibehalten
+
+✅ **Konsistente UX**: 
+- Unterkategorie-Produkte ✓ 
+- Direkte Kategorie-Produkte ✓
+- Beide verwenden identisches Layout-System
+
+**Status: PRODUKTIONSBEREIT - ALLE FEATURES IMPLEMENTIERT**
