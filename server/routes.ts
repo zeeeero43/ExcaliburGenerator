@@ -13,6 +13,7 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 import { v4 as uuidv4 } from "uuid";
+import geoip from 'geoip-lite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,31 +57,32 @@ async function compressAndSaveImage(buffer: Buffer, originalName: string): Promi
   return filename;
 }
 
-// VPS-COMPATIBLE IP to country mapping - NO external API calls
+// REAL GEOLOCATION with local database - VPS COMPATIBLE  
 async function getCountryFromIP(ip: string): Promise<string | null> {
-  console.log("🌍 Analytics: IP detection for:", ip);
+  console.log("🌍 Real Analytics: IP detection for:", ip);
   
-  // VPS-COMPATIBLE: Always return Cuba in production (VPS environment)
-  if (process.env.NODE_ENV === 'production') {
-    console.log("🌍 VPS Analytics: Production mode - defaulting to Cuba");
+  try {
+    // Local development fallbacks
+    if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip === 'unknown') {
+      console.log("🌍 Local Analytics: Local IP detected - defaulting to Germany");
+      return 'DE';
+    }
+    
+    // REAL GEOLOCATION using local database (works on VPS!)
+    const geo = geoip.lookup(ip);
+    if (geo && geo.country) {
+      console.log("🌍 Real Analytics: Country detected:", geo.country, "for IP:", ip);
+      return geo.country;
+    }
+    
+    // Fallback if IP not found in database
+    console.log("🌍 Real Analytics: IP not found in database, defaulting to Cuba");
     return 'CU';
+    
+  } catch (error) {
+    console.error("🌍 Geolocation Error:", error);
+    return 'CU'; // Fallback to Cuba
   }
-  
-  // In development, return Germany for German testing
-  if (process.env.NODE_ENV === 'development') {
-    console.log("🌍 Dev Analytics: Development mode - defaulting to Germany");
-    return 'DE';
-  }
-  
-  // Local development fallback
-  if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip === 'unknown') {
-    console.log("🌍 Local Analytics: Local IP detected - defaulting to Germany");
-    return 'DE';
-  }
-  
-  // NO EXTERNAL API CALLS on VPS - always return Cuba for Cuban market
-  console.log("🌍 Fallback Analytics: Defaulting to Cuba for target market");
-  return 'CU';
 }
 
 // Helper function to generate slug from text
