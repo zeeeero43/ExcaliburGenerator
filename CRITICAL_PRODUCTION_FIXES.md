@@ -47,3 +47,18 @@ UPDATE products SET subcategory_id = NULL WHERE subcategory_id = 1;
 - Beide verwenden identisches Layout-System
 
 **Status: PRODUKTIONSBEREIT - ALLE FEATURES IMPLEMENTIERT**
+
+## KRITISCHER BUG FIX: subcategoryId NaN Error
+
+✅ **Problem identifiziert**: "Expected number, received nan" beim Bearbeiten von Produkten ohne Unterkategorie
+
+✅ **Umfassende Lösung implementiert**:
+- **Zod Schema**: `z.number().nullable().optional()` für subcategoryId
+- **Form Defaults**: `null` anstatt `undefined` verwenden
+- **Select Component**: Verbesserte Null-Behandlung in onValueChange/value
+- **Datenladung**: Korrekte Null-Preservation beim Bearbeiten
+- **Server Routes**: Enhanced null/undefined/NaN handling für CREATE/UPDATE
+
+✅ **Getestet**: Optionales Unterkategorien-System funktioniert vollständig
+
+**Status: ALLE BUGS BEHOBEN - SYSTEM EINSATZBEREIT**

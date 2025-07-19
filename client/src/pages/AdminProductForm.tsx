@@ -29,7 +29,7 @@ const productFormSchema = z.object({
   descriptionEs: z.string().optional(),
   descriptionEn: z.string().optional(),
   categoryId: z.number().min(1, 'Kategorie ist erforderlich'),
-  subcategoryId: z.number().optional(),
+  subcategoryId: z.number().nullable().optional(),
   sku: z.string().optional(),
   oldPrice: z.string().optional(),
   newPrice: z.string().optional(),
@@ -70,7 +70,7 @@ export default function AdminProductForm() {
       descriptionEs: '',
       descriptionEn: '',
       categoryId: 1,
-      subcategoryId: undefined,
+      subcategoryId: null,
       sku: '',
       oldPrice: '',
       newPrice: '',
@@ -264,7 +264,7 @@ export default function AdminProductForm() {
         descriptionEs: product.descriptionEs || '',
         descriptionEn: product.descriptionEn || '',
         categoryId: product.categoryId || 1,
-        subcategoryId: product.subcategoryId || undefined,
+        subcategoryId: product.subcategoryId === null ? null : product.subcategoryId,
         sku: product.sku || '',
         oldPrice: product.oldPrice || product.price || '',
         newPrice: product.newPrice || '',
@@ -282,9 +282,12 @@ export default function AdminProductForm() {
 
       // Ensure subcategory is properly set after category is set
       setTimeout(() => {
-        if (product.subcategoryId) {
-          form.setValue('subcategoryId', product.subcategoryId);
+        if (product.subcategoryId !== undefined) {
+          form.setValue('subcategoryId', product.subcategoryId === null ? null : product.subcategoryId);
           console.log('🔄 Setting subcategoryId after delay:', product.subcategoryId);
+        } else {
+          form.setValue('subcategoryId', null);
+          console.log('🔄 Setting subcategoryId to null (no subcategory)');
         }
       }, 100);
     }
@@ -509,13 +512,14 @@ export default function AdminProductForm() {
                     <FormItem>
                       <FormLabel>3. Unterkategorie (optional)</FormLabel>
                       <Select
-                        value={field.value?.toString() || 'none'}
+                        value={field.value ? field.value.toString() : 'none'}
                         onValueChange={(value) => {
                           console.log('🔄 Subcategory changed to:', value);
                           if (value === 'none') {
-                            field.onChange(undefined);
+                            field.onChange(null);
                           } else {
-                            field.onChange(parseInt(value));
+                            const numValue = parseInt(value);
+                            field.onChange(isNaN(numValue) ? null : numValue);
                           }
                         }}
                         disabled={!selectedCategoryId}

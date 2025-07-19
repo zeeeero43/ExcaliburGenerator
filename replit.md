@@ -601,6 +601,15 @@ Changelog:
   * Solution: Run "npm run db:push" on VPS to sync database schema or manually add column via SQL
   * All 47 products safe - issue is purely database schema synchronization, not data corruption
   * VPS deployment process updated to include mandatory database schema updates
+- July 19, 2025 (critical subcategoryId NaN bug fix). Resolved "Expected number, received nan" error:
+  * CRITICAL ISSUE: subcategoryId field showing NaN instead of null for products without subcategories
+  * Root cause: Multiple points of failure in null/undefined handling throughout form and server processing
+  * Fixed Zod schema: Changed `z.number().optional()` to `z.number().nullable().optional()`
+  * Fixed form defaults: Changed `subcategoryId: undefined` to `subcategoryId: null`
+  * Fixed Select component: Improved null handling in onValueChange and value props
+  * Fixed data loading: Proper null preservation when editing existing products
+  * Fixed server routes: Enhanced null/undefined/NaN handling in both CREATE and UPDATE endpoints
+  * Optional subcategory system now fully functional - products can be assigned to categories without subcategories
 ```
 
 ## User Preferences
