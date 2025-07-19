@@ -1121,6 +1121,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         case 'TR': // Turkey
           language = 'en'; // Use English for Turkish users
           break;
+        case 'FR': // France
+          language = 'en'; // Use English for French users
+          break;
         default:
           language = 'es'; // Spanish as primary default for Cuban market
       }
@@ -1278,16 +1281,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
           
-          // Store analytics data
-          await storage.createPageView({
-            ipAddress,
-            userAgent,
-            country: country || 'CU',
-            city: null,
-            page: req.path,
-            referrer: req.get('Referer') || null,
-            language: req.get('Accept-Language')?.split(',')[0] || null,
-          });
+          // OLD ANALYTICS CODE REMOVED - Now using simple visitor tracking only
         } catch (error) {
           console.error('Analytics tracking error:', error);
           // Continue silently to avoid blocking the application
