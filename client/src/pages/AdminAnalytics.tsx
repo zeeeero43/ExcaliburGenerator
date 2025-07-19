@@ -33,11 +33,20 @@ export default function AdminAnalytics() {
   const { isAuthenticated, isLoading: authLoading } = useAdminAuth();
   const [selectedPeriod, setSelectedPeriod] = useState<'day' | 'month' | 'year'>('month');
 
-  const { data: analytics, isLoading: analyticsLoading, refetch } = useQuery<AnalyticsData>({
+  const { data: analytics, isLoading: analyticsLoading, refetch, error } = useQuery<AnalyticsData>({
     queryKey: ['/api/admin/analytics', selectedPeriod],
     enabled: isAuthenticated,
     refetchInterval: 60000, // Aktualisierung alle 60 Sekunden
     refetchOnWindowFocus: true, // Aktualisierung beim Fensterfokus
+  });
+
+  // DEBUG CONSOLE LOGGING
+  console.log('🔍 ANALYTICS DEBUG:', {
+    isAuthenticated,
+    selectedPeriod,
+    analyticsLoading,
+    analytics,
+    error
   });
 
   if (authLoading) {
@@ -144,6 +153,18 @@ export default function AdminAnalytics() {
             <p className="text-xs text-muted-foreground">
               Verschiedene IP-Adressen
             </p>
+            {/* DEBUG INFO */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="mt-2 text-xs text-gray-500 border p-2 rounded">
+                DEBUG: {JSON.stringify({ 
+                  uniqueVisitors: analytics?.uniqueVisitors, 
+                  hasData: !!analytics,
+                  topCountries: analytics?.topCountries?.length,
+                  topProducts: analytics?.topProducts?.length,
+                  rawData: analytics 
+                }, null, 2)}
+              </div>
+            )}
           </CardContent>
         </Card>
 

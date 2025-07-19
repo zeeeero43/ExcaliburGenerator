@@ -1020,7 +1020,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("📊 VPS Analytics: Analytics retrieved successfully:", {
         uniqueVisitors: analytics.uniqueVisitors,
         topProductsCount: analytics.topProducts?.length || 0,
-        topCountriesCount: analytics.topCountries?.length || 0
+        topCountriesCount: analytics.topCountries?.length || 0,
+        fullData: JSON.stringify(analytics, null, 2)
       });
       res.json(analytics);
     } catch (error) {
