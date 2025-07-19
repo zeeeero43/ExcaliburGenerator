@@ -623,6 +623,13 @@ Changelog:
   * Reduced auth logging to only deletion operations and development mode
   * Debug logs now only show for admin operations, not every page request or image load
   * Major performance improvement for VPS production environment
+- July 19, 2025 (translation system optimization). Enhanced translation system for better reliability and performance:
+  * Reduced LibreTranslate timeout from 8s to 3s for faster fallback to secondary services
+  * Fixed MyMemory API 403 errors by adding proper browser headers and user-agent
+  * Added dictionary-based fallback for 20+ common UI terms (Details, Produkte, Verfügbar, etc.)
+  * Implemented three-tier translation system: LibreTranslate → MyMemory → Dictionary
+  * Critical UI elements now always translate even when external APIs fail
+  * Translation requests now complete faster with improved error handling
 ```
 
 ## User Preferences

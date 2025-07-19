@@ -108,6 +108,87 @@ function generateSlug(text: string): string {
   return `${baseSlug}-${timestamp}`;
 }
 
+// Simple dictionary-based translation for common words/phrases
+function simpleTranslation(text: string, fromLang: string, toLang: string): string {
+  const translations: Record<string, Record<string, string>> = {
+    // German to Spanish
+    'de-es': {
+      'Details': 'Detalles',
+      'details': 'detalles',
+      'Details anzeigen': 'Ver detalles',
+      'Produkte': 'Productos',
+      'Kategorien': 'Categorías',
+      'Verfügbar': 'Disponible',
+      'verfügbar': 'disponible',
+      'Nicht verfügbar': 'No disponible',
+      'Begrenzt verfügbar': 'Disponibilidad limitada',
+      'In den Warenkorb': 'Añadir al carrito',
+      'Warenkorb': 'Carrito',
+      'Startseite': 'Página principal',
+      'Über uns': 'Acerca de nosotros',
+      'Kontakt': 'Contacto',
+      'Preis': 'Precio',
+    },
+    // German to English
+    'de-en': {
+      'Details': 'Details',
+      'details': 'details',
+      'Details anzeigen': 'View details',
+      'Produkte': 'Products',
+      'Kategorien': 'Categories',
+      'Verfügbar': 'Available',
+      'verfügbar': 'available',
+      'Nicht verfügbar': 'Not available',
+      'Begrenzt verfügbar': 'Limited availability',
+      'In den Warenkorb': 'Add to cart',
+      'Warenkorb': 'Cart',
+      'Startseite': 'Home',
+      'Über uns': 'About us',
+      'Kontakt': 'Contact',
+      'Preis': 'Price',
+    },
+    // Spanish to German
+    'es-de': {
+      'Detalles': 'Details',
+      'detalles': 'Details',
+      'Ver detalles': 'Details anzeigen',
+      'Productos': 'Produkte',
+      'Categorías': 'Kategorien',
+      'Disponible': 'Verfügbar',
+      'disponible': 'verfügbar',
+      'No disponible': 'Nicht verfügbar',
+      'Disponibilidad limitada': 'Begrenzt verfügbar',
+      'Añadir al carrito': 'In den Warenkorb',
+      'Carrito': 'Warenkorb',
+      'Página principal': 'Startseite',
+      'Acerca de nosotros': 'Über uns',
+      'Contacto': 'Kontakt',
+      'Precio': 'Preis',
+    },
+  };
+  
+  const langPair = `${fromLang}-${toLang}`;
+  const dictionary = translations[langPair];
+  
+  if (!dictionary) {
+    return text; // No dictionary available for this language pair
+  }
+  
+  // Check for exact matches first
+  if (dictionary[text]) {
+    return dictionary[text];
+  }
+  
+  // Check for partial matches in common phrases
+  for (const [key, value] of Object.entries(dictionary)) {
+    if (text.includes(key)) {
+      return text.replace(key, value);
+    }
+  }
+  
+  return text; // No translation found
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup session middleware
   setupSession(app);
@@ -193,7 +274,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             source: fromLang,
             target: toLang
           }),
-          signal: AbortSignal.timeout(8000) // 8 second timeout
+          signal: AbortSignal.timeout(3000) // 3 second timeout for faster fallback
         });
 
         if (libreResponse.ok) {
@@ -214,9 +295,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const response = await fetch(url, {
           headers: {
-            'User-Agent': 'ExcaliburCuba/1.0 (+info@excalibur-cuba.com)'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Cache-Control': 'no-cache'
           },
-          signal: AbortSignal.timeout(10000) // 10 second timeout
+          signal: AbortSignal.timeout(5000) // 5 second timeout
         });
         
         if (!response.ok) {
@@ -238,8 +322,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
         
-        // If we get here, both APIs failed or returned errors
-        console.log(`❌ All translation APIs failed, returning original text`);
+        // If we get here, both APIs failed - try simple dictionary fallback
+        console.log(`🔄 Trying simple dictionary fallback...`);
+        const dictionaryResult = simpleTranslation(text, fromLang, toLang);
+        if (dictionaryResult !== text) {
+          console.log(`✅ Dictionary fallback success: "${text}" -> "${dictionaryResult}"`);
+          return res.json({ translatedText: dictionaryResult, provider: 'Dictionary' });
+        }
+        
+        console.log(`❌ All translation methods failed, returning original text`);
         res.json({ 
           translatedText: text, 
           error: 'ALL_APIS_FAILED', 
@@ -248,6 +339,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
       } catch (fetchError: any) {
         console.error('❌ MyMemory API error:', fetchError.message);
+        
+        // Try dictionary fallback before giving up
+        console.log(`🔄 Trying dictionary fallback after MyMemory failure...`);
+        const dictionaryResult = simpleTranslation(text, fromLang, toLang);
+        if (dictionaryResult !== text) {
+          console.log(`✅ Dictionary fallback success: "${text}" -> "${dictionaryResult}"`);
+          return res.json({ translatedText: dictionaryResult, provider: 'Dictionary' });
+        }
+        
         res.json({ 
           translatedText: text, 
           error: 'NETWORK_ERROR', 
