@@ -651,7 +651,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         newPrice: req.body.newPrice ? req.body.newPrice.toString() : null,
         shortDescription: req.body.shortDescriptionEs,
         description: req.body.descriptionEs,
-        subcategoryId: req.body.subcategoryId === 0 ? null : req.body.subcategoryId, // Convert 0 to null
+        subcategoryId: (req.body.subcategoryId === 0 || req.body.subcategoryId === null || req.body.subcategoryId === undefined || isNaN(req.body.subcategoryId)) ? null : req.body.subcategoryId, // Convert 0, null, undefined, NaN to null
       };
       
       const productData = insertProductSchema.parse(transformedData);
@@ -700,7 +700,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         newPrice: req.body.newPrice ? req.body.newPrice.toString() : null,
         shortDescription: req.body.shortDescriptionEs,
         description: req.body.descriptionEs,
-        subcategoryId: req.body.subcategoryId === 0 ? null : req.body.subcategoryId, // Convert 0 to null
+        subcategoryId: (req.body.subcategoryId === 0 || req.body.subcategoryId === null || req.body.subcategoryId === undefined || isNaN(req.body.subcategoryId)) ? null : req.body.subcategoryId, // Convert 0, null, undefined, NaN to null
       };
       
       const product = await storage.updateProduct(id, transformedData);
