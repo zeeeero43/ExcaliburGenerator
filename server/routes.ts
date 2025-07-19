@@ -1039,24 +1039,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`📊 PRODUCT CLICK: Product ${productId}, IP=${ip}`);
       
-      // Get country from IP
+      // Get real IP address (handle proxy headers)
+      const realIp = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || ip;
+      const clientIp = Array.isArray(realIp) ? realIp[0] : realIp.toString().split(',')[0].trim();
+      
+      console.log(`📊 IP DETECTION: Original=${ip}, Real=${clientIp}`);
+      
+      // Get country from IP using geoip-lite
       let country = 'CU'; // Default to Cuba
-      if (ip !== 'unknown' && ip !== '127.0.0.1' && !ip.startsWith('192.168.') && !ip.startsWith('10.') && !ip.startsWith('172.')) {
-        const geo = geoip.lookup(ip);
+      if (clientIp !== 'unknown' && clientIp !== '127.0.0.1' && !clientIp.startsWith('192.168.') && !clientIp.startsWith('10.')) {
+        const geo = geoip.lookup(clientIp);
         if (geo && geo.country) {
           country = geo.country;
-          console.log(`📊 GEOIP: IP ${ip} → ${country}`);
+          console.log(`📊 GEOIP SUCCESS: IP ${clientIp} → ${country} (${geo.city || 'Unknown city'})`);
         } else {
-          console.log(`📊 GEOIP: IP ${ip} not found, using CU`);
+          console.log(`📊 GEOIP FAILED: IP ${clientIp} not found in database, using default CU`);
         }
       } else {
-        console.log(`📊 LOCAL IP: Using DE for development`);
-        country = 'DE'; // Development default
+        console.log(`📊 LOCAL IP: ${clientIp} is local/development IP, using default CU`);
       }
       
       // Track visitor (get existing or create new)
-      const visitor = await storage.trackVisitor(ip, country);
-      console.log(`📊 VISITOR: ID ${visitor.id}, IP ${visitor.ipAddress}, Country ${visitor.country}`);
+      const visitor = await storage.trackVisitor(clientIp, country);
+      console.log(`📊 VISITOR: ID ${visitor.id}, IP ${visitor.ipAddress}, Country ${visitor.country} (Real IP: ${clientIp})`);
       
       // Track product click
       await storage.trackProductClick(parseInt(productId), visitor.id);
@@ -1073,35 +1078,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/geolocation", async (req, res) => {
     try {
       const ip = req.ip || req.connection.remoteAddress || 'unknown';
-      const country = await getCountryFromIP(ip);
+      
+      // Get real IP address (handle proxy headers)
+      const realIp = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || ip;
+      const clientIp = Array.isArray(realIp) ? realIp[0] : realIp.toString().split(',')[0].trim();
+      
+      console.log(`🌍 GEOLOCATION: Original=${ip}, Real=${clientIp}`);
+      
+      // Use geoip-lite for accurate country detection
+      let country = 'CU';
+      if (clientIp !== 'unknown' && clientIp !== '127.0.0.1' && !clientIp.startsWith('192.168.') && !clientIp.startsWith('10.')) {
+        const geo = geoip.lookup(clientIp);
+        if (geo && geo.country) {
+          country = geo.country;
+          console.log(`🌍 GEOLOCATION SUCCESS: IP ${clientIp} → ${country} (${geo.city || 'Unknown city'})`);
+        } else {
+          console.log(`🌍 GEOLOCATION FAILED: IP ${clientIp} not found, using default CU`);
+        }
+      } else {
+        console.log(`🌍 LOCAL IP: ${clientIp} is local/development IP, using default CU`);
+      }
       
       // Map countries to languages - Default to Spanish for Cuban market
       let language = 'es'; // Default to Spanish for Cuban market
       
-      if (country) {
-        switch(country) {
-          case 'DE':
-          case 'AT':
-          case 'CH':
-            language = 'de';
-            break;
-          case 'ES':
-          case 'CU':
-            language = 'es';
-            break;
-          case 'US':
-          case 'GB':
-          case 'CA':
-          case 'AU':
-            language = 'en';
-            break;
-          default:
-            language = 'es'; // Spanish as primary default for Cuban market
-        }
+      switch(country) {
+        case 'DE':
+        case 'AT':
+        case 'CH':
+          language = 'de';
+          break;
+        case 'ES':
+        case 'CU':
+          language = 'es';
+          break;
+        case 'US':
+        case 'GB':
+        case 'CA':
+        case 'AU':
+          language = 'en';
+          break;
+        case 'TR': // Turkey
+          language = 'en'; // Use English for Turkish users
+          break;
+        default:
+          language = 'es'; // Spanish as primary default for Cuban market
       }
       
       res.json({ 
-        country: country || 'CU', // Default to Cuba
+        country: country,
         language 
       });
     } catch (error) {
