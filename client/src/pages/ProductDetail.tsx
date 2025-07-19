@@ -26,12 +26,12 @@ export default function ProductDetail() {
     retry: false,
   });
 
-  // Track product view
+  // Track product click (simple system)
   useEffect(() => {
     if (product) {
-      const trackProductView = async () => {
+      const trackProductClick = async () => {
         try {
-          console.log(`📊 FRONTEND: Tracking view for product ${product.id} (${product.nameEs})`);
+          console.log(`📊 FRONTEND: Tracking click for product ${product.id} (${product.nameEs})`);
           const response = await fetch('/api/track/product', {
             method: 'POST',
             headers: {
@@ -39,17 +39,15 @@ export default function ProductDetail() {
             },
             body: JSON.stringify({
               productId: product.id,
-              userAgent: navigator.userAgent,
-              referrer: document.referrer,
             }),
           });
           const result = await response.json();
-          console.log(`📊 FRONTEND: Product tracking result:`, result);
+          console.log(`📊 FRONTEND: Product click tracking result:`, result);
         } catch (error) {
-          console.error('📊 FRONTEND: Error tracking product view:', error);
+          console.error('📊 FRONTEND: Error tracking product click:', error);
         }
       };
-      trackProductView();
+      trackProductClick();
     }
   }, [product]);
 

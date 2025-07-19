@@ -6,8 +6,8 @@ import {
   inquiries,
   siteSettings,
   uploadedImages,
-  pageViews,
-  productViews,
+  visitors,
+  productClicks,
   type AdminUser,
   type InsertAdminUser,
   type Category,
@@ -22,10 +22,10 @@ import {
   type InsertSiteSetting,
   type UploadedImage,
   type InsertUploadedImage,
-  type PageView,
-  type InsertPageView,
-  type ProductView,
-  type InsertProductView,
+  type Visitor,
+  type InsertVisitor,
+  type ProductClick,
+  type InsertProductClick,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, or, ilike, count, countDistinct, sql, gte, isNotNull } from "drizzle-orm";
@@ -399,18 +399,42 @@ export class DatabaseStorage implements IStorage {
     await db.delete(uploadedImages).where(eq(uploadedImages.id, id));
   }
 
-  // Analytics methods
-  async createPageView(pageView: InsertPageView): Promise<PageView> {
-    const [created] = await db.insert(pageViews).values(pageView).returning();
-    return created;
+  // SIMPLE ANALYTICS SYSTEM
+  async trackVisitor(ipAddress: string, country: string): Promise<Visitor> {
+    // Try to find existing visitor by IP
+    const [existingVisitor] = await db
+      .select()
+      .from(visitors)
+      .where(eq(visitors.ipAddress, ipAddress))
+      .limit(1);
+
+    if (existingVisitor) {
+      // Update last visit time
+      const [updatedVisitor] = await db
+        .update(visitors)
+        .set({ lastVisit: new Date() })
+        .where(eq(visitors.id, existingVisitor.id))
+        .returning();
+      return updatedVisitor;
+    } else {
+      // Create new visitor
+      const [newVisitor] = await db
+        .insert(visitors)
+        .values({ ipAddress, country })
+        .returning();
+      return newVisitor;
+    }
   }
 
-  async createProductView(productView: InsertProductView): Promise<ProductView> {
-    const [created] = await db.insert(productViews).values(productView).returning();
-    return created;
+  async trackProductClick(productId: number, visitorId: number): Promise<ProductClick> {
+    const [productClick] = await db
+      .insert(productClicks)
+      .values({ productId, visitorId })
+      .returning();
+    return productClick;
   }
 
-  async getAnalytics(period: 'day' | 'month' | 'year'): Promise<{
+  async getSimpleAnalytics(period: 'day' | 'month' | 'year'): Promise<{
     uniqueVisitors: number;
     topProducts: Array<{ product: string; views: number; id: number }>;
     topCountries: Array<{ country: string; uniqueVisitors: number }>;
@@ -430,56 +454,50 @@ export class DatabaseStorage implements IStorage {
         break;
     }
 
-    // Unique visitors from PAGE VIEWS (based on IP)
+    // Count unique visitors in time period
     const [uniqueVisitorsResult] = await db
-      .select({ count: countDistinct(pageViews.ipAddress) })
-      .from(pageViews)
-      .where(gte(pageViews.viewedAt, startDate));
+      .select({ count: countDistinct(visitors.id) })
+      .from(visitors)
+      .where(gte(visitors.firstVisit, startDate));
 
-    // Top products with GERMAN product names (fallback to Spanish if German not available)
+    // Top products by clicks with German names
     const topProductsResult = await db
       .select({
-        productId: productViews.productId,
+        productId: productClicks.productId,
         productNameDe: products.nameDe,
         productNameEs: products.name,
         views: count()
       })
-      .from(productViews)
-      .leftJoin(products, eq(productViews.productId, products.id))
-      .where(gte(productViews.viewedAt, startDate))
-      .groupBy(productViews.productId, products.nameDe, products.name)
+      .from(productClicks)
+      .leftJoin(products, eq(productClicks.productId, products.id))
+      .where(gte(productClicks.clickedAt, startDate))
+      .groupBy(productClicks.productId, products.nameDe, products.name)
       .orderBy(desc(count()))
       .limit(10);
 
-    // Top countries - Get most recent country per IP (avoid duplicate counting)
-    const topCountriesResult = await db.execute(sql`
-      WITH latest_country_per_ip AS (
-        SELECT DISTINCT ON (ip_address) 
-          ip_address, 
-          country,
-          viewed_at
-        FROM page_views 
-        WHERE viewed_at >= ${startDate} 
-          AND country IS NOT NULL
-        ORDER BY ip_address, viewed_at DESC
-      )
-      SELECT 
-        country, 
-        COUNT(DISTINCT ip_address) as unique_visitors
-      FROM latest_country_per_ip
-      GROUP BY country
-      ORDER BY COUNT(DISTINCT ip_address) DESC
-      LIMIT 10
-    `);
+    // Top countries by unique visitors
+    const topCountriesResult = await db
+      .select({
+        country: visitors.country,
+        uniqueVisitors: countDistinct(visitors.id)
+      })
+      .from(visitors)
+      .where(gte(visitors.firstVisit, startDate))
+      .groupBy(visitors.country)
+      .orderBy(desc(countDistinct(visitors.id)))
+      .limit(10);
 
     return {
       uniqueVisitors: uniqueVisitorsResult.count || 0,
-      topProducts: topProductsResult.map(p => ({ 
-        product: p.productNameDe || p.productNameEs || 'Unknown Product', // Prefer German, fallback to Spanish
-        views: Number(p.views),
-        id: p.productId || 0
+      topProducts: topProductsResult.map(item => ({
+        product: item.productNameDe || item.productNameEs || 'Unknown Product',
+        views: Number(item.views),
+        id: item.productId
       })),
-      topCountries: topCountriesResult.rows.map((row: any) => ({ country: row.country || 'Unknown', uniqueVisitors: Number(row.unique_visitors) }))
+      topCountries: topCountriesResult.map(row => ({
+        country: row.country || 'Unknown',
+        uniqueVisitors: Number(row.uniqueVisitors)
+      }))
     };
   }
 }

@@ -148,30 +148,20 @@ export const uploadedImages = pgTable("uploaded_images", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// Analytics tracking table
-export const pageViews = pgTable("page_views", {
+// SIMPLE ANALYTICS SYSTEM - Track unique visitors and product clicks
+export const visitors = pgTable("visitors", {
   id: serial("id").primaryKey(),
-  ipAddress: varchar("ip_address", { length: 45 }).notNull(), // IPv6 compatible
-  userAgent: text("user_agent"),
-  country: varchar("country", { length: 2 }), // ISO country code
-  city: varchar("city", { length: 100 }),
-  page: varchar("page", { length: 500 }).notNull(),
-  referrer: varchar("referrer", { length: 1000 }),
-  language: varchar("language", { length: 10 }),
-  viewedAt: timestamp("viewed_at").defaultNow(),
+  ipAddress: varchar("ip_address", { length: 45 }).notNull().unique(),
+  country: varchar("country", { length: 2 }),
+  firstVisit: timestamp("first_visit").defaultNow(),
+  lastVisit: timestamp("last_visit").defaultNow(),
 });
 
-// Product views tracking table
-export const productViews = pgTable("product_views", {
+export const productClicks = pgTable("product_clicks", {
   id: serial("id").primaryKey(),
-  productId: integer("product_id").references(() => products.id, { onDelete: "cascade" }).notNull(),
-  ipAddress: varchar("ip_address", { length: 45 }).notNull(),
-  userAgent: text("user_agent"),
-  country: varchar("country", { length: 2 }),
-  city: varchar("city", { length: 100 }),
-  referrer: varchar("referrer", { length: 1000 }),
-  language: varchar("language", { length: 10 }),
-  viewedAt: timestamp("viewed_at").defaultNow(),
+  productId: integer("product_id").notNull().references(() => products.id, { onDelete: "cascade" }),
+  visitorId: integer("visitor_id").notNull().references(() => visitors.id, { onDelete: "cascade" }),
+  clickedAt: timestamp("clicked_at").defaultNow(),
 });
 
 // Relations
@@ -260,8 +250,8 @@ export type InsertSiteSetting = z.infer<typeof insertSiteSettingSchema>;
 export type UploadedImage = typeof uploadedImages.$inferSelect;
 export type InsertUploadedImage = typeof uploadedImages.$inferInsert;
 
-export type PageView = typeof pageViews.$inferSelect;
-export type InsertPageView = typeof pageViews.$inferInsert;
-
-export type ProductView = typeof productViews.$inferSelect;
-export type InsertProductView = typeof productViews.$inferInsert;
+// Simple Analytics types
+export type Visitor = typeof visitors.$inferSelect;
+export type InsertVisitor = typeof visitors.$inferInsert;
+export type ProductClick = typeof productClicks.$inferSelect;
+export type InsertProductClick = typeof productClicks.$inferInsert;

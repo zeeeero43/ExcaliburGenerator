@@ -1014,100 +1014,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Analytics API - Website visitor tracking (VPS-COMPATIBLE)
   app.get("/api/admin/analytics", isAuthenticated, async (req, res) => {
     try {
-      console.log("📊 VPS Analytics: Fetching analytics data...");
+      console.log("📊 SIMPLE ANALYTICS: Fetching data...");
       const period = req.query.period || 'month';
-      const analytics = await storage.getAnalytics(period as string);
-      console.log("📊 VPS Analytics: Analytics retrieved successfully:", {
+      const analytics = await storage.getSimpleAnalytics(period as 'day' | 'month' | 'year');
+      console.log("📊 SIMPLE ANALYTICS: Success:", {
         uniqueVisitors: analytics.uniqueVisitors,
-        topProductsCount: analytics.topProducts?.length || 0,
-        topCountriesCount: analytics.topCountries?.length || 0,
-        fullData: JSON.stringify(analytics, null, 2)
+        topProducts: analytics.topProducts.length,
+        topCountries: analytics.topCountries.length
       });
       res.json(analytics);
     } catch (error) {
-      console.error("❌ VPS Analytics Error:", error);
-      console.error("❌ VPS Analytics Error Stack:", error.stack);
+      console.error("❌ SIMPLE ANALYTICS ERROR:", error);
       res.status(500).json({ error: "Failed to fetch analytics", details: error.message });
     }
   });
 
-  // Track page views
-  app.post("/api/track", async (req, res) => {
-    try {
-      const { page, userAgent, referrer } = req.body;
-      const ip = req.ip || req.connection.remoteAddress || 'unknown';
-      
-      console.log(`🌍 PAGE TRACKING: IP=${ip}`);
-      
-      // Use geoip-lite for geolocation (offline, no external APIs)
-      let country = 'CU'; // Default to Cuba
-      if (ip !== 'unknown' && ip !== '127.0.0.1' && !ip.startsWith('192.168.') && !ip.startsWith('10.') && !ip.startsWith('172.')) {
-        const geo = geoip.lookup(ip);
-        if (geo && geo.country) {
-          country = geo.country;
-          console.log(`🌍 GEOIP SUCCESS: IP ${ip} → ${country} (${geo.city || 'Unknown city'})`);
-        } else {
-          console.log(`🌍 GEOIP FAILED: IP ${ip} not in database, using default CU`);
-        }
-      } else {
-        console.log(`🌍 LOCAL IP: Using default DE for development IP ${ip}`);
-        country = 'DE'; // Development default
-      }
-      
-      await storage.createPageView({
-        page,
-        ipAddress: ip,
-        country,
-        userAgent,
-        referrer,
-        viewedAt: new Date()
-      });
-      
-      res.json({ success: true });
-    } catch (error) {
-      console.error("❌ ANALYTICS ERROR:", error);
-      res.json({ success: true, warning: "Analytics partially failed" });
-    }
-  });
+  // REMOVED: Old page tracking system - now using simple visitor tracking only through product clicks
 
-  // Track product views
+  // Track product clicks (only when user clicks on product detail)
   app.post("/api/track/product", async (req, res) => {
     try {
-      const { productId, userAgent, referrer } = req.body;
+      const { productId } = req.body;
       const ip = req.ip || req.connection.remoteAddress || 'unknown';
       
-      console.log(`📊 PRODUCT TRACKING: Product ${productId}, IP=${ip}`);
+      console.log(`📊 PRODUCT CLICK: Product ${productId}, IP=${ip}`);
       
-      // Use geoip-lite for geolocation (offline, no external APIs)
+      // Get country from IP
       let country = 'CU'; // Default to Cuba
       if (ip !== 'unknown' && ip !== '127.0.0.1' && !ip.startsWith('192.168.') && !ip.startsWith('10.') && !ip.startsWith('172.')) {
         const geo = geoip.lookup(ip);
         if (geo && geo.country) {
           country = geo.country;
-          console.log(`📊 PRODUCT GEOIP SUCCESS: IP ${ip} → ${country} for product ${productId}`);
+          console.log(`📊 GEOIP: IP ${ip} → ${country}`);
         } else {
-          console.log(`📊 PRODUCT GEOIP FAILED: IP ${ip} not in database, using default CU`);
+          console.log(`📊 GEOIP: IP ${ip} not found, using CU`);
         }
       } else {
-        console.log(`📊 LOCAL PRODUCT VIEW: Using default DE for development IP ${ip}`);
+        console.log(`📊 LOCAL IP: Using DE for development`);
         country = 'DE'; // Development default
       }
       
-      await storage.createProductView({
-        productId: parseInt(productId),
-        ipAddress: ip,
-        country,
-        userAgent,
-        referrer,
-        viewedAt: new Date()
-      });
+      // Track visitor (get existing or create new)
+      const visitor = await storage.trackVisitor(ip, country);
+      console.log(`📊 VISITOR: ID ${visitor.id}, IP ${visitor.ipAddress}, Country ${visitor.country}`);
       
-      console.log(`📊 PRODUCT VIEW SAVED: Product ${productId} from ${country}`);
+      // Track product click
+      await storage.trackProductClick(parseInt(productId), visitor.id);
+      console.log(`📊 PRODUCT CLICK SAVED: Product ${productId} by visitor ${visitor.id}`);
+      
       res.json({ success: true });
     } catch (error) {
-      console.error("❌ PRODUCT TRACKING ERROR:", error);
-      console.error("❌ PRODUCT ERROR STACK:", error.stack);
-      res.json({ success: true, warning: "Product tracking failed" });
+      console.error("❌ PRODUCT CLICK ERROR:", error);
+      res.json({ success: true, warning: "Tracking failed" });
     }
   });
 
