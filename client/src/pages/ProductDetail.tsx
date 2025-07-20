@@ -26,28 +26,45 @@ export default function ProductDetail() {
     retry: false,
   });
 
-  // Track product click (simple system)
+  // Track product click with mobile debugging
   useEffect(() => {
     if (product) {
       const trackProductClick = async () => {
         try {
-          console.log(`📊 FRONTEND: Tracking click for product ${product.id} (${product.nameEs})`);
+          const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          console.log(`📊 FRONTEND: Tracking click for product ${product.id} (${product.nameEs}) - Mobile: ${isMobile}`);
+          console.log(`📊 FRONTEND: User Agent: ${navigator.userAgent}`);
+          console.log(`📊 FRONTEND: Connection: ${(navigator as any).connection?.effectiveType || 'unknown'}`);
+          
           const response = await fetch('/api/track/product', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'User-Agent': navigator.userAgent, // Explicitly set user agent
             },
             body: JSON.stringify({
               productId: product.id,
             }),
           });
+          
+          if (!response.ok) {
+            console.error(`📊 FRONTEND ERROR: HTTP ${response.status} - ${response.statusText}`);
+            return;
+          }
+          
           const result = await response.json();
-          console.log(`📊 FRONTEND: Product click tracking result:`, result);
+          console.log(`📊 FRONTEND SUCCESS: Product click tracking result:`, result);
+          
+          if (result.debug) {
+            console.log(`📊 MOBILE DEBUG: Mobile=${result.debug.mobile}, IP=${result.debug.ip}, Country=${result.debug.country}, Visitor=${result.debug.visitorId}`);
+          }
         } catch (error) {
-          console.error('📊 FRONTEND: Error tracking product click:', error);
+          console.error('📊 FRONTEND ERROR: Error tracking product click:', error);
         }
       };
-      trackProductClick();
+      
+      // Small delay to ensure page is fully loaded on mobile
+      setTimeout(trackProductClick, 100);
     }
   }, [product]);
 

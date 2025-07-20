@@ -1075,13 +1075,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { productId } = req.body;
       const ip = req.ip || req.connection.remoteAddress || 'unknown';
       
-      console.log(`📊 PRODUCT CLICK: Product ${productId}, IP=${ip}`);
+      // MOBILE DEBUGGING: Log all headers and request info
+      const userAgent = req.headers['user-agent'] || 'unknown';
+      const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
       
-      // Get real IP address (handle proxy headers)
-      const realIp = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || ip;
-      const clientIp = Array.isArray(realIp) ? realIp[0] : realIp.toString().split(',')[0].trim();
+      console.log(`📊 PRODUCT CLICK: Product ${productId}, IP=${ip}, Mobile=${isMobile}`);
+      console.log(`📊 USER AGENT: ${userAgent}`);
       
-      console.log(`📊 IP DETECTION: Original=${ip}, Real=${clientIp}`);
+      // Enhanced IP detection for mobile devices
+      const forwardedFor = req.headers['x-forwarded-for'];
+      const realIp = req.headers['x-real-ip'];
+      const cfConnectingIp = req.headers['cf-connecting-ip']; // CloudFlare
+      const trueClientIp = req.headers['true-client-ip']; // Some mobile carriers
+      const clientIpHeader = req.headers['client-ip'];
+      
+      // Priority order for mobile IP detection
+      let clientIp = ip;
+      if (cfConnectingIp) {
+        clientIp = Array.isArray(cfConnectingIp) ? cfConnectingIp[0] : cfConnectingIp.toString().split(',')[0].trim();
+        console.log(`📱 MOBILE IP (CF): ${clientIp}`);
+      } else if (trueClientIp) {
+        clientIp = Array.isArray(trueClientIp) ? trueClientIp[0] : trueClientIp.toString().split(',')[0].trim();
+        console.log(`📱 MOBILE IP (TRUE): ${clientIp}`);
+      } else if (realIp) {
+        clientIp = Array.isArray(realIp) ? realIp[0] : realIp.toString().split(',')[0].trim();
+        console.log(`📱 MOBILE IP (REAL): ${clientIp}`);
+      } else if (forwardedFor) {
+        clientIp = Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor.toString().split(',')[0].trim();
+        console.log(`📱 MOBILE IP (FORWARDED): ${clientIp}`);
+      } else if (clientIpHeader) {
+        clientIp = Array.isArray(clientIpHeader) ? clientIpHeader[0] : clientIpHeader.toString().split(',')[0].trim();
+        console.log(`📱 MOBILE IP (CLIENT): ${clientIp}`);
+      }
+      
+      console.log(`📊 IP DETECTION: Original=${ip}, Final=${clientIp}, Headers={
+        x-forwarded-for: ${forwardedFor},
+        x-real-ip: ${realIp}, 
+        cf-connecting-ip: ${cfConnectingIp},
+        true-client-ip: ${trueClientIp},
+        client-ip: ${clientIpHeader}
+      }`);
       
       // Get country from IP using geoip-lite
       let country = 'CU'; // Default to Cuba
@@ -1089,26 +1122,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const geo = geoip.lookup(clientIp);
         if (geo && geo.country) {
           country = geo.country;
-          console.log(`📊 GEOIP SUCCESS: IP ${clientIp} → ${country} (${geo.city || 'Unknown city'})`);
+          console.log(`📊 GEOIP SUCCESS: IP ${clientIp} → ${country} (${geo.city || 'Unknown city'}) [Mobile: ${isMobile}]`);
         } else {
-          console.log(`📊 GEOIP FAILED: IP ${clientIp} not found in database, using default CU`);
+          console.log(`📊 GEOIP FAILED: IP ${clientIp} not found in database, using default CU [Mobile: ${isMobile}]`);
         }
       } else {
-        console.log(`📊 LOCAL IP: ${clientIp} is local/development IP, using default CU`);
+        console.log(`📊 LOCAL IP: ${clientIp} is local/development IP, using default CU [Mobile: ${isMobile}]`);
       }
       
-      // Track visitor (get existing or create new)
+      // Track visitor (get existing or create new) - include mobile detection
       const visitor = await storage.trackVisitor(clientIp, country);
-      console.log(`📊 VISITOR: ID ${visitor.id}, IP ${visitor.ipAddress}, Country ${visitor.country} (Real IP: ${clientIp})`);
+      console.log(`📊 VISITOR TRACKED: ID ${visitor.id}, IP ${visitor.ipAddress}, Country ${visitor.country}, Mobile ${isMobile} (Real IP: ${clientIp})`);
       
-      // Track product click
-      await storage.trackProductClick(parseInt(productId), visitor.id);
-      console.log(`📊 PRODUCT CLICK SAVED: Product ${productId} by visitor ${visitor.id}`);
+      // Track product click - first verify product exists
+      try {
+        const product = await storage.getProduct(parseInt(productId));
+        if (!product) {
+          console.log(`⚠️ PRODUCT NOT FOUND: Product ${productId} does not exist, skipping analytics`);
+          res.json({ success: true, warning: "Product not found" });
+          return;
+        }
+        
+        await storage.trackProductClick(parseInt(productId), visitor.id);
+        console.log(`📊 PRODUCT CLICK SAVED: Product ${productId} (${product.nameEs}) by visitor ${visitor.id} [Mobile: ${isMobile}]`);
+      } catch (productError) {
+        console.error(`❌ PRODUCT LOOKUP ERROR: ${productError}`);
+        res.json({ success: true, warning: "Product lookup failed" });
+        return;
+      }
       
-      res.json({ success: true });
+      res.json({ 
+        success: true, 
+        debug: {
+          mobile: isMobile,
+          ip: clientIp,
+          country: country,
+          visitorId: visitor.id
+        }
+      });
     } catch (error) {
       console.error("❌ PRODUCT CLICK ERROR:", error);
-      res.json({ success: true, warning: "Tracking failed" });
+      res.json({ success: true, warning: "Tracking failed", error: error.message });
     }
   });
 
