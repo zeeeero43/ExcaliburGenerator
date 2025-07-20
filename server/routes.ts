@@ -14,6 +14,24 @@ import { fileURLToPath } from "url";
 import sharp from "sharp";
 import { v4 as uuidv4 } from "uuid";
 import geoip from 'geoip-lite';
+import { 
+  loginRateLimit, 
+  apiRateLimit, 
+  uploadRateLimit,
+  validateParams,
+  idParamSchema,
+  slugParamSchema
+} from "./security/middleware";
+import { 
+  enhancedAuth, 
+  loginBruteForceProtection, 
+  logLoginAttempt,
+  requireAdmin,
+  hashPassword,
+  verifyPassword,
+  validatePassword
+} from "./security/auth";
+import { secureUpload, validateUploadedFile, handleUploadError } from "./security/fileUpload";
 
 // CHINA BLOCKING MIDDLEWARE - Blocks all Chinese IP addresses
 function blockChinaMiddleware(req: any, res: any, next: any) {
@@ -58,22 +76,8 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Configure multer for image uploads with memory storage (for sharp processing)
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 15 * 1024 * 1024, // 15MB per file (für A4 JPG Datenblätter)
-    files: 10, // Max 10 files per upload for better batch processing
-  },
-  fileFilter: (req, file, cb) => {
-    const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
-    if (allowedMimes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Ungültiger Dateityp. Nur JPEG, PNG, WebP und GIF Bilder sind erlaubt.') as any, false);
-    }
-  }
-});
+// SECURITY: Use secure upload configuration
+const upload = secureUpload;
 
 // Function to compress and save image
 async function compressAndSaveImage(buffer: Buffer, originalName: string): Promise<string> {
@@ -390,37 +394,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Authentication routes
-  app.post("/api/admin/login", async (req, res) => {
+  // SECURITY: Enhanced Admin Login with Brute Force Protection
+  app.post("/api/admin/login", loginBruteForceProtection, async (req, res) => {
+    const startTime = Date.now();
+    console.log("🔐 SECURITY LOGIN: Enhanced admin login request", { 
+      ip: req.ip, 
+      userAgent: req.get('User-Agent')?.substring(0, 50),
+      username: req.body?.username || '[MISSING]',
+      timestamp: new Date().toISOString()
+    });
+    
     try {
       const { username, password } = req.body;
-      console.log("🔍 LOGIN: Login attempt for username:", username);
-      console.log("🔍 LOGIN: Session ID before login:", req.sessionID);
       
+      // SECURITY: Input Validation
       if (!username || !password) {
-        console.log("🔍 LOGIN: Missing username or password");
-        return res.status(400).json({ error: "Username and password required" });
+        logLoginAttempt(req, false, username);
+        console.warn("🔒 SECURITY: Missing credentials in login attempt");
+        return res.status(400).json({ 
+          error: "Benutzername und Passwort sind erforderlich",
+          code: "MISSING_CREDENTIALS"
+        });
       }
 
-      console.log("🔍 LOGIN: Calling loginUser function...");
+      // SECURITY: Enhanced Login with detailed logging
+      console.log("🔐 SECURITY LOGIN: Validating credentials for:", username);
       const user = await loginUser(req, username, password);
-      console.log("🔍 LOGIN: loginUser result:", user ? "SUCCESS" : "FAILED");
       
       if (user) {
+        logLoginAttempt(req, true, username);
         const { password: _, ...userWithoutPassword } = user;
-        console.log("🔍 LOGIN: Login successful for user:", userWithoutPassword.username);
-        console.log("🔍 LOGIN: Session after login:", {
-          sessionID: req.sessionID,
-          userId: req.session.userId,
-          hasUser: !!req.session.user
+        const duration = Date.now() - startTime;
+        
+        console.log("🔐 SECURITY LOGIN: Successful authentication", {
+          username: userWithoutPassword.username,
+          duration: `${duration}ms`,
+          sessionID: req.sessionID
         });
+        
         res.json({ success: true, user: userWithoutPassword });
       } else {
-        console.log("🔍 LOGIN: Login failed - invalid credentials");
-        res.status(401).json({ error: "Invalid credentials" });
+        logLoginAttempt(req, false, username);
+        const duration = Date.now() - startTime;
+        
+        console.warn("🔒 SECURITY LOGIN: Failed authentication attempt", {
+          username,
+          duration: `${duration}ms`,
+          ip: req.ip
+        });
+        
+        res.status(401).json({ 
+          error: "Ungültige Anmeldedaten",
+          code: "INVALID_CREDENTIALS"
+        });
       }
     } catch (error) {
-      console.error("🔍 LOGIN: Login error:", error);
-      res.status(500).json({ error: "Login failed" });
+      console.error("🔒 SECURITY LOGIN ERROR:", error);
+      logLoginAttempt(req, false);
+      res.status(500).json({ 
+        error: "Login fehlgeschlagen - Server-Fehler",
+        code: "SERVER_ERROR"
+      });
     }
   });
 
@@ -1247,15 +1281,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/images/upload", isAuthenticated, upload.array('images', 10), async (req, res) => {
+  // SECURITY: Enhanced Protected Image Upload with Comprehensive Security
+  app.post("/api/admin/images/upload", uploadRateLimit, isAuthenticated, handleUploadError, upload.array('images', 10), async (req, res) => {
+    console.log("🔒 SECURITY UPLOAD: Protected image upload request", {
+      fileCount: req.files?.length || 0,
+      userAgent: req.get('User-Agent')?.substring(0, 50),
+      ip: req.ip,
+      userId: (req as any).session?.userId
+    });
+    
     try {
       const files = req.files as Express.Multer.File[];
       if (!files || files.length === 0) {
-        return res.status(400).json({ error: "No files uploaded" });
+        console.warn("🔒 SECURITY UPLOAD: No files in upload request");
+        return res.status(400).json({ 
+          error: "Keine Dateien hochgeladen",
+          code: "NO_FILES"
+        });
       }
 
       const uploadedImages = [];
+      
       for (const file of files) {
+        // SECURITY: Validate each uploaded file for security threats
+        const isValid = await validateUploadedFile(file.buffer, file.originalname, file.mimetype);
+        if (!isValid) {
+          console.warn("🔒 SECURITY UPLOAD: Invalid file detected", {
+            filename: file.originalname,
+            mimetype: file.mimetype,
+            size: file.size
+          });
+          return res.status(400).json({ 
+            error: `Datei ${file.originalname} ist ungültig oder enthält verdächtigen Inhalt`,
+            code: "INVALID_FILE"
+          });
+        }
+
         // Compress and save the image
         const compressedFilename = await compressAndSaveImage(file.buffer, file.originalname);
         
@@ -1276,33 +1337,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
         uploadedImages.push(savedImage);
       }
 
+      console.log("🔒 SECURITY UPLOAD: Upload successful", {
+        fileCount: uploadedImages.length,
+        totalSize: uploadedImages.reduce((sum, img) => sum + img.size, 0)
+      });
+
       res.json(uploadedImages);
     } catch (error) {
-      console.error("Error uploading images:", error);
-      res.status(500).json({ error: "Failed to upload images" });
+      console.error("🔒 SECURITY UPLOAD ERROR:", error);
+      res.status(500).json({ 
+        error: "Upload fehlgeschlagen - Server-Fehler",
+        code: "UPLOAD_ERROR"
+      });
     }
   });
 
-  app.delete("/api/admin/images/:id", isAuthenticated, async (req, res) => {
+  // SECURITY: Protected Image Deletion with Parameter Validation
+  app.delete("/api/admin/images/:id", isAuthenticated, validateParams(idParamSchema), async (req, res) => {
+    console.log("🔒 SECURITY DELETE: Protected image deletion request", {
+      imageId: req.params.id,
+      userId: (req as any).session?.userId,
+      ip: req.ip
+    });
+    
     try {
       const imageId = parseInt(req.params.id);
+      
+      // SECURITY: Validate numeric ID
+      if (isNaN(imageId) || imageId <= 0) {
+        console.warn("🔒 SECURITY DELETE: Invalid image ID", { id: req.params.id });
+        return res.status(400).json({ 
+          error: "Ungültige Bild-ID",
+          code: "INVALID_ID"
+        });
+      }
+      
       const image = await storage.getUploadedImageById(imageId);
       
       if (!image) {
-        return res.status(404).json({ error: "Image not found" });
+        console.warn("🔒 SECURITY DELETE: Image not found", { imageId });
+        return res.status(404).json({ 
+          error: "Bild nicht gefunden",
+          code: "NOT_FOUND"
+        });
       }
 
       // Delete file from filesystem
       const filePath = path.join(uploadsDir, image.filename);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
+        console.log("🔒 SECURITY DELETE: File deleted from filesystem", { filename: image.filename });
       }
 
       await storage.deleteUploadedImage(imageId);
+      
+      console.log("🔒 SECURITY DELETE: Image deletion successful", { 
+        imageId, 
+        filename: image.filename 
+      });
+      
       res.json({ success: true });
     } catch (error) {
-      console.error("Error deleting image:", error);
-      res.status(500).json({ error: "Failed to delete image" });
+      console.error("🔒 SECURITY DELETE ERROR:", error);
+      res.status(500).json({ 
+        error: "Löschen fehlgeschlagen - Server-Fehler",
+        code: "DELETE_ERROR"
+      });
     }
   });
 

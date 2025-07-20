@@ -1,25 +1,45 @@
 import express, { type Request, Response, NextFunction } from "express";
+import cors from "cors";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { 
+  generalRateLimit, 
+  securityHeaders, 
+  sanitizeInput, 
+  secureErrorHandler
+} from "./security/middleware";
+import { setSecurityHeaders } from "./security/auth";
 
 const app = express();
 
-// Add CORS headers for development
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5000');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
+console.log('🔒 SECURITY: Aktiviere Sicherheitsmaßnahmen...');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// SECURITY: Trust proxy für sichere IP-Erkennung
+app.set('trust proxy', 1);
+
+// SECURITY: Rate Limiting
+app.use(generalRateLimit);
+
+// SECURITY: Helmet Security Headers
+app.use(securityHeaders);
+
+// SECURITY: Custom Security Headers
+app.use(setSecurityHeaders);
+
+// SECURITY: CORS Configuration
+app.use(cors({
+  origin: ['http://localhost:5000', 'https://excalibur-cuba.com'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'X-CSRF-Token']
+}));
+
+// SECURITY: Input Sanitization
+app.use(sanitizeInput);
+
+// SECURITY: Enhanced JSON parsing with limits
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -53,6 +73,9 @@ app.use((req, res, next) => {
 
 (async () => {
   const server = await registerRoutes(app);
+  
+  // SECURITY: Global Error Handler (must be last)
+  app.use(secureErrorHandler);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
