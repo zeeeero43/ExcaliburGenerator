@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Shield, Truck, Users, CheckCircle, Zap, Ship, Warehouse, MessageCircle, Eye } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
@@ -11,6 +12,26 @@ import type { Product, Category } from '@shared/schema';
 
 export default function Home() {
   const { t, currentLanguage } = useLanguage();
+
+  // Enhanced SEO meta tags for Cuban market
+  useEffect(() => {
+    document.title = "Excalibur Cuba - Energía Solar, Generadores, Equipos | Matanzas";
+    
+    const updateMeta = (name: string, content: string) => {
+      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = name;
+        document.head.appendChild(meta);
+      }
+      meta.content = content;
+    };
+
+    updateMeta('description', 'Excalibur Cuba: Energía solar, generadores, baterías litio, inversores, cables MC4, armadura carbono, trailers, excavadoras, compresores, filtros agua, hornos pizza, máquinas hielo. Matanzas y Habana del Este.');
+    updateMeta('keywords', 'Excalibur Cuba, energía solar Cuba, generadores Cuba, baterías litio Cuba, inversores solares Cuba, cables MC4 Cuba, armadura carbono Cuba, trailers Cuba, excavadoras Cuba, bombas concreto Cuba, compresores Cuba, filtros agua Cuba, hornos pizza Cuba, máquinas hielo Cuba, Matanzas, Habana del Este');
+    updateMeta('geo.region', 'CU');
+    updateMeta('geo.placename', 'Matanzas, Cuba');
+  }, []);
   
   // Fetch categories from database (same as Products.tsx)
   const { data: categories = [] } = useQuery<Category[]>({

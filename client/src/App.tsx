@@ -21,6 +21,7 @@ import AdminSiteImages from "./pages/AdminSiteImages";
 import AdminImageManager from "./pages/AdminImageManager";
 import AdminContactSettings from "./pages/AdminContactSettings";
 import Legal from "./pages/Legal";
+import CubaSEO from "./pages/CubaSEO";
 import NotFound from "./pages/not-found";
 
 import { OfflineIndicator } from "./components/OfflineIndicator";
@@ -126,6 +127,13 @@ function Router() {
         {() => (
           <Layout>
             <Legal />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/cuba-energia-solar">
+        {() => (
+          <Layout>
+            <CubaSEO />
           </Layout>
         )}
       </Route>
