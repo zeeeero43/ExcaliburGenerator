@@ -28,6 +28,7 @@ Sitemap: https://${req.get('host')}/sitemap.xml
         // Static pages
         { loc: baseUrl, priority: '1.0', changefreq: 'daily' },
         { loc: `${baseUrl}/products`, priority: '0.9', changefreq: 'weekly' },
+        { loc: `${baseUrl}/cuba-energia-solar`, priority: '0.95', changefreq: 'weekly' },
         { loc: `${baseUrl}/about`, priority: '0.8', changefreq: 'monthly' },
         { loc: `${baseUrl}/contact`, priority: '0.8', changefreq: 'monthly' },
         

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Headphones, Building, Warehouse, MessageCircle } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
@@ -38,6 +38,26 @@ type InquiryForm = z.infer<ReturnType<typeof createInquirySchema>>;
 export default function Contact() {
   const { t, currentLanguage } = useLanguage();
   const { toast } = useToast();
+
+  // Cuba SEO Meta Tags
+  useEffect(() => {
+    document.title = "Contacto Excalibur Cuba - Solar, Generadores | Matanzas";
+    
+    const updateMeta = (name: string, content: string) => {
+      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = name;
+        document.head.appendChild(meta);
+      }
+      meta.content = content;
+    };
+
+    updateMeta('description', 'Contacta Excalibur Cuba: Energía solar, generadores, baterías litio. Oficinas en Matanzas y Habana del Este. Soporte técnico 24/7 para equipos industriales en Cuba.');
+    updateMeta('keywords', 'contacto Excalibur Cuba, oficina Matanzas, Habana del Este, soporte técnico Cuba, energía solar Cuba');
+    updateMeta('geo.region', 'CU');
+    updateMeta('geo.placename', 'Matanzas, Cuba');
+  }, []);
 
   // Kontaktinformationen aus site-settings laden
   const { data: siteSettings = [] } = useQuery<any[]>({

@@ -13,6 +13,26 @@ import type { Product, Category, Subcategory } from '@shared/schema';
 
 export default function Products() {
   const { t, currentLanguage } = useLanguage();
+
+  // Cuba SEO Meta Tags
+  useEffect(() => {
+    document.title = "Productos Excalibur Cuba - Solar, Generadores, Equipos | Matanzas";
+    
+    const updateMeta = (name: string, content: string) => {
+      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = name;
+        document.head.appendChild(meta);
+      }
+      meta.content = content;
+    };
+
+    updateMeta('description', 'Productos Excalibur Cuba: Sistemas solares completos, generadores, baterías litio, inversores, cables MC4, excavadoras, compresores, filtros agua, hornos pizza en Matanzas.');
+    updateMeta('keywords', 'productos Excalibur Cuba, sistemas solares Cuba, generadores Cuba, baterías litio Cuba, inversores Cuba, cables MC4 Cuba, excavadoras Cuba, compresores Cuba, Matanzas');
+    updateMeta('geo.region', 'CU');
+    updateMeta('geo.placename', 'Matanzas, Cuba');
+  }, []);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -298,7 +318,7 @@ export default function Products() {
                           <div className="absolute bottom-2 left-2">
                             <Button 
                               variant="default" 
-                              size="xs" 
+                              size="sm" 
                               className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs px-2 py-1"
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -363,7 +383,7 @@ export default function Products() {
                   {/* Category Image with overlay button */}
                   <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
-                      src={category.image}
+                      src={category.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
                       alt={getLocalizedText(category, 'name')}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
@@ -503,7 +523,7 @@ export default function Products() {
                       <div className="absolute bottom-2 left-2">
                         <Button 
                           variant="default" 
-                          size="xs" 
+                          size="sm" 
                           className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs px-2 py-1"
                           onClick={(e) => e.stopPropagation()}
                         >

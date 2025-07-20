@@ -26,6 +26,31 @@ export default function ProductDetail() {
     retry: false,
   });
 
+  // Cuba SEO Meta Tags for Product Detail
+  useEffect(() => {
+    if (product) {
+      const categoryName = 'Productos';
+      const productName = product.nameEs || product.name;
+      
+      document.title = `${productName} Excalibur Cuba - ${categoryName} | Matanzas`;
+      
+      const updateMeta = (name: string, content: string) => {
+        let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.name = name;
+          document.head.appendChild(meta);
+        }
+        meta.content = content;
+      };
+
+      updateMeta('description', `${productName} disponible en Excalibur Cuba. ${categoryName} de alta calidad para Cuba. Recogida inmediata en Matanzas. Garantía completa.`);
+      updateMeta('keywords', `${productName} Cuba, ${categoryName} Cuba, Excalibur Matanzas, productos solares Cuba, equipos industriales Cuba`);
+      updateMeta('geo.region', 'CU');
+      updateMeta('geo.placename', 'Matanzas, Cuba');
+    }
+  }, [product]);
+
   // Track product click with mobile debugging
   useEffect(() => {
     if (product) {

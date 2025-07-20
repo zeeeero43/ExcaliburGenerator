@@ -1,11 +1,32 @@
 import { Shield, Users, Award, Globe } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Card, CardContent } from '../components/ui/card';
 import type { SiteSetting } from '@shared/schema';
 
 export default function About() {
   const { t } = useLanguage();
+
+  // Cuba SEO Meta Tags
+  useEffect(() => {
+    document.title = "Sobre Excalibur Cuba - Empresa Solar y Equipos | Matanzas";
+    
+    const updateMeta = (name: string, content: string) => {
+      let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = name;
+        document.head.appendChild(meta);
+      }
+      meta.content = content;
+    };
+
+    updateMeta('description', 'Excalibur Cuba: Joint Venture con AFDL Import Export. 35 años experiencia alemana en energía solar, generadores, baterías litio. Empresa líder en Matanzas y Habana del Este.');
+    updateMeta('keywords', 'Excalibur Cuba empresa, AFDL Import Export, Joint Venture Cuba, energía solar Cuba, empresa alemana Cuba, Matanzas, Habana del Este');
+    updateMeta('geo.region', 'CU');
+    updateMeta('geo.placename', 'Matanzas, Cuba');
+  }, []);
   
   // Lade Site-Settings für dynamische Bilder
   const { data: siteSettings = [] } = useQuery<SiteSetting[]>({

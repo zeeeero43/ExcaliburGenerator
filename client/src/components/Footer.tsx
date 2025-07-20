@@ -77,6 +77,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/cuba-energia-solar" className="hover:text-white transition-colors">
+                  Cuba Energía Solar
+                </Link>
+              </li>
+              <li>
                 <Link href="/legal" className="hover:text-white transition-colors">
                   Rechtliches
                 </Link>

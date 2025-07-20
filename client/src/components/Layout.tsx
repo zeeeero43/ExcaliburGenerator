@@ -4,6 +4,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { WhatsAppButton } from './WhatsAppButton';
 import { CookieBanner } from './CookieBanner';
+import { LocalBusinessStructuredData } from './StructuredData';
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,6 +20,7 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <LocalBusinessStructuredData />
       <Header />
       <main className="flex-1">
         {children}
