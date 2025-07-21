@@ -1,0 +1,41 @@
+Jul 21 00:15:04 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 101.
+Jul 21 00:15:04 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 21 00:15:04 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 21 00:15:04 srv896300 node[35871]: node:internal/modules/esm/resolve:873
+Jul 21 00:15:04 srv896300 node[35871]:   throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+Jul 21 00:15:04 srv896300 node[35871]:         ^
+Jul 21 00:15:04 srv896300 node[35871]: Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'cors' imported from /var/www/excalibur-cuba/dist/index.js
+Jul 21 00:15:04 srv896300 node[35871]:     at packageResolve (node:internal/modules/esm/resolve:873:9)
+Jul 21 00:15:04 srv896300 node[35871]:     at moduleResolve (node:internal/modules/esm/resolve:946:18)
+Jul 21 00:15:04 srv896300 node[35871]:     at defaultResolve (node:internal/modules/esm/resolve:1188:11)
+Jul 21 00:15:04 srv896300 node[35871]:     at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:642:12)
+Jul 21 00:15:04 srv896300 node[35871]:     at #cachedDefaultResolve (node:internal/modules/esm/loader:591:25)
+Jul 21 00:15:04 srv896300 node[35871]:     at ModuleLoader.resolve (node:internal/modules/esm/loader:574:38)
+Jul 21 00:15:04 srv896300 node[35871]:     at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:236:38)
+Jul 21 00:15:04 srv896300 node[35871]:     at ModuleJob._link (node:internal/modules/esm/module_job:130:49) {
+Jul 21 00:15:04 srv896300 node[35871]:   code: 'ERR_MODULE_NOT_FOUND'
+Jul 21 00:15:04 srv896300 node[35871]: }
+Jul 21 00:15:04 srv896300 node[35871]: Node.js v20.19.3
+Jul 21 00:15:04 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 21 00:15:04 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+Jul 21 00:15:08 srv896300 systemd[1]: excalibur-cuba.service: Scheduled restart job, restart counter is at 102.
+Jul 21 00:15:08 srv896300 systemd[1]: Stopped Excalibur Cuba Website.
+Jul 21 00:15:08 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 21 00:15:08 srv896300 node[35882]: node:internal/modules/esm/resolve:873
+Jul 21 00:15:08 srv896300 node[35882]:   throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+Jul 21 00:15:08 srv896300 node[35882]:         ^
+Jul 21 00:15:08 srv896300 node[35882]: Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'cors' imported from /var/www/excalibur-cuba/dist/index.js
+Jul 21 00:15:08 srv896300 node[35882]:     at packageResolve (node:internal/modules/esm/resolve:873:9)
+Jul 21 00:15:08 srv896300 node[35882]:     at moduleResolve (node:internal/modules/esm/resolve:946:18)
+Jul 21 00:15:08 srv896300 node[35882]:     at defaultResolve (node:internal/modules/esm/resolve:1188:11)
+Jul 21 00:15:08 srv896300 node[35882]:     at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:642:12)
+Jul 21 00:15:08 srv896300 node[35882]:     at #cachedDefaultResolve (node:internal/modules/esm/loader:591:25)
+Jul 21 00:15:08 srv896300 node[35882]:     at ModuleLoader.resolve (node:internal/modules/esm/loader:574:38)
+Jul 21 00:15:08 srv896300 node[35882]:     at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:236:38)
+Jul 21 00:15:08 srv896300 node[35882]:     at ModuleJob._link (node:internal/modules/esm/module_job:130:49) {
+Jul 21 00:15:08 srv896300 node[35882]:   code: 'ERR_MODULE_NOT_FOUND'
+Jul 21 00:15:08 srv896300 node[35882]: }
+Jul 21 00:15:08 srv896300 node[35882]: Node.js v20.19.3
+Jul 21 00:15:08 srv896300 systemd[1]: excalibur-cuba.service: Main process exited, code=exited, status=1/FAILURE
+Jul 21 00:15:08 srv896300 systemd[1]: excalibur-cuba.service: Failed with result 'exit-code'.
+

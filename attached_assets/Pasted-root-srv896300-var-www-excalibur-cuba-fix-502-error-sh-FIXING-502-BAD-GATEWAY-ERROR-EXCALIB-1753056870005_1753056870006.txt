@@ -1,0 +1,52 @@
+root@srv896300:/var/www/excalibur-cuba# ./fix_502_error.sh
+🚨 FIXING 502 BAD GATEWAY ERROR - EXCALIBUR CUBA
+==================================================
+1. Checking service status...
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: activating (auto-restart) (Result: exit-code) since Mon 2025-07-21 00:14:12 UTC; 491ms ago
+    Process: 35630 ExecStart=/usr/bin/node dist/index.js (code=exited, status=1/FAILURE)
+   Main PID: 35630 (code=exited, status=1/FAILURE)
+        CPU: 52ms
+
+2. Checking if Express server is running on port 5000...
+❌ Port 5000 not active
+
+3. Checking nginx configuration...
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+4. Stopping services for clean restart...
+
+5. Starting Express server first...
+./fix_502_error.sh: line 21: cd: /var/www/excalibur-cuba/ExcaliburGenerator: No such file or directory
+
+6. Checking if server started correctly...
+❌ Express server not running
+
+7. Starting nginx...
+
+8. Final status check...
+Express Service:
+● excalibur-cuba.service - Excalibur Cuba Website
+     Loaded: loaded (/etc/systemd/system/excalibur-cuba.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2025-07-21 00:14:16 UTC; 1ms ago
+   Main PID: 35690 (node)
+      Tasks: 1 (limit: 9477)
+
+Nginx Service:
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2025-07-21 00:14:16 UTC; 31ms ago
+       Docs: man:nginx(8)
+    Process: 35681 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+
+9. Testing connection...
+curl: (7) Failed to connect to localhost port 5000 after 0 ms: Connection refused
+
+❌ Express server not responding
+
+==================================================
+🎯 FIX COMPLETE - Test your website now!
+If still not working, run: sudo journalctl -u excalibur-cuba -f
+root@srv896300:/var/www/excalibur-cuba# 
