@@ -2,7 +2,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupSession, isAuthenticated, loginUser, logoutUser } from "./simpleAuth";
+import { isAuthenticated, loginUser, logoutUser, type AuthRequest } from "./cookieAuth";
 import { seedDatabase } from "./seed";
 import { setupSEO } from "./seo";
 import { z } from "zod";
@@ -14,6 +14,7 @@ import { fileURLToPath } from "url";
 import sharp from "sharp";
 import { v4 as uuidv4 } from "uuid";
 import geoip from 'geoip-lite';
+import cookieParser from 'cookie-parser';
 import { 
   loginRateLimit, 
   apiRateLimit, 
@@ -219,8 +220,8 @@ function simpleTranslation(text: string, fromLang: string, toLang: string): stri
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Setup session middleware
-  setupSession(app);
+  // Setup cookie parser for authentication
+  app.use(cookieParser());
 
   // CHINA BLOCKING: Apply to ALL routes - must be before other routes
   app.use(blockChinaMiddleware);
@@ -419,17 +420,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // SECURITY: Enhanced Login with detailed logging
       console.log("🔐 SECURITY LOGIN: Validating credentials for:", username);
-      const user = await loginUser(req, username, password);
+      const result = await loginUser(username, password);
       
-      if (user) {
+      if (result) {
+        const { user, token } = result;
         logLoginAttempt(req, true, username);
         const { password: _, ...userWithoutPassword } = user;
         const duration = Date.now() - startTime;
         
+        // Set HTTP-only cookie for authentication
+        res.cookie('excalibur-auth', token, {
+          httpOnly: true,
+          secure: false, // Set to true in production with HTTPS
+          maxAge: 24 * 60 * 60 * 1000, // 24 hours
+          sameSite: 'lax'
+        });
+        
         console.log("🔐 SECURITY LOGIN: Successful authentication", {
           username: userWithoutPassword.username,
-          duration: `${duration}ms`,
-          sessionID: req.sessionID
+          duration: `${duration}ms`
         });
         
         res.json({ success: true, user: userWithoutPassword });
@@ -460,7 +469,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/logout", async (req, res) => {
     try {
-      await logoutUser(req);
+      logoutUser(res);
       res.json({ success: true });
     } catch (error) {
       console.error("Logout error:", error);
@@ -468,11 +477,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/user", isAuthenticated, async (req, res) => {
+  app.get("/api/admin/user", isAuthenticated, async (req: AuthRequest, res) => {
     console.log("🔍 ADMIN USER: Request reached /api/admin/user");
-    console.log("🔍 ADMIN USER: Session user exists:", !!req.session?.user);
+    console.log("🔍 ADMIN USER: Auth user exists:", !!req.user);
     try {
-      const { password: _, ...userWithoutPassword } = req.session.user!;
+      const { password: _, ...userWithoutPassword } = req.user!;
       console.log("🔍 ADMIN USER: Returning user:", userWithoutPassword.username);
       res.json(userWithoutPassword);
     } catch (error) {
