@@ -1095,13 +1095,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Analytics API - Website visitor tracking (VPS-COMPATIBLE)
   app.get("/api/admin/analytics", isAuthenticated, async (req: AuthRequest, res) => {
     try {
-      console.log("📊 SIMPLE ANALYTICS: Fetching data...");
       const period = req.query.period || 'month';
+      console.log("📊 SIMPLE ANALYTICS: Fetching data for period:", period);
       const analytics = await storage.getSimpleAnalytics(period as 'day' | 'month' | 'year');
-      console.log("📊 SIMPLE ANALYTICS: Success:", {
+      console.log("📊 SIMPLE ANALYTICS: Success for", period, ":", {
         uniqueVisitors: analytics.uniqueVisitors,
         topProducts: analytics.topProducts.length,
-        topCountries: analytics.topCountries.length
+        topCountries: analytics.topCountries.length,
+        period: period
       });
       res.json(analytics);
     } catch (error) {

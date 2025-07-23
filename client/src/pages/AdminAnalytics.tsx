@@ -35,6 +35,16 @@ export default function AdminAnalytics() {
 
   const { data: analytics, isLoading: analyticsLoading, refetch, error } = useQuery<AnalyticsData>({
     queryKey: ['/api/admin/analytics', selectedPeriod],
+    queryFn: async () => {
+      const response = await fetch(`/api/admin/analytics?period=${selectedPeriod}`, {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) throw new Error('Failed to fetch analytics');
+      return response.json();
+    },
     enabled: isAuthenticated,
     refetchInterval: 60000, // Aktualisierung alle 60 Sekunden
     refetchOnWindowFocus: true, // Aktualisierung beim Fensterfokus
