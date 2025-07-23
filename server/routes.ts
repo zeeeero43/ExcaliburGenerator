@@ -231,7 +231,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log("🔥 CRITICAL: Registering API routes with HIGH PRIORITY");
   
   // TEMP DEBUG: Test route without any authentication
-  app.get("/api/debug/products", async (req, res) => {
+  app.get("/api/debug/products", async (req: AuthRequest, res) => {
     console.log("🔍 DEBUG: Simple products endpoint reached");
     try {
       const products = await storage.getProducts({});
@@ -244,7 +244,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Get single product by ID - TEMP PUBLIC
-  app.get("/api/admin/products/:id", async (req, res) => {
+  app.get("/api/admin/products/:id", async (req: AuthRequest, res) => {
     console.log("🔍 CRITICAL: HIGH PRIORITY GET /api/admin/products/:id route HIT!", {
       params: req.params,
       originalUrl: req.originalUrl,
@@ -279,7 +279,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }
 
   // Multi-API Translation system with LibreTranslate and MyMemory fallback
-  app.post("/api/translate", async (req, res) => {
+  app.post("/api/translate", async (req: AuthRequest, res) => {
     try {
       const { text, fromLang, toLang } = req.body;
       
@@ -396,7 +396,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Authentication routes
   // SECURITY: Enhanced Admin Login with Brute Force Protection
-  app.post("/api/admin/login", loginBruteForceProtection, async (req, res) => {
+  app.post("/api/admin/login", loginBruteForceProtection, async (req: AuthRequest, res) => {
     const startTime = Date.now();
     console.log("🔐 SECURITY LOGIN: Enhanced admin login request", { 
       ip: req.ip, 
@@ -467,7 +467,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/logout", async (req, res) => {
+  app.post("/api/admin/logout", async (req: AuthRequest, res) => {
     try {
       logoutUser(res);
       res.json({ success: true });
@@ -491,7 +491,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Categories API
-  app.get("/api/categories", async (req, res) => {
+  app.get("/api/categories", async (req: AuthRequest, res) => {
     try {
       const categories = await storage.getCategories();
       res.json(categories);
@@ -502,7 +502,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Subcategories API
-  app.get("/api/subcategories", async (req, res) => {
+  app.get("/api/subcategories", async (req: AuthRequest, res) => {
     try {
       const subcategories = await storage.getSubcategories();
       res.json(subcategories);
@@ -514,7 +514,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Admin subcategories API
   // TEMP FIX: Make admin subcategories public for debugging  
-  app.get("/api/admin/subcategories", async (req, res) => {
+  app.get("/api/admin/subcategories", async (req: AuthRequest, res) => {
     console.log("🔍 ADMIN SUBCATEGORIES: Request reached subcategories endpoint");
     try {
       const subcategories = await storage.getSubcategories();
@@ -527,7 +527,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/subcategories/:id", isAuthenticated, async (req, res) => {
+  app.get("/api/admin/subcategories/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const subcategory = await storage.getSubcategoryById(parseInt(req.params.id));
       if (!subcategory) {
@@ -540,7 +540,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/subcategories", isAuthenticated, async (req, res) => {
+  app.post("/api/admin/subcategories", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const subcategoryData = req.body;
       
@@ -561,7 +561,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/subcategories/:id", isAuthenticated, async (req, res) => {
+  app.put("/api/admin/subcategories/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const subcategoryData = insertSubcategorySchema.partial().parse(req.body);
       const subcategory = await storage.updateSubcategory(parseInt(req.params.id), subcategoryData);
@@ -575,7 +575,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/subcategories/:id", isAuthenticated, async (req, res) => {
+  app.delete("/api/admin/subcategories/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const subcategoryId = parseInt(req.params.id);
       console.log(`🗑️ SERVER DELETE SUBCATEGORY: Starting deletion for subcategory ID: ${subcategoryId}`);
@@ -609,7 +609,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
   // TEMP FIX: Make admin categories public for debugging  
-  app.get("/api/admin/categories", async (req, res) => {
+  app.get("/api/admin/categories", async (req: AuthRequest, res) => {
     console.log("🔍 ADMIN CATEGORIES: Request reached categories endpoint");
     try {
       const categories = await storage.getCategories();
@@ -622,7 +622,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/categories/:id", isAuthenticated, async (req, res) => {
+  app.get("/api/admin/categories/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const category = await storage.getCategoryById(parseInt(req.params.id));
       if (!category) {
@@ -635,7 +635,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/categories", isAuthenticated, async (req, res) => {
+  app.post("/api/admin/categories", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const categoryData = req.body;
       
@@ -656,7 +656,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/categories/:id", isAuthenticated, async (req, res) => {
+  app.put("/api/admin/categories/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const categoryData = insertCategorySchema.partial().parse(req.body);
       const category = await storage.updateCategory(parseInt(req.params.id), categoryData);
@@ -670,7 +670,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/categories/:id", isAuthenticated, async (req, res) => {
+  app.delete("/api/admin/categories/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const categoryId = parseInt(req.params.id);
       console.log(`🗑️ SERVER DELETE CATEGORY: Starting deletion for category ID: ${categoryId}`);
@@ -719,7 +719,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
   // Subcategories API for category filtering
-  app.get("/api/subcategories", async (req, res) => {
+  app.get("/api/subcategories", async (req: AuthRequest, res) => {
     try {
       const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
       const subcategories = await storage.getSubcategories(categoryId);
@@ -730,7 +730,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/subcategories", isAuthenticated, async (req, res) => {
+  app.post("/api/admin/subcategories", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const subcategoryData = req.body;
       
@@ -755,7 +755,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/subcategories/:id", isAuthenticated, async (req, res) => {
+  app.put("/api/admin/subcategories/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
       const subcategoryData = req.body;
@@ -768,7 +768,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/subcategories/:id", isAuthenticated, async (req, res) => {
+  app.delete("/api/admin/subcategories/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
       await storage.deleteSubcategory(id);
@@ -780,7 +780,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Products API
-  app.get("/api/products", async (req, res) => {
+  app.get("/api/products", async (req: AuthRequest, res) => {
     try {
       const filters = {
         categoryId: req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined,
@@ -797,7 +797,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/products/featured", async (req, res) => {
+  app.get("/api/products/featured", async (req: AuthRequest, res) => {
     try {
       const products = await storage.getFeaturedProducts();
       res.json(products);
@@ -807,7 +807,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/products/:slug", async (req, res) => {
+  app.get("/api/products/:slug", async (req: AuthRequest, res) => {
     try {
       const product = await storage.getProductBySlug(req.params.slug);
       if (!product) {
@@ -821,7 +821,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // TEMP FIX: Override admin products route FIRST
-  app.get("/api/admin/products", async (req, res) => {
+  app.get("/api/admin/products", async (req: AuthRequest, res) => {
     console.log("🔍 ADMIN PRODUCTS: PUBLIC ROUTE REACHED!");
     try {
       const filters = {
@@ -841,7 +841,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/products", async (req, res) => {
+  app.post("/api/admin/products", async (req: AuthRequest, res) => {
     try {
       // Transform the request body to match the schema
       const transformedData = {
@@ -888,7 +888,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/products/:id", async (req, res) => {
+  app.put("/api/admin/products/:id", async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
       
@@ -943,7 +943,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/products/:id", isAuthenticated, async (req, res) => {
+  app.delete("/api/admin/products/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
       await storage.deleteProduct(id);
@@ -955,7 +955,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Duplicate product
-  app.post("/api/admin/products/:id/duplicate", isAuthenticated, async (req, res) => {
+  app.post("/api/admin/products/:id/duplicate", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
       const originalProduct = await storage.getProductById(id);
@@ -995,7 +995,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
 
-  app.delete("/api/admin/products/:id", isAuthenticated, async (req, res) => {
+  app.delete("/api/admin/products/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
       await storage.deleteProduct(id);
@@ -1007,7 +1007,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Duplicate product
-  app.post("/api/admin/products/:id/duplicate", isAuthenticated, async (req, res) => {
+  app.post("/api/admin/products/:id/duplicate", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
       const originalProduct = await storage.getProductById(id);
@@ -1043,7 +1043,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Inquiries API
-  app.post("/api/inquiries", async (req, res) => {
+  app.post("/api/inquiries", async (req: AuthRequest, res) => {
     try {
       const inquiryData = insertInquirySchema.parse(req.body);
       const inquiry = await storage.createInquiry(inquiryData);
@@ -1055,7 +1055,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // TEMP FIX: Make admin inquiries public for debugging  
-  app.get("/api/admin/inquiries", async (req, res) => {
+  app.get("/api/admin/inquiries", async (req: AuthRequest, res) => {
     console.log("🔍 ADMIN INQUIRIES: Request reached inquiries endpoint");
     try {
       const inquiries = await storage.getInquiries();
@@ -1068,7 +1068,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/inquiries/:id", isAuthenticated, async (req, res) => {
+  app.put("/api/admin/inquiries/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
       const inquiryData = req.body;
@@ -1081,7 +1081,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/inquiries/:id", isAuthenticated, async (req, res) => {
+  app.delete("/api/admin/inquiries/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
       await storage.deleteInquiry(id);
@@ -1093,7 +1093,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Analytics API - Website visitor tracking (VPS-COMPATIBLE)
-  app.get("/api/admin/analytics", isAuthenticated, async (req, res) => {
+  app.get("/api/admin/analytics", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       console.log("📊 SIMPLE ANALYTICS: Fetching data...");
       const period = req.query.period || 'month';
@@ -1113,7 +1113,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // REMOVED: Old page tracking system - now using simple visitor tracking only through product clicks
 
   // Track product clicks (only when user clicks on product detail)
-  app.post("/api/track/product", async (req, res) => {
+  app.post("/api/track/product", async (req: AuthRequest, res) => {
     try {
       const { productId } = req.body;
       const ip = req.ip || req.connection.remoteAddress || 'unknown';
@@ -1210,7 +1210,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Geolocation endpoint for language detection
-  app.get("/api/geolocation", async (req, res) => {
+  app.get("/api/geolocation", async (req: AuthRequest, res) => {
     try {
       const ip = req.ip || req.connection.remoteAddress || 'unknown';
       
@@ -1280,7 +1280,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/uploads', express.static(uploadsDir));
 
   // Image Upload Routes
-  app.get("/api/admin/images", isAuthenticated, async (req, res) => {
+  app.get("/api/admin/images", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const images = await storage.getUploadedImages();
       res.json(images);
@@ -1291,7 +1291,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // SECURITY: Enhanced Protected Image Upload with Comprehensive Security
-  app.post("/api/admin/images/upload", uploadRateLimit, isAuthenticated, handleUploadError, upload.array('images', 10), async (req, res) => {
+  app.post("/api/admin/images/upload", uploadRateLimit, isAuthenticated, handleUploadError, upload.array('images', 10), async (req: AuthRequest, res) => {
     console.log("🔒 SECURITY UPLOAD: Protected image upload request", {
       fileCount: req.files?.length || 0,
       userAgent: req.get('User-Agent')?.substring(0, 50),
@@ -1362,7 +1362,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // SECURITY: Protected Image Deletion with Parameter Validation
-  app.delete("/api/admin/images/:id", isAuthenticated, validateParams(idParamSchema), async (req, res) => {
+  app.delete("/api/admin/images/:id", isAuthenticated, validateParams(idParamSchema), async (req: AuthRequest, res) => {
     console.log("🔒 SECURITY DELETE: Protected image deletion request", {
       imageId: req.params.id,
       userId: (req as any).session?.userId,
@@ -1492,7 +1492,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Site Settings API routes
-  app.post("/api/admin/site-settings", isAuthenticated, async (req, res) => {
+  app.post("/api/admin/site-settings", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const { key, value } = req.body;
       
@@ -1508,7 +1508,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/site-settings", isAuthenticated, async (req, res) => {
+  app.get("/api/admin/site-settings", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const settings = await storage.getSiteSettings();
       res.json(settings);
@@ -1519,7 +1519,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Public endpoint for site settings (for hero images and contact info on public pages)
-  app.get("/api/site-settings", async (req, res) => {
+  app.get("/api/site-settings", async (req: AuthRequest, res) => {
     try {
       const settings = await storage.getSiteSettings();
       // Return image-related settings and contact information for public access
@@ -1537,7 +1537,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Analytics API routes
-  app.get("/api/admin/analytics/:period", isAuthenticated, async (req, res) => {
+  app.get("/api/admin/analytics/:period", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const period = req.params.period as 'day' | 'month' | 'year';
       if (!['day', 'month', 'year'].includes(period)) {
