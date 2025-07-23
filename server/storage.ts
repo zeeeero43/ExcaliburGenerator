@@ -454,11 +454,29 @@ export class DatabaseStorage implements IStorage {
         break;
     }
 
-    // Count unique visitors in time period
+    console.log(`📊 ANALYTICS DEBUG: Period=${period}, StartDate=${startDate.toISOString()}, Now=${now.toISOString()}`);
+
+    // Debug: Check all visitors first
+    const allVisitors = await db.select().from(visitors).orderBy(desc(visitors.lastVisit));
+    console.log(`📊 ANALYTICS DEBUG: Total visitors in DB: ${allVisitors.length}`);
+    allVisitors.forEach((v, i) => {
+      if (i < 3) { // Show first 3
+        console.log(`📊 VISITOR ${i+1}: ID=${v.id}, IP=${v.ipAddress}, Country=${v.country}, FirstVisit=${v.firstVisit?.toISOString()}, LastVisit=${v.lastVisit?.toISOString()}`);
+      }
+    });
+
+    // Count unique visitors in time period (check both first visit AND last visit)
     const [uniqueVisitorsResult] = await db
       .select({ count: countDistinct(visitors.id) })
       .from(visitors)
-      .where(gte(visitors.firstVisit, startDate));
+      .where(
+        or(
+          gte(visitors.firstVisit, startDate),
+          gte(visitors.lastVisit, startDate)
+        )
+      );
+
+    console.log(`📊 ANALYTICS DEBUG: Unique visitors found for ${period}: ${uniqueVisitorsResult.count}`);
 
     // Top products by clicks with German names
     const topProductsResult = await db
@@ -475,14 +493,19 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(count()))
       .limit(10);
 
-    // Top countries by unique visitors
+    // Top countries by unique visitors (check both first visit AND last visit)
     const topCountriesResult = await db
       .select({
         country: visitors.country,
         uniqueVisitors: countDistinct(visitors.id)
       })
       .from(visitors)
-      .where(gte(visitors.firstVisit, startDate))
+      .where(
+        or(
+          gte(visitors.firstVisit, startDate),
+          gte(visitors.lastVisit, startDate)
+        )
+      )
       .groupBy(visitors.country)
       .orderBy(desc(countDistinct(visitors.id)))
       .limit(10);
