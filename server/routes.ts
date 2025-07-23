@@ -1128,24 +1128,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
           : forwardedFor.toString().split(',')[0].trim();
       }
       
-      // Simple country detection with geoip-lite (ES module fix)
-      let country = 'CU'; // Default
+      // Real country detection with geoip-lite
+      let country = 'CU'; // Default für Development
       
-      // Skip local IPs
+      // Skip local IPs (development)
       if (!clientIp.startsWith('127.0.0.1') && 
           !clientIp.startsWith('192.168.') && 
           !clientIp.startsWith('10.') && 
           clientIp !== '::1') {
         try {
-          const geoip = await import('geoip-lite');
           const geo = geoip.lookup(clientIp);
           if (geo && geo.country) {
             country = geo.country;
-            console.log(`📊 GEOIP: IP ${clientIp} → ${country}`);
+            console.log(`📊 GEOIP SUCCESS: IP ${clientIp} → ${country}`);
+          } else {
+            console.log(`📊 GEOIP: No data for IP ${clientIp}, using default CU`);
           }
         } catch (error) {
-          console.log(`📊 GEOIP: Failed for ${clientIp}, using default CU`);
+          console.log(`📊 GEOIP ERROR: Failed for ${clientIp}:`, error.message);
         }
+      } else {
+        console.log(`📊 GEOIP: Skipping local IP ${clientIp}, using default CU`);
       }
       
       // Track visitor (creates or updates existing visitor)
