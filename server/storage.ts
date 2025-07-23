@@ -454,16 +454,7 @@ export class DatabaseStorage implements IStorage {
         break;
     }
 
-    console.log(`📊 ANALYTICS DEBUG: Period=${period}, StartDate=${startDate.toISOString()}, Now=${now.toISOString()}`);
-
-    // Debug: Check all visitors first
-    const allVisitors = await db.select().from(visitors).orderBy(desc(visitors.lastVisit));
-    console.log(`📊 ANALYTICS DEBUG: Total visitors in DB: ${allVisitors.length}`);
-    allVisitors.forEach((v, i) => {
-      if (i < 3) { // Show first 3
-        console.log(`📊 VISITOR ${i+1}: ID=${v.id}, IP=${v.ipAddress}, Country=${v.country}, FirstVisit=${v.firstVisit?.toISOString()}, LastVisit=${v.lastVisit?.toISOString()}`);
-      }
-    });
+    // Removed debug logging
 
     // Count unique visitors in time period (check both first visit AND last visit)
     const [uniqueVisitorsResult] = await db
@@ -476,7 +467,7 @@ export class DatabaseStorage implements IStorage {
         )
       );
 
-    console.log(`📊 ANALYTICS DEBUG: Unique visitors found for ${period}: ${uniqueVisitorsResult.count}`);
+    // Silent analytics processing
 
     // Top products by clicks with German names
     const topProductsResult = await db

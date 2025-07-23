@@ -56,35 +56,18 @@ export default function ProductDetail() {
     if (product) {
       const trackProductClick = async () => {
         try {
-          const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-          console.log(`📊 FRONTEND: Tracking click for product ${product.id} (${product.nameEs}) - Mobile: ${isMobile}`);
-          console.log(`📊 FRONTEND: User Agent: ${navigator.userAgent}`);
-          console.log(`📊 FRONTEND: Connection: ${(navigator as any).connection?.effectiveType || 'unknown'}`);
-          
           const response = await fetch('/api/track/product', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'User-Agent': navigator.userAgent, // Explicitly set user agent
+              'User-Agent': navigator.userAgent,
             },
             body: JSON.stringify({
               productId: product.id,
             }),
           });
-          
-          if (!response.ok) {
-            console.error(`📊 FRONTEND ERROR: HTTP ${response.status} - ${response.statusText}`);
-            return;
-          }
-          
-          const result = await response.json();
-          console.log(`📊 FRONTEND SUCCESS: Product click tracking result:`, result);
-          
-          if (result.debug) {
-            console.log(`📊 MOBILE DEBUG: Mobile=${result.debug.mobile}, IP=${result.debug.ip}, Country=${result.debug.country}, Visitor=${result.debug.visitorId}`);
-          }
         } catch (error) {
-          console.error('📊 FRONTEND ERROR: Error tracking product click:', error);
+          // Silent tracking - no console output
         }
       };
       

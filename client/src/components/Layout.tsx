@@ -17,8 +17,6 @@ export function Layout({ children }: LayoutProps) {
   useEffect(() => {
     const trackPageVisit = async () => {
       try {
-        console.log(`📊 Page Visit: ${location} - tracking...`);
-        
         const response = await fetch('/api/track', {
           method: 'POST',
           headers: {
@@ -31,14 +29,8 @@ export function Layout({ children }: LayoutProps) {
             timestamp: new Date().toISOString()
           }),
         });
-        
-        if (response.ok) {
-          console.log(`📊 Page Visit: ${location} - tracked successfully`);
-        } else {
-          console.log(`📊 Page Visit: ${location} - tracking failed`);
-        }
       } catch (error) {
-        console.log(`📊 Page Visit: ${location} - error:`, error);
+        // Silent tracking - no console output
       }
     };
 
