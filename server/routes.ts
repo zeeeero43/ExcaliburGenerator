@@ -1128,8 +1128,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           : forwardedFor.toString().split(',')[0].trim();
       }
       
-      // Simple country detection with geoip-lite
-      const geoip = require('geoip-lite');
+      // Simple country detection with geoip-lite (ES module fix)
       let country = 'CU'; // Default
       
       // Skip local IPs
@@ -1138,6 +1137,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           !clientIp.startsWith('10.') && 
           clientIp !== '::1') {
         try {
+          const geoip = await import('geoip-lite');
           const geo = geoip.lookup(clientIp);
           if (geo && geo.country) {
             country = geo.country;

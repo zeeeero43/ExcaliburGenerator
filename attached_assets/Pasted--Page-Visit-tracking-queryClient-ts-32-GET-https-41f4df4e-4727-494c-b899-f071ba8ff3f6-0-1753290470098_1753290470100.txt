@@ -1,0 +1,32 @@
+📊 Page Visit: / - tracking...
+queryClient.ts:32  GET https://41f4df4e-4727-494c-b899-f071ba8ff3f6-00-281vujbp6rhxs.riker.replit.dev/api/admin/user 401 (Unauthorized)
+(anonymous) @ queryClient.ts:32
+fetchFn @ @tanstack_react-query.js?v=bf3c1acc:840
+run @ @tanstack_react-query.js?v=bf3c1acc:494
+start @ @tanstack_react-query.js?v=bf3c1acc:536
+fetch @ @tanstack_react-query.js?v=bf3c1acc:926
+executeFetch_fn @ @tanstack_react-query.js?v=bf3c1acc:2211
+onSubscribe @ @tanstack_react-query.js?v=bf3c1acc:1898
+subscribe @ @tanstack_react-query.js?v=bf3c1acc:24
+(anonymous) @ @tanstack_react-query.js?v=bf3c1acc:3022
+subscribeToStore @ chunk-WERSD76P.js?v=bf3c1acc:11984
+commitHookEffectListMount @ chunk-WERSD76P.js?v=bf3c1acc:16915
+commitPassiveMountOnFiber @ chunk-WERSD76P.js?v=bf3c1acc:18156
+commitPassiveMountEffects_complete @ chunk-WERSD76P.js?v=bf3c1acc:18129
+commitPassiveMountEffects_begin @ chunk-WERSD76P.js?v=bf3c1acc:18119
+commitPassiveMountEffects @ chunk-WERSD76P.js?v=bf3c1acc:18109
+flushPassiveEffectsImpl @ chunk-WERSD76P.js?v=bf3c1acc:19490
+flushPassiveEffects @ chunk-WERSD76P.js?v=bf3c1acc:19447
+(anonymous) @ chunk-WERSD76P.js?v=bf3c1acc:19328
+workLoop @ chunk-WERSD76P.js?v=bf3c1acc:197
+flushWork @ chunk-WERSD76P.js?v=bf3c1acc:176
+performWorkUntilDeadline @ chunk-WERSD76P.js?v=bf3c1acc:384Understand this error
+Layout.tsx:36 📊 Page Visit: / - tracked successfully
+Layout.tsx:20 📊 Page Visit: /products - tracking...
+Layout.tsx:36 📊 Page Visit: /products - tracked successfully
+Layout.tsx:20 📊 Page Visit: /product/esto-es-una-prueba - tracking...
+Layout.tsx:36 📊 Page Visit: /product/esto-es-una-prueba - tracked successfully
+ProductDetail.tsx:60 📊 FRONTEND: Tracking click for product 17 (Esto es una prueba.) - Mobile: true
+ProductDetail.tsx:61 📊 FRONTEND: User Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1
+ProductDetail.tsx:62 📊 FRONTEND: Connection: 3g
+ProductDetail.tsx:81 📊 FRONTEND SUCCESS: Product click tracking result: {success: true, warning: 'Product lookup failed'}
