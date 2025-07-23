@@ -1111,7 +1111,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // REMOVED: Old page tracking system - now using simple visitor tracking only through product clicks
+  // UNIVERSAL PAGE TRACKING: Track every page visit (auch Inkognito)
+  app.post("/api/track", async (req: AuthRequest, res) => {
+    try {
+      const { page, userAgent, referrer, timestamp } = req.body;
+      const ip = req.ip || req.connection.remoteAddress || 'unknown';
+      
+      console.log(`📊 PAGE VISIT: ${page} from IP=${ip}`);
+      
+      // Enhanced IP detection
+      const forwardedFor = req.headers['x-forwarded-for'];
+      let clientIp = ip;
+      if (forwardedFor) {
+        clientIp = Array.isArray(forwardedFor) 
+          ? forwardedFor[0] 
+          : forwardedFor.toString().split(',')[0].trim();
+      }
+      
+      // Simple country detection with geoip-lite
+      const geoip = require('geoip-lite');
+      let country = 'CU'; // Default
+      
+      // Skip local IPs
+      if (!clientIp.startsWith('127.0.0.1') && 
+          !clientIp.startsWith('192.168.') && 
+          !clientIp.startsWith('10.') && 
+          clientIp !== '::1') {
+        try {
+          const geo = geoip.lookup(clientIp);
+          if (geo && geo.country) {
+            country = geo.country;
+            console.log(`📊 GEOIP: IP ${clientIp} → ${country}`);
+          }
+        } catch (error) {
+          console.log(`📊 GEOIP: Failed for ${clientIp}, using default CU`);
+        }
+      }
+      
+      // Track visitor (creates or updates existing visitor)
+      const visitor = await storage.trackVisitor(clientIp, country);
+      console.log(`📊 VISITOR TRACKED: ID ${visitor.id}, IP ${clientIp}, Country ${country}`);
+      
+      res.json({ 
+        success: true, 
+        visitorId: visitor.id,
+        country: country,
+        debug: {
+          page,
+          ip: clientIp,
+          country,
+          timestamp
+        }
+      });
+    } catch (error) {
+      console.error("📊 PAGE TRACKING ERROR:", error);
+      res.json({ success: false, error: error.message });
+    }
+  });
 
   // Track product clicks (only when user clicks on product detail)
   app.post("/api/track/product", async (req: AuthRequest, res) => {

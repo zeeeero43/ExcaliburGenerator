@@ -26,7 +26,7 @@ import NotFound from "./pages/not-found";
 
 import { OfflineIndicator } from "./components/OfflineIndicator";
 import { CartProvider } from "./contexts/CartContext";
-import { PageViewTracker } from "./components/PageViewTracker";
+// PageViewTracker removed - now using Layout.tsx universal tracking
 
 function Router() {
   const { isLoading } = useLanguage();
@@ -151,7 +151,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <CartProvider>
-          <PageViewTracker />
+          {/* Universal tracking now in Layout.tsx */}
           <OfflineIndicator />
           <Router />
           <Toaster />

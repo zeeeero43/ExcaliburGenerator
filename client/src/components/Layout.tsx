@@ -13,9 +13,37 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
 
-  // SIMPLE ANALYTICS: Only track product clicks - no page tracking
+  // UNIVERSAL PAGE TRACKING: Track every page visit (auch Inkognito)
   useEffect(() => {
-    console.log(`📊 Navigation to: ${location} (no tracking)`);
+    const trackPageVisit = async () => {
+      try {
+        console.log(`📊 Page Visit: ${location} - tracking...`);
+        
+        const response = await fetch('/api/track', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            page: location,
+            userAgent: navigator.userAgent,
+            referrer: document.referrer || '',
+            timestamp: new Date().toISOString()
+          }),
+        });
+        
+        if (response.ok) {
+          console.log(`📊 Page Visit: ${location} - tracked successfully`);
+        } else {
+          console.log(`📊 Page Visit: ${location} - tracking failed`);
+        }
+      } catch (error) {
+        console.log(`📊 Page Visit: ${location} - error:`, error);
+      }
+    };
+
+    // Track immediately, even without cookie consent
+    trackPageVisit();
   }, [location]);
 
   return (
