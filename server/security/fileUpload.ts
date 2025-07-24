@@ -25,41 +25,15 @@ const generateSecureFilename = (originalname: string): string => {
   return `${timestamp}-${randomBytes}${ext}`;
 };
 
-// File Filter für Sicherheit
+// Einfacher File Filter - keine Security-Checks
 const fileFilter = (req: Request, file: Express.Multer.File, callback: Function) => {
-  console.log('🔒 FILE UPLOAD: Validating file:', {
+  console.log('📁 FILE UPLOAD: Accepting file:', {
     originalname: file.originalname,
     mimetype: file.mimetype,
     size: file.size
   });
 
-  // MIME Type Check
-  if (!ALLOWED_MIME_TYPES.includes(file.mimetype)) {
-    console.warn('🔒 FILE UPLOAD: Rejected - Invalid MIME type:', file.mimetype);
-    return callback(new Error(`Ungültiger Dateityp. Erlaubt: ${ALLOWED_MIME_TYPES.join(', ')}`), false);
-  }
-
-  // Extension Check
-  const ext = path.extname(file.originalname).toLowerCase();
-  if (!ALLOWED_EXTENSIONS.includes(ext)) {
-    console.warn('🔒 FILE UPLOAD: Rejected - Invalid extension:', ext);
-    return callback(new Error(`Ungültige Dateiendung. Erlaubt: ${ALLOWED_EXTENSIONS.join(', ')}`), false);
-  }
-
-  // Filename Security Check - keine gefährlichen Zeichen
-  const dangerousChars = /[<>:"/\\|?*\x00-\x1f]/;
-  if (dangerousChars.test(file.originalname)) {
-    console.warn('🔒 FILE UPLOAD: Rejected - Dangerous characters in filename:', file.originalname);
-    return callback(new Error('Dateiname enthält ungültige Zeichen.'), false);
-  }
-
-  // Filename Length Check
-  if (file.originalname.length > 255) {
-    console.warn('🔒 FILE UPLOAD: Rejected - Filename too long:', file.originalname.length);
-    return callback(new Error('Dateiname ist zu lang (max. 255 Zeichen).'), false);
-  }
-
-  console.log('🔒 FILE UPLOAD: File validation passed:', file.originalname);
+  // Alle Dateien akzeptieren
   callback(null, true);
 };
 
@@ -79,15 +53,15 @@ const storage = multer.diskStorage({
   }
 });
 
-// Sichere Upload-Konfiguration
+// Upload-Konfiguration ohne Security-Beschränkungen
 export const secureUpload = multer({
   storage: storage,
   limits: {
-    fileSize: MAX_FILE_SIZE,
-    files: 10, // Max 10 Dateien gleichzeitig
-    fields: 20, // Max 20 Form-Fields
-    fieldNameSize: 100, // Max Field-Name Länge
-    fieldSize: 1024 * 1024 // Max Field-Value Größe: 1MB
+    fileSize: 50 * 1024 * 1024, // 50MB statt 5MB
+    files: 20, // 20 Dateien statt 10
+    fields: 50, // Mehr Fields
+    fieldNameSize: 500, // Längere Field-Namen
+    fieldSize: 10 * 1024 * 1024 // 10MB Field-Größe
   },
   fileFilter: fileFilter
 });

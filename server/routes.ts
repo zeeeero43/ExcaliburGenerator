@@ -32,7 +32,7 @@ import {
   verifyPassword,
   validatePassword
 } from "./security/auth";
-import { secureUpload, validateUploadedFile, handleUploadError } from "./security/fileUpload";
+import { secureUpload, handleUploadError } from "./security/fileUpload";
 
 // CHINA BLOCKING MIDDLEWARE - Blocks all Chinese IP addresses
 function blockChinaMiddleware(req: any, res: any, next: any) {
@@ -1372,19 +1372,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const uploadedImages = [];
       
       for (const file of files) {
-        // SECURITY: Validate each uploaded file for security threats
-        const isValid = await validateUploadedFile(file.buffer, file.originalname, file.mimetype);
-        if (!isValid) {
-          console.warn("🔒 SECURITY UPLOAD: Invalid file detected", {
-            filename: file.originalname,
-            mimetype: file.mimetype,
-            size: file.size
-          });
-          return res.status(400).json({ 
-            error: `Datei ${file.originalname} ist ungültig oder enthält verdächtigen Inhalt`,
-            code: "INVALID_FILE"
-          });
-        }
+        console.log("📁 FILE UPLOAD: Processing file", {
+          filename: file.originalname,
+          mimetype: file.mimetype,
+          size: file.size
+        });
 
         // Compress and save the image
         const compressedFilename = await compressAndSaveImage(file.buffer, file.originalname);
