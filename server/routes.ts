@@ -514,9 +514,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Categories API
+  // 🇨🇺 CUBAN OPTIMIZATION: Categories API with caching
   app.get("/api/categories", async (req: AuthRequest, res) => {
     try {
+      // Set caching headers for Cuban users with slow connections
+      res.set({
+        'Cache-Control': 'public, max-age=300, stale-while-revalidate=600', // 5 min cache, 10 min stale
+        'ETag': `categories-${Date.now()}`,
+        'Vary': 'Accept-Encoding'
+      });
+      
       const categories = await storage.getCategories();
       res.json(categories);
     } catch (error) {
@@ -525,10 +532,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Subcategories API
+  // 🇨🇺 CUBAN OPTIMIZATION: Subcategories API with caching
   app.get("/api/subcategories", async (req: AuthRequest, res) => {
     try {
-      const subcategories = await storage.getSubcategories();
+      // Set caching headers for Cuban users with slow connections
+      res.set({
+        'Cache-Control': 'public, max-age=300, stale-while-revalidate=600', // 5 min cache, 10 min stale
+        'ETag': `subcategories-${Date.now()}`,
+        'Vary': 'Accept-Encoding'
+      });
+      
+      const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
+      const subcategories = await storage.getSubcategories(categoryId);
       res.json(subcategories);
     } catch (error) {
       console.error("Error fetching subcategories:", error);
@@ -803,9 +818,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Products API
+  // 🇨🇺 CUBAN OPTIMIZATION: Products API with caching
   app.get("/api/products", async (req: AuthRequest, res) => {
     try {
+      // Set caching headers for Cuban users with slow connections
+      res.set({
+        'Cache-Control': 'public, max-age=300, stale-while-revalidate=600', // 5 min cache, 10 min stale
+        'ETag': `products-${Date.now()}`,
+        'Vary': 'Accept-Encoding'
+      });
+      
       const filters = {
         categoryId: req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined,
         subcategoryId: req.query.subcategoryId ? parseInt(req.query.subcategoryId as string) : undefined,
@@ -1484,11 +1506,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Continue request immediately without waiting
     next();
     
-    // Only track GET requests and ignore admin/api routes, static files
+    // Only track GET requests for actual pages (PERFORMANCE: reduce tracking overhead)
     if (req.method === 'GET' && 
         !req.path.startsWith('/api/') && 
         !req.path.startsWith('/admin/') && 
+        !req.path.startsWith('/@') && // No Vite dev files
         !req.path.includes('.') && // No static files (.js, .css, .png, etc.)
+        !req.path.includes('__vite') &&
+        !req.path.includes('node_modules') &&
         req.path !== '/favicon.ico') {
       
       // Use setImmediate for better performance

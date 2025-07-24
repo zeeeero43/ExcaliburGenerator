@@ -5,6 +5,7 @@ import { Footer } from './Footer';
 import { WhatsAppButton } from './WhatsAppButton';
 import { CookieBanner } from './CookieBanner';
 import { LocalBusinessStructuredData } from './StructuredData';
+import { usePerformance } from '../hooks/usePerformance';
 
 interface LayoutProps {
   children: ReactNode;
@@ -12,6 +13,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
+  const { getPerformanceClasses, isCubanOptimized, settings } = usePerformance();
 
   // 📱 MOBILE-OPTIMIZED TRACKING: Robust tracking for all devices (especially Cuban mobile users)
   useEffect(() => {
@@ -60,21 +62,29 @@ export function Layout({ children }: LayoutProps) {
       }
     };
 
-    // Delay tracking slightly to avoid blocking page render on mobile
-    const timer = setTimeout(trackPageVisit, 100);
+    // 🇨🇺 CUBAN OPTIMIZATION: Longer delay for tracking to prioritize page render
+    const delay = isCubanOptimized ? 500 : 100;
+    const timer = setTimeout(trackPageVisit, delay);
     return () => clearTimeout(timer);
   }, [location]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <LocalBusinessStructuredData />
+    <div className={`min-h-screen flex flex-col ${getPerformanceClasses()}`}>
+      {/* 🇨🇺 CUBAN OPTIMIZATION: Conditional loading of non-essential components */}
+      {!settings.reduceRequests && <LocalBusinessStructuredData />}
       <Header />
       <main className="flex-1">
         {children}
       </main>
       <Footer />
       <WhatsAppButton />
-      <CookieBanner />
+      {/* Load cookie banner with delay for Cuban users */}
+      {!isCubanOptimized && <CookieBanner />}
+      {isCubanOptimized && (
+        <div style={{ display: 'none' }}>
+          <CookieBanner />
+        </div>
+      )}
     </div>
   );
 }

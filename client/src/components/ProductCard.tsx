@@ -2,6 +2,8 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'wouter';
 import { Card, CardContent } from './ui/card';
 import { FormattedText } from './FormattedText';
+import { OptimizedImage } from './OptimizedImage';
+import { usePerformance } from '../hooks/usePerformance';
 
 interface ProductCardProps {
   title: string;
@@ -13,14 +15,21 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ title, description, image, linkText, category, className = "" }: ProductCardProps) {
+  const { settings } = usePerformance();
+  
   return (
     <Link href={`/product/${category}`}>
       <Card className={`group cursor-pointer card-enhanced hover-lift overflow-hidden ${className}`}>
         <div className="aspect-video bg-gray-100 overflow-hidden">
-          <img
+          <OptimizedImage
             src={image}
             alt={title}
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+            className={`w-full h-full object-contain ${
+              settings.enableAnimations 
+                ? 'group-hover:scale-105 transition-transform duration-300' 
+                : ''
+            }`}
+            fallbackSrc="/api/placeholder/400/300"
             loading="lazy"
           />
         </div>

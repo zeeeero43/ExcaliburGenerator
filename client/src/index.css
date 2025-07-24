@@ -2,6 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🇨🇺 CUBAN PERFORMANCE OPTIMIZATIONS */
+.motion-reduce {
+  animation: none !important;
+  transition: none !important;
+}
+
+.compressed-mode {
+  /* Reduce visual complexity for slow connections */
+  box-shadow: none !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+}
+
+.compressed-mode .gradient-text {
+  background: none !important;
+  color: #1f2937 !important;
+}
+
+.compressed-mode .glass-morphism {
+  background: white !important;
+  backdrop-filter: none !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+/* Image optimization for slow connections */
+.image-rendering-optimize-speed {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Reduced animation preferences for Cuban users */
+@media (prefers-reduced-motion: reduce) {
+  .motion-reduce * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 :root {
   --background: hsl(0, 0%, 100%);
   --foreground: hsl(224, 71%, 4%);

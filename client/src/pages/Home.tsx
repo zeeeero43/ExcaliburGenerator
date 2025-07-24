@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Shield, Truck, Users, CheckCircle, Zap, Ship, Warehouse, MessageCircle, Eye } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { useOptimizedRequest } from '../hooks/useRequest';
 import { useLanguage } from '../hooks/useLanguage';
 import { HeroSlider } from '../components/HeroSlider';
 import { ProductCard } from '../components/ProductCard';
@@ -33,16 +33,11 @@ export default function Home() {
     updateMeta('geo.placename', 'Matanzas, Cuba');
   }, []);
   
-  // Fetch categories from database (same as Products.tsx)
-  const { data: categories = [] } = useQuery<Category[]>({
-    queryKey: ['/api/categories'],
-  });
+  // 🇨🇺 CUBAN OPTIMIZATION: Enhanced categories loading
+  const { data: categories = [] } = useOptimizedRequest<Category[]>('/api/categories');
 
-  // Load contact settings from admin panel
-  const { data: siteSettings = [] } = useQuery<any[]>({
-    queryKey: ['/api/site-settings'],
-    retry: false,
-  });
+  // 🇨🇺 CUBAN OPTIMIZATION: Enhanced loading for site settings  
+  const { data: siteSettings = [] } = useOptimizedRequest<any[]>('/api/site-settings');
 
   // Helper function to get contact info from admin settings
   const getContactInfo = (key: string, fallback: string) => {

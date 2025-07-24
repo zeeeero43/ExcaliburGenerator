@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Filter, Grid, List, ArrowLeft, Eye } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { useOptimizedRequest } from '../hooks/useRequest';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
 import { Button } from '../components/ui/button';
@@ -39,20 +39,14 @@ export default function Products() {
   const [showCategories, setShowCategories] = useState(true);
   const [showSubcategories, setShowSubcategories] = useState(false);
 
-  // Load real categories from database
-  const { data: categories = [] } = useQuery<Category[]>({
-    queryKey: ['/api/categories'],
-  });
+  // 🇨🇺 CUBAN OPTIMIZATION: Enhanced categories loading
+  const { data: categories = [] } = useOptimizedRequest<Category[]>('/api/categories');
 
-  // Load subcategories from database
-  const { data: subcategories = [] } = useQuery<Subcategory[]>({
-    queryKey: ['/api/subcategories'],
-  });
+  // 🇨🇺 CUBAN OPTIMIZATION: Enhanced subcategories loading  
+  const { data: subcategories = [] } = useOptimizedRequest<Subcategory[]>('/api/subcategories');
 
-  // Load real products from database
-  const { data: products = [], isLoading } = useQuery<Product[]>({
-    queryKey: ['/api/products'],
-  });
+  // 🇨🇺 CUBAN OPTIMIZATION: Enhanced products loading
+  const { data: products = [], isLoading } = useOptimizedRequest<Product[]>('/api/products');
 
   // Helper function to get localized text
   const getLocalizedText = (item: any, field: string) => {

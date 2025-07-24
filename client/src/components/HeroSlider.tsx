@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '../hooks/useLanguage';
 import { Button } from './ui/button';
+import { OptimizedImage } from './OptimizedImage';
+import { usePerformance } from '../hooks/usePerformance';
+import { useOptimizedRequest, useQuery } from '../hooks/useRequest';
 import type { SiteSetting } from '@shared/schema';
 
 interface Slide {
@@ -18,11 +20,8 @@ export function HeroSlider() {
   const { t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Lade Site-Settings für die Hero-Bilder (öffentlicher Endpoint)
-  const { data: siteSettings = [] } = useQuery<SiteSetting[]>({
-    queryKey: ['/api/site-settings'],
-    retry: false,
-  });
+  // 🇨🇺 CUBAN OPTIMIZATION: Enhanced loading for site settings
+  const { data: siteSettings = [] } = useOptimizedRequest<SiteSetting[]>('/api/site-settings');
 
   // Helfer-Funktion um Bild-URL aus Settings zu holen
   const getImageUrl = (key: string, fallback: string) => {
@@ -91,11 +90,12 @@ export function HeroSlider() {
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <img
+            <OptimizedImage
               src={slide.image}
               alt={slide.title}
               className="w-full h-full object-cover"
               loading={index === 0 ? 'eager' : 'lazy'}
+              priority={index === 0}
             />
             <div className="absolute inset-0 flex items-center justify-center z-20">
               <div className="text-center text-white max-w-4xl px-6">
