@@ -1318,8 +1318,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`🌍 LOCAL IP: ${clientIp} is local/development IP, using default CU`);
       }
       
-      // Map countries to languages - Default to Spanish for Cuban market
-      let language = 'es'; // Default to Spanish for Cuban market
+      // Map countries to languages - Default to Spanish for ALL users
+      let language = 'es'; // Spanish as global default
       
       switch(country) {
         case 'DE':
@@ -1327,24 +1327,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         case 'CH':
           language = 'de';
           break;
-        case 'ES':
-        case 'CU':
-          language = 'es';
-          break;
-        case 'US':
-        case 'GB':
-        case 'CA':
-        case 'AU':
-          language = 'en';
-          break;
-        case 'TR': // Turkey
-          language = 'en'; // Use English for Turkish users
-          break;
-        case 'FR': // France
-          language = 'en'; // Use English for French users
-          break;
+        // Alle anderen Länder bekommen Spanisch als Standard
         default:
-          language = 'es'; // Spanish as primary default for Cuban market
+          language = 'es'; // Spanish as global default for all countries
       }
       
       res.json({ 

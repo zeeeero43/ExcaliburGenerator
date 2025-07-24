@@ -11,13 +11,12 @@ export async function detectLanguageFromLocation(): Promise<string> {
   } catch (error) {
     console.error('Geolocation detection failed:', error);
     
-    // Fallback to browser language
+    // Fallback to Spanish as global default
     const browserLang = navigator.language.split('-')[0];
     console.log('Browser language detected:', browserLang);
-    const supportedLangs = ['es', 'de', 'en'];
     
-    // Priority: Spanish for Cuban market, then browser language if supported
+    // Only German gets German, everything else gets Spanish
     if (browserLang === 'de') return 'de';
-    return supportedLangs.includes(browserLang) ? browserLang : 'es';
+    return 'es'; // Spanish as global default
   }
 }
