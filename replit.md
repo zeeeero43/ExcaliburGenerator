@@ -655,6 +655,8 @@ Changelog:
   * Images are automatically compressed for faster loading times while maintaining quality
   * Confirmed Cuba (CU) access works perfectly - only China is blocked, Cuban users get automatic Spanish language
   * Enhanced language switcher with country flags (🇪🇸🇩🇪🇺🇸) instead of text abbreviations
+  * Fixed critical product deletion foreign key constraint error by implementing proper cascade deletion
+  * Spanish now set as global default language for all countries except German-speaking regions
 - July 20, 2025 (comprehensive security implementation completed). Implemented enterprise-grade security system:
   * CRITICAL: Comprehensive security system implemented to prevent hacking attacks as explicitly requested
   * Rate limiting: Multiple levels (General, API, Login, Upload) with progressive restrictions

@@ -327,7 +327,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteProduct(id: number): Promise<void> {
+    console.log(`🗑️ STORAGE: Starting product deletion cascade for product ${id}`);
+    
+    // First: Delete all product clicks that reference this product (foreign key constraint)
+    console.log(`🗑️ STORAGE: Deleting product clicks for product ${id}`);
+    await db.delete(productClicks).where(eq(productClicks.productId, id));
+    console.log(`✅ STORAGE: Product clicks deleted for product ${id}`);
+    
+    // Second: Delete the product itself
+    console.log(`🗑️ STORAGE: Deleting product ${id}`);
     await db.delete(products).where(eq(products.id, id));
+    console.log(`✅ STORAGE: Product ${id} deleted successfully`);
   }
 
   // Inquiries
