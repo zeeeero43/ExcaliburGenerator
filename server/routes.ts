@@ -967,14 +967,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Enhanced product deletion with detailed error logging
   app.delete("/api/admin/products/:id", isAuthenticated, async (req: AuthRequest, res) => {
     try {
       const id = parseInt(req.params.id);
+      console.log(`🗑️ SERVER DELETE PRODUCT: Starting deletion for product ID: ${id}`);
+      
+      // Check if product exists first
+      const product = await storage.getProductById(id);
+      if (!product) {
+        console.log(`🗑️ SERVER DELETE PRODUCT: Product ${id} not found`);
+        return res.status(404).json({ error: "Product not found" });
+      }
+      
+      console.log(`🗑️ SERVER DELETE PRODUCT: Found product ${id} (${product.nameEs}), proceeding with deletion`);
       await storage.deleteProduct(id);
+      console.log(`🗑️ SERVER DELETE PRODUCT: Product ${id} deleted successfully`);
+      
       res.json({ success: true });
     } catch (error) {
-      console.error("Error deleting product:", error);
-      res.status(500).json({ error: "Failed to delete product" });
+      console.error("🗑️ SERVER DELETE PRODUCT: CRITICAL ERROR:", error);
+      console.error("🗑️ SERVER DELETE PRODUCT: Error name:", error.name);
+      console.error("🗑️ SERVER DELETE PRODUCT: Error message:", error.message);
+      console.error("🗑️ SERVER DELETE PRODUCT: Error stack:", error.stack);
+      res.status(500).json({ 
+        error: "Failed to delete product",
+        details: error.message,
+        errorName: error.name
+      });
     }
   });
 
@@ -1014,19 +1034,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         error: "Server error",
         details: error.message || "Fehler beim Duplizieren des Produkts"
       });
-    }
-  });
-
-
-
-  app.delete("/api/admin/products/:id", isAuthenticated, async (req: AuthRequest, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      await storage.deleteProduct(id);
-      res.json({ success: true });
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      res.status(500).json({ error: "Failed to delete product" });
     }
   });
 
