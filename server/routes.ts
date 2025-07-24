@@ -80,23 +80,17 @@ if (!fs.existsSync(uploadsDir)) {
 // SECURITY: Use secure upload configuration
 const upload = secureUpload;
 
-// Function to save image without compression (direct save)
-async function saveImageDirect(buffer: Buffer, originalName: string): Promise<string> {
-  const fileId = uuidv4();
-  const extension = path.extname(originalName).toLowerCase();
-  const filename = `${Date.now()}-${fileId}${extension}`; // Keep original extension
-  const filepath = path.join(uploadsDir, filename);
-
-  console.log("📁 DIRECT SAVE: Saving file directly", {
+// Function to move uploaded file (no processing needed)
+async function moveUploadedFile(uploadedPath: string, originalName: string): Promise<string> {
+  console.log("📁 DIRECT MOVE: Moving uploaded file", {
     originalName,
-    filename,
-    size: buffer.length
+    uploadedPath
   });
 
-  // Save buffer directly to file without any processing
-  fs.writeFileSync(filepath, buffer);
-
-  console.log("✅ DIRECT SAVE: File saved successfully", { filename });
+  // File is already saved by multer, just return the filename
+  const filename = path.basename(uploadedPath);
+  
+  console.log("✅ DIRECT MOVE: File ready", { filename });
   return filename;
 }
 
@@ -1382,8 +1376,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           size: file.size
         });
 
-        // Save the image directly without compression
-        const savedFilename = await saveImageDirect(file.buffer, file.originalname);
+        // Use the already uploaded file (multer saved it to disk)
+        const savedFilename = await moveUploadedFile(file.path, file.originalname);
         
         // Get file stats for size
         const filepath = path.join(uploadsDir, savedFilename);
