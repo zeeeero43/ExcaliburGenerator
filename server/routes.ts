@@ -1392,6 +1392,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           originalName: file.originalname,
           mimetype: file.mimetype,
           size: stats.size,
+          url: `/uploads/${savedFilename}`,
           uploadedBy: null // No user tracking
         };
 
