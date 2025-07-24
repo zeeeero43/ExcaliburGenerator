@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import compression from "compression";
 import cors from "cors";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
@@ -16,6 +17,17 @@ console.log('🔒 SECURITY: Aktiviere Sicherheitsmaßnahmen...');
 
 // SECURITY: Trust proxy für sichere IP-Erkennung
 app.set('trust proxy', 1);
+
+// 🇨🇺 CUBA PERFORMANCE: Enable compression for slow internet
+app.use(compression({
+  level: 9, // Maximum compression for Cuban internet
+  threshold: 0, // Compress all responses
+  filter: (req, res) => {
+    // Compress everything except already compressed files
+    if (req.headers['x-no-compression']) return false;
+    return compression.filter(req, res);
+  }
+}));
 
 // SECURITY: Rate Limiting
 app.use(generalRateLimit);

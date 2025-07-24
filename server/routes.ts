@@ -106,11 +106,18 @@ async function compressUploadedImage(uploadedPath: string, originalName: string)
   const filename = `${Date.now()}-${fileId}${extension}`;
   const outputPath = path.join(uploadsDir, filename);
 
-  // Compress image with sharp for better performance
+  // 🇨🇺 CUBA PERFORMANCE: Aggressive compression for slow internet
   await sharp(uploadedPath)
-    .resize(800, 600, { fit: 'inside', withoutEnlargement: true })
-    .jpeg({ quality: 78 })
-    .png({ compressionLevel: 6 })
+    .resize(600, 400, { fit: 'inside', withoutEnlargement: true }) // Smaller for Cuban internet
+    .jpeg({ 
+      quality: 65, // Reduced from 78 to 65 for faster loading
+      progressive: true, // Progressive JPEG for better perceived performance
+      mozjpeg: true // Better compression algorithm
+    })
+    .png({ 
+      compressionLevel: 9, // Maximum PNG compression
+      quality: 65 // Reduce PNG quality too
+    })
     .toFile(outputPath);
 
   // Delete original uncompressed file
@@ -1142,61 +1149,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // UNIVERSAL PAGE TRACKING: Track every page visit (auch Inkognito)
+  // 🇨🇺 CUBA PERFORMANCE: Fast page tracking for slow connections
   app.post("/api/track", async (req: AuthRequest, res) => {
     try {
-      const { page, userAgent, referrer, timestamp } = req.body;
-      const ip = req.ip || req.connection.remoteAddress || 'unknown';
+      // Respond immediately to prevent blocking Cuban users
+      res.json({ success: true });
       
-      console.log(`📊 PAGE VISIT: ${page} from IP=${ip}`);
-      
-      // Enhanced IP detection
-      const forwardedFor = req.headers['x-forwarded-for'];
-      let clientIp = ip;
-      if (forwardedFor) {
-        clientIp = Array.isArray(forwardedFor) 
-          ? forwardedFor[0] 
-          : forwardedFor.toString().split(',')[0].trim();
-      }
-      
-      // Real country detection with geoip-lite
-      let country = 'CU'; // Default für Development
-      
-      // Skip local IPs (development)
-      if (!clientIp.startsWith('127.0.0.1') && 
-          !clientIp.startsWith('192.168.') && 
-          !clientIp.startsWith('10.') && 
-          clientIp !== '::1') {
+      // Process tracking asynchronously without blocking the response
+      setImmediate(async () => {
         try {
-          const geo = geoip.lookup(clientIp);
-          if (geo && geo.country) {
-            country = geo.country;
-            console.log(`📊 GEOIP SUCCESS: IP ${clientIp} → ${country}`);
-          } else {
-            console.log(`📊 GEOIP: No data for IP ${clientIp}, using default CU`);
+          const { page, userAgent, referrer, timestamp } = req.body;
+          const ip = req.ip || req.connection.remoteAddress || 'unknown';
+          
+          console.log(`📊 PAGE VISIT: ${page} from IP=${ip}`);
+          
+          // Enhanced IP detection (faster version)
+          const forwardedFor = req.headers['x-forwarded-for'];
+          let clientIp = ip;
+          if (forwardedFor) {
+            clientIp = Array.isArray(forwardedFor) 
+              ? forwardedFor[0] 
+              : forwardedFor.toString().split(',')[0].trim();
           }
+          
+          // Fast geolocation with timeout
+          let country = 'CU'; // Default to Cuba
+          if (!clientIp.startsWith('127.0.0.1') && 
+              !clientIp.startsWith('192.168.') && 
+              !clientIp.startsWith('10.') && 
+              clientIp !== '::1') {
+            try {
+              const geo = geoip.lookup(clientIp);
+              if (geo && geo.country) {
+                country = geo.country;
+                console.log(`📊 GEOIP SUCCESS: IP ${clientIp} → ${country}`);
+              }
+            } catch (error) {
+              // Silent error for performance
+              country = 'CU';
+            }
+          }
+          
+          // Track visitor asynchronously
+          const visitor = await storage.trackVisitor(clientIp, country);
+          console.log(`📊 VISITOR TRACKED: ID ${visitor.id}, IP ${clientIp}, Country ${country}`);
+          
         } catch (error) {
-          console.log(`📊 GEOIP ERROR: Failed for ${clientIp}:`, error.message);
-        }
-      } else {
-        console.log(`📊 GEOIP: Skipping local IP ${clientIp}, using default CU`);
-      }
-      
-      // Track visitor (creates or updates existing visitor)
-      const visitor = await storage.trackVisitor(clientIp, country);
-      console.log(`📊 VISITOR TRACKED: ID ${visitor.id}, IP ${clientIp}, Country ${country}`);
-      
-      res.json({ 
-        success: true, 
-        visitorId: visitor.id,
-        country: country,
-        debug: {
-          page,
-          ip: clientIp,
-          country,
-          timestamp
+          console.log(`📊 ASYNC TRACKING ERROR:`, error.message);
         }
       });
+      
     } catch (error) {
       console.error("📊 PAGE TRACKING ERROR:", error);
       res.json({ success: false, error: error.message });
@@ -1489,7 +1491,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         !req.path.startsWith('/api/') && 
         !req.path.startsWith('/admin/') && 
         !req.path.includes('.') && // No static files (.js, .css, .png, etc.)
-        req.path !== '/favicon.ico') {
+        req.path !== '/favicon.ico' &&
+        !req.path.startsWith('/@') && // No Vite development files
+        !req.path.includes('__vite') && // No Vite HMR
+        req.path !== '/node_modules' && // No dev dependencies
+        !req.path.includes('.map')) { // No source maps
       
       // Use setImmediate for better performance
       setImmediate(async () => {
