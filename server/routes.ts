@@ -11,7 +11,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
-// import sharp from "sharp"; // REMOVED: No longer needed for direct file save
+import sharp from "sharp";
 import { v4 as uuidv4 } from "uuid";
 import geoip from 'geoip-lite';
 import cookieParser from 'cookie-parser';
@@ -94,17 +94,29 @@ const upload = multer({
   }
 });
 
-// Function to move uploaded file (no processing needed)
-async function moveUploadedFile(uploadedPath: string, originalName: string): Promise<string> {
-  console.log("📁 DIRECT MOVE: Moving uploaded file", {
+// Function to compress and optimize uploaded images for better performance
+async function compressUploadedImage(uploadedPath: string, originalName: string): Promise<string> {
+  console.log("🖼️ IMAGE COMPRESSION: Processing uploaded file", {
     originalName,
     uploadedPath
   });
 
-  // File is already saved by multer, just return the filename
-  const filename = path.basename(uploadedPath);
+  const fileId = uuidv4();
+  const extension = path.extname(originalName).toLowerCase();
+  const filename = `${Date.now()}-${fileId}${extension}`;
+  const outputPath = path.join(uploadsDir, filename);
+
+  // Compress image with sharp for better performance
+  await sharp(uploadedPath)
+    .resize(800, 600, { fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: 78 })
+    .png({ compressionLevel: 6 })
+    .toFile(outputPath);
+
+  // Delete original uncompressed file
+  fs.unlinkSync(uploadedPath);
   
-  console.log("✅ DIRECT MOVE: File ready", { filename });
+  console.log("✅ IMAGE COMPRESSION: File compressed and optimized", { filename });
   return filename;
 }
 
@@ -1382,7 +1394,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           size: file.size
         });
 
-        const savedFilename = await moveUploadedFile(file.path, file.originalname);
+        const savedFilename = await compressUploadedImage(file.path, file.originalname);
         
         const filepath = path.join(uploadsDir, savedFilename);
         const stats = fs.statSync(filepath);
