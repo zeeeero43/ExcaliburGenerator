@@ -22,14 +22,15 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex space-x-1">
+    <div className="flex space-x-2">
       <Button
         variant={currentLanguage === 'es' ? 'default' : 'ghost'}
         size="sm"
         onClick={() => handleLanguageChange('es')}
-        className="px-2 py-1"
+        className="px-3 py-2 text-lg"
+        title="Español"
       >
-        ES
+        🇪🇸
       </Button>
       {/* DE Button - nur für Admins sichtbar */}
       {isAdmin && (
@@ -37,18 +38,20 @@ export function LanguageSwitcher() {
           variant={currentLanguage === 'de' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => handleLanguageChange('de')}
-          className="px-2 py-1"
+          className="px-3 py-2 text-lg"
+          title="Deutsch"
         >
-          DE
+          🇩🇪
         </Button>
       )}
       <Button
         variant={currentLanguage === 'en' ? 'default' : 'ghost'}
         size="sm"
         onClick={() => handleLanguageChange('en')}
-        className="px-2 py-1"
+        className="px-3 py-2 text-lg"
+        title="English"
       >
-        EN
+        🇺🇸
       </Button>
     </div>
   );
