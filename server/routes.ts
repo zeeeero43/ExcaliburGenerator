@@ -1239,7 +1239,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Track product click - first verify product exists
       try {
-        const product = await storage.getProduct(parseInt(productId));
+        const product = await storage.getProductById(parseInt(productId));
         if (!product) {
           console.log(`⚠️ PRODUCT NOT FOUND: Product ${productId} does not exist, skipping analytics`);
           res.json({ success: true, warning: "Product not found" });
@@ -1604,7 +1604,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Invalid period. Use day, month, or year.' });
       }
       
-      const analytics = await storage.getAnalytics(period);
+      const analytics = await storage.getSimpleAnalytics(period);
       res.json(analytics);
     } catch (error) {
       console.error("Error fetching analytics:", error);
