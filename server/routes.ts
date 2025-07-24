@@ -77,8 +77,22 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// SECURITY: Use secure upload configuration
-const upload = secureUpload;
+// SIMPLE UPLOAD: No security restrictions per user request
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: uploadsDir,
+    filename: (req, file, cb) => {
+      const fileId = uuidv4();
+      const extension = path.extname(file.originalname).toLowerCase();
+      const filename = `${Date.now()}-${fileId}${extension}`;
+      cb(null, filename);
+    }
+  }),
+  limits: {
+    fileSize: 50 * 1024 * 1024, // 50MB
+    files: 20
+  }
+});
 
 // Function to move uploaded file (no processing needed)
 async function moveUploadedFile(uploadedPath: string, originalName: string): Promise<string> {
@@ -1348,23 +1362,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // SECURITY: Enhanced Protected Image Upload with Comprehensive Security
-  app.post("/api/admin/images/upload", uploadRateLimit, isAuthenticated, handleUploadError, upload.array('images', 10), async (req: AuthRequest, res) => {
-    console.log("🔒 SECURITY UPLOAD: Protected image upload request", {
-      fileCount: req.files?.length || 0,
-      userAgent: req.get('User-Agent')?.substring(0, 50),
-      ip: req.ip,
-      userId: (req as any).session?.userId
+  // SIMPLE UPLOAD: No security restrictions per user request
+  app.post("/api/admin/images/upload", upload.array("images", 20), async (req, res) => {
+    console.log("📁 SIMPLE UPLOAD: Direct file upload", {
+      fileCount: req.files?.length || 0
     });
     
     try {
       const files = req.files as Express.Multer.File[];
       if (!files || files.length === 0) {
-        console.warn("🔒 SECURITY UPLOAD: No files in upload request");
-        return res.status(400).json({ 
-          error: "Keine Dateien hochgeladen",
-          code: "NO_FILES"
-        });
+        return res.status(400).json({ error: "Keine Dateien hochgeladen" });
       }
 
       const uploadedImages = [];
@@ -1372,41 +1379,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
       for (const file of files) {
         console.log("📁 FILE UPLOAD: Processing file", {
           filename: file.originalname,
-          mimetype: file.mimetype,
           size: file.size
         });
 
-        // Use the already uploaded file (multer saved it to disk)
         const savedFilename = await moveUploadedFile(file.path, file.originalname);
         
-        // Get file stats for size
         const filepath = path.join(uploadsDir, savedFilename);
         const stats = fs.statSync(filepath);
         
         const imageData = {
           filename: savedFilename,
           originalName: file.originalname,
-          mimetype: file.mimetype, // Keep original mimetype
+          mimeType: file.mimetype,
           size: stats.size,
-          url: `/uploads/${savedFilename}`,
-          uploadedBy: (req as any).session.userId,
+          uploadedBy: null // No user tracking
         };
 
         const savedImage = await storage.createUploadedImage(imageData);
         uploadedImages.push(savedImage);
+
+        console.log("✅ IMAGE SAVED:", {
+          id: savedImage.id,
+          filename: savedImage.filename,
+          size: savedImage.size
+        });
       }
 
-      console.log("🔒 SECURITY UPLOAD: Upload successful", {
-        fileCount: uploadedImages.length,
-        totalSize: uploadedImages.reduce((sum, img) => sum + img.size, 0)
+      res.json({
+        success: true,
+        images: uploadedImages,
+        message: `${uploadedImages.length} Bilder erfolgreich hochgeladen`
       });
 
-      res.json(uploadedImages);
     } catch (error) {
-      console.error("🔒 SECURITY UPLOAD ERROR:", error);
+      console.error("Upload error:", error);
       res.status(500).json({ 
         error: "Upload fehlgeschlagen - Server-Fehler",
-        code: "UPLOAD_ERROR"
+        details: error instanceof Error ? error.message : String(error)
       });
     }
   });
