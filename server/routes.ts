@@ -80,19 +80,23 @@ if (!fs.existsSync(uploadsDir)) {
 // SECURITY: Use secure upload configuration
 const upload = secureUpload;
 
-// Function to compress and save image
-async function compressAndSaveImage(buffer: Buffer, originalName: string): Promise<string> {
+// Function to save image without compression (direct save)
+async function saveImageDirect(buffer: Buffer, originalName: string): Promise<string> {
   const fileId = uuidv4();
-  const extension = path.extname(originalName);
-  const filename = `${Date.now()}-${fileId}.jpg`; // Always save as jpg for better compression
+  const extension = path.extname(originalName).toLowerCase();
+  const filename = `${Date.now()}-${fileId}${extension}`; // Keep original extension
   const filepath = path.join(uploadsDir, filename);
 
-  // Compress image with sharp - optimized for A4 documents
-  await sharp(buffer)
-    .resize(1200, 1600, { fit: 'inside', withoutEnlargement: true }) // A4 format support
-    .jpeg({ quality: 85, progressive: true })
-    .toFile(filepath);
+  console.log("📁 DIRECT SAVE: Saving file directly", {
+    originalName,
+    filename,
+    size: buffer.length
+  });
 
+  // Save buffer directly to file without any processing
+  fs.writeFileSync(filepath, buffer);
+
+  console.log("✅ DIRECT SAVE: File saved successfully", { filename });
   return filename;
 }
 
@@ -1378,19 +1382,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
           size: file.size
         });
 
-        // Compress and save the image
-        const compressedFilename = await compressAndSaveImage(file.buffer, file.originalname);
+        // Save the image directly without compression
+        const savedFilename = await saveImageDirect(file.buffer, file.originalname);
         
         // Get file stats for size
-        const filepath = path.join(uploadsDir, compressedFilename);
+        const filepath = path.join(uploadsDir, savedFilename);
         const stats = fs.statSync(filepath);
         
         const imageData = {
-          filename: compressedFilename,
+          filename: savedFilename,
           originalName: file.originalname,
-          mimetype: 'image/jpeg', // All compressed images are JPEG
+          mimetype: file.mimetype, // Keep original mimetype
           size: stats.size,
-          url: `/uploads/${compressedFilename}`,
+          url: `/uploads/${savedFilename}`,
           uploadedBy: (req as any).session.userId,
         };
 
