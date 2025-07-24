@@ -11,7 +11,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
-import sharp from "sharp";
+// import sharp from "sharp"; // REMOVED: No longer needed for direct file save
 import { v4 as uuidv4 } from "uuid";
 import geoip from 'geoip-lite';
 import cookieParser from 'cookie-parser';
