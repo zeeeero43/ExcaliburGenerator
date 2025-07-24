@@ -115,12 +115,14 @@ export const validateUploadedFile = async (buffer: Buffer, filename: string, mim
                    fileBuffer.toString('ascii', 0, 6) === 'GIF89a');
 
     if (!isPNG && !isJPEG && !isWebP && !isGIF) {
-      console.warn('🔒 FILE VALIDATION: File failed magic number check:', filepath);
+      console.warn('🔒 FILE VALIDATION: File failed magic number check:', filename);
       return false;
     }
 
     // Suche nach verdächtigen Patterns (einfache Malware-Erkennung)
-    const fileContent = fileBuffer.toString('ascii');
+    // Nur die ersten 2KB prüfen, um Binär-Probleme zu vermeiden
+    const checkSize = Math.min(2048, fileBuffer.length);
+    const fileContent = fileBuffer.subarray(0, checkSize).toString('ascii', 0, checkSize);
     const suspiciousPatterns = [
       '<script',
       'javascript:',
