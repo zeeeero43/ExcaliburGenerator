@@ -6,16 +6,33 @@ import { z } from 'zod';
 // Rate Limiting für verschiedene Endpoints
 export const generalRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 Minuten
-  max: process.env.NODE_ENV === 'development' ? 1000 : 100, // Höheres Limit für Development
+  max: process.env.NODE_ENV === 'development' ? 1000 : 500, // ERHÖHT: Für Kuba-freundlicheres Limit
   message: { 
     error: 'Zu viele Anfragen von dieser IP-Adresse. Versuchen Sie es später erneut.',
     retryAfter: 15 * 60 
   },
   standardHeaders: true,
   legacyHeaders: false,
-  // Statische Assets und Development-Dateien ausschließen
+  // Statische Assets und Development-Dateien ausschließen + Kuba-freundlich
   skip: (req) => {
     const staticPaths = ['/uploads/', '/assets/', '/favicon.ico', '/_vite/', '/src/', '/@vite/', '/node_modules/'];
+    
+    // KUBA-WHITELIST: Sehr hohe Limits für kubanische IPs
+    const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
+    const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
+    
+    // Importe geoip für Länderkennung
+    try {
+      const geoip = require('geoip-lite');
+      const geo = geoip.lookup(clientIp);
+      if (geo && geo.country === 'CU') {
+        console.log(`🇨🇺 KUBA-WHITELIST: IP ${clientIp} - Rate Limiting deaktiviert für Kuba`);
+        return true; // Skip rate limiting für Kuba komplett
+      }
+    } catch (error) {
+      // Fallback wenn geoip nicht verfügbar
+    }
+    
     return staticPaths.some(path => req.path.startsWith(path));
   }
 });
@@ -34,13 +51,31 @@ export const loginRateLimit = rateLimit({
 
 export const apiRateLimit = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 Minute
-  max: process.env.NODE_ENV === 'development' ? 600 : 60, // Höheres Limit für Development
+  max: process.env.NODE_ENV === 'development' ? 600 : 300, // ERHÖHT: Für Kuba-freundlicheres Limit
   message: { 
     error: 'API-Rate-Limit erreicht. Reduzieren Sie die Anfragerate.',
     retryAfter: 60 
   },
   standardHeaders: true,
   legacyHeaders: false,
+  // KUBA-WHITELIST: Keine API-Rate-Limits für Kuba
+  skip: (req) => {
+    const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
+    const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
+    
+    try {
+      const geoip = require('geoip-lite');
+      const geo = geoip.lookup(clientIp);
+      if (geo && geo.country === 'CU') {
+        console.log(`🇨🇺 KUBA-API-WHITELIST: IP ${clientIp} - API Rate Limiting deaktiviert`);
+        return true; // Skip API rate limiting für Kuba komplett
+      }
+    } catch (error) {
+      // Fallback wenn geoip nicht verfügbar
+    }
+    
+    return false;
+  }
 });
 
 export const uploadRateLimit = rateLimit({
