@@ -60,8 +60,8 @@ export function Layout({ children }: LayoutProps) {
       }
     };
 
-    // 🇨🇺 CUBA OPTIMIZATION: Delay tracking for slow connections
-    const timer = setTimeout(trackPageVisit, 500); // Longer delay for slow internet
+    // Delay tracking slightly to avoid blocking page render on mobile
+    const timer = setTimeout(trackPageVisit, 100);
     return () => clearTimeout(timer);
   }, [location]);
 
