@@ -1479,77 +1479,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Robust analytics tracking - Multiple service fallbacks
+  // 📱 MOBILE ANALYTICS: Backup tracking for mobile devices (especially Cuban users)
   app.use((req, res, next) => {
     // Continue request immediately without waiting
     next();
     
-    // Only track GET requests and ignore admin/api routes
-    if (req.method === 'GET' && !req.path.startsWith('/api/') && !req.path.startsWith('/admin/')) {
-      // Use setImmediate for better performance than process.nextTick
+    // Only track GET requests and ignore admin/api routes, static files
+    if (req.method === 'GET' && 
+        !req.path.startsWith('/api/') && 
+        !req.path.startsWith('/admin/') && 
+        !req.path.includes('.') && // No static files (.js, .css, .png, etc.)
+        req.path !== '/favicon.ico') {
+      
+      // Use setImmediate for better performance
       setImmediate(async () => {
         try {
-          const ipAddress = req.ip || req.connection.remoteAddress || 'unknown';
+          // Enhanced IP detection for mobile devices
+          const forwardedFor = req.headers['x-forwarded-for'];
+          const realIp = req.headers['x-real-ip'];
+          const cfConnectingIp = req.headers['cf-connecting-ip'];
+          const trueClientIp = req.headers['true-client-ip'];
+          
+          let clientIp = req.ip || req.connection.remoteAddress || 'unknown';
+          
+          // Priority order for mobile IP detection
+          if (cfConnectingIp) {
+            clientIp = Array.isArray(cfConnectingIp) ? cfConnectingIp[0] : cfConnectingIp.toString().split(',')[0].trim();
+          } else if (trueClientIp) {
+            clientIp = Array.isArray(trueClientIp) ? trueClientIp[0] : trueClientIp.toString().split(',')[0].trim();
+          } else if (realIp) {
+            clientIp = Array.isArray(realIp) ? realIp[0] : realIp.toString().split(',')[0].trim();
+          } else if (forwardedFor) {
+            clientIp = Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor.toString().split(',')[0].trim();
+          }
+          
           const userAgent = req.get('User-Agent') || '';
+          const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
           
-          // Robust country detection with multiple fallbacks
+          // Use geoip-lite for reliable offline geolocation
           let country = 'CU'; // Default for Cuban users
-          
-          // Only try geolocation in production and for real IPs
-          if (process.env.NODE_ENV === 'production' && 
-              !ipAddress.startsWith('192.168.') && 
-              !ipAddress.startsWith('127.0.0.1') && 
-              ipAddress !== '::1' && 
-              ipAddress !== 'unknown') {
+          if (clientIp !== 'unknown' && 
+              clientIp !== '127.0.0.1' && 
+              !clientIp.startsWith('192.168.') && 
+              !clientIp.startsWith('10.')) {
             
-            // Try multiple services for better reliability
-            const geoServices = [
-              `https://ipapi.co/${ipAddress}/country/`,
-              `https://ip-api.com/json/${ipAddress}?fields=countryCode`,
-              `https://ipinfo.io/${ipAddress}/country`
-            ];
-            
-            for (const service of geoServices) {
-              try {
-                const controller = new AbortController();
-                setTimeout(() => controller.abort(), 1000); // 1 second timeout
-                
-                const response = await fetch(service, {
-                  signal: controller.signal,
-                  headers: {
-                    'User-Agent': 'ExcaliburCuba-Analytics/1.0'
-                  }
-                });
-                
-                if (response.ok) {
-                  const data = await response.text();
-                  
-                  // Handle different response formats
-                  if (service.includes('ipapi.co')) {
-                    country = data.trim().toUpperCase();
-                  } else if (service.includes('ip-api.com')) {
-                    const jsonData = JSON.parse(data);
-                    country = jsonData.countryCode || 'CU';
-                  } else if (service.includes('ipinfo.io')) {
-                    country = data.trim().toUpperCase();
-                  }
-                  
-                  // Valid country code found, break out of loop
-                  if (country && country.length === 2) {
-                    break;
-                  }
-                }
-              } catch (error) {
-                // Try next service
-                continue;
-              }
+            const geoip = await import('geoip-lite');
+            const geo = geoip.default.lookup(clientIp);
+            if (geo && geo.country) {
+              country = geo.country;
             }
           }
           
-          // OLD ANALYTICS CODE REMOVED - Now using simple visitor tracking only
+          console.log(`📱 MOBILE BACKUP TRACKING: ${req.path} from IP=${clientIp}, Country=${country}, Mobile=${isMobile}`);
+          
+          // Track visitor (create or update)
+          const visitor = await storage.trackVisitor(clientIp, country);
+          console.log(`📱 MOBILE VISITOR SAVED: ID ${visitor.id}, IP ${visitor.ipAddress}, Country ${visitor.country} [Mobile: ${isMobile}]`);
+          
         } catch (error) {
-          console.error('Analytics tracking error:', error);
-          // Continue silently to avoid blocking the application
+          // Silent error handling to avoid blocking
+          console.log(`📱 MOBILE TRACKING ERROR: ${error.message}`);
         }
       });
     }

@@ -13,29 +13,56 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
 
-  // UNIVERSAL PAGE TRACKING: Track every page visit (auch Inkognito)
+  // 📱 MOBILE-OPTIMIZED TRACKING: Robust tracking for all devices (especially Cuban mobile users)
   useEffect(() => {
     const trackPageVisit = async () => {
       try {
-        const response = await fetch('/api/track', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            page: location,
-            userAgent: navigator.userAgent,
-            referrer: document.referrer || '',
-            timestamp: new Date().toISOString()
-          }),
-        });
+        // Multiple attempts for poor mobile connections
+        let attempts = 0;
+        const maxAttempts = 3;
+        
+        while (attempts < maxAttempts) {
+          try {
+            const response = await fetch('/api/track', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                page: location,
+                userAgent: navigator.userAgent,
+                referrer: document.referrer || '',
+                timestamp: new Date().toISOString(),
+                isMobile: /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+                connectionType: (navigator as any).connection?.effectiveType || 'unknown'
+              }),
+              signal: AbortSignal.timeout(5000) // 5 second timeout for mobile connections
+            });
+            
+            if (response.ok) {
+              break; // Success, exit retry loop
+            }
+            attempts++;
+          } catch (fetchError) {
+            attempts++;
+            if (attempts < maxAttempts) {
+              // Wait before retry (exponential backoff for mobile networks)
+              await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+            }
+          }
+        }
       } catch (error) {
-        // Silent tracking - no console output
+        // Silent tracking - no console output, but track attempt in local storage for debugging
+        if (typeof window !== 'undefined') {
+          const failedAttempts = parseInt(localStorage.getItem('tracking_failures') || '0') + 1;
+          localStorage.setItem('tracking_failures', failedAttempts.toString());
+        }
       }
     };
 
-    // Track immediately, even without cookie consent
-    trackPageVisit();
+    // Delay tracking slightly to avoid blocking page render on mobile
+    const timer = setTimeout(trackPageVisit, 100);
+    return () => clearTimeout(timer);
   }, [location]);
 
   return (

@@ -656,6 +656,10 @@ Changelog:
   * Confirmed Cuba (CU) access works perfectly - only China is blocked, Cuban users get automatic Spanish language
   * Enhanced language switcher with country flags (🇪🇸🇩🇪🇺🇸) instead of text abbreviations
   * Fixed critical product deletion foreign key constraint error by implementing proper cascade deletion
+  * Fixed critical mobile analytics issue: Cuban mobile users now properly tracked with dual-system approach
+  * Implemented backend middleware tracking as backup for mobile devices with poor JavaScript support
+  * Enhanced frontend tracking with retry logic and exponential backoff for mobile connections
+  * Added mobile-specific IP detection for Cuban carriers and enhanced geolocation detection
   * Spanish now set as global default language for all countries except German-speaking regions
 - July 20, 2025 (comprehensive security implementation completed). Implemented enterprise-grade security system:
   * CRITICAL: Comprehensive security system implemented to prevent hacking attacks as explicitly requested
