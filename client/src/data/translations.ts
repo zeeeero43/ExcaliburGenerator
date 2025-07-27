@@ -55,8 +55,8 @@ export const translations = {
     
     // About
     aboutTitle: "EXCALIBUR POWER: ILUMINAMOS CUBA",
-    aboutText1: "Somos KKMU Harry Lag Constructions S.R.L. en Joint Venture con nuestro proveedor alemán AFDL IMPORT & EXPORT GMBH & CO.KG., representante oficial de Excalibur Power Group en Cuba.",
-    aboutText2: "Garantizamos mejor calidad al mejor precio gracias a nuestro socio Joint Venture, patrocinador y proveedor principal AFDL IMPORT & EXPORT (de Alemania) con 35 años de experiencia.",
+    aboutText1: "Somos la KKMU: \"Harry Lag Constructions SRL\" de Matanzas y representamos en colaboración con nuestro proveedor alemán AFDL el Excalibur Power Group en Cuba. Excalibur pertenece a los fabricantes líderes mundiales de generadores, energía solar y muchos otros componentes.",
+    aboutText2: "Garantizamos la mejor calidad al mejor precio, gracias a nuestro socio Joint Venture, patrocinador y proveedor: AFDL IMPORT & EXPORT GMBH & CO.KG (Alemania) con 35 años de experiencia en el mercado.",
     yearsExperience: "Años de experiencia",
     solarSystems: "Sistemas solares",
     ourWarehouse: "Nuestro Almacén en Cuba",
@@ -79,7 +79,7 @@ export const translations = {
     partnershipDesc: "Con sede en Alemania y 35 años de experiencia en el mercado internacional, AFDL Import & Export es nuestro socio Joint Venture que nos permite ofrecer productos de la más alta calidad a precios competitivos.",
     countriesServed: "Países servidos",
     containersSent: "Contenedores enviados",
-    warehouseLocation: "Nuestro almacén en Havanna del Este está estratégicamente ubicado para servir a toda Cuba con entregas rápidas y stock abundante. Trabajamos directamente con las fábricas para garantizar los mejores precios y la más alta calidad.",
+    warehouseLocation: "Nuestro almacén se encuentra en La Habana Este y está estratégicamente ubicado, disponible 24/7 para ser fácilmente accesible para clientes de toda Cuba. Tenemos un rico inventario. La satisfacción del cliente es muy importante para nosotros e incluye no solo la mejor calidad al mejor precio, sino también soporte técnico 24/7 que es único en Cuba. En +49 160 323 9439 obtiene una respuesta competente a todas sus preguntas.",
     heroSubtitle: "Representantes oficiales de Excalibur Power Group en Cuba, ofreciendo soluciones energéticas de alta calidad para iluminar el futuro de Cuba.",
     
     // Contact
@@ -607,13 +607,13 @@ export const translations = {
     
     // About
     aboutTitle: "EXCALIBUR POWER: WIR ERHELLEN KUBA",
-    aboutText1: "Wir sind KKMU Harry Lag Constructions aus Matanzas und vertreten die Excalibur Power Group in Kuba. Excalibur gehört zu den weltweit führenden Herstellern von Generatoren, Solarenergie und vielen anderen Komponenten.",
-    aboutText2: "Wir garantieren beste Qualitaet zum besten Preis dank unserem Joint Venture Partner, Sponsor und Hauptlieferanten AFDL IMPORT & EXPORT (aus Deutschland) mit 35 Jahren Erfahrung.",
+    aboutText1: "Wir sind die KKMU: \"Harry Lag Constructions SRL\" aus Matanzas und vertreten in Zusammenarbeit mit unserem deutschen Lieferanten AFDL die Excalibur Power Group in Kuba. Excalibur gehört zu den weltweit führenden Herstellern von Generatoren, Solarenergie und vielen anderen Komponenten.",
+    aboutText2: "Wir garantieren beste Qualität zum besten Preis, dank unserem Joint Venture Partner, Sponsor und Lieferanten: AFDL IMPORT & EXPORT GMBH & CO.KG (Germany) mit 35 Jahren Markt-Erfahrung.",
     slogan: "Für eine hellere Zukunft in Cuba",
     yearsExperience: "Jahre Erfahrung",
     solarSystems: "Solarsysteme",
     ourWarehouse: "Unser Lager in Kuba",
-    warehouseDesc: "Verkehrsgünstige zentrale Lage in Habana del Este. Unsere Preise sind wettbewerbsfähig und der Lagerbestand ist reichlich, da unser Lieferant alles in großen Mengen kauft und Container permanent von den Fabriken nach Kuba schickt.",
+    warehouseDesc: "Unser Lager befindet sich in Havanna Ost und ist Verkehrstechnisch günstig gelegen, und ist 24/7 besetzt, um für Kunden aus ganz Kuba gut erreichbar zu sein. Wir verfügen über einen reichhaltigen Lagerbestand. Unser Lieferant arbeitet direkt mit den Herstellern in aller Welt zusammen, um immer beste Preise und höchste Qualität gewährleisten zu können.",
     
     // Additional About translations
     ourHistory: "Unsere Geschichte",
@@ -663,11 +663,11 @@ export const translations = {
     internationalReachDesc: "Unterstützt durch AFDL Import & Export aus Deutschland",
     whyChooseUs: "Warum Excalibur Cuba wählen?",
     strategicPartner: "Unser strategischer Partner",
-    partnershipDesc: "Mit Sitz in Deutschland und 35 Jahren Erfahrung im internationalen Markt ist AFDL Import & Export unser Joint Venture Partner, der es uns ermöglicht, Produkte höchster Qualität zu wettbewerbsfähigen Preisen anzubieten.",
+    partnershipDesc: "AFDL IMPORT & EXPORT GMBH & CO.KG: Mit 35 Jahren Erfahrung auf den internationalen Märkten und Sitz in Deutschland ermöglicht unser Joint Venture Partner den Import großer Produktmengen zu günstigen Preisen, sodass wir diese Waren wiederum günstig an unsere kubanische Kunden weitergeben können. Wir haben in Deutschland gelernt wie Markwirtschaft funktioniert.",
     countriesServed: "Bediente Länder",
     containersSent: "Versendete Container",
-    warehouseLocation: "Unser Lager in Havanna del Este ist strategisch gelegen, um ganz Kuba mit schnellen Lieferungen und reichlich Lagerbestand zu bedienen. Wir arbeiten direkt mit den Fabriken zusammen, um die besten Preise und höchste Qualität zu gewährleisten.",
-    heroSubtitle: "Wir sind die KKMU 'Harry Lag Construcción S.R.L'., in Joint Venture mit unserem deutschen Lieferanten 'AFDL Import & Export GmbH & Co.Kg.', offizieller Vertreter der Excalibur Power Group in Cuba.",
+    warehouseLocation: "Unser Lager befindet sich in Havanna Ost und ist Verkehrstechnisch günstig gelegen, und ist 24/7 besetzt, um für Kunden aus ganz Kuba gut erreichbar zu sein. Wir verfügen über einen reichhaltigen Lagerbestand. Kundenzufriedenheit wird bei uns großgeschrieben und umfasst nicht nur beste Qualität zum besten Preis, sondern auch einen technischen 24/7 Support, der in Kuba einmalig ist. Unter +49 160 323 9439 erhalten Sie, auf alle Ihre Fragen eine kompetente Antwort.",
+    heroSubtitle: "Wir sind die KKMU \"Harry Lag Constructions SRL\" aus Matanzas und vertreten in Zusammenarbeit mit unserem deutschen Lieferanten AFDL die Excalibur Power Group in Kuba, als offizielle Vertreter hochwertige Energielösungen für eine hellere Zukunft Kubas anzubieten.",
     
     // Contact
     contactUs: "KONTAKTIEREN SIE UNS",
@@ -863,9 +863,9 @@ export const translations = {
     experience: "35 Jahre Erfahrung",
     experienceDesc: "Unser deutscher Lieferant AFDL verfügt über 35 Jahre internationaler Erfahrung",
     directImport: "Direkt-Importe aus aller Welt nach Cuba",
-    directImportDesc: "Permanente Lieferungen hochwertiger Solarkomponenten und Generatoren aus Deutschland und weltweiten Fertigungsstandorten",
+    directImportDesc: "Unsere Produkte haben eine Bestpreisgarantie und der Lagerbestand ist enorm, da unser Lieferant alles in großen Mengen einkauft und permanent volle Container aus Europa und Asien nach Kuba versendet.",
     homeLocation: "Verkehrsgünstige zentrale Lage",
-    homeLocationDesc: "Lager in Havanna del Este für schnelle Verfügbarkeit bei Selbstabholung",
+    homeLocationDesc: "Lager in Havanna Ost für schnelle Verfügbarkeit bei Selbstabholung - 24/7 besetzt für Kunden aus ganz Kuba",
     
     // Services
     components: "Solar-Einzelkomponenten",
@@ -1126,8 +1126,8 @@ export const translations = {
     
     // About
     aboutTitle: "EXCALIBUR POWER: ILLUMINATING CUBA",
-    aboutText1: "We are KKMU Harry Lag Constructions from Matanzas and represent Excalibur Power Group in Cuba. Excalibur belongs to the world's leading manufacturers of generators, solar energy and many other components.",
-    aboutText2: "We guarantee Best quality at the best price thanks to our Joint Venture partner, sponsor and main supplier AFDL IMPORT & EXPORT (from Germany) with 35 years of experience.",
+    aboutText1: "We are the KKMU: \"Harry Lag Constructions SRL\" from Matanzas and represent in collaboration with our German supplier AFDL the Excalibur Power Group in Cuba. Excalibur belongs to the world's leading manufacturers of generators, solar energy and many other components.",
+    aboutText2: "We guarantee the best quality at the best price, thanks to our Joint Venture partner, sponsor and supplier: AFDL IMPORT & EXPORT GMBH & CO.KG (Germany) with 35 years of market experience.",
     yearsExperience: "Years of experience",
     solarSystems: "Solar systems",
     ourWarehouse: "Our Warehouse in Cuba",
@@ -1147,10 +1147,10 @@ export const translations = {
     internationalReachDesc: "Backed by AFDL Import & Export from Germany",
     whyChooseUs: "Why Choose Excalibur Cuba?",
     strategicPartner: "Our Strategic Partner",
-    partnershipDesc: "Based in Germany with 35 years of international market experience, AFDL Import & Export is our Joint Venture partner that allows us to offer the highest quality products at competitive prices.",
+    partnershipDesc: "AFDL IMPORT & EXPORT GMBH & CO.KG: With 35 years of experience in international markets and based in Germany, our Joint Venture partner enables the import of large product quantities at favorable prices, so that we can pass these goods on to our Cuban customers at favorable prices. We learned how market economy works in Germany.",
     countriesServed: "Countries Served",
     containersSent: "Containers Sent",
-    warehouseLocation: "Our warehouse in Havanna del Este is strategically located to serve all of Cuba with fast deliveries and abundant stock. We work directly with factories to guarantee the best prices and highest quality.",
+    warehouseLocation: "Our warehouse is located in Havana East and is strategically positioned, open 24/7 to be easily accessible for customers from all over Cuba. We have a rich inventory. Customer satisfaction is very important to us and includes not only the best quality at the best price, but also 24/7 technical support that is unique in Cuba. At +49 160 323 9439 you get a competent answer to all your questions.",
     heroSubtitle: "Official representatives of Excalibur Power Group in Cuba, offering high-quality energy solutions to illuminate Cuba's future.",
     
     // Contact
