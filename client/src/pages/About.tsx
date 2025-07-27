@@ -60,8 +60,8 @@ export default function About() {
     },
     {
       icon: Award,
-      title: t('customerSatisfaction'),
-      description: t('customerSatisfactionDesc')
+      title: t('bestPrice'),
+      description: t('bestPriceDesc')
     },
     {
       icon: Globe,
