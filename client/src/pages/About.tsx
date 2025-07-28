@@ -155,19 +155,35 @@ export default function About() {
           </div>
         </div>
 
+        {/* Customer Satisfaction */}
+        <div className="mb-16">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">
+              {t('customerSatisfactionTitle')}
+            </h2>
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white rounded-lg p-6 shadow-md mb-8">
+                <p className="text-lg text-excalibur-gray leading-relaxed">
+                  {t('customerSatisfactionDesc')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Partnership */}
         <div className="bg-excalibur-light rounded-xl p-8 md:p-12">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">
-              {t('strategicPartner')}
+              {t('jointVenturePartnerTitle')}
             </h2>
             <div className="max-w-3xl mx-auto">
               <div className="bg-white rounded-lg p-6 shadow-md mb-6">
                 <h3 className="text-2xl font-bold text-excalibur-blue mb-4">
-                  AFDL IMPORT & EXPORT
+                  {t('jointVenturePartnerSubtitle')}
                 </h3>
                 <p className="text-excalibur-gray leading-relaxed">
-                  {t('partnershipDesc')}
+                  {t('jointVenturePartnerDesc')}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
