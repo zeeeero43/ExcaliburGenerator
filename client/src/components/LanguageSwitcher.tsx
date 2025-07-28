@@ -22,12 +22,12 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex space-x-2">
+    <div className="flex space-x-1">
       <Button
         variant={currentLanguage === 'es' ? 'default' : 'ghost'}
         size="sm"
         onClick={() => handleLanguageChange('es')}
-        className="px-3 py-2 text-lg"
+        className="px-2 py-1 text-xl font-normal"
         title="Español"
       >
         🇪🇸
@@ -38,7 +38,7 @@ export function LanguageSwitcher() {
           variant={currentLanguage === 'de' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => handleLanguageChange('de')}
-          className="px-3 py-2 text-lg"
+          className="px-2 py-1 text-xl font-normal"
           title="Deutsch"
         >
           🇩🇪
@@ -48,10 +48,10 @@ export function LanguageSwitcher() {
         variant={currentLanguage === 'en' ? 'default' : 'ghost'}
         size="sm"
         onClick={() => handleLanguageChange('en')}
-        className="px-3 py-2 text-lg"
+        className="px-2 py-1 text-xl font-normal"
         title="English"
       >
-        🇺🇸
+        🇬🇧
       </Button>
     </div>
   );

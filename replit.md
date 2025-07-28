@@ -647,6 +647,13 @@ Changelog:
   * Final pricing negotiated: Originally €500 scope, proposed €2000 for delivered value, settled at €1500
   * Project delivers €19,000 market value system for €1500 (92% customer discount)
   * All major requirements fulfilled: trilingual system, admin panel, analytics, VPS deployment, China blocking
+- July 28, 2025 (About page content update and language switcher fix). Updated About page with customer's new German content:
+  * Updated "Unsere Geschichte" section with KKMU "Harry Lag Constructions SRL" from Matanzas details
+  * Updated "Unser Lager in Kuba" with strategic warehouse location and permanent container deliveries
+  * Added new "Kundenzufriedenheit" section with 24/7 support and +49 160 323 9439 contact number
+  * Enhanced Joint Venture partner information with AFDL's 35 years of market experience
+  * Fixed language switcher flags: improved visibility (text-xl), changed US flag 🇺🇸 to UK flag 🇬🇧 for English
+  * All content properly translated to Spanish and English with syntax errors resolved
 - July 24, 2025 (comprehensive Cuban performance system completed). Successfully implemented complete performance optimization system for Cuban users:
   * Deployed OptimizedImage component with Spanish-specific compression (78% quality vs 85% standard)
   * Created useOptimizedRequest hook with 5x longer cache times and 5 retry attempts for Cuban networks
