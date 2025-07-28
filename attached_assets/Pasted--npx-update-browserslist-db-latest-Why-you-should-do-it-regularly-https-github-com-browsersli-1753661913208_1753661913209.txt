@@ -1,0 +1,36 @@
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[plugin:vite:esbuild] [plugin vite:esbuild] client/src/data/translations.ts: Duplicate key "customerSatisfactionDesc" in object literal
+86 |      partnershipDesc: "Con 35 años de experiencia en los mercados internacionales y sede en Alemania, nuestro socio Joint Venture permite la importación de grandes cantidades de productos a precios favorables, para que podamos transferir estos productos a precios favorables a nuestros clientes cubanos. Hemos aprendido en Alemania cómo funciona la economía de mercado.",
+87 |      customerSatisfaction: "Satisfacción del Cliente",
+88 |      customerSatisfactionDesc: "La satisfacción del cliente es muy importante para nosotros e incluye no solo la mejor calidad al mejor precio, sino también un soporte técnico 24/7 que es único en Cuba. En +49 160 323 9439 recibe una respuesta competente a todas sus preguntas.",
+   |      ^
+89 |      countriesServed: "Países servidos",
+90 |      containersSent: "Contenedores enviados",
+
+[plugin:vite:esbuild] [plugin vite:esbuild] client/src/data/translations.ts: Duplicate key "customerSatisfactionDesc" in object literal
+682|      partnershipDesc: "Mit 35 Jahren Erfahrung auf den internationalen Märkten und Sitz in Deutschland ermöglicht unser Joint Venture Partner den Import großer Produktmengen zu günstigen Preisen, sodass wir diese Waren wiederum günstig an unsere kubanischen Kunden weitergeben können. Wir haben in Deutschland gelernt wie Marktwirtschaft funktioniert.",
+683|      customerSatisfaction: "Kundenzufriedenheit",
+684|      customerSatisfactionDesc: "Kundenzufriedenheit wird bei uns großgeschrieben und umfasst nicht nur beste Qualität zum besten Preis, sondern auch einen technischen 24/7 Support, der in Kuba einmalig ist. Unter +49 160 323 9439 erhalten Sie, auf alle Ihre Fragen eine kompetente Antwort.",
+   |      ^
+685|      countriesServed: "Bediente Länder",
+686|      containersSent: "Versendete Container",
+
+[plugin:vite:esbuild] [plugin vite:esbuild] client/src/data/translations.ts: Duplicate key "customerSatisfactionDesc" in object literal
+1175|      partnershipDesc: "With 35 years of experience in international markets and headquarters in Germany, our Joint Venture partner enables the import of large product quantities at favorable prices, so that we can pass these goods on to our Cuban customers at favorable prices. We have learned in Germany how market economy works.",
+1176|      customerSatisfaction: "Customer Satisfaction",
+1177|      customerSatisfactionDesc: "Customer satisfaction is very important to us and includes not only the best quality at the best price, but also 24/7 technical support that is unique in Cuba. At +49 160 323 9439 you receive a competent answer to all your questions.",
+   |      ^
+1178|      countriesServed: "Countries Served",
+1179|      containersSent: "Containers Sent",
+
+✓ 2563 modules transformed.
+../dist/public/index.html                     6.55 kB │ gzip:   1.89 kB
+../dist/public/assets/index-BrOXm76e.css    101.08 kB │ gzip:  15.73 kB
+../dist/public/assets/index-BaYaPKk_.js   1,076.16 kB │ gzip: 301.03 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 9.10s
