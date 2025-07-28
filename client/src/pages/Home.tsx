@@ -72,7 +72,7 @@ export default function Home() {
                   {/* Category Image with overlay button */}
                   <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
-                      src={category.image}
+                      src={category.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
                       alt={getLocalizedText(category, 'name')}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
@@ -125,6 +125,14 @@ export default function Home() {
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 mb-8">
               <div className="text-lg leading-relaxed mb-6 text-gray-700">
                 <FormattedText text={t('aboutText1') as string} />
+              </div>
+              <div className="text-lg leading-relaxed mb-6 text-gray-700">
+                <FormattedText text={t('aboutText2') as string} />
+              </div>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+                <div className="text-lg leading-relaxed text-gray-700">
+                  <FormattedText text={t('warehouseLocation') as string} />
+                </div>
               </div>
               <div className="inline-block bg-excalibur-orange text-white px-6 py-3 rounded-lg font-semibold text-lg">
                 {t('slogan') as string}

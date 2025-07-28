@@ -60,7 +60,7 @@ export const translations = {
     yearsExperience: "Años de experiencia",
     solarSystems: "Sistemas solares",
     ourWarehouse: "Nuestro Almacén en Cuba",
-    warehouseDesc: "Ubicado en una verkehrsgünstige zentrale Lage en Habana del Este. Nuestros precios son competitivos y el stock es abundante, ya que nuestro proveedor compra todo en grandes cantidades y envía contenedores permanentemente desde las fábricas a Cuba.",
+    warehouseDesc: "Nuestro almacén se encuentra en La Habana Este y está estratégicamente ubicado, disponible 24/7 para ser fácilmente accesible para clientes de toda Cuba. Tenemos un rico inventario y la satisfacción del cliente es muy importante para nosotros.",
     
     // Additional About translations
     ourHistory: "Nuestra Historia",
@@ -281,7 +281,7 @@ export const translations = {
     experience: "35 años de experiencia",
     experienceDesc: "Nuestro proveedor alemán AFDL cuenta con 35 años de experiencia internacional",
     directImport: "Importaciones directas de todo el mundo a Cuba",
-    directImportDesc: "Entregas permanentes de componentes solares y generadores de alta calidad desde Alemania y centros de fabricación mundiales",
+    directImportDesc: "Nuestros productos tienen garantía de mejor precio y el inventario es enorme, ya que nuestro proveedor compra todo en grandes cantidades y envía permanentemente contenedores completos desde Europa y Asia a Cuba.",
     homeLocation: "Ubicación central estratégica",
     homeLocationDesc: "Almacén en Habana del Este para disponibilidad rápida con recogida",
     
@@ -1131,7 +1131,7 @@ export const translations = {
     yearsExperience: "Years of experience",
     solarSystems: "Solar systems",
     ourWarehouse: "Our Warehouse in Cuba",
-    warehouseDesc: "Strategically located in Havanna del Este. Our prices are competitive and stock is abundant, as our supplier buys everything in large quantities and ships containers permanently from factories to Cuba.",
+    warehouseDesc: "Our warehouse is located in Havana East and is strategically positioned, open 24/7 to be easily accessible for customers from all over Cuba. We have a rich inventory and customer satisfaction is very important to us.",
     
     // Additional About translations
     ourHistory: "Our History",
@@ -1325,7 +1325,7 @@ export const translations = {
     experience: "35 years of experience",
     experienceDesc: "Our German supplier AFDL has 35 years of international experience",
     directImport: "Direct imports from all over the world to Cuba",
-    directImportDesc: "Permanent deliveries of high-quality solar components and generators from Germany and worldwide manufacturing centers",
+    directImportDesc: "Our products have a best price guarantee and the inventory is enormous, as our supplier buys everything in large quantities and permanently sends full containers from Europe and Asia to Cuba.",
     homeLocation: "Strategic central location",
     homeLocationDesc: "Warehouse in Havana del Este for fast availability with pickup",
     
