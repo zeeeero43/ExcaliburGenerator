@@ -302,12 +302,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.error("Failed to seed database:", error);
   }
 
-  // Multi-API Translation system with LibreTranslate and MyMemory fallback
+  // 🚀 SMART Multi-API Translation system with performance optimization
   app.post("/api/translate", async (req: AuthRequest, res) => {
     try {
       const { text, fromLang, toLang } = req.body;
       
-      console.log(`🔄 Translation request: ${fromLang} -> ${toLang}, text length: ${text?.length || 0}`);
+      console.log(`🔄 SMART TRANSLATE: ${fromLang} -> ${toLang}, length: ${text?.length || 0}`);
       
       if (!text || !fromLang || !toLang) {
         console.log("❌ Missing parameters:", { text: !!text, fromLang, toLang });
@@ -319,31 +319,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ translatedText: text });
       }
 
-      // Try LibreTranslate first (unlimited, local)
-      try {
-        console.log(`🚀 Trying LibreTranslate first...`);
-        const libreResponse = await fetch('http://localhost:5001/translate', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            q: text,
-            source: fromLang,
-            target: toLang
-          }),
-          signal: AbortSignal.timeout(3000) // 3 second timeout for faster fallback
-        });
+      // 🚀 PERFORMANCE: Skip LibreTranslate for very long texts (>2000 chars)
+      // LibreTranslate often times out on long texts
+      const isLongText = text.length > 2000;
+      if (isLongText) {
+        console.log(`⚡ PERFORMANCE: Long text (${text.length} chars) → Direct MyMemory (skip LibreTranslate timeouts)`);
+      } else {
+        // Try LibreTranslate first for shorter texts (unlimited, local)
+        try {
+          console.log(`🚀 Trying LibreTranslate first...`);
+          const libreResponse = await fetch('http://localhost:5001/translate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              q: text,
+              source: fromLang,
+              target: toLang
+            }),
+            signal: AbortSignal.timeout(2000) // Reduced to 2 seconds for faster fallback
+          });
 
-        if (libreResponse.ok) {
-          const libreData = await libreResponse.json();
-          if (libreData.translatedText && libreData.translatedText !== text) {
-            console.log(`✅ LibreTranslate success: "${text.substring(0, 30)}..." -> "${libreData.translatedText.substring(0, 30)}..."`);
-            return res.json({ translatedText: libreData.translatedText, provider: 'LibreTranslate' });
+          if (libreResponse.ok) {
+            const libreData = await libreResponse.json();
+            if (libreData.translatedText && libreData.translatedText !== text) {
+              console.log(`✅ LibreTranslate success: "${text.substring(0, 30)}..." -> "${libreData.translatedText.substring(0, 30)}..."`);
+              return res.json({ translatedText: libreData.translatedText, provider: 'LibreTranslate' });
+            }
           }
+        } catch (libreError: any) {
+          console.log(`⚠️ LibreTranslate failed: ${libreError.message}, falling back to MyMemory...`);
         }
-      } catch (libreError: any) {
-        console.log(`⚠️ LibreTranslate failed: ${libreError.message}, falling back to MyMemory...`);
       }
 
       // Fallback to MyMemory API

@@ -121,26 +121,26 @@ export default function AdminProductForm() {
   const handleAutoTranslation = async (germanText: string, toField: string, originalFieldName: string) => {
     if (!germanText || germanText.trim() === '') return;
     
-    // 🚀 CACHING: Skip if we're loading existing product or text hasn't changed
+    // 🚀 SMART CACHING: Skip if we're loading existing product or text hasn't changed
     if (isLoadingExistingProduct) {
-      console.log('🔄 SKIP: Loading existing product, no translation needed');
+      console.log(`🟡 SMART CACHE SKIP: Loading existing product, no translation needed for "${originalFieldName}"`);
       return;
     }
     
-    // 🚀 CACHING: Skip if text hasn't actually changed from original
+    // 🚀 SMART CACHING: Skip if text hasn't actually changed from original
     if (originalTexts[originalFieldName] === germanText) {
-      console.log('🔄 SKIP: Text unchanged, no translation needed');
+      console.log(`🟡 SMART CACHE SKIP: Text unchanged for "${originalFieldName}", no translation needed`);
       return;
     }
     
-    // 🚀 CACHING: Skip if target field already has content and this isn't a text change
+    // 🚀 SMART CACHING: Skip if target field already has content and this isn't a text change
     const currentValue = form.getValues(toField as keyof ProductFormData);
     if (currentValue && isEditing && !originalTexts[originalFieldName]) {
-      console.log('🔄 SKIP: Target field has content, preserving existing translation');
+      console.log(`🟡 SMART CACHE SKIP: Target field "${toField}" has content, preserving existing translation`);
       return;
     }
     
-    console.log(`🔄 TRANSLATE: New text detected, translating "${germanText.substring(0, 30)}..."`);
+    console.log(`🟢 SMART CACHE TRANSLATE: New text detected for "${originalFieldName}", translating "${germanText.substring(0, 30)}..."`);
     setIsTranslating(true);
     
     try {
@@ -329,7 +329,7 @@ export default function AdminProductForm() {
         // 🚀 CACHE: Enable auto-translation after loading is complete
         setTimeout(() => {
           setIsLoadingExistingProduct(false);
-          console.log('✅ SMART CACHE: Product loaded, auto-translation enabled for NEW changes only');
+          console.log('✅ SMART CACHE ENABLED: Product loaded, auto-translation enabled for NEW changes only');
         }, 200);
       }, 100);
     }
@@ -339,7 +339,7 @@ export default function AdminProductForm() {
   useEffect(() => {
     if (!isEditing) {
       setIsLoadingExistingProduct(false);
-      console.log('✅ SMART CACHE: New product mode, auto-translation enabled');
+      console.log('✅ SMART CACHE ENABLED: New product mode, auto-translation enabled');
     }
   }, [isEditing]);
 
