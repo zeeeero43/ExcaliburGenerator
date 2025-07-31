@@ -117,6 +117,10 @@ export const translations = {
     cartItems: "artículos",
     myCart: "Mi Carrito",
     sendViaWhatsApp: "Enviar por WhatsApp",
+    
+    // Mobile Image Gallery
+    showMobileImages: "Ver todas las imágenes",
+    hideMobileImages: "Ocultar imágenes",
     whatsAppMessage: "Hola, me interesan estos productos:",
     administration: "Administración",
     warehouseDelivery: "Recogida / Almacén",
@@ -902,6 +906,10 @@ export const translations = {
     myCart: "Mein Warenkorb",
     sendViaWhatsApp: "Über WhatsApp senden",
     whatsAppMessage: "Hallo, ich interessiere mich für diese Produkte:",
+    
+    // Mobile Image Gallery
+    showMobileImages: "Alle Bilder anzeigen",
+    hideMobileImages: "Bilder ausblenden",
 
     
     // Product page translations
@@ -1373,6 +1381,11 @@ export const translations = {
     myCart: "My Cart",
     sendViaWhatsApp: "Send via WhatsApp",
     whatsAppMessage: "Hello, I'm interested in these products:",
+    
+    // Mobile Image Gallery
+    showMobileImages: "View all images",
+    hideMobileImages: "Hide images",
+    
     constructionMachines: "Construction materials and other materials",
     constructionMachinesDesc: "High-quality construction materials for your projects",
     

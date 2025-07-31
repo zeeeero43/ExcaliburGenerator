@@ -1,7 +1,7 @@
 import { useParams, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Check, Phone, Mail, MessageCircle, Star, ShoppingCart, Shield, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Check, Phone, Mail, MessageCircle, Star, ShoppingCart, Shield, Zap, ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'wouter';
 import { useLanguage } from '../hooks/useLanguage';
 import { Button } from '../components/ui/button';
@@ -18,6 +18,7 @@ export default function ProductDetail() {
   
   // Image Gallery State - moved to top to avoid conditional hooks
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showAllImages, setShowAllImages] = useState(false);
   
   // Get product by slug from URL params
   const { data: product, isLoading, error } = useQuery<Product>({
@@ -202,11 +203,11 @@ export default function ProductDetail() {
           <span className="text-gray-800">{productName}</span>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
           {/* Product Image Gallery */}
           <div className="space-y-4">
-            {/* Main Image */}
-            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+            {/* Main Image - Kompakter auf Mobile */}
+            <div className="aspect-video md:aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
               <img
                 src={allImages[currentImageIndex] || '/api/placeholder/500/500'}
                 alt={`${productName} - Bild ${currentImageIndex + 1}`}
@@ -244,29 +245,58 @@ export default function ProductDetail() {
               )}
             </div>
             
-            {/* Thumbnail Gallery - only show if more than 1 image */}
+            {/* Thumbnail Gallery - Collapsible auf Mobile */}
             {allImages.length > 1 && (
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-5 gap-2">
-                {allImages.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`aspect-square rounded border-2 overflow-hidden transition-all ${
-                      index === currentImageIndex 
-                        ? 'border-blue-500 shadow-md' 
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
+              <div className="space-y-3">
+                {/* Mobile: Show/Hide Button */}
+                <div className="block md:hidden">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowAllImages(!showAllImages)}
+                    className="w-full flex items-center justify-center gap-2"
                   >
-                    <img
-                      src={image}
-                      alt={`${productName} - Thumbnail ${index + 1}`}
-                      className="w-full h-full object-contain bg-gray-50"
-                      onError={(e) => {
-                        e.currentTarget.src = '/api/placeholder/100/100';
-                      }}
-                    />
-                  </button>
-                ))}
+                    {showAllImages ? (
+                      <>
+                        <ChevronUp className="w-4 h-4" />
+                        {t('hideMobileImages') || 'Bilder ausblenden'}
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="w-4 h-4" />
+                        {t('showMobileImages') || `Alle ${allImages.length} Bilder anzeigen`}
+                      </>
+                    )}
+                  </Button>
+                </div>
+                
+                {/* Thumbnail Grid - Always visible on Desktop, Collapsible on Mobile */}
+                <div className={`
+                  grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-5 gap-2 
+                  transition-all duration-300 ease-in-out
+                  ${showAllImages ? 'block' : 'hidden md:grid'}
+                `}>
+                  {allImages.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`aspect-square rounded border-2 overflow-hidden transition-all ${
+                        index === currentImageIndex 
+                          ? 'border-blue-500 shadow-md' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${productName} - Thumbnail ${index + 1}`}
+                        className="w-full h-full object-contain bg-gray-50"
+                        onError={(e) => {
+                          e.currentTarget.src = '/api/placeholder/100/100';
+                        }}
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
             
