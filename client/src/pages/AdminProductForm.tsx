@@ -54,6 +54,10 @@ export default function AdminProductForm() {
   const queryClient = useQueryClient();
   const [isTranslating, setIsTranslating] = useState(false);
   const [translationTimeout, setTranslationTimeout] = useState<NodeJS.Timeout | null>(null);
+  
+  // 🚀 SMART CACHING: Prevent re-translation of existing data
+  const [isLoadingExistingProduct, setIsLoadingExistingProduct] = useState(true);
+  const [originalTexts, setOriginalTexts] = useState<Record<string, string>>({});
 
   const isEditing = Boolean(id);
 
@@ -80,9 +84,9 @@ export default function AdminProductForm() {
       isActive: true,
       isFeatured: false,
       stockStatus: 'in_stock',
-      availabilityEs: '',
-      availabilityDe: '',
-      availabilityEn: '',
+      availabilityTextEs: '',
+      availabilityTextDe: '',
+      availabilityTextEn: '',
       sortOrder: 0,
     },
   });
@@ -91,7 +95,7 @@ export default function AdminProductForm() {
   const { data: product, isLoading: isLoadingProduct } = useQuery({
     queryKey: [`/api/admin/products/${id}`],
     enabled: isEditing,
-  });
+  }) as { data: any, isLoading: boolean };
 
   // Fetch categories
   const { data: categories = [] } = useQuery({
@@ -113,10 +117,30 @@ export default function AdminProductForm() {
   console.log('🔄 Filtered subcategories:', subcategories);
   console.log('🔄 Current subcategoryId value:', form.watch('subcategoryId'));
 
-  // Auto-translation function
-  const handleAutoTranslation = async (germanText: string, toField: string) => {
+  // 🚀 SMART AUTO-TRANSLATION: Only translate if text actually changed
+  const handleAutoTranslation = async (germanText: string, toField: string, originalFieldName: string) => {
     if (!germanText || germanText.trim() === '') return;
     
+    // 🚀 CACHING: Skip if we're loading existing product or text hasn't changed
+    if (isLoadingExistingProduct) {
+      console.log('🔄 SKIP: Loading existing product, no translation needed');
+      return;
+    }
+    
+    // 🚀 CACHING: Skip if text hasn't actually changed from original
+    if (originalTexts[originalFieldName] === germanText) {
+      console.log('🔄 SKIP: Text unchanged, no translation needed');
+      return;
+    }
+    
+    // 🚀 CACHING: Skip if target field already has content and this isn't a text change
+    const currentValue = form.getValues(toField as keyof ProductFormData);
+    if (currentValue && isEditing && !originalTexts[originalFieldName]) {
+      console.log('🔄 SKIP: Target field has content, preserving existing translation');
+      return;
+    }
+    
+    console.log(`🔄 TRANSLATE: New text detected, translating "${germanText.substring(0, 30)}..."`);
     setIsTranslating(true);
     
     try {
@@ -136,10 +160,11 @@ export default function AdminProductForm() {
         const data = await response.json();
         if (data.translatedText && data.translatedText !== germanText) {
           form.setValue(toField as keyof ProductFormData, data.translatedText);
+          console.log(`✅ TRANSLATED: "${germanText.substring(0, 30)}..." -> "${data.translatedText.substring(0, 30)}..."`);
         }
       }
     } catch (error) {
-      console.error('Translation failed:', error);
+      console.error('❌ Translation failed:', error);
     } finally {
       setIsTranslating(false);
     }
@@ -247,11 +272,22 @@ export default function AdminProductForm() {
     }
   };
 
-  // Set form data when product is loaded
+  // 🚀 SMART CACHING: Set form data when product is loaded without triggering translations
   useEffect(() => {
     if (product) {
-      console.log('🔄 Loading product into form:', product);
+      console.log('🔄 SMART CACHE: Loading existing product, storing original texts');
       console.log('🔄 Product subcategoryId:', product.subcategoryId);
+      
+      // 🚀 CACHE: Store original texts to prevent re-translation
+      setOriginalTexts({
+        nameDe: product.nameDe || '',
+        shortDescriptionDe: product.shortDescriptionDe || '',
+        descriptionDe: product.descriptionDe || '',
+        availabilityTextDe: product.availabilityTextDe || '',
+      });
+      
+      // 🚀 CACHE: Block auto-translation during loading
+      setIsLoadingExistingProduct(true);
       
       form.reset({
         nameDe: product.nameDe || '',
@@ -289,9 +325,23 @@ export default function AdminProductForm() {
           form.setValue('subcategoryId', null);
           console.log('🔄 Setting subcategoryId to null (no subcategory)');
         }
+        
+        // 🚀 CACHE: Enable auto-translation after loading is complete
+        setTimeout(() => {
+          setIsLoadingExistingProduct(false);
+          console.log('✅ SMART CACHE: Product loaded, auto-translation enabled for NEW changes only');
+        }, 200);
       }, 100);
     }
   }, [product, form]);
+
+  // 🚀 SMART CACHING: For new products, enable translation immediately
+  useEffect(() => {
+    if (!isEditing) {
+      setIsLoadingExistingProduct(false);
+      console.log('✅ SMART CACHE: New product mode, auto-translation enabled');
+    }
+  }, [isEditing]);
 
   // Force refresh function
   const forceRefreshForm = () => {
@@ -445,7 +495,18 @@ export default function AdminProductForm() {
                       <FormItem>
                         <FormLabel>1. Produktname *</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Solar Panele 410Watt Pink, neueste Monokristelline, Halbzell PERC Technologie" />
+                          <Input 
+                            {...field} 
+                            placeholder="Solar Panele 410Watt Pink, neueste Monokristelline, Halbzell PERC Technologie"
+                            onChange={(e) => {
+                              field.onChange(e);
+                              // 🚀 SMART TRANSLATION: Only translate on actual text changes
+                              if (e.target.value !== originalTexts.nameDe) {
+                                handleAutoTranslation(e.target.value, 'nameEs', 'nameDe');
+                                handleAutoTranslation(e.target.value, 'nameEn', 'nameDe');
+                              }
+                            }}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -585,7 +646,14 @@ export default function AdminProductForm() {
                       <FormControl>
                         <RichTextEditor
                           value={field.value || ''}
-                          onChange={field.onChange}
+                          onChange={(value) => {
+                            field.onChange(value);
+                            // 🚀 SMART TRANSLATION: Only translate on actual text changes
+                            if (value !== originalTexts.shortDescriptionDe) {
+                              handleAutoTranslation(value, 'shortDescriptionEs', 'shortDescriptionDe');
+                              handleAutoTranslation(value, 'shortDescriptionEn', 'shortDescriptionDe');
+                            }
+                          }}
                           placeholder="Test 1-2-3"
                         />
                       </FormControl>
@@ -907,6 +975,14 @@ export default function AdminProductForm() {
                             {...field} 
                             placeholder="z.B. in 2 Wochen verfügbar" 
                             disabled={form.watch('stockStatus') === 'in_stock'}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              // 🚀 SMART TRANSLATION: Only translate on actual text changes
+                              if (e.target.value !== originalTexts.availabilityTextDe) {
+                                handleAutoTranslation(e.target.value, 'availabilityTextEs', 'availabilityTextDe');
+                                handleAutoTranslation(e.target.value, 'availabilityTextEn', 'availabilityTextDe');
+                              }
+                            }}
                           />
                         </FormControl>
                         <p className="text-xs text-gray-500">Nur Deutsch eingeben - wird automatisch übersetzt</p>
