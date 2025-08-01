@@ -16,6 +16,7 @@ interface CartContextType {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  getItemPrice: (product: any) => number | null;
   isInCart: (productId: number) => boolean;
 }
 
@@ -95,9 +96,26 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const getTotalPrice = () => {
     return items.reduce((total, item) => {
-      const price = parseFloat(item.product.price || '0');
+      // 🚀 KORREKTE PREISLOGIK: newPrice hat Priorität, dann oldPrice
+      if (item.product.priceOnRequest) {
+        return total; // Preis auf Anfrage = kein fester Preis
+      }
+      
+      const newPrice = item.product.newPrice ? parseFloat(item.product.newPrice) : null;
+      const oldPrice = item.product.oldPrice ? parseFloat(item.product.oldPrice) : null;
+      
+      // newPrice hat Priorität (ist der aktuelle Verkaufspreis)
+      const price = newPrice || oldPrice || 0;
       return total + (price * item.quantity);
     }, 0);
+  };
+
+  // 🚀 NEUE FUNKTION: Preis für einzelnes Produkt ermitteln
+  const getItemPrice = (product: any) => {
+    if (product.priceOnRequest) return null;
+    const newPrice = product.newPrice ? parseFloat(product.newPrice) : null;
+    const oldPrice = product.oldPrice ? parseFloat(product.oldPrice) : null;
+    return newPrice || oldPrice || 0;
   };
 
   const isInCart = (productId: number) => {
@@ -113,6 +131,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       clearCart,
       getTotalItems,
       getTotalPrice,
+      getItemPrice,
       isInCart
     }}>
       {children}

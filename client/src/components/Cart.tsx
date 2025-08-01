@@ -13,19 +13,31 @@ interface CartProps {
 }
 
 export function Cart({ isOpen, onClose }: CartProps) {
-  const { items, removeItem, updateQuantity, clearCart, getTotalPrice } = useCart();
+  const { items, removeItem, updateQuantity, clearCart, getTotalPrice, getItemPrice } = useCart();
   const { t } = useLanguage();
 
   if (!isOpen) return null;
 
+  // 🚀 VERBESSERTE WHATSAPP NACHRICHT mit korrekten Preisen
   const generateWhatsAppMessage = () => {
     const message = `${t('whatsAppMessage')}\n\n`;
-    const itemsList = items.map(item => 
-      `• ${item.product.name} - ${t('quantity')}: ${item.quantity}`
-    ).join('\n');
+    const itemsList = items.map(item => {
+      const price = getItemPrice(item.product);
+      const priceText = item.product.priceOnRequest 
+        ? t('priceOnRequest') || 'Preis auf Anfrage'
+        : price 
+          ? `$${price.toFixed(2)}`
+          : 'Preis nicht verfügbar';
+      
+      const lineTotal = price && !item.product.priceOnRequest 
+        ? ` (${item.quantity} x $${price.toFixed(2)} = $${(price * item.quantity).toFixed(2)})`
+        : '';
+        
+      return `• ${item.product.name}\n  ${t('quantity')}: ${item.quantity} | ${t('price')}: ${priceText}${lineTotal}`;
+    }).join('\n\n');
     
     const total = getTotalPrice();
-    const totalMessage = total > 0 ? `\n\n${t('total')}: ${total.toFixed(2)}` : '';
+    const totalMessage = total > 0 ? `\n\n━━━━━━━━━━━━━━━━━━━━\n${t('total')}: $${total.toFixed(2)}` : '';
     
     return encodeURIComponent(message + itemsList + totalMessage);
   };
@@ -93,12 +105,50 @@ export function Cart({ isOpen, onClose }: CartProps) {
                       </div>
                       
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1">
+                        <h4 className="font-semibold text-gray-900 mb-2">
                           {item.product.name}
                         </h4>
-                        <p className="text-sm text-gray-600 mb-3">
-                          {item.product.shortDescription || item.product.description}
-                        </p>
+                        
+                        {/* 🚀 KORREKTE PREISANZEIGE mit newPrice/oldPrice Logic */}
+                        <div className="mb-3">
+                          {item.product.priceOnRequest ? (
+                            <Badge variant="secondary" className="text-xs">
+                              {t('priceOnRequest') || 'Preis auf Anfrage'}
+                            </Badge>
+                          ) : (
+                            <div className="flex items-center space-x-2">
+                              {item.product.newPrice && item.product.oldPrice ? (
+                                // Beide Preise vorhanden: Alter Preis durchgestrichen, neuer Preis normal
+                                <>
+                                  <span className="text-lg font-bold text-green-600">
+                                    ${parseFloat(item.product.newPrice).toFixed(2)}
+                                  </span>
+                                  <span className="text-sm text-gray-500 line-through">
+                                    ${parseFloat(item.product.oldPrice).toFixed(2)}
+                                  </span>
+                                  <Badge variant="destructive" className="text-xs">
+                                    {t('sale') || 'Sale'}
+                                  </Badge>
+                                </>
+                              ) : item.product.newPrice ? (
+                                // Nur neuer Preis
+                                <span className="text-lg font-bold text-gray-900">
+                                  ${parseFloat(item.product.newPrice).toFixed(2)}
+                                </span>
+                              ) : item.product.oldPrice ? (
+                                // Nur alter Preis
+                                <span className="text-lg font-bold text-gray-900">
+                                  ${parseFloat(item.product.oldPrice).toFixed(2)}
+                                </span>
+                              ) : (
+                                // Kein Preis verfügbar
+                                <Badge variant="outline" className="text-xs">
+                                  {t('priceNotAvailable') || 'Preis nicht verfügbar'}
+                                </Badge>
+                              )}
+                            </div>
+                          )}
+                        </div>
                         
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
@@ -140,34 +190,44 @@ export function Cart({ isOpen, onClose }: CartProps) {
           )}
         </div>
 
-        {/* Footer */}
+        {/* Footer mit Gesamtsumme */}
         {items.length > 0 && (
           <div className="border-t p-6 bg-gray-50">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-lg font-semibold">
-                {items.length} {t('cartItems')}
-              </span>
+            {/* 🚀 GESAMTSUMME ANZEIGE */}
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-gray-600">{t('subtotal') || 'Zwischensumme'}:</span>
+                <span className="text-lg font-semibold">${getTotalPrice().toFixed(2)}</span>
+              </div>
+              <Separator />
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-lg font-bold">{t('total') || 'Gesamt'}:</span>
+                <span className="text-xl font-bold text-green-600">${getTotalPrice().toFixed(2)}</span>
+              </div>
+              {/* Info über "Preis auf Anfrage" Produkte */}
+              {items.some(item => item.product.priceOnRequest) && (
+                <p className="text-xs text-gray-500 mt-2">
+                  * {t('priceOnRequestNote') || 'Produkte mit "Preis auf Anfrage" sind nicht in der Summe enthalten'}
+                </p>
+              )}
+            </div>
+            <div className="flex space-x-3">
               <Button
                 variant="outline"
-                size="sm"
                 onClick={clearCart}
-                className="text-red-600 hover:text-red-700"
+                className="flex-1"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                {t('clearCart')}
+                {t('clearCart') || 'Warenkorb leeren'}
+              </Button>
+              <Button
+                onClick={sendWhatsApp}
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                {t('sendViaWhatsApp') || 'Via WhatsApp senden'}
               </Button>
             </div>
-            
-            <Separator className="mb-4" />
-            
-            <Button
-              onClick={sendWhatsApp}
-              className="w-full bg-green-600 hover:bg-green-700 text-white"
-              size="lg"
-            >
-              <MessageCircle className="w-5 h-5 mr-2" />
-              {t('sendViaWhatsApp')}
-            </Button>
           </div>
         )}
       </div>
