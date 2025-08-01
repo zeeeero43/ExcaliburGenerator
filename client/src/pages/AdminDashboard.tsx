@@ -274,15 +274,10 @@ export default function AdminDashboard() {
       return response.json();
     },
     onSuccess: () => {
-      // 🔧 GLOBAL CACHE INVALIDATION: Clear all product-related caches
+      // Invalidate both admin and public product caches
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
       queryClient.invalidateQueries({ queryKey: ['/api/products'] });
       queryClient.invalidateQueries({ queryKey: ['/api/products/featured'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/categories'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/subcategories'] });
-      
-      // Force complete cache refresh
-      queryClient.refetchQueries({ queryKey: ['/api/products'] });
       toast({
         title: "Produkt dupliziert",
         description: "Das Produkt wurde erfolgreich dupliziert.",
