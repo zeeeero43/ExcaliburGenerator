@@ -945,11 +945,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       
+      // 🔧 SLUG FIX: Load existing product to check if name changed
+      const existingProduct = await storage.getProductById(id);
+      if (!existingProduct) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      
+      // Generate new slug only if the name (nameEs) has changed
+      let newSlug = existingProduct.slug;
+      if (req.body.nameEs && req.body.nameEs !== existingProduct.nameEs) {
+        newSlug = generateSlug(req.body.nameEs);
+        console.log(`🔧 SLUG UPDATE: Name changed from "${existingProduct.nameEs}" to "${req.body.nameEs}", updating slug from "${existingProduct.slug}" to "${newSlug}"`);
+      }
+      
       // Transform the request body to match the schema (same as create)
       const transformedData = {
         ...req.body,
         name: req.body.nameEs, // Use Spanish name as main name
-        slug: req.body.slug || generateSlug(req.body.nameEs),
+        slug: newSlug,
         oldPrice: req.body.oldPrice ? req.body.oldPrice.toString() : null,
         newPrice: req.body.newPrice ? req.body.newPrice.toString() : null,
         shortDescription: req.body.shortDescriptionEs,
