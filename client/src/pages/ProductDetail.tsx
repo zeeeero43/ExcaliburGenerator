@@ -126,12 +126,17 @@ export default function ProductDetail() {
   const getAvailabilityText = () => {
     if (!product) return t('in_stock');
     
+    // 🔧 FIX: If product is in stock, show standard "in stock" text
+    if (product.stockStatus === 'in_stock') {
+      return t('in_stock');
+    }
+    
     let customText = '';
     if (currentLanguage === 'es') {
       customText = product.availabilityTextEs || '';
     } else if (currentLanguage === 'de') {
       customText = product.availabilityTextDe || '';
-    } else {
+    } else if (currentLanguage === 'en') {
       customText = product.availabilityTextEn || '';
     }
     
@@ -144,11 +149,7 @@ export default function ProductDetail() {
   const getEffectiveStockStatus = () => {
     if (!product) return 'in_stock';
     
-    // If custom availability text exists, treat as 'limited' (yellow/orange)
-    if (hasCustomAvailabilityText) {
-      return 'limited';
-    }
-    
+    // 🔧 FIX: Use actual stock status, not custom availability text logic
     return product.stockStatus || 'in_stock';
   };
   

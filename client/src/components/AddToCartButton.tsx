@@ -27,11 +27,11 @@ export function AddToCartButton({
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
 
-  // Check if product has custom availability text (should not be addable to cart)
-  const hasCustomAvailabilityText = !!(product.availabilityTextEs || product.availabilityTextDe || product.availabilityTextEn);
+  // 🔧 FIX: Product is in stock if stockStatus says so, regardless of availability text
+  const isInStock = product.stockStatus === 'in_stock';
   
-  // Check if product is actually in stock
-  const isInStock = product.stockStatus === 'in_stock' && !hasCustomAvailabilityText;
+  // Check if product has custom availability text (for display purposes)
+  const hasCustomAvailabilityText = !!(product.availabilityTextEs || product.availabilityTextDe || product.availabilityTextEn);
 
   const currentItem = items.find(item => item.product.id === product.id);
   const currentQuantity = currentItem?.quantity || 0;

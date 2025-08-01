@@ -81,12 +81,17 @@ export default function Products() {
   const getAvailabilityText = (product: any) => {
     if (!product) return t('in_stock');
     
+    // 🔧 FIX: If product is in stock, don't show any availability text
+    if (product.stockStatus === 'in_stock') {
+      return null; // Don't show any text for in-stock products
+    }
+    
     let customText = '';
     if (currentLanguage === 'es') {
       customText = product.availabilityTextEs || '';
     } else if (currentLanguage === 'de') {
       customText = product.availabilityTextDe || '';
-    } else {
+    } else if (currentLanguage === 'en') {
       customText = product.availabilityTextEn || '';
     }
     
