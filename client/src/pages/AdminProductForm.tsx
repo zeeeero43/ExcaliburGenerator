@@ -385,14 +385,21 @@ export default function AdminProductForm() {
         title: "Produkt gespeichert",
         description: isEditing ? "Produkt wurde aktualisiert" : "Neues Produkt wurde erstellt",
       });
-      // Invalidate both admin and public product caches
+      // 🔧 GLOBAL CACHE INVALIDATION: Clear all product-related caches
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
       queryClient.invalidateQueries({ queryKey: ['/api/products'] });
       queryClient.invalidateQueries({ queryKey: ['/api/products/featured'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/categories'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/subcategories'] });
+      
       // Invalidate the specific product cache if editing
       if (isEditing && id) {
         queryClient.invalidateQueries({ queryKey: [`/api/admin/products/${id}`] });
+        queryClient.invalidateQueries({ queryKey: [`/api/products/${result.slug}`] });
       }
+      
+      // Force complete cache refresh
+      queryClient.refetchQueries({ queryKey: ['/api/products'] });
       setLocation('/admin');
     },
     onError: (error: Error) => {
