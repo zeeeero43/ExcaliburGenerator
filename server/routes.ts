@@ -951,11 +951,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Product not found" });
       }
       
-      // Generate new slug only if the name (nameEs) has changed
-      let newSlug = existingProduct.slug;
-      if (req.body.nameEs && req.body.nameEs !== existingProduct.nameEs) {
+      // 🔧 CRITICAL FIX: Only generate new slug if name actually changed
+      let newSlug = existingProduct.slug; // Keep existing slug by default
+      
+      // Check if the Spanish name (nameEs) has actually changed
+      const nameChanged = req.body.nameEs && req.body.nameEs.trim() !== existingProduct.nameEs?.trim();
+      
+      if (nameChanged) {
         newSlug = generateSlug(req.body.nameEs);
         console.log(`🔧 SLUG UPDATE: Name changed from "${existingProduct.nameEs}" to "${req.body.nameEs}", updating slug from "${existingProduct.slug}" to "${newSlug}"`);
+      } else {
+        console.log(`🔧 SLUG PRESERVED: Name unchanged, keeping existing slug "${existingProduct.slug}"`);
       }
       
       // Transform the request body to match the schema (same as create)
