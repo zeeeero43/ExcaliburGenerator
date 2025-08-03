@@ -321,76 +321,91 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ translatedText: text });
       }
 
-      // 🚀 NEW ORDER: Try MyMemory API first (user request)
-      console.log(`🔄 Using MyMemory API as primary...`);
+      // 🚀 PRIMARY: Try DeepL API first (best quality)
+      console.log(`🔄 Using DeepL API as primary translation service...`);
+      
+      try {
+        // Map language codes to DeepL format
+        const deeplLangMap: Record<string, string> = {
+          'de': 'DE',
+          'en': 'EN',
+          'es': 'ES',
+          'fr': 'FR',
+          'it': 'IT',
+          'pt': 'PT',
+          'ru': 'RU',
+          'ja': 'JA',
+          'zh': 'ZH'
+        };
+        
+        const sourceLang = deeplLangMap[fromLang] || fromLang.toUpperCase();
+        const targetLang = deeplLangMap[toLang] || toLang.toUpperCase();
+        
+        console.log(`🔄 DeepL: Translating from ${sourceLang} to ${targetLang}`);
+        
+        const deeplResponse = await fetch('https://api-free.deepl.com/v2/translate', {
+          method: 'POST',
+          headers: {
+            'Authorization': `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            'text': text,
+            'source_lang': sourceLang,
+            'target_lang': targetLang,
+          }),
+          signal: AbortSignal.timeout(8000)
+        });
+
+        if (deeplResponse.ok) {
+          const deeplData = await deeplResponse.json();
+          console.log(`📡 DeepL Response: ${JSON.stringify(deeplData)}`);
+          
+          if (deeplData.translations && deeplData.translations.length > 0) {
+            const translatedText = deeplData.translations[0].text;
+            if (translatedText && translatedText !== text) {
+              console.log(`✅ DeepL SUCCESS: "${text.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
+              return res.json({ translatedText, provider: 'DeepL' });
+            }
+          }
+        } else {
+          const errorText = await deeplResponse.text();
+          console.log(`❌ DeepL Error: ${deeplResponse.status} - ${errorText}`);
+          throw new Error(`DeepL API error: ${deeplResponse.status}`);
+        }
+      } catch (deeplError: any) {
+        console.log(`⚠️ DeepL failed: ${deeplError.message}, falling back to MyMemory...`);
+      }
+
+      // FALLBACK: MyMemory API
+      console.log(`🔄 Using MyMemory API as fallback...`);
       const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromLang}|${toLang}`;
 
       try {
         const response = await fetch(url, {
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-            'Accept': 'application/json, text/plain, */*',
-            'Accept-Language': 'en-US,en;q=0.9',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Accept': 'application/json',
             'Cache-Control': 'no-cache'
           },
-          signal: AbortSignal.timeout(5000) // 5 second timeout
+          signal: AbortSignal.timeout(5000)
         });
         
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        
-        console.log(`📡 MyMemory Response: status=${response.status}, responseStatus=${data.responseStatus}, quotaFinished=${data.quotaFinished}`);
-        console.log(`📡 MyMemory Details: responseDetails="${data.responseDetails}", translatedText="${data.responseData?.translatedText?.substring(0, 50)}..."`);
-        
-        // 🔧 FIX: Handle 403 errors explicitly
-        if (response.status === 403) {
-          console.log(`🚫 MyMemory Rate Limit: Status 403 - Daily limit reached`);
-          throw new Error(`Rate limit exceeded (403)`);
-        }
-        
-        if (data.responseStatus === 200 && data.responseData?.translatedText) {
-          const translatedText = data.responseData.translatedText;
-          // Check if it's not just an error message
-          if (!translatedText.includes('MYMEMORY WARNING')) {
-            console.log(`✅ MyMemory success: "${text.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
-            return res.json({ translatedText, provider: 'MyMemory' });
-          } else {
-            console.log(`⚠️ MyMemory quota exceeded: ${data.responseDetails || 'Daily limit reached'}`);
-          }
-        }
-        
-        // MyMemory failed, try LibreTranslate as backup
-        console.log(`🔄 MyMemory failed, trying LibreTranslate as backup...`);
-        try {
-          const libreResponse = await fetch('http://localhost:5001/translate', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              q: text,
-              source: fromLang,
-              target: toLang
-            }),
-            signal: AbortSignal.timeout(5000)
-          });
-
-          if (libreResponse.ok) {
-            const libreData = await libreResponse.json();
-            if (libreData.translatedText && libreData.translatedText !== text) {
-              console.log(`✅ LibreTranslate backup success: "${text.substring(0, 30)}..." -> "${libreData.translatedText.substring(0, 30)}..."`);
-              return res.json({ translatedText: libreData.translatedText, provider: 'LibreTranslate-Backup' });
+        if (response.ok) {
+          const data = await response.json();
+          console.log(`📡 MyMemory Response: status=${response.status}, responseStatus=${data.responseStatus}`);
+          
+          if (data.responseStatus === 200 && data.responseData?.translatedText) {
+            const translatedText = data.responseData.translatedText;
+            if (!translatedText.includes('MYMEMORY WARNING') && translatedText !== text) {
+              console.log(`✅ MyMemory fallback success: "${text.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
+              return res.json({ translatedText, provider: 'MyMemory-Fallback' });
             }
           }
-        } catch (libreError: any) {
-          console.log(`⚠️ LibreTranslate backup also failed: ${libreError.message}`);
         }
         
-        // Try simple dictionary fallback
-        console.log(`🔄 Trying dictionary fallback...`);
+        // All APIs failed - try dictionary fallback
+        console.log(`🔄 All APIs failed, trying dictionary fallback...`);
         const dictionaryResult = simpleTranslation(text, fromLang, toLang);
         if (dictionaryResult !== text) {
           console.log(`✅ Dictionary fallback success: "${text}" -> "${dictionaryResult}"`);
@@ -401,41 +416,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json({ 
           translatedText: text, 
           error: 'ALL_APIS_FAILED', 
-          details: 'MyMemory and LibreTranslate both unavailable' 
+          details: 'DeepL and MyMemory both unavailable' 
         });
         
       } catch (fetchError: any) {
         console.error('❌ MyMemory API error:', fetchError.message);
         
-        // Try LibreTranslate backup after network error
-        console.log(`🔄 Network error, trying LibreTranslate backup...`);
-        try {
-          const libreResponse = await fetch('http://localhost:5001/translate', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              q: text,
-              source: fromLang,
-              target: toLang
-            }),
-            signal: AbortSignal.timeout(5000)
-          });
-
-          if (libreResponse.ok) {
-            const libreData = await libreResponse.json();
-            if (libreData.translatedText && libreData.translatedText !== text) {
-              console.log(`✅ LibreTranslate network backup success: "${text.substring(0, 30)}..." -> "${libreData.translatedText.substring(0, 30)}..."`);
-              return res.json({ translatedText: libreData.translatedText, provider: 'LibreTranslate-NetworkBackup' });
-            }
-          }
-        } catch (libreError: any) {
-          console.log(`⚠️ LibreTranslate network backup failed: ${libreError.message}`);
-        }
-        
-        // Final dictionary fallback
-        console.log(`🔄 Trying dictionary fallback after network failure...`);
+        // Final dictionary fallback after network error
+        console.log(`🔄 Network error, trying dictionary fallback...`);
         const dictionaryResult = simpleTranslation(text, fromLang, toLang);
         if (dictionaryResult !== text) {
           console.log(`✅ Dictionary fallback success: "${text}" -> "${dictionaryResult}"`);
@@ -445,7 +433,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json({ 
           translatedText: text, 
           error: 'NETWORK_ERROR', 
-          details: 'Translation services unavailable' 
+          details: 'All translation services unavailable' 
         });
       }
     } catch (error: any) {

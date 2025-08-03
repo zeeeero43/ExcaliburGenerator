@@ -44,5 +44,7 @@ Project pricing: Final negotiated price €1500 (originally €500 scope, propos
 - **Unsplash**: CDN for high-quality product images (used as source).
 - **Google Fonts**: Web font delivery (Inter font family).
 - **WhatsApp Business API**: Customer communication integration.
-- **LibreTranslate / MyMemory**: Third-party translation services with a dictionary-based fallback.
+- **DeepL API**: Primary translation service for highest quality translations (500,000 chars/month free tier).
+- **MyMemory**: Fallback translation service for when DeepL is unavailable.
+- **Dictionary**: Final fallback for basic translations when all APIs fail.
 ```
