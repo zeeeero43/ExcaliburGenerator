@@ -52,8 +52,12 @@ export default function AdminProductForm() {
   const [location, setLocation] = useLocation();
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
-  const [isTranslating, setIsTranslating] = useState(false);
-  const [translationTimeout, setTranslationTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [translationCount, setTranslationCount] = useState(0);
+  const isTranslating = translationCount > 0;
+  const [nameTimeout, setNameTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [shortDescTimeout, setShortDescTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [fullDescTimeout, setFullDescTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [availabilityTimeout, setAvailabilityTimeout] = useState<NodeJS.Timeout | null>(null);
   
   // 🚀 SMART CACHING: Prevent re-translation of existing data
   const [isLoadingExistingProduct, setIsLoadingExistingProduct] = useState(true);
@@ -141,7 +145,7 @@ export default function AdminProductForm() {
     if (!isEditing || (isEditing && originalTexts[originalFieldName] !== germanText)) {
     
       console.log(`🔄 TRANSLATING: "${originalFieldName}" - "${germanText.substring(0, 30)}..."`);
-      setIsTranslating(true);
+      setTranslationCount(prev => prev + 1);
       
       try {
         const response = await fetch('/api/translate', {
@@ -168,7 +172,7 @@ export default function AdminProductForm() {
       } catch (error) {
         console.error('❌ Translation failed:', error);
       } finally {
-        setIsTranslating(false);
+        setTranslationCount(prev => Math.max(0, prev - 1));
       }
     }
   };
@@ -176,70 +180,70 @@ export default function AdminProductForm() {
   // Real-time translation with debounce for product name
   useEffect(() => {
     const germanName = form.watch('nameDe');
-    if (germanName) {
-      if (translationTimeout) {
-        clearTimeout(translationTimeout);
+    if (germanName && !isLoadingExistingProduct) {
+      if (nameTimeout) {
+        clearTimeout(nameTimeout);
       }
       
       const timeout = setTimeout(() => {
         handleAutoTranslation(germanName, 'nameEs', 'nameDe');
         handleAutoTranslation(germanName, 'nameEn', 'nameDe');
-      }, 1000);
+      }, 1500);
       
-      setTranslationTimeout(timeout);
+      setNameTimeout(timeout);
     }
-  }, [form.watch('nameDe')]);
+  }, [form.watch('nameDe'), isLoadingExistingProduct]);
 
   // Real-time translation with debounce for short description
   useEffect(() => {
     const germanDesc = form.watch('shortDescriptionDe');
-    if (germanDesc) {
-      if (translationTimeout) {
-        clearTimeout(translationTimeout);
+    if (germanDesc && !isLoadingExistingProduct) {
+      if (shortDescTimeout) {
+        clearTimeout(shortDescTimeout);
       }
       
       const timeout = setTimeout(() => {
         handleAutoTranslation(germanDesc, 'shortDescriptionEs', 'shortDescriptionDe');
         handleAutoTranslation(germanDesc, 'shortDescriptionEn', 'shortDescriptionDe');
-      }, 1000);
+      }, 1500);
       
-      setTranslationTimeout(timeout);
+      setShortDescTimeout(timeout);
     }
-  }, [form.watch('shortDescriptionDe')]);
+  }, [form.watch('shortDescriptionDe'), isLoadingExistingProduct]);
 
   // Real-time translation with debounce for full description
   useEffect(() => {
     const germanFullDesc = form.watch('descriptionDe');
-    if (germanFullDesc) {
-      if (translationTimeout) {
-        clearTimeout(translationTimeout);
+    if (germanFullDesc && !isLoadingExistingProduct) {
+      if (fullDescTimeout) {
+        clearTimeout(fullDescTimeout);
       }
       
       const timeout = setTimeout(() => {
         handleAutoTranslation(germanFullDesc, 'descriptionEs', 'descriptionDe');
         handleAutoTranslation(germanFullDesc, 'descriptionEn', 'descriptionDe');
-      }, 1000);
+      }, 2000); // Longer timeout for description
       
-      setTranslationTimeout(timeout);
+      setFullDescTimeout(timeout);
     }
-  }, [form.watch('descriptionDe')]);
+  }, [form.watch('descriptionDe'), isLoadingExistingProduct]);
 
   // Real-time translation with debounce for availability field
   useEffect(() => {
     const germanAvailability = form.watch('availabilityTextDe');
-    if (germanAvailability) {
-      if (translationTimeout) {
-        clearTimeout(translationTimeout);
+    if (germanAvailability && !isLoadingExistingProduct) {
+      if (availabilityTimeout) {
+        clearTimeout(availabilityTimeout);
       }
       
       const timeout = setTimeout(() => {
         handleAutoTranslation(germanAvailability, 'availabilityTextEs', 'availabilityTextDe');
         handleAutoTranslation(germanAvailability, 'availabilityTextEn', 'availabilityTextDe');
-      }, 1000);
+      }, 1500);
       
-      setTranslationTimeout(timeout);
+      setAvailabilityTimeout(timeout);
     }
-  }, [form.watch('availabilityTextDe')]);
+  }, [form.watch('availabilityTextDe'), isLoadingExistingProduct]);
 
   // Handle price on request translation
   const handlePriceOnRequestTranslation = async () => {
@@ -1056,14 +1060,16 @@ export default function AdminProductForm() {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={saveProductMutation.isPending}
+                  disabled={saveProductMutation.isPending || isTranslating}
                   onClick={() => {
                     console.log('🚀 Submit button clicked');
                     console.log('🚀 Form state:', form.formState);
                     console.log('🚀 Form values:', form.getValues());
+                    console.log('🚀 isTranslating:', isTranslating);
                   }}
                 >
-                  {saveProductMutation.isPending ? 'Speichere...' : 'Produkt speichern'}
+                  {saveProductMutation.isPending ? 'Speichere...' : 
+                   isTranslating ? 'Übersetzt...' : 'Produkt speichern'}
                 </Button>
                 
 
