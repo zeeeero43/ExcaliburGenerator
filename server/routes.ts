@@ -342,7 +342,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const data = await response.json();
         
-        console.log(`📡 MyMemory Response: status=${response.status}, hasData=${!!data.responseData}`);
+        console.log(`📡 MyMemory Response: status=${response.status}, responseStatus=${data.responseStatus}, quotaFinished=${data.quotaFinished}`);
+        console.log(`📡 MyMemory Details: responseDetails="${data.responseDetails}", translatedText="${data.responseData?.translatedText?.substring(0, 50)}..."`);
         
         // 🔧 FIX: Handle 403 errors explicitly
         if (response.status === 403) {
