@@ -347,10 +347,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         console.log(`🔄 DeepL: Translating from ${sourceLang} to ${targetLang}`);
         
+        // Multiple API key sources for VPS compatibility
+        const apiKey = process.env.DEEPL_API_KEY || process.env.DEEPL_KEY || global.DEEPL_API_KEY;
+        
+        if (!apiKey) {
+          console.log(`⚠️ No DeepL API key found, skipping to fallback...`);
+          throw new Error('No DeepL API key configured');
+        }
+        
         const deeplResponse = await fetch('https://api-free.deepl.com/v2/translate', {
           method: 'POST',
           headers: {
-            'Authorization': `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`,
+            'Authorization': `DeepL-Auth-Key ${apiKey}`,
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: new URLSearchParams({
