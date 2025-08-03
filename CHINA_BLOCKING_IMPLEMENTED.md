@@ -1,25 +1,28 @@
-# CHINA BLOCKING SYSTEM - Implemented July 19, 2025
+# REGION BLOCKING SYSTEM - Updated January 4, 2025
 
-## COMPLETE CHINA BLOCKING ACTIVE
+## COMPLETE CHINA & SINGAPORE BLOCKING ACTIVE
 
 **Status: ✅ IMPLEMENTED AND ACTIVE**
 
 ### What It Does
-- Automatically detects ALL Chinese IP addresses using geoip-lite
-- Completely blocks access to entire website for Chinese users 
+- Automatically detects ALL Chinese (CN) and Singaporean (SG) IP addresses using geoip-lite
+- Completely blocks access to entire website for users from these regions
 - Returns "Access Denied" page with 403 status code
 - Works on ALL routes (API, pages, images, everything)
 
 ### Technical Implementation
 ```javascript
-// China blocking middleware in server/routes.ts
-function blockChinaMiddleware(req, res, next) {
+// Region blocking middleware in server/routes.ts
+function blockRegionsMiddleware(req, res, next) {
   const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
   const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
   
   const geo = geoip.lookup(clientIp);
-  if (geo && geo.country === 'CN') {
-    console.log(`🚫 CHINA BLOCKED: IP ${clientIp} from ${geo.city || 'China'} - Access denied`);
+  const blockedCountries = ['CN', 'SG']; // China and Singapore
+  
+  if (geo && blockedCountries.includes(geo.country)) {
+    const countryName = geo.country === 'CN' ? 'China' : geo.country === 'SG' ? 'Singapore' : geo.country;
+    console.log(`🚫 REGION BLOCKED: IP ${clientIp} from ${geo.city || countryName} (${geo.country}) - Access denied`);
     return res.status(403).send('Access Denied - Not available in your region');
   }
   
@@ -27,17 +30,18 @@ function blockChinaMiddleware(req, res, next) {
 }
 
 // Applied to ALL routes
-app.use(blockChinaMiddleware);
+app.use(blockRegionsMiddleware);
 ```
 
 ### Detection Method
 - Uses geoip-lite offline IP database (no external API calls)
-- Detects IP country: `geo.country === 'CN'` = BLOCKED
+- Detects IP country: `geo.country === 'CN'` OR `geo.country === 'SG'` = BLOCKED
+- Extensible array-based blocking system for easy addition of more countries
 - Handles proxy headers (x-forwarded-for, x-real-ip) for VPS deployment
 - Local development IPs (192.168.x, 127.0.0.1) are allowed
 
-### User Experience for Chinese Users
-When accessing ANY page from China:
+### User Experience for Blocked Regions
+When accessing ANY page from China or Singapore:
 ```
 Status: 403 Forbidden
 Page: Access Denied

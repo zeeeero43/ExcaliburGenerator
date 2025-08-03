@@ -34,8 +34,8 @@ import {
 } from "./security/auth";
 import { secureUpload, handleUploadError } from "./security/fileUpload";
 
-// CHINA BLOCKING MIDDLEWARE - Blocks all Chinese IP addresses
-function blockChinaMiddleware(req: any, res: any, next: any) {
+// REGION BLOCKING MIDDLEWARE - Blocks Chinese and Singaporean IP addresses
+function blockRegionsMiddleware(req: any, res: any, next: any) {
   // Get real IP address (handle proxy headers)
   const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
   const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
@@ -45,10 +45,13 @@ function blockChinaMiddleware(req: any, res: any, next: any) {
     return next();
   }
   
-  // Check if IP is from China
+  // Check if IP is from blocked countries
   const geo = geoip.lookup(clientIp);
-  if (geo && geo.country === 'CN') {
-    console.log(`🚫 CHINA BLOCKED: IP ${clientIp} from ${geo.city || 'China'} - Access denied`);
+  const blockedCountries = ['CN', 'SG']; // China and Singapore
+  
+  if (geo && blockedCountries.includes(geo.country)) {
+    const countryName = geo.country === 'CN' ? 'China' : geo.country === 'SG' ? 'Singapore' : geo.country;
+    console.log(`🚫 REGION BLOCKED: IP ${clientIp} from ${geo.city || countryName} (${geo.country}) - Access denied`);
     
     // Return simple blocked message
     return res.status(403).send(`
@@ -59,6 +62,7 @@ function blockChinaMiddleware(req: any, res: any, next: any) {
         <h1>Access Denied</h1>
         <p>This website is not available in your region.</p>
         <p>IP: ${clientIp}</p>
+        <p>Country: ${countryName}</p>
       </body>
       </html>
     `);
@@ -247,9 +251,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Setup cookie parser for authentication
   app.use(cookieParser());
 
-  // CHINA BLOCKING: Apply to ALL routes - must be before other routes
-  app.use(blockChinaMiddleware);
-  console.log("🚫 CHINA BLOCKING: Middleware activated for all routes");
+  // REGION BLOCKING: Apply to ALL routes - must be before other routes
+  app.use(blockRegionsMiddleware);
+  console.log("🚫 REGION BLOCKING: China & Singapore middleware activated for all routes");
 
   // CRITICAL: Register API routes IMMEDIATELY after session setup to ensure priority
   console.log("🔥 CRITICAL: Registering API routes with HIGH PRIORITY");
