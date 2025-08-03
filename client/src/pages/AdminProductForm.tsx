@@ -109,7 +109,7 @@ export default function AdminProductForm() {
 
   // Filter subcategories based on selected category
   const selectedCategoryId = form.watch('categoryId');
-  const subcategories = allSubcategories.filter(sub => sub.categoryId === selectedCategoryId);
+  const subcategories = Array.isArray(allSubcategories) ? allSubcategories.filter((sub: any) => sub.categoryId === selectedCategoryId) : [];
   
   // Debug subcategory filtering
   console.log('🔄 Selected category ID:', selectedCategoryId);
@@ -271,7 +271,7 @@ export default function AdminProductForm() {
       });
     } catch (error) {
       console.error('Translation error:', error);
-      form.setValue('priceNote', 'Precio bajo consulta');
+      // Remove invalid priceNote field
     }
   };
 
@@ -556,11 +556,11 @@ export default function AdminProductForm() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {categories.map((category: Category) => (
+                          {Array.isArray(categories) ? categories.map((category: any) => (
                             <SelectItem key={category.id} value={category.id.toString()}>
                               {category.nameDe || category.nameEs}
                             </SelectItem>
-                          ))}
+                          )) : []}
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -870,7 +870,7 @@ export default function AdminProductForm() {
                                   <button
                                     type="button"
                                     onClick={() => {
-                                      const newImages = field.value.filter((_: string, i: number) => i !== index);
+                                      const newImages = (field.value || []).filter((_: string, i: number) => i !== index);
                                       field.onChange(newImages);
                                     }}
                                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
