@@ -117,68 +117,59 @@ export default function AdminProductForm() {
   console.log('🔄 Filtered subcategories:', subcategories);
   console.log('🔄 Current subcategoryId value:', form.watch('subcategoryId'));
 
-  // 🚀 SMART AUTO-TRANSLATION: Only translate if text actually changed
-  const handleAutoTranslation = async (germanText: string, toField: string, originalFieldName: string, forceTranslation = false) => {
-    if (!germanText || germanText.trim() === '') return;
-    
-    // 🔧 FORCE BYPASS: Allow forced translation to bypass cache
-    if (forceTranslation) {
-      console.log(`🔄 FORCE TRANSLATION: Bypassing cache for "${originalFieldName}"`);
-    } else {
-      // 🚀 SMART CACHING: Skip if we're loading existing product or text hasn't changed
-      if (isLoadingExistingProduct) {
-        console.log(`🟡 SMART CACHE SKIP: Loading existing product, no translation needed for "${originalFieldName}"`);
-        return;
-      }
-      
-      // 🚀 SMART CACHING: Skip if text hasn't actually changed from original
-      if (originalTexts[originalFieldName] === germanText) {
-        console.log(`🟡 SMART CACHE SKIP: Text unchanged for "${originalFieldName}", no translation needed`);
-        return;
-      }
-      
-      // 🚀 SMART CACHING: Skip if target field already has content and this isn't a text change
-      const currentValue = form.getValues(toField as keyof ProductFormData);
-      if (currentValue && isEditing && !originalTexts[originalFieldName]) {
-        console.log(`🟡 SMART CACHE SKIP: Target field "${toField}" has content, preserving existing translation`);
-        return;
-      }
+  // 🚀 NEW TRANSLATION LOGIC: Clear translation when text changes, keep when editing unchanged text
+  const handleAutoTranslation = async (germanText: string, toField: string, originalFieldName: string) => {
+    if (!germanText || germanText.trim() === '') {
+      // If German text is empty, clear the translation
+      form.setValue(toField as keyof ProductFormData, '');
+      return;
     }
     
-    console.log(`🟢 SMART CACHE TRANSLATE: New text detected for "${originalFieldName}", translating "${germanText.substring(0, 30)}..."`);
-    setIsTranslating(true);
+    // When editing: if text changed from original, clear translation and retranslate
+    if (isEditing && originalTexts[originalFieldName] && originalTexts[originalFieldName] !== germanText) {
+      console.log(`🔄 TEXT CHANGED: "${originalFieldName}" changed, clearing and retranslating`);
+      form.setValue(toField as keyof ProductFormData, ''); // Clear old translation
+    }
     
-    try {
-      const response = await fetch('/api/translate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: germanText,
-          fromLang: 'de',
-          toLang: toField.includes('Es') ? 'es' : 'en',
-        }),
-      });
+    // When editing: if text unchanged, keep existing translation
+    if (isEditing && originalTexts[originalFieldName] === germanText) {
+      console.log(`🟡 TEXT UNCHANGED: "${originalFieldName}" unchanged, keeping existing translation`);
+      return;
+    }
+    
+    // For new products or changed text: translate
+    if (!isEditing || (isEditing && originalTexts[originalFieldName] !== germanText)) {
+    
+      console.log(`🔄 TRANSLATING: "${originalFieldName}" - "${germanText.substring(0, 30)}..."`);
+      setIsTranslating(true);
+      
+      try {
+        const response = await fetch('/api/translate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: germanText,
+            fromLang: 'de',
+            toLang: toField.includes('Es') ? 'es' : 'en',
+          }),
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.translatedText && data.translatedText !== germanText) {
-          form.setValue(toField as keyof ProductFormData, data.translatedText);
-          console.log(`✅ TRANSLATED (${data.provider || 'Unknown'}): "${germanText.substring(0, 30)}..." -> "${data.translatedText.substring(0, 30)}..."`);
-          
-          // Show success with provider info
-          if (data.metadata?.successRate) {
-            console.log(`📊 CHUNKED TRANSLATION: ${data.metadata.successRate} success rate (${data.metadata.successful}/${data.metadata.chunks} chunks)`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.translatedText && data.translatedText !== germanText) {
+            form.setValue(toField as keyof ProductFormData, data.translatedText);
+            console.log(`✅ TRANSLATED (${data.provider || 'Unknown'}): "${germanText.substring(0, 30)}..." -> "${data.translatedText.substring(0, 30)}..."`);
+          } else if (data.error) {
+            console.error(`❌ TRANSLATION ERROR: ${data.error} - ${data.details || 'Unknown'}`);
           }
-        } else if (data.error) {
-          console.error(`❌ TRANSLATION ERROR: ${data.error} - ${data.details || 'Unknown'}`);
         }
+      } catch (error) {
+        console.error('❌ Translation failed:', error);
+      } finally {
+        setIsTranslating(false);
       }
-    } catch (error) {
-      console.error('❌ Translation failed:', error);
-    } finally {
-      setIsTranslating(false);
     }
   };
 
@@ -191,8 +182,8 @@ export default function AdminProductForm() {
       }
       
       const timeout = setTimeout(() => {
-        handleAutoTranslation(germanName, 'nameEs');
-        handleAutoTranslation(germanName, 'nameEn');
+        handleAutoTranslation(germanName, 'nameEs', 'nameDe');
+        handleAutoTranslation(germanName, 'nameEn', 'nameDe');
       }, 1000);
       
       setTranslationTimeout(timeout);
@@ -208,8 +199,8 @@ export default function AdminProductForm() {
       }
       
       const timeout = setTimeout(() => {
-        handleAutoTranslation(germanDesc, 'shortDescriptionEs');
-        handleAutoTranslation(germanDesc, 'shortDescriptionEn');
+        handleAutoTranslation(germanDesc, 'shortDescriptionEs', 'shortDescriptionDe');
+        handleAutoTranslation(germanDesc, 'shortDescriptionEn', 'shortDescriptionDe');
       }, 1000);
       
       setTranslationTimeout(timeout);
@@ -225,8 +216,8 @@ export default function AdminProductForm() {
       }
       
       const timeout = setTimeout(() => {
-        handleAutoTranslation(germanFullDesc, 'descriptionEs');
-        handleAutoTranslation(germanFullDesc, 'descriptionEn');
+        handleAutoTranslation(germanFullDesc, 'descriptionEs', 'descriptionDe');
+        handleAutoTranslation(germanFullDesc, 'descriptionEn', 'descriptionDe');
       }, 1000);
       
       setTranslationTimeout(timeout);
@@ -242,8 +233,8 @@ export default function AdminProductForm() {
       }
       
       const timeout = setTimeout(() => {
-        handleAutoTranslation(germanAvailability, 'availabilityTextEs');
-        handleAutoTranslation(germanAvailability, 'availabilityTextEn');
+        handleAutoTranslation(germanAvailability, 'availabilityTextEs', 'availabilityTextDe');
+        handleAutoTranslation(germanAvailability, 'availabilityTextEn', 'availabilityTextDe');
       }, 1000);
       
       setTranslationTimeout(timeout);
@@ -657,6 +648,7 @@ export default function AdminProductForm() {
                       <FormLabel>5. Beschreibung *</FormLabel>
                       <FormControl>
                         <RichTextEditor
+                          label="Kurzbeschreibung"
                           value={field.value || ''}
                           onChange={(value) => {
                             field.onChange(value);
@@ -674,10 +666,7 @@ export default function AdminProductForm() {
                   )}
                 />
 
-                <div className="text-sm text-gray-600 mb-2">Vorschau:</div>
-                <div className="bg-gray-50 p-3 rounded text-sm">
-                  {form.watch('shortDescriptionDe') || 'Test 1-2-3'}
-                </div>
+
 
                 {/* Auto-translated versions */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -1077,42 +1066,7 @@ export default function AdminProductForm() {
                   {saveProductMutation.isPending ? 'Speichere...' : 'Produkt speichern'}
                 </Button>
                 
-                {/* 🔧 CACHE RESET: Force retranslation button for failed translations */}
-                {isEditing && (
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={() => {
-                      console.log('🔄 FORCE RETRANSLATION: Bypassing smart cache');
-                      // Force retranslation by clearing cache
-                      const germanName = form.getValues('nameDe');
-                      const germanShortDesc = form.getValues('shortDescriptionDe');
-                      const germanDesc = form.getValues('descriptionDe');
-                      const germanAvailability = form.getValues('availabilityTextDe');
-                      
-                      if (germanName) {
-                        handleAutoTranslation(germanName, 'nameEs', 'nameDe', true);
-                        handleAutoTranslation(germanName, 'nameEn', 'nameDe', true);
-                      }
-                      if (germanShortDesc) {
-                        handleAutoTranslation(germanShortDesc, 'shortDescriptionEs', 'shortDescriptionDe', true);
-                        handleAutoTranslation(germanShortDesc, 'shortDescriptionEn', 'shortDescriptionDe', true);
-                      }
-                      if (germanDesc) {
-                        handleAutoTranslation(germanDesc, 'descriptionEs', 'descriptionDe', true);
-                        handleAutoTranslation(germanDesc, 'descriptionEn', 'descriptionDe', true);
-                      }
-                      if (germanAvailability) {
-                        handleAutoTranslation(germanAvailability, 'availabilityTextEs', 'availabilityTextDe', true);
-                        handleAutoTranslation(germanAvailability, 'availabilityTextEn', 'availabilityTextDe', true);
-                      }
-                    }}
-                    className="ml-2 text-orange-600 border-orange-300 hover:bg-orange-50"
-                    title="Bypasses Smart Cache and forces retranslation of all fields"
-                  >
-                    🔄 Übersetzung erzwingen
-                  </Button>
-                )}
+
               </div>
             </form>
           </Form>
