@@ -118,26 +118,31 @@ export default function AdminProductForm() {
   console.log('🔄 Current subcategoryId value:', form.watch('subcategoryId'));
 
   // 🚀 SMART AUTO-TRANSLATION: Only translate if text actually changed
-  const handleAutoTranslation = async (germanText: string, toField: string, originalFieldName: string) => {
+  const handleAutoTranslation = async (germanText: string, toField: string, originalFieldName: string, forceTranslation = false) => {
     if (!germanText || germanText.trim() === '') return;
     
-    // 🚀 SMART CACHING: Skip if we're loading existing product or text hasn't changed
-    if (isLoadingExistingProduct) {
-      console.log(`🟡 SMART CACHE SKIP: Loading existing product, no translation needed for "${originalFieldName}"`);
-      return;
-    }
-    
-    // 🚀 SMART CACHING: Skip if text hasn't actually changed from original
-    if (originalTexts[originalFieldName] === germanText) {
-      console.log(`🟡 SMART CACHE SKIP: Text unchanged for "${originalFieldName}", no translation needed`);
-      return;
-    }
-    
-    // 🚀 SMART CACHING: Skip if target field already has content and this isn't a text change
-    const currentValue = form.getValues(toField as keyof ProductFormData);
-    if (currentValue && isEditing && !originalTexts[originalFieldName]) {
-      console.log(`🟡 SMART CACHE SKIP: Target field "${toField}" has content, preserving existing translation`);
-      return;
+    // 🔧 FORCE BYPASS: Allow forced translation to bypass cache
+    if (forceTranslation) {
+      console.log(`🔄 FORCE TRANSLATION: Bypassing cache for "${originalFieldName}"`);
+    } else {
+      // 🚀 SMART CACHING: Skip if we're loading existing product or text hasn't changed
+      if (isLoadingExistingProduct) {
+        console.log(`🟡 SMART CACHE SKIP: Loading existing product, no translation needed for "${originalFieldName}"`);
+        return;
+      }
+      
+      // 🚀 SMART CACHING: Skip if text hasn't actually changed from original
+      if (originalTexts[originalFieldName] === germanText) {
+        console.log(`🟡 SMART CACHE SKIP: Text unchanged for "${originalFieldName}", no translation needed`);
+        return;
+      }
+      
+      // 🚀 SMART CACHING: Skip if target field already has content and this isn't a text change
+      const currentValue = form.getValues(toField as keyof ProductFormData);
+      if (currentValue && isEditing && !originalTexts[originalFieldName]) {
+        console.log(`🟡 SMART CACHE SKIP: Target field "${toField}" has content, preserving existing translation`);
+        return;
+      }
     }
     
     console.log(`🟢 SMART CACHE TRANSLATE: New text detected for "${originalFieldName}", translating "${germanText.substring(0, 30)}..."`);
@@ -160,7 +165,14 @@ export default function AdminProductForm() {
         const data = await response.json();
         if (data.translatedText && data.translatedText !== germanText) {
           form.setValue(toField as keyof ProductFormData, data.translatedText);
-          console.log(`✅ TRANSLATED: "${germanText.substring(0, 30)}..." -> "${data.translatedText.substring(0, 30)}..."`);
+          console.log(`✅ TRANSLATED (${data.provider || 'Unknown'}): "${germanText.substring(0, 30)}..." -> "${data.translatedText.substring(0, 30)}..."`);
+          
+          // Show success with provider info
+          if (data.metadata?.successRate) {
+            console.log(`📊 CHUNKED TRANSLATION: ${data.metadata.successRate} success rate (${data.metadata.successful}/${data.metadata.chunks} chunks)`);
+          }
+        } else if (data.error) {
+          console.error(`❌ TRANSLATION ERROR: ${data.error} - ${data.details || 'Unknown'}`);
         }
       }
     } catch (error) {
@@ -1064,6 +1076,43 @@ export default function AdminProductForm() {
                 >
                   {saveProductMutation.isPending ? 'Speichere...' : 'Produkt speichern'}
                 </Button>
+                
+                {/* 🔧 CACHE RESET: Force retranslation button for failed translations */}
+                {isEditing && (
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => {
+                      console.log('🔄 FORCE RETRANSLATION: Bypassing smart cache');
+                      // Force retranslation by clearing cache
+                      const germanName = form.getValues('nameDe');
+                      const germanShortDesc = form.getValues('shortDescriptionDe');
+                      const germanDesc = form.getValues('descriptionDe');
+                      const germanAvailability = form.getValues('availabilityTextDe');
+                      
+                      if (germanName) {
+                        handleAutoTranslation(germanName, 'nameEs', 'nameDe', true);
+                        handleAutoTranslation(germanName, 'nameEn', 'nameDe', true);
+                      }
+                      if (germanShortDesc) {
+                        handleAutoTranslation(germanShortDesc, 'shortDescriptionEs', 'shortDescriptionDe', true);
+                        handleAutoTranslation(germanShortDesc, 'shortDescriptionEn', 'shortDescriptionDe', true);
+                      }
+                      if (germanDesc) {
+                        handleAutoTranslation(germanDesc, 'descriptionEs', 'descriptionDe', true);
+                        handleAutoTranslation(germanDesc, 'descriptionEn', 'descriptionDe', true);
+                      }
+                      if (germanAvailability) {
+                        handleAutoTranslation(germanAvailability, 'availabilityTextEs', 'availabilityTextDe', true);
+                        handleAutoTranslation(germanAvailability, 'availabilityTextEn', 'availabilityTextDe', true);
+                      }
+                    }}
+                    className="ml-2 text-orange-600 border-orange-300 hover:bg-orange-50"
+                    title="Bypasses Smart Cache and forces retranslation of all fields"
+                  >
+                    🔄 Übersetzung erzwingen
+                  </Button>
+                )}
               </div>
             </form>
           </Form>

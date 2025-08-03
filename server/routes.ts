@@ -295,6 +295,109 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // 🔧 CHUNKED TRANSLATION for very long texts (Rate Limit Fix)
+  async function handleChunkedTranslation(text: string, fromLang: string, toLang: string, res: any) {
+    try {
+      console.log(`🔄 CHUNKING: Splitting ${text.length} chars into chunks for MyMemory`);
+      
+      // Split by sentences, then by smaller pieces if needed
+      const maxChunkSize = 500; // MyMemory works better with smaller chunks
+      const sentences = text.split(/(?<=[.!?])\s+/);
+      const chunks = [];
+      let currentChunk = '';
+      
+      for (const sentence of sentences) {
+        if ((currentChunk + sentence).length > maxChunkSize && currentChunk) {
+          chunks.push(currentChunk.trim());
+          currentChunk = sentence;
+        } else {
+          currentChunk += (currentChunk ? ' ' : '') + sentence;
+        }
+      }
+      
+      if (currentChunk) {
+        chunks.push(currentChunk.trim());
+      }
+      
+      console.log(`🔄 CHUNKING: Created ${chunks.length} chunks`);
+      
+      // Translate each chunk with delay to avoid rate limiting
+      const translatedChunks = [];
+      let failedChunks = 0;
+      
+      for (let i = 0; i < chunks.length; i++) {
+        console.log(`🔄 CHUNKING: Translating chunk ${i + 1}/${chunks.length} (${chunks[i].length} chars)`);
+        
+        try {
+          const chunkUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(chunks[i])}&langpair=${fromLang}|${toLang}`;
+          const chunkResponse = await fetch(chunkUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'Accept': 'application/json',
+              'Cache-Control': 'no-cache'
+            },
+            signal: AbortSignal.timeout(8000)
+          });
+          
+          if (chunkResponse.ok) {
+            const chunkData = await chunkResponse.json();
+            if (chunkData.responseStatus === 200 && chunkData.responseData?.translatedText) {
+              const translatedChunk = chunkData.responseData.translatedText;
+              if (!translatedChunk.includes('MYMEMORY WARNING')) {
+                translatedChunks.push(translatedChunk);
+                console.log(`✅ CHUNKING: Chunk ${i + 1} translated successfully`);
+              } else {
+                console.log(`⚠️ CHUNKING: Chunk ${i + 1} quota exceeded, using original`);
+                translatedChunks.push(chunks[i]);
+                failedChunks++;
+              }
+            } else {
+              translatedChunks.push(chunks[i]);
+              failedChunks++;
+            }
+          } else {
+            console.log(`❌ CHUNKING: Chunk ${i + 1} failed with status ${chunkResponse.status}`);
+            translatedChunks.push(chunks[i]);
+            failedChunks++;
+          }
+          
+          // Delay between requests to avoid rate limiting
+          if (i < chunks.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
+          }
+          
+        } catch (chunkError) {
+          console.log(`❌ CHUNKING: Chunk ${i + 1} error:`, chunkError.message);
+          translatedChunks.push(chunks[i]);
+          failedChunks++;
+        }
+      }
+      
+      const finalTranslation = translatedChunks.join(' ');
+      const successRate = ((chunks.length - failedChunks) / chunks.length * 100).toFixed(1);
+      
+      console.log(`✅ CHUNKING: Completed with ${successRate}% success rate (${chunks.length - failedChunks}/${chunks.length} chunks)`);
+      
+      return res.json({ 
+        translatedText: finalTranslation, 
+        provider: 'MyMemory-Chunked',
+        metadata: {
+          chunks: chunks.length,
+          successful: chunks.length - failedChunks,
+          successRate: `${successRate}%`
+        }
+      });
+      
+    } catch (error) {
+      console.error('❌ CHUNKING: Critical error:', error);
+      return res.json({ 
+        translatedText: text, 
+        error: 'CHUNKING_FAILED', 
+        details: error.message 
+      });
+    }
+  }
+
   // Seed database on startup
   try {
     await seedDatabase();
@@ -319,8 +422,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ translatedText: text });
       }
 
-      // 🚀 PERFORMANCE: Skip LibreTranslate for very long texts (>2000 chars)
-      // LibreTranslate often times out on long texts
+      // 🚀 PERFORMANCE: Split very long texts into chunks for MyMemory (limit ~500 chars)
+      const isVeryLongText = text.length > 1500;
+      if (isVeryLongText) {
+        console.log(`🔄 CHUNKING: Very long text (${text.length} chars) → Split into chunks`);
+        return await handleChunkedTranslation(text, fromLang, toLang, res);
+      }
+      
+      // Skip LibreTranslate for moderately long texts (>2000 chars)
       const isLongText = text.length > 2000;
       if (isLongText) {
         console.log(`⚡ PERFORMANCE: Long text (${text.length} chars) → Direct MyMemory (skip LibreTranslate timeouts)`);
@@ -374,7 +483,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const data = await response.json();
         
-        console.log(`📡 MyMemory Response: status=${data.responseStatus}, hasData=${!!data.responseData}`);
+        console.log(`📡 MyMemory Response: status=${response.status}, hasData=${!!data.responseData}`);
+        
+        // 🔧 FIX: Handle 403 errors explicitly
+        if (response.status === 403) {
+          console.log(`🚫 MyMemory Rate Limit: Status 403 - Daily limit reached`);
+          throw new Error(`Rate limit exceeded (403)`);
+        }
         
         if (data.responseStatus === 200 && data.responseData?.translatedText) {
           const translatedText = data.responseData.translatedText;
