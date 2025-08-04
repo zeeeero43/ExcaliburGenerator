@@ -16,6 +16,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import type { Category, Subcategory } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
+import { smartTranslate } from '@/lib/translationCache';
 
 const subcategoryFormSchema = z.object({
   categoryId: z.coerce.number().min(1, "Kategorie ist erforderlich"),
@@ -348,18 +349,10 @@ export default function AdminSubcategoryForm() {
                                 const germanText = form.getValues('nameDe');
                                 if (germanText) {
                                   try {
-                                    const response = await fetch('/api/translate', {
-                                      method: 'POST',
-                                      headers: { 'Content-Type': 'application/json' },
-                                      body: JSON.stringify({
-                                        text: germanText,
-                                        fromLang: 'de',
-                                        toLang: 'es'
-                                      })
-                                    });
-                                    const data = await response.json();
-                                    if (data.translatedText) {
-                                      form.setValue('nameEs', data.translatedText);
+                                    const translatedText = await smartTranslate(germanText, 'de', 'es');
+                                    if (translatedText) {
+                                      form.setValue('nameEs', translatedText);
+                                      console.log(`✅ SUBCATEGORY NAME ES TRANSLATION: "${germanText}" -> "${translatedText}"`);
                                     }
                                   } catch (error) {
                                     console.error('Translation failed:', error);
@@ -399,18 +392,10 @@ export default function AdminSubcategoryForm() {
                                 const germanText = form.getValues('nameDe');
                                 if (germanText) {
                                   try {
-                                    const response = await fetch('/api/translate', {
-                                      method: 'POST',
-                                      headers: { 'Content-Type': 'application/json' },
-                                      body: JSON.stringify({
-                                        text: germanText,
-                                        fromLang: 'de',
-                                        toLang: 'en'
-                                      })
-                                    });
-                                    const data = await response.json();
-                                    if (data.translatedText) {
-                                      form.setValue('nameEn', data.translatedText);
+                                    const translatedText = await smartTranslate(germanText, 'de', 'en');
+                                    if (translatedText) {
+                                      form.setValue('nameEn', translatedText);
+                                      console.log(`✅ SUBCATEGORY NAME EN TRANSLATION: "${germanText}" -> "${translatedText}"`);
                                     }
                                   } catch (error) {
                                     console.error('Translation failed:', error);
@@ -485,18 +470,10 @@ export default function AdminSubcategoryForm() {
                               const germanText = form.getValues('descriptionDe');
                               if (germanText) {
                                 try {
-                                  const response = await fetch('/api/translate', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                      text: germanText,
-                                      fromLang: 'de',
-                                      toLang: 'es'
-                                    })
-                                  });
-                                  const data = await response.json();
-                                  if (data.translatedText) {
-                                    form.setValue('descriptionEs', data.translatedText);
+                                  const translatedText = await smartTranslate(germanText, 'de', 'es');
+                                  if (translatedText) {
+                                    form.setValue('descriptionEs', translatedText);
+                                    console.log(`✅ SUBCATEGORY DESC ES TRANSLATION: "${germanText.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
                                   }
                                 } catch (error) {
                                   console.error('Translation failed:', error);
@@ -536,18 +513,10 @@ export default function AdminSubcategoryForm() {
                               const germanText = form.getValues('descriptionDe');
                               if (germanText) {
                                 try {
-                                  const response = await fetch('/api/translate', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                      text: germanText,
-                                      fromLang: 'de',
-                                      toLang: 'en'
-                                    })
-                                  });
-                                  const data = await response.json();
-                                  if (data.translatedText) {
-                                    form.setValue('descriptionEn', data.translatedText);
+                                  const translatedText = await smartTranslate(germanText, 'de', 'en');
+                                  if (translatedText) {
+                                    form.setValue('descriptionEn', translatedText);
+                                    console.log(`✅ SUBCATEGORY DESC EN TRANSLATION: "${germanText.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
                                   }
                                 } catch (error) {
                                   console.error('Translation failed:', error);

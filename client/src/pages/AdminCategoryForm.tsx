@@ -14,7 +14,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { ArrowLeft, Save, Trash2 } from 'lucide-react';
 import { insertCategorySchema, type Category } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
-import { translateProductData } from '@/lib/translation';
+import { smartTranslate } from '@/lib/translationCache';
 
 // Form validation schema
 const categoryFormSchema = z.object({
@@ -314,18 +314,10 @@ export default function AdminCategoryForm() {
                                 const germanText = form.getValues('nameDe');
                                 if (germanText) {
                                   try {
-                                    const response = await fetch('/api/translate', {
-                                      method: 'POST',
-                                      headers: { 'Content-Type': 'application/json' },
-                                      body: JSON.stringify({
-                                        text: germanText,
-                                        fromLang: 'de',
-                                        toLang: 'es'
-                                      })
-                                    });
-                                    const data = await response.json();
-                                    if (data.translatedText) {
-                                      form.setValue('nameEs', data.translatedText);
+                                    const translatedText = await smartTranslate(germanText, 'de', 'es');
+                                    if (translatedText) {
+                                      form.setValue('nameEs', translatedText);
+                                      console.log(`✅ CATEGORY NAME ES TRANSLATION: "${germanText}" -> "${translatedText}"`);
                                     }
                                   } catch (error) {
                                     console.error('Translation failed:', error);
@@ -361,18 +353,10 @@ export default function AdminCategoryForm() {
                                 const germanText = form.getValues('nameDe');
                                 if (germanText) {
                                   try {
-                                    const response = await fetch('/api/translate', {
-                                      method: 'POST',
-                                      headers: { 'Content-Type': 'application/json' },
-                                      body: JSON.stringify({
-                                        text: germanText,
-                                        fromLang: 'de',
-                                        toLang: 'en'
-                                      })
-                                    });
-                                    const data = await response.json();
-                                    if (data.translatedText) {
-                                      form.setValue('nameEn', data.translatedText);
+                                    const translatedText = await smartTranslate(germanText, 'de', 'en');
+                                    if (translatedText) {
+                                      form.setValue('nameEn', translatedText);
+                                      console.log(`✅ CATEGORY NAME EN TRANSLATION: "${germanText}" -> "${translatedText}"`);
                                     }
                                   } catch (error) {
                                     console.error('Translation failed:', error);

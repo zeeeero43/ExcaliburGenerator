@@ -68,7 +68,7 @@ class TranslationCache {
 }
 
 // Hardcoded translations for common phrases to save API calls
-const HARDCODED_TRANSLATIONS: Record<string, Record<string, string>> = {
+const HARDCODED_TRANSLATIONS: Record<string, Record<string, Record<string, string>>> = {
   'de': {
     'es': {
       'Preis auf Anfrage': 'Precio a consultar',
