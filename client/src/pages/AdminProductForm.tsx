@@ -146,6 +146,12 @@ export default function AdminProductForm() {
     if (!isEditing || (isEditing && originalTexts[originalFieldName] !== germanText)) {
     
       console.log(`🔄 PRODUCT TRANSLATION START: Field="${originalFieldName}", Text="${germanText.substring(0, 30)}...", Length=${germanText.length} chars`);
+      
+      if (germanText.length > 1000) {
+        console.error(`🚨🚨🚨 QUOTA KILLER DETECTED! Field "${originalFieldName}" has ${germanText.length} characters!`);
+        console.error(`📝 MASSIVE TEXT: "${germanText.substring(0, 200)}..."`);
+        console.error(`💰 This will consume ~${Math.ceil(germanText.length/1000)}% of your monthly quota!`);
+      }
       setTranslationCount(prev => prev + 1);
       
       try {

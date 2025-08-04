@@ -125,8 +125,14 @@ export async function smartTranslate(text: string, fromLang: string, toLang: str
     return cached;
   }
   
-  // 3. Call API only if needed
-  console.log(`🔄 API CALL NEEDED: "${trimmedText.substring(0, 30)}..." (${text.length} chars)`);
+  // 3. Call API only if needed - LOG MASSIVE TEXTS
+  console.log(`🚨 API CALL NEEDED: "${trimmedText.substring(0, 50)}..." (${text.length} chars)`);
+  
+  if (text.length > 1000) {
+    console.error(`⚠️⚠️⚠️ MASSIVE TEXT DETECTED: ${text.length} characters!`);
+    console.error(`📄 HUGE TEXT PREVIEW: "${text.substring(0, 200)}..."`);
+    console.error(`🎯 THIS IS LIKELY THE QUOTA KILLER!`);
+  }
   
   try {
     const response = await fetch('/api/translate', {
