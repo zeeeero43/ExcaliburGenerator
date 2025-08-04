@@ -39,34 +39,36 @@ export default function AdminCategoryForm() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Debounced translation
-  const debounceTranslation = (() => {
-    let timeout: NodeJS.Timeout;
-    return (germanValue: string, fieldType: 'name' | 'description') => {
-      clearTimeout(timeout);
-      timeout = setTimeout(async () => {
-        if (germanValue.trim()) {
-          try {
-            const { spanish, english } = await translateProductData({
-              name: fieldType === 'name' ? germanValue : '',
-              shortDescription: fieldType === 'description' ? germanValue : '',
-              description: ''
-            });
-            
-            if (fieldType === 'name') {
-              if (spanish.name && spanish.name.trim()) form.setValue('nameEs', spanish.name);
-              if (english.name && english.name.trim()) form.setValue('nameEn', english.name);
-            } else if (fieldType === 'description') {
-              if (spanish.shortDescription && spanish.shortDescription.trim()) form.setValue('descriptionEs', spanish.shortDescription);
-              if (english.shortDescription && english.shortDescription.trim()) form.setValue('descriptionEn', english.shortDescription);
-            }
-          } catch (error) {
-            console.error('Translation failed:', error);
-          }
-        }
-      }, 1000);
-    };
-  })();
+  // 🚨 DISABLED: Debounced translation was consuming DeepL quota!
+  // const debounceTranslation = (() => {
+  //   let timeout: NodeJS.Timeout;
+  //   return (germanValue: string, fieldType: 'name' | 'description') => {
+  //     clearTimeout(timeout);
+  //     timeout = setTimeout(async () => {
+  //       if (germanValue.trim()) {
+  //         try {
+  //           const { spanish, english } = await translateProductData({
+  //             name: fieldType === 'name' ? germanValue : '',
+  //             shortDescription: fieldType === 'description' ? germanValue : '',
+  //             description: ''
+  //           });
+  //           
+  //           if (fieldType === 'name') {
+  //             if (spanish.name && spanish.name.trim()) form.setValue('nameEs', spanish.name);
+  //             if (english.name && english.name.trim()) form.setValue('nameEn', english.name);
+  //           } else if (fieldType === 'description') {
+  //             if (spanish.shortDescription && spanish.shortDescription.trim()) form.setValue('descriptionEs', spanish.shortDescription);
+  //             if (english.shortDescription && english.shortDescription.trim()) form.setValue('descriptionEn', english.shortDescription);
+  //           }
+  //         } catch (error) {
+  //           console.error('Translation failed:', error);
+  //         }
+  //       }
+  //     }, 1000);
+  //   };
+  // })();
+  
+  console.log('🚨 CATEGORY AUTO-TRANSLATION DISABLED: Manual translation only to save DeepL quota');
   
   // Get category ID from URL path
   const pathParts = window.location.pathname.split('/');
@@ -249,7 +251,7 @@ export default function AdminCategoryForm() {
                               className="border-gray-300 focus:border-gray-600"
                               onChange={(e) => {
                                 field.onChange(e);
-                                debounceTranslation(e.target.value, 'name');
+                                // 🚨 DISABLED: debounceTranslation(e.target.value, 'name');
                               }}
                             />
                           </FormControl>
@@ -285,7 +287,7 @@ export default function AdminCategoryForm() {
                             className="border-gray-300 focus:border-gray-600"
                             onChange={(e) => {
                               field.onChange(e);
-                              debounceTranslation(e.target.value, 'description');
+                              // 🚨 DISABLED: debounceTranslation(e.target.value, 'description');
                             }}
                           />
                         </FormControl>

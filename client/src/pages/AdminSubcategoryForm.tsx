@@ -153,45 +153,8 @@ export default function AdminSubcategoryForm() {
     }
   };
 
-  // Handle automatic translation with delay
-  const handleTranslation = async (germanText: string, field: 'name' | 'description') => {
-    if (!germanText.trim() || isEditing) return;
-    
-    // Clear existing timeout
-    if (translationTimeout) {
-      clearTimeout(translationTimeout);
-    }
-    
-    // Set new timeout for translation
-    const timeout = setTimeout(async () => {
-      setIsTranslating(true);
-      try {
-        const [spanishText, englishText] = await Promise.all([
-          translateText(germanText, 'es'),
-          translateText(germanText, 'en')
-        ]);
-        
-        if (field === 'name') {
-          form.setValue('nameEs', spanishText);
-          form.setValue('nameEn', englishText);
-        } else {
-          form.setValue('descriptionEs', spanishText);
-          form.setValue('descriptionEn', englishText);
-        }
-        
-        toast({
-          title: "Übersetzung abgeschlossen",
-          description: `${field === 'name' ? 'Name' : 'Beschreibung'} wurde automatisch übersetzt`,
-        });
-      } catch (error) {
-        console.error('Translation failed:', error);
-      } finally {
-        setIsTranslating(false);
-      }
-    }, 1000);
-    
-    setTranslationTimeout(timeout);
-  };
+  // 🚨 DISABLED: Automatic translation was consuming DeepL quota!
+  console.log('🚨 SUBCATEGORY AUTO-TRANSLATION DISABLED: Manual translation only to save DeepL quota');
 
   // Update form when subcategory data is loaded
   useEffect(() => {
@@ -352,7 +315,7 @@ export default function AdminSubcategoryForm() {
                               className="text-lg p-3 border-2 border-gray-300 focus:border-blue-500"
                               onChange={(e) => {
                                 field.onChange(e);
-                                handleTranslation(e.target.value, 'name');
+                                // 🚨 DISABLED: handleTranslation(e.target.value, 'name');
                               }}
                             />
                             {isTranslating && (
@@ -433,7 +396,7 @@ export default function AdminSubcategoryForm() {
                               {...field}
                               onChange={(e) => {
                                 field.onChange(e);
-                                handleTranslation(e.target.value, 'description');
+                                // 🚨 DISABLED: handleTranslation(e.target.value, 'description');
                               }}
                             />
                             {isTranslating && (
