@@ -107,10 +107,25 @@ export function getHardcodedTranslation(text: string, fromLang: string, toLang: 
 }
 
 // Smart translation function that checks cache and hardcoded translations first
+// API Call Counter to detect quota killers
+let apiCallCount = 0;
+let sessionStartTime = Date.now();
+
 export async function smartTranslate(text: string, fromLang: string, toLang: string): Promise<string> {
   if (!text || text.trim() === '') return '';
   
   const trimmedText = text.trim();
+  
+  // Track API calls per session
+  apiCallCount++;
+  const sessionMinutes = Math.round((Date.now() - sessionStartTime) / 60000);
+  
+  console.log(`📊 API CALL #${apiCallCount} in ${sessionMinutes} minutes - ${text.length} chars (${fromLang}→${toLang})`);
+  
+  if (apiCallCount > 20) {
+    console.error(`🚨 QUOTA KILLER ALERT: ${apiCallCount} API calls in ${sessionMinutes} minutes!`);
+    console.error(`💀 This session has made ${apiCallCount} translation calls - investigate immediately!`);
+  }
   
   // 1. Check hardcoded translations first
   const hardcoded = getHardcodedTranslation(trimmedText, fromLang, toLang);

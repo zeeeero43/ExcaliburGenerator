@@ -172,81 +172,87 @@ export default function AdminProductForm() {
     }
   };
 
+  // 🚨 DISABLED: Auto-translation was causing massive API usage!
   // Real-time translation with debounce for product name
-  useEffect(() => {
-    const germanName = form.watch('nameDe');
-    if (germanName && !isLoadingExistingProduct) {
-      if (nameTimeout) {
-        clearTimeout(nameTimeout);
-      }
-      
-      const timeout = setTimeout(() => {
-        // 🇪🇸 SPANISH FIRST (Cuba market priority)
-        handleAutoTranslation(germanName, 'nameEs', 'nameDe');
-        // 🇺🇸 English optional (comment out to save characters)
-        // handleAutoTranslation(germanName, 'nameEn', 'nameDe');
-      }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
-      
-      setNameTimeout(timeout);
-    }
-  }, [form.watch('nameDe'), isLoadingExistingProduct]);
+  // useEffect(() => {
+  //   const germanName = form.watch('nameDe');
+  //   if (germanName && !isLoadingExistingProduct) {
+  //     if (nameTimeout) {
+  //       clearTimeout(nameTimeout);
+  //     }
+  //     
+  //     const timeout = setTimeout(() => {
+  //       // 🇪🇸 SPANISH FIRST (Cuba market priority)
+  //       handleAutoTranslation(germanName, 'nameEs', 'nameDe');
+  //       // 🇺🇸 English optional (comment out to save characters)
+  //       // handleAutoTranslation(germanName, 'nameEn', 'nameDe');
+  //     }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
+  //     
+  //     setNameTimeout(timeout);
+  //   }
+  // }, [form.watch('nameDe'), isLoadingExistingProduct]);
+  
+  console.log('🚨 AUTO-TRANSLATION DISABLED: Manual translation only to prevent quota exhaustion');
 
+  // 🚨 DISABLED: Auto-translation was causing massive API usage!
   // Real-time translation with debounce for short description
-  useEffect(() => {
-    const germanDesc = form.watch('shortDescriptionDe');
-    if (germanDesc && !isLoadingExistingProduct) {
-      if (shortDescTimeout) {
-        clearTimeout(shortDescTimeout);
-      }
-      
-      const timeout = setTimeout(() => {
-        // 🇪🇸 SPANISH FIRST (Cuba market priority)  
-        handleAutoTranslation(germanDesc, 'shortDescriptionEs', 'shortDescriptionDe');
-        // 🇺🇸 English optional (comment out to save characters)
-        // handleAutoTranslation(germanDesc, 'shortDescriptionEn', 'shortDescriptionDe');
-      }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
-      
-      setShortDescTimeout(timeout);
-    }
-  }, [form.watch('shortDescriptionDe'), isLoadingExistingProduct]);
+  // useEffect(() => {
+  //   const germanDesc = form.watch('shortDescriptionDe');
+  //   if (germanDesc && !isLoadingExistingProduct) {
+  //     if (shortDescTimeout) {
+  //       clearTimeout(shortDescTimeout);
+  //     }
+  //     
+  //     const timeout = setTimeout(() => {
+  //       // 🇪🇸 SPANISH FIRST (Cuba market priority)  
+  //       handleAutoTranslation(germanDesc, 'shortDescriptionEs', 'shortDescriptionDe');
+  //       // 🇺🇸 English optional (comment out to save characters)
+  //       // handleAutoTranslation(germanDesc, 'shortDescriptionEn', 'shortDescriptionDe');
+  //     }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
+  //     
+  //     setShortDescTimeout(timeout);
+  //   }
+  // }, [form.watch('shortDescriptionDe'), isLoadingExistingProduct]);
 
+  // 🚨 DISABLED: Auto-translation was causing massive API usage!
   // Real-time translation with debounce for full description
-  useEffect(() => {
-    const germanFullDesc = form.watch('descriptionDe');
-    if (germanFullDesc && !isLoadingExistingProduct) {
-      if (fullDescTimeout) {
-        clearTimeout(fullDescTimeout);
-      }
-      
-      const timeout = setTimeout(() => {
-        // 🇪🇸 SPANISH FIRST (Cuba market priority)
-        handleAutoTranslation(germanFullDesc, 'descriptionEs', 'descriptionDe');
-        // 🇺🇸 English optional (comment out to save characters)
-        // handleAutoTranslation(germanFullDesc, 'descriptionEn', 'descriptionDe');
-      }, 8000); // 🔥 ERHÖHT von 2s auf 8s für lange Texte
-      
-      setFullDescTimeout(timeout);
-    }
-  }, [form.watch('descriptionDe'), isLoadingExistingProduct]);
+  // useEffect(() => {
+  //   const germanFullDesc = form.watch('descriptionDe');
+  //   if (germanFullDesc && !isLoadingExistingProduct) {
+  //     if (fullDescTimeout) {
+  //       clearTimeout(fullDescTimeout);
+  //     }
+  //     
+  //     const timeout = setTimeout(() => {
+  //       // 🇪🇸 SPANISH FIRST (Cuba market priority)
+  //       handleAutoTranslation(germanFullDesc, 'descriptionEs', 'descriptionDe');
+  //       // 🇺🇸 English optional (comment out to save characters)
+  //       // handleAutoTranslation(germanFullDesc, 'descriptionEn', 'descriptionDe');
+  //     }, 8000); // 🔥 ERHÖHT von 2s auf 8s für lange Texte
+  //     
+  //     setFullDescTimeout(timeout);
+  //   }
+  // }, [form.watch('descriptionDe'), isLoadingExistingProduct]);
 
+  // 🚨 DISABLED: Auto-translation was causing massive API usage!
   // Real-time translation with debounce for availability field
-  useEffect(() => {
-    const germanAvailability = form.watch('availabilityTextDe');
-    if (germanAvailability && !isLoadingExistingProduct) {
-      if (availabilityTimeout) {
-        clearTimeout(availabilityTimeout);
-      }
-      
-      const timeout = setTimeout(() => {
-        // 🇪🇸 SPANISH FIRST (Cuba market priority)
-        handleAutoTranslation(germanAvailability, 'availabilityTextEs', 'availabilityTextDe');
-        // 🇺🇸 English optional (comment out to save characters)
-        // handleAutoTranslation(germanAvailability, 'availabilityTextEn', 'availabilityTextDe');
-      }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
-      
-      setAvailabilityTimeout(timeout);
-    }
-  }, [form.watch('availabilityTextDe'), isLoadingExistingProduct]);
+  // useEffect(() => {
+  //   const germanAvailability = form.watch('availabilityTextDe');
+  //   if (germanAvailability && !isLoadingExistingProduct) {
+  //     if (availabilityTimeout) {
+  //       clearTimeout(availabilityTimeout);
+  //     }
+  //     
+  //     const timeout = setTimeout(() => {
+  //       // 🇪🇸 SPANISH FIRST (Cuba market priority)
+  //       handleAutoTranslation(germanAvailability, 'availabilityTextEs', 'availabilityTextDe');
+  //       // 🇺🇸 English optional (comment out to save characters)
+  //       // handleAutoTranslation(germanAvailability, 'availabilityTextEn', 'availabilityTextDe');
+  //     }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
+  //     
+  //     setAvailabilityTimeout(timeout);
+  //   }
+  // }, [form.watch('availabilityTextDe'), isLoadingExistingProduct]);
 
   // Handle price on request translation - NO API CALLS NEEDED
   const handlePriceOnRequestTranslation = async () => {
