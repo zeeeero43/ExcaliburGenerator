@@ -313,7 +313,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { text, fromLang, toLang } = req.body;
       
-      console.log(`🔄 SMART TRANSLATE: ${fromLang} -> ${toLang}, length: ${text?.length || 0}`);
+      console.log(`🔄 SMART TRANSLATE: ${fromLang} -> ${toLang}, length: ${text?.length || 0}, text preview: "${text?.substring(0, 50)}..."`);
       
       if (!text || !fromLang || !toLang) {
         console.log("❌ Missing parameters:", { text: !!text, fromLang, toLang });
@@ -355,7 +355,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           throw new Error('No DeepL API key configured');
         }
         
-        console.log(`📊 DeepL: Processing ${text.length} characters (limit: ~130,000)`);
+        console.log(`📊 DeepL: Processing ${text.length} characters (limit: ~130,000) - TEXT: "${text.substring(0, 100)}..."`);
         
         const deeplResponse = await fetch('https://api-free.deepl.com/v2/translate', {
           method: 'POST',

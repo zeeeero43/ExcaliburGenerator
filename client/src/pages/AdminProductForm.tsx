@@ -145,7 +145,7 @@ export default function AdminProductForm() {
     // For new products or changed text: translate
     if (!isEditing || (isEditing && originalTexts[originalFieldName] !== germanText)) {
     
-      console.log(`🔄 TRANSLATING: "${originalFieldName}" - "${germanText.substring(0, 30)}..."`);
+      console.log(`🔄 PRODUCT TRANSLATION START: Field="${originalFieldName}", Text="${germanText.substring(0, 30)}...", Length=${germanText.length} chars`);
       setTranslationCount(prev => prev + 1);
       
       try {
@@ -154,7 +154,9 @@ export default function AdminProductForm() {
         
         if (translatedText && translatedText !== germanText) {
           form.setValue(toField as keyof ProductFormData, translatedText);
-          console.log(`✅ TRANSLATED: "${germanText.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
+          console.log(`✅ PRODUCT TRANSLATION SUCCESS: "${germanText.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..." (${germanText.length} chars used)`);
+        } else {
+          console.log(`⚠️ PRODUCT TRANSLATION FAILED OR SAME: "${germanText.substring(0, 30)}..."`);
         }
       } catch (error) {
         console.error('❌ Translation failed:', error);
