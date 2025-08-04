@@ -1021,15 +1021,15 @@ export default function AdminProductForm() {
                             disabled={form.watch('stockStatus') === 'in_stock'}
                             onChange={(e) => {
                               field.onChange(e);
-                              // 🚨 DISABLED: Automatic translation was consuming DeepL quota!
-                              // if (e.target.value !== originalTexts.availabilityTextDe) {
-                              //   handleAutoTranslation(e.target.value, 'availabilityTextEs', 'availabilityTextDe');
-                              //   handleAutoTranslation(e.target.value, 'availabilityTextEn', 'availabilityTextDe');
-                              // }
+                              // 🚀 SMART TRANSLATION: Only translate on actual text changes
+                              if (e.target.value !== originalTexts.availabilityTextDe) {
+                                handleAutoTranslation(e.target.value, 'availabilityTextEs', 'availabilityTextDe');
+                                handleAutoTranslation(e.target.value, 'availabilityTextEn', 'availabilityTextDe');
+                              }
                             }}
                           />
                         </FormControl>
-                        <p className="text-xs text-gray-500">Nur Deutsch eingeben - wird manuell übersetzt</p>
+                        <p className="text-xs text-gray-500">Nur Deutsch eingeben - wird automatisch übersetzt</p>
                         <FormMessage />
                       </FormItem>
                     )}
