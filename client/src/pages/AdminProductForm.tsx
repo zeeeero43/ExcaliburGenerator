@@ -474,11 +474,11 @@ export default function AdminProductForm() {
               <strong>Deutsch-zu-Spanisch Workflow</strong><br />
               Nur 3 deutsche Eingaben erforderlich:
               <ul className="list-disc ml-4 mt-1">
-                <li>Produktname (Deutsch) - wird automatisch übersetzt</li>
-                <li>Kurzbeschreibung (Deutsch) - wird automatisch übersetzt</li>
+                <li>Produktname (Deutsch) - mit manueller Übersetzung</li>
+                <li>Kurzbeschreibung (Deutsch) - mit manueller Übersetzung</li>
                 <li>Kategorie auswählen</li>
               </ul>
-              Spanische und englische Versionen werden automatisch generiert.
+              Klicke auf "Übersetzen" Buttons um spanische/englische Versionen zu generieren.
             </AlertDescription>
           </Alert>
 
@@ -504,11 +504,7 @@ export default function AdminProductForm() {
                             placeholder="Solar Panele 410Watt Pink, neueste Monokristelline, Halbzell PERC Technologie"
                             onChange={(e) => {
                               field.onChange(e);
-                              // 🚀 SMART TRANSLATION: Only translate on actual text changes
-                              if (e.target.value !== originalTexts.nameDe) {
-                                handleAutoTranslation(e.target.value, 'nameEs', 'nameDe');
-                                handleAutoTranslation(e.target.value, 'nameEn', 'nameDe');
-                              }
+                              // 🚨 AUTOMATIC TRANSLATION DISABLED - Use manual buttons
                             }}
                           />
                         </FormControl>
@@ -517,18 +513,46 @@ export default function AdminProductForm() {
                     )}
                   />
                   
-                  {/* Auto-translated versions */}
+                  {/* Manual translation versions */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                     <div className="text-sm">
-                      <span className="text-gray-500">→ Automatisch übersetzt (Spanisch)</span>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-gray-500">Spanisch</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const germanText = form.getValues('nameDe');
+                            if (germanText) {
+                              handleAutoTranslation(germanText, 'nameEs', 'nameDe');
+                            }
+                          }}
+                          className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                        >
+                          Übersetzen
+                        </button>
+                      </div>
                       <div className="bg-gray-50 p-2 rounded text-sm">
-                        {form.watch('nameEs') || 'Paneles solares 410Watt Pink, última monocristalina...'}
+                        {form.watch('nameEs') || 'Klicke "Übersetzen" um zu übersetzen...'}
                       </div>
                     </div>
                     <div className="text-sm">
-                      <span className="text-gray-500">→ Automatisch übersetzt (Englisch)</span>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-gray-500">Englisch</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const germanText = form.getValues('nameDe');
+                            if (germanText) {
+                              handleAutoTranslation(germanText, 'nameEn', 'nameDe');
+                            }
+                          }}
+                          className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                        >
+                          Übersetzen
+                        </button>
+                      </div>
                       <div className="bg-gray-50 p-2 rounded text-sm">
-                        {form.watch('nameEn') || 'Solar panels 410Watt Pink, latest monocrystalline...'}
+                        {form.watch('nameEn') || 'Klicke "Übersetzen" um zu übersetzen...'}
                       </div>
                     </div>
                   </div>
@@ -653,11 +677,7 @@ export default function AdminProductForm() {
                           value={field.value || ''}
                           onChange={(value) => {
                             field.onChange(value);
-                            // 🚀 SMART TRANSLATION: Only translate on actual text changes
-                            if (value !== originalTexts.shortDescriptionDe) {
-                              handleAutoTranslation(value, 'shortDescriptionEs', 'shortDescriptionDe');
-                              handleAutoTranslation(value, 'shortDescriptionEn', 'shortDescriptionDe');
-                            }
+                            // 🚨 AUTOMATIC TRANSLATION DISABLED - Use manual buttons
                           }}
                           placeholder="Test 1-2-3"
                         />
@@ -669,24 +689,46 @@ export default function AdminProductForm() {
 
 
 
-                {/* Auto-translated versions */}
+                {/* Manual translation versions */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                   <div className="space-y-2">
-                    <span className="text-sm text-gray-500">→ Automatisch übersetzt (Spanisch)</span>
-                    <div className="bg-gray-50 p-3 rounded text-sm min-h-[80px] relative">
-                      {form.watch('shortDescriptionEs') || 'Prueba 1-2-3'}
-                      <button type="button" className="absolute bottom-2 right-2 text-xs text-gray-400 hover:text-gray-600">
-                        ⛶
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-500">Spanisch</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const germanText = form.getValues('shortDescriptionDe');
+                          if (germanText) {
+                            handleAutoTranslation(germanText, 'shortDescriptionEs', 'shortDescriptionDe');
+                          }
+                        }}
+                        className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                      >
+                        Übersetzen
                       </button>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded text-sm min-h-[80px] relative">
+                      {form.watch('shortDescriptionEs') || 'Klicke "Übersetzen" um zu übersetzen...'}
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <span className="text-sm text-gray-500">→ Automatisch übersetzt (Englisch)</span>
-                    <div className="bg-gray-50 p-3 rounded text-sm min-h-[80px] relative">
-                      {form.watch('shortDescriptionEn') || 'Test 1-2-3'}
-                      <button type="button" className="absolute bottom-2 right-2 text-xs text-gray-400 hover:text-gray-600">
-                        ⛶
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-500">Englisch</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const germanText = form.getValues('shortDescriptionDe');
+                          if (germanText) {
+                            handleAutoTranslation(germanText, 'shortDescriptionEn', 'shortDescriptionDe');
+                          }
+                        }}
+                        className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                      >
+                        Übersetzen
                       </button>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded text-sm min-h-[80px] relative">
+                      {form.watch('shortDescriptionEn') || 'Klicke "Übersetzen" um zu übersetzen...'}
                     </div>
                   </div>
                 </div>
