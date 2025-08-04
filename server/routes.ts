@@ -355,6 +355,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           throw new Error('No DeepL API key configured');
         }
         
+        console.log(`📊 DeepL: Processing ${text.length} characters (limit: ~130,000)`);
+        
         const deeplResponse = await fetch('https://api-free.deepl.com/v2/translate', {
           method: 'POST',
           headers: {

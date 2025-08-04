@@ -7,8 +7,8 @@ export async function translateText(text: string, fromLang: string, toLang: stri
   }
 
   try {
-    // Split long texts into smaller chunks for better translation
-    const maxChunkSize = 500; // Characters per chunk
+    // Split only VERY long texts (DeepL limit is 128 KiB ≈ 130,000 chars)
+    const maxChunkSize = 100000; // 100k characters per chunk (well under DeepL limit)
     if (text.length > maxChunkSize) {
       console.log(`🔄 Long text detected (${text.length} chars), splitting into chunks...`);
       
