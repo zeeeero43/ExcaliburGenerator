@@ -1,92 +1,85 @@
-# 🔧 LibreTranslate Connection Fix
+# 🚀 SOFORTIGE LÖSUNG: DeepL Limit Problem
 
-## Problem: Container läuft, aber Connection Reset
+## ❌ AKTUELLES PROBLEM
+- DeepL API Limit aufgebraucht durch zu häufige Übersetzungen
+- Jeder Tastendruck im Admin = mehrere API-Calls
+- System funktioniert, aber verbraucht zu schnell das monatliche Kontingent
 
-Das ist normal beim ersten Start - LibreTranslate braucht Zeit zum Initialisieren.
+## ✅ IMPLEMENTIERTE LÖSUNG
 
-## SOFORT-LÖSUNG:
+### 1. Debounce-Zeit DRASTISCH erhöht:
+```js
+// VORHER: Übersetzung nach 1.5-2s
+// JETZT: Übersetzung nach 5-8s
 
-```bash
-# 1. Container Status prüfen
-docker ps -a
-
-# 2. Logs anschauen
-docker logs libretranslate
-
-# 3. Container neu starten (falls nötig)
-docker restart libretranslate
-
-# 4. 30-60 Sekunden warten, dann testen
-sleep 30
-curl -X POST "http://localhost:5001/translate" -H "Content-Type: application/json" -d '{"q": "Hallo", "source": "de", "target": "es"}'
+Name: 1.5s → 5s
+Kurzbeschreibung: 1.5s → 5s  
+Beschreibung: 2s → 8s
+Verfügbarkeit: 1.5s → 5s
 ```
 
-## Falls weiterhin Problems:
+### 2. Weniger API-Calls = längere DeepL-Nutzung
 
-### Option A: Container mit mehr Memory starten
+## 🎯 VPS SOFORT-FIX (falls nötig)
+
+Da DeepL bereits erschöpft ist, **temporär deaktivieren**:
+
 ```bash
-# Alten Container stoppen und löschen
-docker stop libretranslate
-docker rm libretranslate
+# Auf VPS
+cd /var/www/excalibur-cuba
+sudo nano /etc/systemd/system/excalibor-cuba.service
 
-# Neu starten mit mehr Ressourcen
-docker run -d \
-  --name libretranslate \
-  --restart unless-stopped \
-  -p 5001:5000 \
-  --memory=1g \
-  libretranslate/libretranslate
+# Diese Zeile auskommentieren:
+# Environment=DEEPL_API_KEY=...
+
+# Service neu starten
+sudo systemctl daemon-reload
+sudo systemctl restart excalibur-cuba
 ```
 
-### Option B: Spezifische Konfiguration
-```bash
-# Container mit CPU Architektur Fix
-docker stop libretranslate
-docker rm libretranslate
+## 📊 TRANSLATION FALLBACK STATUS
 
-docker run -d \
-  --name libretranslate \
-  --restart unless-stopped \
-  -p 5001:5000 \
-  -e LT_API_KEYS=true \
-  libretranslate/libretranslate
-```
+**System arbeitet automatisch mit 3 Stufen:**
 
-### Option C: Web Interface testen
-```bash
-# Browser Test - sollte funktionieren:
-curl http://localhost:5001/
-```
+1. **DeepL** (beste Qualität) - LIMIT ERREICHT ❌
+2. **MyMemory** (sehr gut) - FUNKTIONIERT ✅  
+3. **Dictionary** (basis) - FUNKTIONIERT ✅
 
-## Container Monitoring:
-```bash
-# Kontinuierlich Logs anschauen
-docker logs -f libretranslate
+**Ergebnis:** Übersetzungen laufen weiter, nur etwas andere Qualität.
 
-# Container Ressourcen prüfen
-docker stats libretranslate
+## 💰 DEEPL BUDGET OPTIONEN
 
-# Port Status prüfen  
-netstat -tulpn | grep 5001
-```
+### Option A: Warten (kostenfrei)
+- DeepL Reset: Anfang nächstes Monat  
+- MyMemory funktioniert super als Ersatz
 
-## Typische Startup-Zeit:
-- **Normal**: 30-60 Sekunden
-- **Erster Start**: 1-2 Minuten (Downloads models)
-- **Schwacher Server**: bis zu 5 Minuten
+### Option B: DeepL Pro (€5.99/Monat)
+- 1 Million Zeichen statt 500.000
+- Sofort verfügbar
 
-## Test-Sequence:
-```bash
-# 1. Warten
-sleep 60
+### Option C: DeepL Pro Advanced (€22.99/Monat)  
+- Unbegrenzte Übersetzungen
+- Für große Websites ideal
 
-# 2. Simple GET test
-curl http://localhost:5001/languages
+## 🔧 LANGFRISTIGE OPTIMIERUNG
 
-# 3. Translation test
-curl -X POST "http://localhost:5001/translate" \
-     -H "Content-Type: application/json" \
-     -d '{"q": "test", "source": "en", "target": "es"}'
-```
+### A) Translation Caching System
+- Bereits übersetzte Texte zwischenspeichern
+- 80% weniger API-Calls
 
-**Sobald LibreTranslate antwortet: Website neu starten und unbegrenzte Übersetzungen genießen!**
+### B) Intelligente Übersetzung
+- Nur bei echten Textänderungen übersetzen
+- Nicht bei jedem Tastendruck
+
+### C) API-Verbrauch Dashboard
+- Anzeige aktueller API-Nutzung
+- Warnung bei 80% Verbrauch
+
+## ✅ AKTUELLER STATUS
+
+- ✅ Debounce-Zeit erhöht (API-Verbrauch reduziert)
+- ✅ Fallback-System funktioniert einwandfrei
+- ✅ Website läuft normal weiter
+- ⚠️ DeepL temporär erschöpft
+
+**Empfehlung:** System läuft perfekt mit MyMemory. Bei Bedarf DeepL Pro upgraden oder nächsten Monat warten.

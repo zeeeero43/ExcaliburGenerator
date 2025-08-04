@@ -188,7 +188,7 @@ export default function AdminProductForm() {
       const timeout = setTimeout(() => {
         handleAutoTranslation(germanName, 'nameEs', 'nameDe');
         handleAutoTranslation(germanName, 'nameEn', 'nameDe');
-      }, 1500);
+      }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
       
       setNameTimeout(timeout);
     }
@@ -205,7 +205,7 @@ export default function AdminProductForm() {
       const timeout = setTimeout(() => {
         handleAutoTranslation(germanDesc, 'shortDescriptionEs', 'shortDescriptionDe');
         handleAutoTranslation(germanDesc, 'shortDescriptionEn', 'shortDescriptionDe');
-      }, 1500);
+      }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
       
       setShortDescTimeout(timeout);
     }
@@ -222,7 +222,7 @@ export default function AdminProductForm() {
       const timeout = setTimeout(() => {
         handleAutoTranslation(germanFullDesc, 'descriptionEs', 'descriptionDe');
         handleAutoTranslation(germanFullDesc, 'descriptionEn', 'descriptionDe');
-      }, 2000); // Longer timeout for description
+      }, 8000); // 🔥 ERHÖHT von 2s auf 8s für lange Texte // Longer timeout for description
       
       setFullDescTimeout(timeout);
     }
@@ -239,7 +239,7 @@ export default function AdminProductForm() {
       const timeout = setTimeout(() => {
         handleAutoTranslation(germanAvailability, 'availabilityTextEs', 'availabilityTextDe');
         handleAutoTranslation(germanAvailability, 'availabilityTextEn', 'availabilityTextDe');
-      }, 1500);
+      }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
       
       setAvailabilityTimeout(timeout);
     }
