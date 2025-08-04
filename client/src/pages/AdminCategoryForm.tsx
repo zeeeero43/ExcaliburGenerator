@@ -228,7 +228,7 @@ export default function AdminCategoryForm() {
           <CardHeader>
             <CardTitle>Kategorie-Informationen</CardTitle>
             <CardDescription>
-              Nur deutsche Eingabe erforderlich - automatische Übersetzung zu Spanisch/Englisch
+              Nur deutsche Eingabe erforderlich - manuelle Übersetzung zu Spanisch/Englisch mit Buttons
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -299,20 +299,49 @@ export default function AdminCategoryForm() {
 
                 {/* Auto-translated Fields */}
                 <div className="space-y-4 bg-gray-50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-gray-600">→ Automatisch übersetzt</h3>
+                  <h3 className="text-lg font-semibold text-gray-600">→ Manuelle Übersetzung</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
                       name="nameEs"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-600">Nombre (Español)</FormLabel>
+                          <div className="flex justify-between items-center mb-1">
+                            <FormLabel className="text-gray-600">Nombre (Español)</FormLabel>
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                const germanText = form.getValues('nameDe');
+                                if (germanText) {
+                                  try {
+                                    const response = await fetch('/api/translate', {
+                                      method: 'POST',
+                                      headers: { 'Content-Type': 'application/json' },
+                                      body: JSON.stringify({
+                                        text: germanText,
+                                        fromLang: 'de',
+                                        toLang: 'es'
+                                      })
+                                    });
+                                    const data = await response.json();
+                                    if (data.translatedText) {
+                                      form.setValue('nameEs', data.translatedText);
+                                    }
+                                  } catch (error) {
+                                    console.error('Translation failed:', error);
+                                  }
+                                }
+                              }}
+                              className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                            >
+                              Übersetzen
+                            </button>
+                          </div>
                           <FormControl>
                             <Input 
-                              placeholder="Wird automatisch übersetzt..." 
+                              placeholder="Klicke 'Übersetzen' um zu übersetzen..." 
                               {...field}
-                              className="bg-gray-100 border-gray-200"
-                              readOnly
+                              className="bg-gray-50 border-gray-200"
                             />
                           </FormControl>
                           <FormMessage />
@@ -324,13 +353,42 @@ export default function AdminCategoryForm() {
                       name="nameEn"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-600">Name (English)</FormLabel>
+                          <div className="flex justify-between items-center mb-1">
+                            <FormLabel className="text-gray-600">Name (English)</FormLabel>
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                const germanText = form.getValues('nameDe');
+                                if (germanText) {
+                                  try {
+                                    const response = await fetch('/api/translate', {
+                                      method: 'POST',
+                                      headers: { 'Content-Type': 'application/json' },
+                                      body: JSON.stringify({
+                                        text: germanText,
+                                        fromLang: 'de',
+                                        toLang: 'en'
+                                      })
+                                    });
+                                    const data = await response.json();
+                                    if (data.translatedText) {
+                                      form.setValue('nameEn', data.translatedText);
+                                    }
+                                  } catch (error) {
+                                    console.error('Translation failed:', error);
+                                  }
+                                }
+                              }}
+                              className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                            >
+                              Übersetzen
+                            </button>
+                          </div>
                           <FormControl>
                             <Input 
-                              placeholder="Wird automatisch übersetzt..." 
+                              placeholder="Klicke 'Übersetzen' um zu übersetzen..." 
                               {...field}
-                              className="bg-gray-100 border-gray-200"
-                              readOnly
+                              className="bg-gray-50 border-gray-200"
                             />
                           </FormControl>
                           <FormMessage />

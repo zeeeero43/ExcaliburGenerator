@@ -326,7 +326,7 @@ export default function AdminSubcategoryForm() {
                           </div>
                         </FormControl>
                         <div className="text-xs text-gray-500">
-                          Wird automatisch in Spanisch und Englisch übersetzt
+                          Wird manuell zu Spanisch und Englisch übersetzt
                         </div>
                         <FormMessage />
                       </FormItem>
@@ -340,17 +340,46 @@ export default function AdminSubcategoryForm() {
                       name="nameEs"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-600">→ Name (Spanisch)</FormLabel>
+                          <div className="flex justify-between items-center mb-1">
+                            <FormLabel className="text-gray-600">→ Name (Spanisch)</FormLabel>
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                const germanText = form.getValues('nameDe');
+                                if (germanText) {
+                                  try {
+                                    const response = await fetch('/api/translate', {
+                                      method: 'POST',
+                                      headers: { 'Content-Type': 'application/json' },
+                                      body: JSON.stringify({
+                                        text: germanText,
+                                        fromLang: 'de',
+                                        toLang: 'es'
+                                      })
+                                    });
+                                    const data = await response.json();
+                                    if (data.translatedText) {
+                                      form.setValue('nameEs', data.translatedText);
+                                    }
+                                  } catch (error) {
+                                    console.error('Translation failed:', error);
+                                  }
+                                }
+                              }}
+                              className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                            >
+                              Übersetzen
+                            </button>
+                          </div>
                           <FormControl>
                             <Input 
-                              placeholder="Wird automatisch übersetzt..." 
+                              placeholder="Klicke 'Übersetzen' um zu übersetzen..." 
                               {...field} 
-                              className="bg-gray-100 border-gray-200"
-                              readOnly 
+                              className="bg-gray-50 border-gray-200"
                             />
                           </FormControl>
                           <div className="text-xs text-gray-500">
-                            Automatisch übersetzt
+                            Manuell übersetzen
                           </div>
                           <FormMessage />
                         </FormItem>
@@ -362,17 +391,46 @@ export default function AdminSubcategoryForm() {
                       name="nameEn"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-600">→ Name (Englisch)</FormLabel>
+                          <div className="flex justify-between items-center mb-1">
+                            <FormLabel className="text-gray-600">→ Name (Englisch)</FormLabel>
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                const germanText = form.getValues('nameDe');
+                                if (germanText) {
+                                  try {
+                                    const response = await fetch('/api/translate', {
+                                      method: 'POST',
+                                      headers: { 'Content-Type': 'application/json' },
+                                      body: JSON.stringify({
+                                        text: germanText,
+                                        fromLang: 'de',
+                                        toLang: 'en'
+                                      })
+                                    });
+                                    const data = await response.json();
+                                    if (data.translatedText) {
+                                      form.setValue('nameEn', data.translatedText);
+                                    }
+                                  } catch (error) {
+                                    console.error('Translation failed:', error);
+                                  }
+                                }
+                              }}
+                              className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                            >
+                              Übersetzen
+                            </button>
+                          </div>
                           <FormControl>
                             <Input 
-                              placeholder="Wird automatisch übersetzt..." 
+                              placeholder="Klicke 'Übersetzen' um zu übersetzen..." 
                               {...field} 
-                              className="bg-gray-100 border-gray-200"
-                              readOnly 
+                              className="bg-gray-50 border-gray-200"
                             />
                           </FormControl>
                           <div className="text-xs text-gray-500">
-                            Automatisch übersetzt
+                            Manuell übersetzen
                           </div>
                           <FormMessage />
                         </FormItem>
@@ -407,7 +465,7 @@ export default function AdminSubcategoryForm() {
                           </div>
                         </FormControl>
                         <div className="text-xs text-gray-500">
-                          Wird automatisch übersetzt
+                          Wird manuell übersetzt
                         </div>
                         <FormMessage />
                       </FormItem>
@@ -419,17 +477,46 @@ export default function AdminSubcategoryForm() {
                     name="descriptionEs"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-600">→ Beschreibung (Spanisch)</FormLabel>
+                        <div className="flex justify-between items-center mb-1">
+                          <FormLabel className="text-gray-600">→ Beschreibung (Spanisch)</FormLabel>
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              const germanText = form.getValues('descriptionDe');
+                              if (germanText) {
+                                try {
+                                  const response = await fetch('/api/translate', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                      text: germanText,
+                                      fromLang: 'de',
+                                      toLang: 'es'
+                                    })
+                                  });
+                                  const data = await response.json();
+                                  if (data.translatedText) {
+                                    form.setValue('descriptionEs', data.translatedText);
+                                  }
+                                } catch (error) {
+                                  console.error('Translation failed:', error);
+                                }
+                              }
+                            }}
+                            className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                          >
+                            Übersetzen
+                          </button>
+                        </div>
                         <FormControl>
                           <Textarea
-                            placeholder="Wird automatisch übersetzt..."
-                            className="min-h-[100px] bg-gray-100 border-gray-200"
+                            placeholder="Klicke 'Übersetzen' um zu übersetzen..."
+                            className="min-h-[100px] bg-gray-50 border-gray-200"
                             {...field}
-                            readOnly
                           />
                         </FormControl>
                         <div className="text-xs text-gray-500">
-                          Automatisch übersetzt
+                          Manuell übersetzen
                         </div>
                         <FormMessage />
                       </FormItem>
@@ -441,17 +528,46 @@ export default function AdminSubcategoryForm() {
                     name="descriptionEn"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-600">→ Beschreibung (Englisch)</FormLabel>
+                        <div className="flex justify-between items-center mb-1">
+                          <FormLabel className="text-gray-600">→ Beschreibung (Englisch)</FormLabel>
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              const germanText = form.getValues('descriptionDe');
+                              if (germanText) {
+                                try {
+                                  const response = await fetch('/api/translate', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                      text: germanText,
+                                      fromLang: 'de',
+                                      toLang: 'en'
+                                    })
+                                  });
+                                  const data = await response.json();
+                                  if (data.translatedText) {
+                                    form.setValue('descriptionEn', data.translatedText);
+                                  }
+                                } catch (error) {
+                                  console.error('Translation failed:', error);
+                                }
+                              }
+                            }}
+                            className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                          >
+                            Übersetzen
+                          </button>
+                        </div>
                         <FormControl>
                           <Textarea
-                            placeholder="Wird automatisch übersetzt..."
-                            className="min-h-[100px] bg-gray-100 border-gray-200"
+                            placeholder="Klicke 'Übersetzen' um zu übersetzen..."
+                            className="min-h-[100px] bg-gray-50 border-gray-200"
                             {...field}
-                            readOnly
                           />
                         </FormControl>
                         <div className="text-xs text-gray-500">
-                          Automatisch übersetzt
+                          Manuell übersetzen
                         </div>
                         <FormMessage />
                       </FormItem>
