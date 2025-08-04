@@ -17,6 +17,7 @@ import type { Category, Subcategory, Product } from '@shared/schema';
 import { ImageUpload } from '@/components/ImageUpload';
 import { RichTextEditor } from '@/components/RichTextEditor';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { smartTranslate } from '@/lib/translationCache';
 
 const productFormSchema = z.object({
   nameDe: z.string().min(1, 'Produktname ist erforderlich'),
@@ -148,26 +149,12 @@ export default function AdminProductForm() {
       setTranslationCount(prev => prev + 1);
       
       try {
-        const response = await fetch('/api/translate', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            text: germanText,
-            fromLang: 'de',
-            toLang: toField.includes('Es') ? 'es' : 'en',
-          }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.translatedText && data.translatedText !== germanText) {
-            form.setValue(toField as keyof ProductFormData, data.translatedText);
-            console.log(`✅ TRANSLATED (${data.provider || 'Unknown'}): "${germanText.substring(0, 30)}..." -> "${data.translatedText.substring(0, 30)}..."`);
-          } else if (data.error) {
-            console.error(`❌ TRANSLATION ERROR: ${data.error} - ${data.details || 'Unknown'}`);
-          }
+        const toLang = toField.includes('Es') ? 'es' : 'en';
+        const translatedText = await smartTranslate(germanText, 'de', toLang);
+        
+        if (translatedText && translatedText !== germanText) {
+          form.setValue(toField as keyof ProductFormData, translatedText);
+          console.log(`✅ TRANSLATED: "${germanText.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
         }
       } catch (error) {
         console.error('❌ Translation failed:', error);
@@ -186,8 +173,10 @@ export default function AdminProductForm() {
       }
       
       const timeout = setTimeout(() => {
+        // 🇪🇸 SPANISH FIRST (Cuba market priority)
         handleAutoTranslation(germanName, 'nameEs', 'nameDe');
-        handleAutoTranslation(germanName, 'nameEn', 'nameDe');
+        // 🇺🇸 English optional (comment out to save characters)
+        // handleAutoTranslation(germanName, 'nameEn', 'nameDe');
       }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
       
       setNameTimeout(timeout);
@@ -203,8 +192,10 @@ export default function AdminProductForm() {
       }
       
       const timeout = setTimeout(() => {
+        // 🇪🇸 SPANISH FIRST (Cuba market priority)  
         handleAutoTranslation(germanDesc, 'shortDescriptionEs', 'shortDescriptionDe');
-        handleAutoTranslation(germanDesc, 'shortDescriptionEn', 'shortDescriptionDe');
+        // 🇺🇸 English optional (comment out to save characters)
+        // handleAutoTranslation(germanDesc, 'shortDescriptionEn', 'shortDescriptionDe');
       }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
       
       setShortDescTimeout(timeout);
@@ -220,9 +211,11 @@ export default function AdminProductForm() {
       }
       
       const timeout = setTimeout(() => {
+        // 🇪🇸 SPANISH FIRST (Cuba market priority)
         handleAutoTranslation(germanFullDesc, 'descriptionEs', 'descriptionDe');
-        handleAutoTranslation(germanFullDesc, 'descriptionEn', 'descriptionDe');
-      }, 8000); // 🔥 ERHÖHT von 2s auf 8s für lange Texte // Longer timeout for description
+        // 🇺🇸 English optional (comment out to save characters)
+        // handleAutoTranslation(germanFullDesc, 'descriptionEn', 'descriptionDe');
+      }, 8000); // 🔥 ERHÖHT von 2s auf 8s für lange Texte
       
       setFullDescTimeout(timeout);
     }
@@ -237,45 +230,35 @@ export default function AdminProductForm() {
       }
       
       const timeout = setTimeout(() => {
+        // 🇪🇸 SPANISH FIRST (Cuba market priority)
         handleAutoTranslation(germanAvailability, 'availabilityTextEs', 'availabilityTextDe');
-        handleAutoTranslation(germanAvailability, 'availabilityTextEn', 'availabilityTextDe');
+        // 🇺🇸 English optional (comment out to save characters)
+        // handleAutoTranslation(germanAvailability, 'availabilityTextEn', 'availabilityTextDe');
       }, 5000); // 🔥 ERHÖHT von 1.5s auf 5s
       
       setAvailabilityTimeout(timeout);
     }
   }, [form.watch('availabilityTextDe'), isLoadingExistingProduct]);
 
-  // Handle price on request translation
+  // Handle price on request translation - NO API CALLS NEEDED
   const handlePriceOnRequestTranslation = async () => {
     try {
-      const germanText = 'Preis auf Anfrage';
+      // Hardcoded translations - no API calls needed
+      const spanishText = 'Precio a consultar';
+      const englishText = 'Price on request';
       
-      // Translate to Spanish
-      const spanishResult = await fetch('/api/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: germanText, targetLanguage: 'es' })
-      });
-      const spanishData = await spanishResult.json();
+      // Set hardcoded translations directly
+      form.setValue('oldPrice', '');
+      form.setValue('newPrice', '');
       
-      // Translate to English
-      const englishResult = await fetch('/api/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: germanText, targetLanguage: 'en' })
-      });
-      const englishData = await englishResult.json();
-      
-      // Price on request doesn't need translation for pricing fields anymore
-      // Just clear the prices
+      console.log(`✅ HARDCODED: "Preis auf Anfrage" -> ES: "${spanishText}", EN: "${englishText}"`);
       
       toast({
-        title: "Übersetzt",
-        description: "\"Preis auf Anfrage\" wurde automatisch übersetzt",
+        title: "Erfolg",
+        description: "\"Preis auf Anfrage\" ohne API-Aufruf gesetzt",
       });
     } catch (error) {
       console.error('Translation error:', error);
-      // Remove invalid priceNote field
     }
   };
 
