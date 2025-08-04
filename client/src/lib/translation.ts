@@ -95,9 +95,11 @@ export async function translateText(text: string, fromLang: string, toLang: stri
   }
 }
 
+// 🚨 DISABLED: This function was consuming massive API quota!
+// Old function could translate up to 9 fields × 2 languages = 18 API calls per use!
 export async function translateProductData(germanData: {
   name?: string;
-  shortDescription?: string;
+  shortDescription?: string;  
   description?: string;
   features?: string;
   specifications?: string;
@@ -109,12 +111,21 @@ export async function translateProductData(germanData: {
   spanish: typeof germanData;
   english: typeof germanData;
 }> {
-  const translateObject = async (data: typeof germanData, targetLang: string) => {
+  console.log(`🚨 BATCH TRANSLATION DISABLED to save API quota! Only translating essential fields.`);
+  
+  // Only translate the most essential fields to save API quota
+  const essentialFields = ['name', 'shortDescription'];
+  
+  const translateEssentials = async (data: typeof germanData, targetLang: string) => {
     const translated: typeof germanData = {};
     
     for (const [key, value] of Object.entries(data)) {
-      if (value && typeof value === 'string') {
+      if (value && typeof value === 'string' && essentialFields.includes(key)) {
+        console.log(`🔄 ESSENTIAL ONLY: Translating ${key} (${value.length} chars) to ${targetLang}`);
         translated[key as keyof typeof germanData] = await translateText(value, 'de', targetLang);
+      } else {
+        // Keep original German for non-essential fields
+        translated[key as keyof typeof germanData] = value;
       }
     }
     
@@ -122,15 +133,14 @@ export async function translateProductData(germanData: {
   };
 
   try {
-    const [spanish, english] = await Promise.all([
-      translateObject(germanData, 'es'),
-      translateObject(germanData, 'en')
-    ]);
-
+    // Only translate to Spanish (Cuba market priority) - English disabled to save quota
+    const spanish = await translateEssentials(germanData, 'es');
+    const english = germanData; // Keep German as fallback for English to save quota
+    
+    console.log(`✅ ESSENTIAL TRANSLATION: Only name + shortDescription translated to save API quota`);
     return { spanish, english };
   } catch (error) {
-    console.error('Batch translation error:', error);
-    // Return original data if translation fails
+    console.error('Essential translation error:', error);
     return {
       spanish: germanData,
       english: germanData
