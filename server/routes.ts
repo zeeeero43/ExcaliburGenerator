@@ -33,6 +33,7 @@ import {
   validatePassword
 } from "./security/auth";
 import { secureUpload, handleUploadError } from "./security/fileUpload";
+import { getBotStats } from "./security/botProtection";
 
 // REGION BLOCKING MIDDLEWARE - Blocks Chinese and Singaporean IP addresses
 function blockRegionsMiddleware(req: any, res: any, next: any) {
@@ -1218,6 +1219,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("❌ SIMPLE ANALYTICS ERROR:", error);
       res.status(500).json({ error: "Failed to fetch analytics", details: error.message });
+    }
+  });
+
+  // Bot Protection Statistics API
+  app.get("/api/admin/bot-stats", isAuthenticated, async (req: AuthRequest, res) => {
+    try {
+      console.log("🤖 BOT STATS: Fetching bot protection statistics");
+      const stats = getBotStats();
+      
+      console.log("🤖 BOT STATS: Statistics retrieved:", {
+        totalTracked: stats.totalTracked,
+        blocked: stats.blocked,
+        suspicious: stats.suspicious,
+        topCountries: Object.keys(stats.byCountry).length
+      });
+      
+      res.json(stats);
+    } catch (error) {
+      console.error("❌ BOT STATS ERROR:", error);
+      res.status(500).json({ error: "Failed to fetch bot statistics", details: error.message });
     }
   });
 

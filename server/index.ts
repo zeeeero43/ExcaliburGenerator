@@ -9,15 +9,23 @@ import {
   secureErrorHandler
 } from "./security/middleware";
 import { setSecurityHeaders } from "./security/auth";
+import { botProtection, aggressiveBotRateLimit } from "./security/botProtection";
 
 const app = express();
 
 console.log('🔒 SECURITY: Aktiviere Sicherheitsmaßnahmen...');
+console.log('🤖 BOT-PROTECTION: Aktiviere erweiterten Bot-Schutz...');
 
 // SECURITY: Trust proxy für sichere IP-Erkennung
 app.set('trust proxy', 1);
 
-// SECURITY: Rate Limiting
+// SECURITY: Bot Protection (vor Rate Limiting)
+app.use(botProtection);
+
+// SECURITY: Aggressive Rate Limiting für verdächtige IPs
+app.use(aggressiveBotRateLimit);
+
+// SECURITY: General Rate Limiting
 app.use(generalRateLimit);
 
 // SECURITY: Helmet Security Headers
