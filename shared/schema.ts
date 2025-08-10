@@ -164,6 +164,20 @@ export const productClicks = pgTable("product_clicks", {
   clickedAt: timestamp("clicked_at").defaultNow(),
 });
 
+export const pageViews = pgTable("page_views", {
+  id: serial("id").primaryKey(),
+  visitorId: integer("visitor_id").notNull().references(() => visitors.id, { onDelete: "cascade" }),
+  page: varchar("page", { length: 255 }).notNull(),
+  viewedAt: timestamp("viewed_at").defaultNow(),
+});
+
+export const productViews = pgTable("product_views", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id").notNull().references(() => products.id, { onDelete: "cascade" }),
+  visitorId: integer("visitor_id").notNull().references(() => visitors.id, { onDelete: "cascade" }),
+  viewedAt: timestamp("viewed_at").defaultNow(),
+});
+
 // Relations
 export const categoriesRelations = relations(categories, ({ many }) => ({
   subcategories: many(subcategories),
@@ -255,3 +269,7 @@ export type Visitor = typeof visitors.$inferSelect;
 export type InsertVisitor = typeof visitors.$inferInsert;
 export type ProductClick = typeof productClicks.$inferSelect;
 export type InsertProductClick = typeof productClicks.$inferInsert;
+export type PageView = typeof pageViews.$inferSelect;
+export type InsertPageView = typeof pageViews.$inferInsert;
+export type ProductView = typeof productViews.$inferSelect;
+export type InsertProductView = typeof productViews.$inferInsert;

@@ -8,6 +8,8 @@ import {
   uploadedImages,
   visitors,
   productClicks,
+  pageViews,
+  productViews,
   type AdminUser,
   type InsertAdminUser,
   type Category,
@@ -26,6 +28,10 @@ import {
   type InsertVisitor,
   type ProductClick,
   type InsertProductClick,
+  type PageView,
+  type InsertPageView,
+  type ProductView,
+  type InsertProductView,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, or, ilike, count, countDistinct, sql, gte, isNotNull } from "drizzle-orm";
@@ -84,15 +90,13 @@ export interface IStorage {
   createUploadedImage(image: InsertUploadedImage): Promise<UploadedImage>;
   deleteUploadedImage(id: number): Promise<void>;
   
-  // Analytics
-  createPageView(pageView: InsertPageView): Promise<PageView>;
-  createProductView(productView: InsertProductView): Promise<ProductView>;
-  getAnalytics(period: 'day' | 'month' | 'year'): Promise<{
-    totalViews: number;
+  // Simple Analytics
+  trackVisitor(ipAddress: string, country: string): Promise<Visitor>;
+  trackProductClick(productId: number, visitorId: number): Promise<ProductClick>;
+  getSimpleAnalytics(period: 'day' | 'month' | 'year'): Promise<{
     uniqueVisitors: number;
     topProducts: Array<{ product: string; views: number; id: number }>;
-    topCountries: Array<{ country: string; views: number }>;
-    viewsByPeriod: Array<{ period: string; views: number }>;
+    topCountries: Array<{ country: string; uniqueVisitors: number }>;
   }>;
 }
 
