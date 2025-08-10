@@ -28,8 +28,8 @@ export default function Products() {
       meta.content = content;
     };
 
-    updateMeta('description', 'Productos Excalibur Cuba: Sistemas solares completos, generadores, baterías litio, inversores, cables MC4, excavadoras, compresores, filtros agua, hornos pizza en Matanzas.');
-    updateMeta('keywords', 'productos Excalibur Cuba, sistemas solares Cuba, generadores Cuba, baterías litio Cuba, inversores Cuba, cables MC4 Cuba, excavadoras Cuba, compresores Cuba, Matanzas');
+    updateMeta('description', t('productsMetaDesc') || 'Productos Excalibur Cuba: Sistemas solares completos, generadores, baterías litio, inversores');
+    updateMeta('keywords', t('productsMetaKeywords') || 'productos Excalibur Cuba, sistemas solares Cuba, generadores Cuba');
     updateMeta('geo.region', 'CU');
     updateMeta('geo.placename', 'Matanzas, Cuba');
   }, []);
@@ -167,14 +167,14 @@ export default function Products() {
   const getSelectedCategoryName = () => {
     if (!selectedCategory) return '';
     const category = categories.find(c => c.id === selectedCategory);
-    return category ? getLocalizedText(category, 'name') || 'Kategorie' : '';
+    return category ? getLocalizedText(category, 'name') || t('category') : '';
   };
 
   // Get selected subcategory name
   const getSelectedSubcategoryName = () => {
     if (!selectedSubcategory) return '';
     const subcategory = subcategories.find(s => s.id === selectedSubcategory);
-    return subcategory ? getLocalizedText(subcategory, 'name') || 'Unterkategorie' : '';
+    return subcategory ? getLocalizedText(subcategory, 'name') || t('subcategory') : '';
   };
 
   if (isLoading) {
@@ -219,7 +219,7 @@ export default function Products() {
           {/* Subcategories Section */}
           {filteredSubcategories.length > 0 && (
             <div className="mb-12">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6">Unterkategorien</h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-6">{t('subcategories')}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
                 {filteredSubcategories.map((subcategory) => (
                   <Card 
@@ -274,7 +274,7 @@ export default function Products() {
           {directCategoryProducts.length > 0 && (
             <div>
               <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-                {filteredSubcategories.length > 0 ? 'Weitere Produkte' : 'Produkte'}
+                {filteredSubcategories.length > 0 ? t('moreProducts') : t('products')}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3">
                 {directCategoryProducts.map((product) => (
@@ -322,7 +322,7 @@ export default function Products() {
                               onClick={(e) => e.stopPropagation()}
                             >
                               <Eye className="w-3 h-3 mr-1" />
-                              Details
+                              {t('viewDetails')}
                             </Button>
                           </div>
                         </div>
@@ -344,10 +344,10 @@ export default function Products() {
           {filteredSubcategories.length === 0 && directCategoryProducts.length === 0 && (
             <div className="text-center py-16">
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                Keine Inhalte gefunden
+                {t('noContentFound')}
               </h3>
               <p className="text-gray-500">
-                Diese Kategorie enthält aktuell keine Unterkategorien oder Produkte.
+                {t('noCategoryContent')}
               </p>
             </div>
           )}
