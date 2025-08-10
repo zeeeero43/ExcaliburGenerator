@@ -103,8 +103,15 @@ function detectSuspiciousBehavior(ip: string, req: Request): boolean {
 // Land-basierte Risiko-Bewertung
 function getCountryRisk(country?: string): number {
   if (!country) return 1;
+  
+  // SICHERE LÄNDER - Sehr niedriges Risiko
+  const safeCountries = ['CU', 'US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'NZ', 'SE', 'NO', 'DK', 'FI', 'NL', 'BE', 'CH', 'AT'];
+  if (safeCountries.includes(country)) return 0.1; // Minimales Risiko
+  
+  // Verdächtige Länder - Hohes Risiko
   if (SUSPICIOUS_COUNTRIES.includes(country)) return 3;
-  if (['US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'CU'].includes(country)) return 0.5;
+  
+  // Andere Länder - Normales Risiko
   return 1;
 }
 
@@ -133,13 +140,18 @@ export const botProtection = (req: Request, res: Response, next: NextFunction) =
     return next();
   }
   
-  // Skip für Kuba (legitime Nutzer)
+  // Skip für legitime Länder (Kuba, USA, Europa)
   try {
     const geoip = require('geoip-lite');
     const geo = geoip.lookup(clientIp);
-    if (geo && geo.country === 'CU') {
-      console.log(`🇨🇺 BOT-PROTECTION: Kuba IP ${clientIp} - Bot-Schutz deaktiviert`);
-      return next();
+    if (geo && geo.country) {
+      // SICHERE LÄNDER: Kuba, USA, Kanada, Europa
+      const safeCountries = ['CU', 'US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'NZ', 'SE', 'NO', 'DK', 'FI', 'NL', 'BE', 'CH', 'AT'];
+      
+      if (safeCountries.includes(geo.country)) {
+        console.log(`✅ SAFE-COUNTRY: IP ${clientIp} aus ${geo.country} - Bot-Schutz minimal`);
+        return next();
+      }
     }
   } catch (error) {
     // Fallback wenn geoip nicht verfügbar
@@ -184,17 +196,24 @@ export const botProtection = (req: Request, res: Response, next: NextFunction) =
   
   activity.violations += violationScore;
   
-  // Blocking-Entscheidung - HÖHERER SCHWELLWERT für weniger False Positives
-  if (activity.violations > 10 || activity.blocked) {
+  // Blocking-Entscheidung - SEHR HOHER SCHWELLWERT für USA/Europa-Schutz
+  let blockingThreshold = 20; // Sehr hoch für sichere Länder
+  
+  // Niedrigere Schwelle nur für sehr verdächtige Länder
+  if (activity.country && SUSPICIOUS_COUNTRIES.includes(activity.country)) {
+    blockingThreshold = 8;
+  }
+  
+  if (activity.violations > blockingThreshold || activity.blocked) {
     activity.blocked = true;
     botActivity.set(clientIp, activity);
     
-    console.log(`🤖 BOT BLOCKED: IP=${clientIp}, Country=${activity.country}, UA=${userAgent}, Violations=${activity.violations}`);
+    console.log(`🤖 BOT BLOCKED: IP=${clientIp}, Country=${activity.country}, UA=${userAgent}, Violations=${activity.violations}, Threshold=${blockingThreshold}`);
     
     return res.status(429).json({
       error: 'Request blocked - suspicious activity detected',
       code: 'BOT_DETECTED',
-      retryAfter: 1800 // 30 Minuten statt 1 Stunde
+      retryAfter: 1800 // 30 Minuten
     });
   }
   
@@ -232,20 +251,23 @@ export const aggressiveBotRateLimit = rateLimit({
       return true;
     }
     
-    // Skip für Kuba
+    // Skip für sichere Länder (Kuba, USA, Europa)
     try {
       const geoip = require('geoip-lite');
       const geo = geoip.lookup(clientIp);
-      if (geo && geo.country === 'CU') {
-        return true;
+      if (geo && geo.country) {
+        const safeCountries = ['CU', 'US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'NZ', 'SE', 'NO', 'DK', 'FI', 'NL', 'BE', 'CH', 'AT'];
+        if (safeCountries.includes(geo.country)) {
+          return true; // Skip aggressive limits für sichere Länder
+        }
       }
     } catch (error) {
       // Fallback
     }
     
-    // ERHÖHT: Nur für sehr verdächtige IPs anwenden
+    // ERHÖHT: Nur für sehr verdächtige IPs anwenden (höhere Schwelle)
     const activity = botActivity.get(clientIp);
-    return !activity || activity.violations < 5;
+    return !activity || activity.violations < 10;
   }
 });
 
