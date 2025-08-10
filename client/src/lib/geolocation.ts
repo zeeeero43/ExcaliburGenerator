@@ -15,8 +15,9 @@ export async function detectLanguageFromLocation(): Promise<string> {
     const browserLang = navigator.language.split('-')[0];
     console.log('Browser language detected:', browserLang);
     
-    // Only German gets German, everything else gets Spanish
-    if (browserLang === 'de') return 'de';
-    return 'es'; // Spanish as global default
+    // NO German for regular users - only Spanish or English
+    // German is reserved for logged-in admins only
+    if (browserLang === 'en') return 'en';
+    return 'es'; // Spanish as global default (including for German users)
   }
 }

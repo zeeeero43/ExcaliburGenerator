@@ -1404,18 +1404,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`🌍 LOCAL IP: ${clientIp} is local/development IP, using default CU`);
       }
       
-      // Map countries to languages - Default to Spanish for ALL users
+      // Map countries to languages - NO GERMAN for regular users!
+      // German is ONLY available for logged-in admins
       let language = 'es'; // Spanish as global default
       
       switch(country) {
-        case 'DE':
-        case 'AT':
-        case 'CH':
-          language = 'de';
+        case 'US':
+        case 'GB':
+        case 'CA':
+        case 'AU':
+        case 'NZ':
+        case 'IE':
+          language = 'en';
           break;
-        // Alle anderen Länder bekommen Spanisch als Standard
+        // NO GERMAN CASE - German is admin-only!
+        // case 'DE': // REMOVED - no auto-German anymore
+        // case 'AT': // REMOVED - no auto-German anymore  
+        // case 'CH': // REMOVED - no auto-German anymore
         default:
-          language = 'es'; // Spanish as global default for all countries
+          language = 'es'; // Spanish as default (including for German-speaking countries)
       }
       
       res.json({ 
