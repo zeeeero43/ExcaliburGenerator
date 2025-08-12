@@ -140,13 +140,19 @@ export const botProtection = (req: Request, res: Response, next: NextFunction) =
     return next();
   }
   
-  // Skip für legitime Länder (Kuba, USA, Europa)
+  // KRITISCH: CUBA KOMPLETT VON BOT-PROTECTION BEFREIEN
   try {
     const geoip = require('geoip-lite');
     const geo = geoip.lookup(clientIp);
     if (geo && geo.country) {
-      // SICHERE LÄNDER: Kuba, USA, Kanada, Europa
-      const safeCountries = ['CU', 'US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'NZ', 'SE', 'NO', 'DK', 'FI', 'NL', 'BE', 'CH', 'AT'];
+      // KUBA: KOMPLETTE BEFREIUNG - HÖCHSTE PRIORITÄT
+      if (geo.country === 'CU') {
+        console.log(`🇨🇺 CUBA-COMPLETE-EXEMPTION: IP ${clientIp} - Bot-Protection KOMPLETT deaktiviert für kubanischen Benutzer`);
+        return next(); // Sofortiger Durchgang ohne jede Prüfung
+      }
+      
+      // SICHERE LÄNDER: USA, Kanada, Europa - Minimaler Schutz
+      const safeCountries = ['US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'NZ', 'SE', 'NO', 'DK', 'FI', 'NL', 'BE', 'CH', 'AT'];
       
       if (safeCountries.includes(geo.country)) {
         console.log(`✅ SAFE-COUNTRY: IP ${clientIp} aus ${geo.country} - Bot-Schutz minimal`);
@@ -155,6 +161,19 @@ export const botProtection = (req: Request, res: Response, next: NextFunction) =
     }
   } catch (error) {
     // Fallback wenn geoip nicht verfügbar
+    console.log(`🔍 GEOIP-FEHLER für IP ${clientIp}: ${error.message}`);
+    
+    // CRITICAL FALLBACK: Bekannte kubanische IP-Ranges falls GeoIP versagt
+    // Cuba Internet Service Provider IP Ranges (bekannte Bereiche)
+    const cubanIpRanges = [
+      '181.225.', '190.15.', '152.206.', '200.55.', '200.14.', 
+      '169.158.', '190.6.', '200.13.', '181.48.', '200.16.'
+    ];
+    
+    if (cubanIpRanges.some(range => clientIp.startsWith(range))) {
+      console.log(`🇨🇺 CUBA-IP-RANGE-DETECTED: IP ${clientIp} - Bot-Protection KOMPLETT deaktiviert (Fallback)`);
+      return next();
+    }
   }
   
   // Aktivität tracken
