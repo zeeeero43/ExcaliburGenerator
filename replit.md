@@ -30,7 +30,7 @@ Project pricing: Final negotiated price €1500 (originally €500 scope, propos
     - **Contact & Inquiry System**: Form validation, structured inquiry storage, WhatsApp and email integration.
     - **Admin Panel**: Secure login, user-friendly dashboard for product, category, subcategory, and image management. Supports dynamic image URLs and site settings.
     - **Analytics System**: Tracks unique visitors by IP and top products, with country detection and mobile device tracking, optimized for offline functionality using `geoip-lite`.
-    - **Security**: Enterprise-grade security implemented with rate limiting, brute force protection, session security, MIME and magic number validation for uploads, input sanitization, security headers (Helmet), Zod schema validation, OWASP compliance, and region blocking (China & Singapore). **CRITICAL FIX (Jan 2025)**: Cuban users now have COMPLETE exemption from ALL bot protection measures to prevent legitimate customers from being blocked.
+    - **Security**: Enterprise-grade security implemented with rate limiting, brute force protection, session security, MIME and magic number validation for uploads, input sanitization, security headers (Helmet), Zod schema validation, OWASP compliance, and region blocking (China & Singapore). **CRITICAL FIXES (Jan 2025)**: Cuban users have COMPLETE exemption from ALL bot protection measures. Admin login areas completely exempted from bot protection. Panama and all Latin American countries added to safe countries list. Bot blocking thresholds increased dramatically (20→50, 8→25) to prevent legitimate user blocks.
 
 ## External Dependencies
 

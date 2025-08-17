@@ -121,9 +121,12 @@ export const botProtection = (req: Request, res: Response, next: NextFunction) =
   const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
   const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
   
-  // Skip für statische Assets
+  // Skip für statische Assets UND Admin-Bereiche
   const staticPaths = ['/uploads/', '/assets/', '/favicon.ico', '/_vite/', '/src/', '/@vite/', '/node_modules/', '/api/placeholder/'];
-  if (staticPaths.some(path => req.path.startsWith(path))) {
+  const adminPaths = ['/api/admin/login', '/admin'];
+  
+  if (staticPaths.some(path => req.path.startsWith(path)) || adminPaths.some(path => req.path.startsWith(path))) {
+    console.log(`🔓 ADMIN-SKIP: ${req.path} - Bot-Schutz für Admin-Bereiche deaktiviert`);
     return next();
   }
   
@@ -151,8 +154,13 @@ export const botProtection = (req: Request, res: Response, next: NextFunction) =
         return next(); // Sofortiger Durchgang ohne jede Prüfung
       }
       
-      // SICHERE LÄNDER: USA, Kanada, Europa - Minimaler Schutz
-      const safeCountries = ['US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'NZ', 'SE', 'NO', 'DK', 'FI', 'NL', 'BE', 'CH', 'AT'];
+      // SICHERE LÄNDER: Erweitert um Lateinamerika für Kuba-Geschäft
+      const safeCountries = [
+        // Nordamerika & Europa (Original)
+        'US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'NZ', 'SE', 'NO', 'DK', 'FI', 'NL', 'BE', 'CH', 'AT',
+        // Lateinamerika (Wichtig für Kuba-Business)
+        'PA', 'MX', 'AR', 'BR', 'CO', 'PE', 'CL', 'EC', 'UY', 'PY', 'BO', 'VE', 'GT', 'HN', 'SV', 'NI', 'CR', 'DO', 'JM'
+      ];
       
       if (safeCountries.includes(geo.country)) {
         console.log(`✅ SAFE-COUNTRY: IP ${clientIp} aus ${geo.country} - Bot-Schutz minimal`);
@@ -215,12 +223,12 @@ export const botProtection = (req: Request, res: Response, next: NextFunction) =
   
   activity.violations += violationScore;
   
-  // Blocking-Entscheidung - SEHR HOHER SCHWELLWERT für USA/Europa-Schutz
-  let blockingThreshold = 20; // Sehr hoch für sichere Länder
+  // GELOCKERTE Blocking-Entscheidung - SEHR HOHE SCHWELLWERTE
+  let blockingThreshold = 50; // STARK erhöht - war 20
   
-  // Niedrigere Schwelle nur für sehr verdächtige Länder
+  // Niedrigere Schwelle nur für sehr verdächtige Länder (aber auch erhöht)
   if (activity.country && SUSPICIOUS_COUNTRIES.includes(activity.country)) {
-    blockingThreshold = 8;
+    blockingThreshold = 25; // Erhöht von 8 auf 25
   }
   
   if (activity.violations > blockingThreshold || activity.blocked) {
@@ -275,7 +283,12 @@ export const aggressiveBotRateLimit = rateLimit({
       const geoip = require('geoip-lite');
       const geo = geoip.lookup(clientIp);
       if (geo && geo.country) {
-        const safeCountries = ['CU', 'US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'NZ', 'SE', 'NO', 'DK', 'FI', 'NL', 'BE', 'CH', 'AT'];
+        const safeCountries = [
+          // Nordamerika & Europa 
+          'US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'AU', 'NZ', 'SE', 'NO', 'DK', 'FI', 'NL', 'BE', 'CH', 'AT',
+          // Lateinamerika (aktualisiert für Konsistenz)
+          'CU', 'PA', 'MX', 'AR', 'BR', 'CO', 'PE', 'CL', 'EC', 'UY', 'PY', 'BO', 'VE', 'GT', 'HN', 'SV', 'NI', 'CR', 'DO', 'JM'
+        ];
         if (safeCountries.includes(geo.country)) {
           return true; // Skip aggressive limits für sichere Länder
         }
@@ -315,4 +328,12 @@ export const getBotStats = () => {
   }
   
   return stats;
+};
+
+// NOTFALL-FUNKTION: Alle Bot-Blocks löschen (für Admin-Hilfe)
+export const clearAllBotBlocks = () => {
+  console.log(`🧹 CLEARING ALL BOT BLOCKS: Removing ${botActivity.size} tracked IPs`);
+  botActivity.clear();
+  console.log('✅ ALL BOT BLOCKS CLEARED - Fresh start for all IPs');
+  return { cleared: true, message: 'All bot blocks have been cleared' };
 };
