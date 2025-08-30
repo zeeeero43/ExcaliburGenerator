@@ -1146,6 +1146,8 @@ export const translations = {
     bestQualityDesc: "Internationally certified products at best price",
     fastDelivery: "Fast Pickup",
     fastDeliveryDesc: "Fast pickup availability - Habana del Este",
+    technicalSupport: "Technical Support",
+    technicalSupportDesc: "Specialized advisory 24/7",
     
     // Products
     ourProducts: "OUR PRODUCTS",
