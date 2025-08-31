@@ -1,0 +1,205 @@
+Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: Object
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+client:560 [vite] server connection lost. Polling for restart...
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 1, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_1_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_1_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: ENERGÍA SOLAR PARA CUBA
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 2, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_2_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_2_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: GENERADORES EXCALIBUR
+HeroSlider.tsx:38 Hero Title Debug: {slideNumber: 3, language: undefined, siteSettings: Array(0), allSettings: 7}
+HeroSlider.tsx:49 Checking setting: hero_title_3_undefined found: undefined
+HeroSlider.tsx:55 Fallback to Spanish: hero_title_3_es found: undefined
+HeroSlider.tsx:61 Using translation fallback: SOLUCIONES COMPLETAS

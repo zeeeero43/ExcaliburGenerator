@@ -34,35 +34,24 @@ export function HeroSlider() {
 
   // Helfer-Funktion um Hero-Titel aus Settings oder Fallback aus Übersetzungen zu holen
   const getHeroTitle = (slideNumber: number) => {
-    // Debug: Logge verfügbare settings
-    console.log('Hero Title Debug:', {
-      slideNumber,
-      language,
-      siteSettings: siteSettings.filter(s => s.key.includes('hero_title')),
-      allSettings: siteSettings.length
-    });
+    // Verwende 'es' als Fallback wenn language undefined ist
+    const currentLang = language || 'es';
     
     // Versuche zuerst die aktuelle Sprache
-    let settingKey = `hero_title_${slideNumber}_${language}`;
+    let settingKey = `hero_title_${slideNumber}_${currentLang}`;
     let setting = siteSettings.find(s => s.key === settingKey);
     
-    console.log('Checking setting:', settingKey, 'found:', setting);
-    
     // Falls aktueller Sprache nicht verfügbar, versuche Spanisch (Fallback)
-    if (!setting?.value && language !== 'es') {
+    if (!setting?.value && currentLang !== 'es') {
       settingKey = `hero_title_${slideNumber}_es`;
       setting = siteSettings.find(s => s.key === settingKey);
-      console.log('Fallback to Spanish:', settingKey, 'found:', setting);
     }
     
     // Falls immer noch kein Custom-Titel, verwende Standard-Übersetzung
     if (!setting?.value) {
-      const fallback = t(`heroTitle${slideNumber}`);
-      console.log('Using translation fallback:', fallback);
-      return fallback;
+      return t(`heroTitle${slideNumber}`);
     }
     
-    console.log('Using custom title:', setting.value);
     return setting.value;
   };
 
