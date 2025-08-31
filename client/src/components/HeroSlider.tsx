@@ -17,7 +17,7 @@ interface Slide {
 }
 
 export function HeroSlider() {
-  const { t, language } = useLanguage();
+  const { t, currentLanguage: language } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // 🇨🇺 CUBAN OPTIMIZATION: Enhanced loading for site settings
@@ -37,21 +37,31 @@ export function HeroSlider() {
     // Verwende 'es' als Fallback wenn language undefined ist
     const currentLang = language || 'es';
     
+    // Debug: Log current language and available titles
+    console.log(`🌐 HERO TITLE: Slide ${slideNumber}, Language: ${currentLang}`);
+    console.log(`🔍 Available hero titles:`, siteSettings.filter(s => s.key.includes('hero_title')));
+    
     // Versuche zuerst die aktuelle Sprache
     let settingKey = `hero_title_${slideNumber}_${currentLang}`;
     let setting = siteSettings.find(s => s.key === settingKey);
+    
+    console.log(`🎯 Looking for: ${settingKey}, Found:`, setting?.value || 'NONE');
     
     // Falls aktueller Sprache nicht verfügbar, versuche Spanisch (Fallback)
     if (!setting?.value && currentLang !== 'es') {
       settingKey = `hero_title_${slideNumber}_es`;
       setting = siteSettings.find(s => s.key === settingKey);
+      console.log(`🔄 Spanish fallback: ${settingKey}, Found:`, setting?.value || 'NONE');
     }
     
     // Falls immer noch kein Custom-Titel, verwende Standard-Übersetzung
     if (!setting?.value) {
-      return t(`heroTitle${slideNumber}`);
+      const fallback = t(`heroTitle${slideNumber}`);
+      console.log(`📖 Using translation fallback:`, fallback);
+      return fallback;
     }
     
+    console.log(`✅ Using custom title:`, setting.value);
     return setting.value;
   };
 
