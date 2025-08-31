@@ -18,6 +18,10 @@ interface WebsiteImageArea {
   description: string;
   location: string;
   settingKey: string;
+  titleKeys?: {
+    es: string;
+    en: string;
+  };
 }
 
 // Website-Bereiche die Bilder benötigen
@@ -27,21 +31,33 @@ const websiteImageAreas: WebsiteImageArea[] = [
     name: 'Hero Bild 1',
     description: 'Erstes Bild im Hero-Slider',
     location: 'Startseite - Hero Slider',
-    settingKey: 'hero_image_1'
+    settingKey: 'hero_image_1',
+    titleKeys: {
+      es: 'hero_title_1_es',
+      en: 'hero_title_1_en'
+    }
   },
   {
     id: 'hero-2',
     name: 'Hero Bild 2',
     description: 'Zweites Bild im Hero-Slider',
     location: 'Startseite - Hero Slider',
-    settingKey: 'hero_image_2'
+    settingKey: 'hero_image_2',
+    titleKeys: {
+      es: 'hero_title_2_es',
+      en: 'hero_title_2_en'
+    }
   },
   {
     id: 'hero-3',
     name: 'Hero Bild 3',
     description: 'Drittes Bild im Hero-Slider',
     location: 'Startseite - Hero Slider',
-    settingKey: 'hero_image_3'
+    settingKey: 'hero_image_3',
+    titleKeys: {
+      es: 'hero_title_3_es',
+      en: 'hero_title_3_en'
+    }
   },
   {
     id: 'about-team',
@@ -60,8 +76,12 @@ export default function AdminSiteImages() {
   const [selectedImage, setSelectedImage] = useState<UploadedImage | null>(null);
   const [customImageUrl, setCustomImageUrl] = useState<string>('');
   const [selectedTab, setSelectedTab] = useState<'uploads' | 'url' | 'upload'>('uploads');
+  const [heroTitles, setHeroTitles] = useState<{
+    es: string;
+    en: string;
+  }>({ es: '', en: '' });
 
-  // Wenn ein Bereich ausgewählt wird, die aktuelle URL in das URL-Feld laden
+  // Wenn ein Bereich ausgewählt wird, die aktuelle URL und Titel laden
   const handleAreaSelection = (areaId: string) => {
     setSelectedImageArea(areaId);
     setSelectedImage(null);
@@ -71,6 +91,15 @@ export default function AdminSiteImages() {
     if (area) {
       const currentUrl = getCurrentImageForArea(area.settingKey);
       setCustomImageUrl(currentUrl || '');
+      
+      // Hero-Titel laden falls vorhanden
+      if (area.titleKeys) {
+        const titleEs = getCurrentImageForArea(area.titleKeys.es) || '';
+        const titleEn = getCurrentImageForArea(area.titleKeys.en) || '';
+        setHeroTitles({ es: titleEs, en: titleEn });
+      } else {
+        setHeroTitles({ es: '', en: '' });
+      }
       
       // Wechsel zur URL-Tab wenn bereits ein Bild zugewiesen ist
       if (currentUrl) {
@@ -132,6 +161,50 @@ export default function AdminSiteImages() {
     },
   });
 
+  // Mutation zum Speichern der Hero-Titel
+  const saveTitlesMutation = useMutation({
+    mutationFn: async ({ titleKeys, titles }: { titleKeys: { es: string; en: string }, titles: { es: string; en: string } }) => {
+      // Speichere beide Titel parallel
+      const promises = [
+        fetch('/api/admin/site-settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: titleKeys.es, value: titles.es }),
+        }),
+        fetch('/api/admin/site-settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: titleKeys.en, value: titles.en }),
+        })
+      ];
+
+      const responses = await Promise.all(promises);
+      const failedResponses = responses.filter(r => !r.ok);
+      
+      if (failedResponses.length > 0) {
+        throw new Error('Fehler beim Speichern der Titel');
+      }
+
+      return { success: true };
+    },
+    onSuccess: () => {
+      toast({
+        title: "Titel gespeichert",
+        description: "Die Hero-Titel wurden erfolgreich aktualisiert.",
+      });
+      // Invalidate cache to refresh data
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/site-settings'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/site-settings'] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Fehler",
+        description: error.message || "Die Titel konnten nicht gespeichert werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleAssignUploadedImage = () => {
     if (!selectedImageArea || !selectedImage) return;
     
@@ -153,6 +226,18 @@ export default function AdminSiteImages() {
     assignImageMutation.mutate({
       settingKey: area.settingKey,
       imageUrl: customImageUrl.trim()
+    });
+  };
+
+  const handleSaveHeroTitles = () => {
+    if (!selectedImageArea) return;
+    
+    const area = websiteImageAreas.find(a => a.id === selectedImageArea);
+    if (!area || !area.titleKeys) return;
+
+    saveTitlesMutation.mutate({
+      titleKeys: area.titleKeys,
+      titles: heroTitles
     });
   };
 
@@ -300,6 +385,21 @@ export default function AdminSiteImages() {
                       </div>
                     ) : (
                       <p className="text-sm text-orange-600">Kein Bild zugewiesen</p>
+                    )}
+                    
+                    {/* Hero-Titel anzeigen falls verfügbar */}
+                    {area.titleKeys && (
+                      <div className="mt-3 p-3 bg-blue-50 rounded-md">
+                        <p className="text-sm font-medium text-blue-800 mb-2">Aktuelle Titel:</p>
+                        <div className="space-y-1">
+                          <p className="text-xs">
+                            <span className="font-medium">Spanisch:</span> {getCurrentImageForArea(area.titleKeys.es) || 'Nicht gesetzt'}
+                          </p>
+                          <p className="text-xs">
+                            <span className="font-medium">Englisch:</span> {getCurrentImageForArea(area.titleKeys.en) || 'Nicht gesetzt'}
+                          </p>
+                        </div>
+                      </div>
                     )}
                   </CardContent>
                 </Card>
@@ -547,10 +647,64 @@ export default function AdminSiteImages() {
               )}
             </TabsContent>
           </Tabs>
+
+          {/* Hero-Titel Editor */}
+          {selectedImageArea && websiteImageAreas.find(a => a.id === selectedImageArea)?.titleKeys && (
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <span className="text-lg">📝</span>
+                  Hero-Titel bearbeiten
+                </CardTitle>
+                <CardDescription>
+                  Bearbeiten Sie die Titel, die im Hero-Slider angezeigt werden. Diese werden in den jeweiligen Sprachen angezeigt.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="title-es">Spanischer Titel</Label>
+                  <Input
+                    id="title-es"
+                    value={heroTitles.es}
+                    onChange={(e) => setHeroTitles(prev => ({ ...prev, es: e.target.value }))}
+                    placeholder="z.B. ENERGÍA SOLAR PARA CUBA"
+                    className="mt-1"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="title-en">Englischer Titel</Label>
+                  <Input
+                    id="title-en"
+                    value={heroTitles.en}
+                    onChange={(e) => setHeroTitles(prev => ({ ...prev, en: e.target.value }))}
+                    placeholder="z.B. SOLAR ENERGY FOR CUBA"
+                    className="mt-1"
+                  />
+                </div>
+
+                <Button
+                  onClick={handleSaveHeroTitles}
+                  disabled={saveTitlesMutation.isPending || (!heroTitles.es.trim() && !heroTitles.en.trim())}
+                  className="w-full"
+                >
+                  {saveTitlesMutation.isPending ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Titel speichern...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Titel speichern
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
-
-
     </div>
   );
 }

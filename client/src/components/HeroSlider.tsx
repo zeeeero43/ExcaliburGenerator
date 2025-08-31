@@ -17,7 +17,7 @@ interface Slide {
 }
 
 export function HeroSlider() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // 🇨🇺 CUBAN OPTIMIZATION: Enhanced loading for site settings
@@ -29,11 +29,31 @@ export function HeroSlider() {
     return setting?.value || fallback;
   };
 
+  // Helfer-Funktion um Hero-Titel aus Settings oder Fallback aus Übersetzungen zu holen
+  const getHeroTitle = (slideNumber: number) => {
+    // Versuche zuerst die aktuelle Sprache
+    let settingKey = `hero_title_${slideNumber}_${language}`;
+    let setting = siteSettings.find(s => s.key === settingKey);
+    
+    // Falls aktueller Sprache nicht verfügbar, versuche Spanisch (Fallback)
+    if (!setting?.value && language !== 'es') {
+      settingKey = `hero_title_${slideNumber}_es`;
+      setting = siteSettings.find(s => s.key === settingKey);
+    }
+    
+    // Falls immer noch kein Custom-Titel, verwende Standard-Übersetzung
+    if (!setting?.value) {
+      return t(`heroTitle${slideNumber}`);
+    }
+    
+    return setting.value;
+  };
+
   const slides: Slide[] = [
     {
       id: 1,
       image: getImageUrl('hero_image_1', 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080'),
-      title: t('heroTitle1'),
+      title: getHeroTitle(1), // Verwendet aktuelle Sprache oder Fallback
       subtitle: '',
       buttonText: t('viewProducts'),
       buttonAction: () => window.location.href = '/products'
@@ -41,7 +61,7 @@ export function HeroSlider() {
     {
       id: 2,
       image: getImageUrl('hero_image_2', 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080'),
-      title: t('heroTitle2'),
+      title: getHeroTitle(2), // Verwendet aktuelle Sprache oder Fallback
       subtitle: '',
       buttonText: t('viewProducts'),
       buttonAction: () => window.location.href = '/products'
@@ -49,7 +69,7 @@ export function HeroSlider() {
     {
       id: 3,
       image: getImageUrl('hero_image_3', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080'),
-      title: t('heroTitle3'),
+      title: getHeroTitle(3), // Verwendet aktuelle Sprache oder Fallback
       subtitle: '',
       buttonText: t('viewProducts'),
       buttonAction: () => window.location.href = '/products'
