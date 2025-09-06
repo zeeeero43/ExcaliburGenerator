@@ -8,7 +8,7 @@ interface TurnstileVerificationProps {
 declare global {
   interface Window {
     turnstile: {
-      render: (elementId: string, options: {
+      render: (elementId: string | HTMLElement, options: {
         sitekey: string;
         callback: (token: string) => void;
         'error-callback'?: () => void;
@@ -16,8 +16,12 @@ declare global {
         theme?: 'light' | 'dark';
         size?: 'normal' | 'compact';
       }) => string;
+      ready: (callback: () => void) => void;
       reset: (widgetId?: string) => void;
       remove: (widgetId?: string) => void;
+      getResponse: (widgetId?: string) => string;
+      execute: (elementId?: string) => void;
+      isExpired: (widgetId?: string) => boolean;
     };
   }
 }
@@ -34,49 +38,98 @@ export function TurnstileVerification({ onVerified, isVisible }: TurnstileVerifi
 
   const loadTurnstileScript = () => {
     return new Promise<void>((resolve, reject) => {
-      if (scriptLoaded.current) {
+      if (scriptLoaded.current && window.turnstile) {
+        console.log('✅ Turnstile script already loaded');
         resolve();
         return;
       }
 
-      if (window.turnstile) {
+      // Check if script is already in DOM
+      const existingScript = document.querySelector('script[src*="turnstile"]');
+      if (existingScript && window.turnstile) {
+        scriptLoaded.current = true;
+        console.log('✅ Found existing Turnstile script');
+        resolve();
+        return;
+      }
+
+      console.log('🔄 Loading Turnstile script with window callback...');
+      
+      // Define global callback function for Turnstile to call
+      const callbackName = `onTurnstileLoad_${Date.now()}`;
+      (window as any)[callbackName] = () => {
+        console.log('✅ Turnstile loaded via window callback');
         scriptLoaded.current = true;
         resolve();
-        return;
-      }
+        // Clean up the global callback
+        delete (window as any)[callbackName];
+      };
 
       const script = document.createElement('script');
-      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      script.src = `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=${callbackName}`;
       script.async = true;
       script.defer = true;
       
-      script.onload = () => {
-        scriptLoaded.current = true;
-        resolve();
-      };
+      let timeout: NodeJS.Timeout;
       
-      script.onerror = () => {
+      script.onerror = (error) => {
+        clearTimeout(timeout);
+        console.error('❌ Failed to load Turnstile script:', error);
+        delete (window as any)[callbackName];
         reject(new Error('Failed to load Turnstile script'));
       };
 
+      // Add timeout
+      timeout = setTimeout(() => {
+        console.error('❌ Turnstile script loading timeout');
+        delete (window as any)[callbackName];
+        reject(new Error('Script loading timeout'));
+      }, 15000);
+
+      console.log('📦 Adding script to document head...');
       document.head.appendChild(script);
     });
   };
 
-  const renderTurnstile = async () => {
-    if (!turnstileRef.current || !window.turnstile) return;
+  const renderTurnstile = () => {
+    if (!turnstileRef.current) {
+      console.error('❌ Turnstile ref not available');
+      setError('Failed to load security verification');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!window.turnstile) {
+      console.error('❌ Turnstile global not available for rendering');
+      setError('Failed to load security verification');
+      setIsLoading(false);
+      return;
+    }
 
     try {
-      widgetId.current = window.turnstile.render(turnstileRef.current, {
-        sitekey: SITE_KEY,
-        callback: handleTurnstileSuccess,
-        'error-callback': handleTurnstileError,
-        'expired-callback': handleTurnstileExpired,
-        theme: 'light',
-        size: 'normal'
+      console.log('🎯 Rendering Turnstile widget with explicit rendering...');
+      
+      // Use turnstile.ready() to ensure the API is fully initialized
+      window.turnstile.ready(() => {
+        try {
+          widgetId.current = window.turnstile.render(turnstileRef.current!, {
+            sitekey: SITE_KEY,
+            callback: handleTurnstileSuccess,
+            'error-callback': handleTurnstileError,
+            'expired-callback': handleTurnstileExpired,
+            theme: 'light',
+            size: 'normal'
+          });
+          console.log('✅ Turnstile widget rendered successfully:', widgetId.current);
+          setIsLoading(false);
+        } catch (renderError) {
+          console.error('❌ Failed to render within ready callback:', renderError);
+          setError('Failed to load security verification');
+          setIsLoading(false);
+        }
       });
     } catch (error) {
-      console.error('Failed to render Turnstile:', error);
+      console.error('❌ Failed to setup Turnstile rendering:', error);
       setError('Failed to load security verification');
       setIsLoading(false);
     }
@@ -212,18 +265,34 @@ export function TurnstileVerification({ onVerified, isVisible }: TurnstileVerifi
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                 <p className="text-red-600 text-sm">{error}</p>
-                <button 
-                  onClick={resetTurnstile}
-                  className="mt-2 text-red-600 text-sm underline hover:no-underline"
-                >
-                  Try again
-                </button>
+                <div className="mt-3 space-y-2">
+                  <button 
+                    onClick={resetTurnstile}
+                    className="block w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    Try again
+                  </button>
+                  {process.env.NODE_ENV === 'development' && (
+                    <button 
+                      onClick={() => {
+                        console.log('🧪 Development bypass activated');
+                        onVerified();
+                      }}
+                      className="block w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
+                    >
+                      Development Bypass (Skip Verification)
+                    </button>
+                  )}
+                </div>
               </div>
             )}
 
             <div className="text-xs text-excalibur-gray/50 border-t border-gray-200 pt-4">
               <p>This security verification is provided by Cloudflare.</p>
               <p>Your data is handled confidentially.</p>
+              {process.env.NODE_ENV === 'development' && (
+                <p className="text-orange-600 mt-1">Development mode: External script loading may be restricted.</p>
+              )}
             </div>
           </div>
         )}
