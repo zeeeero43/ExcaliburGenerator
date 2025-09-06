@@ -93,8 +93,8 @@ export function CustomBotProtection({ onVerified, isVisible }: CustomBotProtecti
   const generateInteractionChallenge = () => {
     const challenges = [
       "Click the blue circle",
-      "Tap the green button", 
-      "Touch the yellow square",
+      "Click the blue target", 
+      "Touch the blue circle",
       "Click here to continue"
     ];
     
