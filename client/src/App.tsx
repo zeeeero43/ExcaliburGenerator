@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "./components/Layout";
 import { useLanguage } from "./hooks/useLanguage";
+import { useVerification } from "./hooks/useVerification";
+import { TurnstileVerification } from "./components/TurnstileVerification";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
@@ -30,6 +32,7 @@ import { CartProvider } from "./contexts/CartContext";
 
 function Router() {
   const { isLoading } = useLanguage();
+  const { needsVerification, isLoading: isVerificationLoading, markAsVerified } = useVerification();
   const [location] = useLocation();
 
   // Scroll to top whenever route changes
@@ -37,7 +40,8 @@ function Router() {
     window.scrollTo(0, 0);
   }, [location]);
 
-  if (isLoading) {
+  // Show loading spinner while checking language or verification
+  if (isLoading || isVerificationLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -47,6 +51,16 @@ function Router() {
           <p className="text-excalibur-gray">Cargando...</p>
         </div>
       </div>
+    );
+  }
+
+  // Show Turnstile verification if needed
+  if (needsVerification) {
+    return (
+      <TurnstileVerification 
+        onVerified={markAsVerified}
+        isVisible={needsVerification}
+      />
     );
   }
 
