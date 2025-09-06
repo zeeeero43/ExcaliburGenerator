@@ -77,7 +77,7 @@ export function TurnstileVerification({ onVerified, isVisible }: TurnstileVerifi
       });
     } catch (error) {
       console.error('Failed to render Turnstile:', error);
-      setError('Fehler beim Laden der Sicherheitsverifikation');
+      setError('Failed to load security verification');
       setIsLoading(false);
     }
   };
@@ -103,12 +103,12 @@ export function TurnstileVerification({ onVerified, isVisible }: TurnstileVerifi
         document.cookie = `turnstile_verified=true; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Strict; Secure`;
         onVerified();
       } else {
-        setError('Verifikation fehlgeschlagen. Bitte versuchen Sie es erneut.');
+        setError('Verification failed. Please try again.');
         resetTurnstile();
       }
     } catch (error) {
       console.error('Verification error:', error);
-      setError('Netzwerkfehler. Bitte versuchen Sie es erneut.');
+      setError('Network error. Please try again.');
       resetTurnstile();
     } finally {
       setIsVerifying(false);
@@ -116,12 +116,12 @@ export function TurnstileVerification({ onVerified, isVisible }: TurnstileVerifi
   };
 
   const handleTurnstileError = () => {
-    setError('Sicherheitsverifikation fehlgeschlagen. Bitte laden Sie die Seite neu.');
+    setError('Security verification failed. Please reload the page.');
     setIsVerifying(false);
   };
 
   const handleTurnstileExpired = () => {
-    setError('Verifikation abgelaufen. Bitte versuchen Sie es erneut.');
+    setError('Verification expired. Please try again.');
     resetTurnstile();
   };
 
@@ -144,7 +144,7 @@ export function TurnstileVerification({ onVerified, isVisible }: TurnstileVerifi
         setTimeout(renderTurnstile, 100);
       } catch (error) {
         console.error('Failed to initialize Turnstile:', error);
-        setError('Fehler beim Laden der Sicherheitsverifikation');
+        setError('Failed to load security verification');
         setIsLoading(false);
       }
     };
@@ -174,23 +174,23 @@ export function TurnstileVerification({ onVerified, isVisible }: TurnstileVerifi
             <span className="text-white font-bold text-2xl">E</span>
           </div>
           <h1 className="text-2xl font-bold text-excalibur-gray mb-2">Excalibur Cuba</h1>
-          <p className="text-excalibur-gray/70">Sicherheitsverifikation</p>
+          <p className="text-excalibur-gray/70">Security Verification</p>
         </div>
 
         {isLoading ? (
           <div className="flex flex-col items-center gap-4">
             <div className="w-8 h-8 border-2 border-excalibur-blue border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-excalibur-gray">Lade Sicherheitsverifikation...</p>
+            <p className="text-excalibur-gray">Loading security verification...</p>
           </div>
         ) : (
           <div className="space-y-6">
             <div className="text-left">
               <h2 className="text-lg font-semibold text-excalibur-gray mb-2">
-                Sicherheitsüberprüfung erforderlich
+                Security Check Required
               </h2>
               <p className="text-sm text-excalibur-gray/70 mb-4">
-                Zum Schutz vor automatisierten Anfragen führen wir eine kurze Sicherheitsüberprüfung durch. 
-                Dies dauert nur wenige Sekunden.
+                To protect against automated requests, we perform a brief security check. 
+                This will only take a few seconds.
               </p>
             </div>
 
@@ -205,7 +205,7 @@ export function TurnstileVerification({ onVerified, isVisible }: TurnstileVerifi
             {isVerifying && (
               <div className="flex items-center justify-center gap-2 text-excalibur-blue">
                 <div className="w-4 h-4 border-2 border-excalibur-blue border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-sm">Verifikation läuft...</span>
+                <span className="text-sm">Verifying...</span>
               </div>
             )}
 
@@ -216,14 +216,14 @@ export function TurnstileVerification({ onVerified, isVisible }: TurnstileVerifi
                   onClick={resetTurnstile}
                   className="mt-2 text-red-600 text-sm underline hover:no-underline"
                 >
-                  Erneut versuchen
+                  Try again
                 </button>
               </div>
             )}
 
             <div className="text-xs text-excalibur-gray/50 border-t border-gray-200 pt-4">
-              <p>Diese Sicherheitsüberprüfung wird von Cloudflare bereitgestellt.</p>
-              <p>Ihre Daten werden vertraulich behandelt.</p>
+              <p>This security verification is provided by Cloudflare.</p>
+              <p>Your data is handled confidentially.</p>
             </div>
           </div>
         )}
