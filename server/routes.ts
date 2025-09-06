@@ -1303,6 +1303,123 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Cloudflare Turnstile verification endpoint
+  app.post("/api/verify-turnstile", async (req: AuthRequest, res) => {
+    try {
+      const { token } = req.body;
+      
+      if (!token) {
+        return res.status(400).json({ success: false, error: "Token is required" });
+      }
+
+      const SECRET_KEY = "0x4AAAAAABzt-D3eU971pkLbGDGKflHfZ_8";
+      
+      // Get client IP for Cloudflare verification
+      const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
+      const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
+      
+      console.log(`🔐 TURNSTILE VERIFICATION: IP ${clientIp}, Token: ${token.substring(0, 20)}...`);
+
+      // Verify token with Cloudflare
+      const formData = new URLSearchParams();
+      formData.append('secret', SECRET_KEY);
+      formData.append('response', token);
+      formData.append('remoteip', clientIp);
+
+      const cloudflareResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
+
+      const result = await cloudflareResponse.json();
+      
+      console.log(`🔐 CLOUDFLARE RESPONSE:`, result);
+
+      if (result.success) {
+        // Set verification cookie (30 days)
+        res.cookie('turnstile_verified', 'true', {
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          path: '/'
+        });
+        
+        console.log(`✅ TURNSTILE SUCCESS: IP ${clientIp} verified`);
+        res.json({ success: true });
+      } else {
+        console.log(`❌ TURNSTILE FAILED: IP ${clientIp}, Errors:`, result['error-codes']);
+        res.status(400).json({ 
+          success: false, 
+          error: "Verification failed",
+          details: result['error-codes']
+        });
+      }
+    } catch (error) {
+      console.error("💥 TURNSTILE ERROR:", error);
+      res.status(500).json({ 
+        success: false, 
+        error: "Internal server error" 
+      });
+    }
+  });
+
+  // Check if user needs Turnstile verification
+  app.get("/api/check-verification", async (req: AuthRequest, res) => {
+    try {
+      // Get client IP and check country
+      const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
+      const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
+      
+      // Skip verification for local/development IPs
+      if (clientIp === '127.0.0.1' || clientIp.startsWith('192.168.') || clientIp.startsWith('10.') || clientIp === 'unknown') {
+        console.log(`🔐 VERIFICATION SKIP: Local IP ${clientIp}`);
+        return res.json({ needsVerification: false, reason: 'local' });
+      }
+
+      // Check if IP is from Cuba (exclude from verification)
+      let country = 'OTHER';
+      try {
+        const geo = geoip.lookup(clientIp);
+        if (geo && geo.country) {
+          country = geo.country;
+          console.log(`🌍 GEO LOOKUP: IP ${clientIp} → ${geo.city || 'Unknown'}, ${country}`);
+        }
+      } catch (error) {
+        console.log(`🌍 GEO ERROR: ${error.message}`);
+      }
+
+      // Skip verification for Cuban users
+      if (country === 'CU') {
+        console.log(`🇨🇺 CUBA BYPASS: IP ${clientIp} from Cuba - no verification needed`);
+        return res.json({ needsVerification: false, reason: 'cuba' });
+      }
+
+      // Check if already verified (cookie exists)
+      const isVerified = req.cookies.turnstile_verified === 'true';
+      
+      if (isVerified) {
+        console.log(`✅ ALREADY VERIFIED: IP ${clientIp} has valid cookie`);
+        return res.json({ needsVerification: false, reason: 'verified' });
+      }
+
+      console.log(`🔐 VERIFICATION NEEDED: IP ${clientIp} from ${country}`);
+      res.json({ 
+        needsVerification: true, 
+        country: country,
+        ip: clientIp 
+      });
+      
+    } catch (error) {
+      console.error("💥 VERIFICATION CHECK ERROR:", error);
+      // On error, default to requiring verification for safety
+      res.json({ needsVerification: true, reason: 'error' });
+    }
+  });
+
   // Track product clicks (only when user clicks on product detail)
   app.post("/api/track/product", async (req: AuthRequest, res) => {
     try {
