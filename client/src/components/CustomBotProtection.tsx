@@ -170,22 +170,36 @@ export function CustomBotProtection({ onVerified, isVisible }: CustomBotProtecti
   const handleInteractionClick = async (e: React.MouseEvent) => {
     if (!interactionTarget) return;
 
-    const rect = containerRef.current?.getBoundingClientRect();
+    const rect = e.currentTarget.getBoundingClientRect();
     if (!rect) return;
 
     const clickX = e.clientX - rect.left;
     const clickY = e.clientY - rect.top;
     
-    // Check if click is near the target (within 40px radius)
+    // More generous click area (80px radius for easier clicking)
     const distance = Math.sqrt(
       Math.pow(clickX - interactionTarget.x, 2) + 
       Math.pow(clickY - interactionTarget.y, 2)
     );
 
-    if (distance <= 40) {
+    console.log('🎯 Click detection:', {
+      clickX: Math.round(clickX),
+      clickY: Math.round(clickY),
+      targetX: interactionTarget.x,
+      targetY: interactionTarget.y,
+      distance: Math.round(distance),
+      threshold: 80
+    });
+
+    if (distance <= 80) {
       await verifyHuman();
     } else {
-      setError('Please click exactly on the target. Try again.');
+      setError('Click closer to the blue circle. Try again.');
+      // Generate new position after failed attempt
+      setTimeout(() => {
+        setError(null);
+        generateInteractionChallenge();
+      }, 2000);
     }
   };
 
@@ -316,13 +330,13 @@ export function CustomBotProtection({ onVerified, isVisible }: CustomBotProtecti
             >
               {interactionTarget && (
                 <div 
-                  className="absolute w-10 h-10 bg-excalibur-blue rounded-full flex items-center justify-center animate-pulse cursor-pointer hover:scale-110 transition-transform"
+                  className="absolute w-16 h-16 bg-excalibur-blue rounded-full flex items-center justify-center animate-pulse cursor-pointer hover:scale-110 transition-transform border-4 border-white shadow-lg"
                   style={{
-                    left: interactionTarget.x - 20,
-                    top: interactionTarget.y - 20
+                    left: interactionTarget.x - 32,
+                    top: interactionTarget.y - 32
                   }}
                 >
-                  <span className="text-white font-bold">•</span>
+                  <span className="text-white font-bold text-xl">●</span>
                 </div>
               )}
               
