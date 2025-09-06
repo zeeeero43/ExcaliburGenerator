@@ -36,7 +36,7 @@ export function useVerification() {
     if (typeof document === 'undefined') return false;
     return document.cookie
       .split(';')
-      .some(cookie => cookie.trim().startsWith('turnstile_verified=true'));
+      .some(cookie => cookie.trim().startsWith('human_verified=true'));
   };
 
   // Update verification state when data changes

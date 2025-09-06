@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "./components/Layout";
 import { useLanguage } from "./hooks/useLanguage";
 import { useVerification } from "./hooks/useVerification";
-import { TurnstileVerification } from "./components/TurnstileVerification";
+import { CustomBotProtection } from "./components/CustomBotProtection";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
@@ -54,10 +54,10 @@ function Router() {
     );
   }
 
-  // Show Turnstile verification if needed
+  // Show custom bot protection if needed
   if (needsVerification) {
     return (
-      <TurnstileVerification 
+      <CustomBotProtection 
         onVerified={markAsVerified}
         isVisible={needsVerification}
       />

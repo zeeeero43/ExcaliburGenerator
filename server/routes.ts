@@ -1303,63 +1303,168 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Cloudflare Turnstile verification endpoint
-  app.post("/api/verify-turnstile", async (req: AuthRequest, res) => {
-    try {
-      const { token } = req.body;
+  // Good Bot Detection - Allow legitimate crawlers and search engines
+  function isGoodBot(userAgent: string, ip: string): boolean {
+    const goodBots = [
+      // Search engines
+      'googlebot', 'bingbot', 'duckduckbot', 'baiduspider', 'yandexbot',
+      // Social media crawlers
+      'facebookexternalhit', 'twitterbot', 'linkedinbot', 'whatsapp',
+      // Monitoring and SEO tools
+      'uptimerobot', 'pingdom', 'gtmetrix', 'site24x7',
+      // Archive and research
+      'archive.org', 'wayback', 'ia_archiver',
+      // Security scanners (legitimate)
+      'securitytrails', 'shodan'
+    ];
+
+    const lowerUA = userAgent.toLowerCase();
+    return goodBots.some(bot => lowerUA.includes(bot));
+  }
+
+  // Advanced Bot Detection - Check for suspicious patterns
+  function detectSuspiciousBot(fingerprint: any, mouseAnalysis: any, timeSpent: number, userAgent: string): { isBot: boolean, reason: string, score: number } {
+    let botScore = 0;
+    let reasons: string[] = [];
+
+    // Check fingerprint anomalies
+    if (!fingerprint) {
+      botScore += 50;
+      reasons.push('missing_fingerprint');
+    } else {
+      // Suspicious screen sizes (common bot values)
+      if (fingerprint.screenWidth === 1024 && fingerprint.screenHeight === 768) {
+        botScore += 15;
+        reasons.push('common_bot_resolution');
+      }
       
-      if (!token) {
-        return res.status(400).json({ success: false, error: "Token is required" });
+      // No plugins at all (suspicious for real browsers)
+      if (fingerprint.plugins.length === 0) {
+        botScore += 20;
+        reasons.push('no_plugins');
       }
 
-      const SECRET_KEY = "0x4AAAAAABzt-D3eU971pkLbGDGKflHfZ_8";
+      // Suspicious timezone mismatches
+      if (fingerprint.timezone === 'UTC' || !fingerprint.timezone) {
+        botScore += 10;
+        reasons.push('suspicious_timezone');
+      }
+
+      // Hardware concurrency too high (server environments)
+      if (fingerprint.hardwareConcurrency > 16) {
+        botScore += 15;
+        reasons.push('high_cpu_count');
+      }
+
+      // Missing or suspicious language settings
+      if (!fingerprint.language || fingerprint.language === 'en') {
+        botScore += 5;
+        reasons.push('generic_language');
+      }
+    }
+
+    // Mouse movement analysis
+    if (!mouseAnalysis || mouseAnalysis.score < 50) {
+      botScore += 30;
+      reasons.push('poor_mouse_behavior');
+    }
+
+    // Too fast completion (bots often complete immediately)
+    if (timeSpent < 2000) {
+      botScore += 25;
+      reasons.push('too_fast');
+    }
+
+    // User agent analysis
+    const suspiciousUA = [
+      'headless', 'phantom', 'selenium', 'webdriver', 'python', 'curl', 'wget', 'httpclient',
+      'bot', 'spider', 'crawler', 'scraper', 'automation'
+    ];
+    
+    const lowerUA = userAgent.toLowerCase();
+    if (suspiciousUA.some(sus => lowerUA.includes(sus))) {
+      botScore += 40;
+      reasons.push('suspicious_user_agent');
+    }
+
+    // Missing common browser headers
+    if (!userAgent.includes('Mozilla') || !userAgent.includes('AppleWebKit')) {
+      botScore += 20;
+      reasons.push('non_browser_ua');
+    }
+
+    return {
+      isBot: botScore >= 60, // Threshold for bot detection
+      reason: reasons.join(', '),
+      score: botScore
+    };
+  }
+
+  // Custom Human Verification Endpoint
+  app.post("/api/verify-human", async (req: AuthRequest, res) => {
+    try {
+      const { fingerprint, mouseAnalysis, timeSpent, stage } = req.body;
       
-      // Get client IP for Cloudflare verification
+      // Get client information
       const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
       const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
-      
-      console.log(`🔐 TURNSTILE VERIFICATION: IP ${clientIp}, Token: ${token.substring(0, 20)}...`);
+      const userAgent = req.headers['user-agent'] || '';
 
-      // Verify token with Cloudflare
-      const formData = new URLSearchParams();
-      formData.append('secret', SECRET_KEY);
-      formData.append('response', token);
-      formData.append('remoteip', clientIp);
+      console.log(`🤖 CUSTOM BOT CHECK: IP ${clientIp}, Stage: ${stage}`);
 
-      const cloudflareResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
-
-      const result = await cloudflareResponse.json();
-      
-      console.log(`🔐 CLOUDFLARE RESPONSE:`, result);
-
-      if (result.success) {
-        // Set verification cookie (30 days)
-        res.cookie('turnstile_verified', 'true', {
-          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+      // Check if it's a good bot first
+      if (isGoodBot(userAgent, clientIp)) {
+        console.log(`✅ GOOD BOT DETECTED: ${userAgent.substring(0, 50)}...`);
+        res.cookie('human_verified', 'true', {
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days for good bots
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict',
           path: '/'
         });
-        
-        console.log(`✅ TURNSTILE SUCCESS: IP ${clientIp} verified`);
-        res.json({ success: true });
-      } else {
-        console.log(`❌ TURNSTILE FAILED: IP ${clientIp}, Errors:`, result['error-codes']);
-        res.status(400).json({ 
+        return res.json({ success: true, reason: 'good_bot' });
+      }
+
+      // Advanced bot detection
+      const botAnalysis = detectSuspiciousBot(fingerprint, mouseAnalysis, timeSpent, userAgent);
+      
+      console.log(`🔍 BOT ANALYSIS:`, {
+        ip: clientIp,
+        isBot: botAnalysis.isBot,
+        score: botAnalysis.score,
+        reason: botAnalysis.reason,
+        mouseScore: mouseAnalysis?.score || 0,
+        timeSpent,
+        userAgent: userAgent.substring(0, 100)
+      });
+
+      if (botAnalysis.isBot) {
+        console.log(`🚫 BOT DETECTED: IP ${clientIp}, Score: ${botAnalysis.score}, Reason: ${botAnalysis.reason}`);
+        return res.status(403).json({ 
           success: false, 
-          error: "Verification failed",
-          details: result['error-codes']
+          reason: `Automated access detected: ${botAnalysis.reason}`,
+          botScore: botAnalysis.score
         });
       }
+
+      // Human verification successful
+      res.cookie('human_verified', 'true', {
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days for humans
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/'
+      });
+      
+      console.log(`✅ HUMAN VERIFIED: IP ${clientIp}, Mouse Score: ${mouseAnalysis?.score || 0}, Time: ${timeSpent}ms`);
+      res.json({ 
+        success: true, 
+        humanScore: 100 - botAnalysis.score,
+        mouseScore: mouseAnalysis?.score || 0
+      });
+
     } catch (error) {
-      console.error("💥 TURNSTILE ERROR:", error);
+      console.error("💥 HUMAN VERIFICATION ERROR:", error);
       res.status(500).json({ 
         success: false, 
         error: "Internal server error" 
@@ -1367,17 +1472,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Check if user needs Turnstile verification
+  // Check if user needs custom human verification
   app.get("/api/check-verification", async (req: AuthRequest, res) => {
     try {
-      // Get client IP and check country
+      // Get client information
       const forwarded = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.ip;
       const clientIp = Array.isArray(forwarded) ? forwarded[0] : forwarded.toString().split(',')[0].trim();
+      const userAgent = req.headers['user-agent'] || '';
       
       // Skip verification for local/development IPs
       if (clientIp === '127.0.0.1' || clientIp.startsWith('192.168.') || clientIp.startsWith('10.') || clientIp === 'unknown') {
         console.log(`🔐 VERIFICATION SKIP: Local IP ${clientIp}`);
         return res.json({ needsVerification: false, reason: 'local' });
+      }
+
+      // Check if it's a good bot (search engines, etc.)
+      if (isGoodBot(userAgent, clientIp)) {
+        console.log(`🤖 GOOD BOT BYPASS: ${userAgent.substring(0, 50)}...`);
+        return res.json({ needsVerification: false, reason: 'good_bot' });
       }
 
       // Check if IP is from Cuba (exclude from verification)
@@ -1398,19 +1510,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ needsVerification: false, reason: 'cuba' });
       }
 
-      // Check if already verified (cookie exists)
-      const isVerified = req.cookies.turnstile_verified === 'true';
+      // Check if already verified with custom system
+      const isVerified = req.cookies.human_verified === 'true';
       
       if (isVerified) {
-        console.log(`✅ ALREADY VERIFIED: IP ${clientIp} has valid cookie`);
+        console.log(`✅ ALREADY VERIFIED: IP ${clientIp} has valid human verification cookie`);
         return res.json({ needsVerification: false, reason: 'verified' });
       }
 
-      console.log(`🔐 VERIFICATION NEEDED: IP ${clientIp} from ${country}`);
+      console.log(`🤖 CUSTOM VERIFICATION NEEDED: IP ${clientIp} from ${country}`);
       res.json({ 
         needsVerification: true, 
         country: country,
-        ip: clientIp 
+        ip: clientIp,
+        verificationType: 'custom'
       });
       
     } catch (error) {
