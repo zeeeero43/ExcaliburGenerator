@@ -551,9 +551,9 @@ export default function AdminProductForm() {
       errors.push("Bitte wählen Sie eine gültige Kategorie aus");
     }
     
-    // SKU validation
-    if (data.sku && !/^[a-zA-Z0-9-_]+$/.test(data.sku)) {
-      errors.push("SKU darf nur Buchstaben, Zahlen, Bindestriche und Unterstriche enthalten");
+    // SKU validation - now much more lenient, just no empty strings
+    if (data.sku && data.sku.trim().length === 0) {
+      errors.push("SKU darf nicht leer sein");
     }
     
     // Price validation
@@ -565,17 +565,17 @@ export default function AdminProductForm() {
       errors.push("Neuer Preis muss eine gültige Zahl sein");
     }
     
-    // Image URL validation
-    const imageUrlRegex = /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i;
+    // Image URL validation - more lenient, just check if it's a URL
+    const imageUrlRegex = /^https?:\/\/.+/i;
     
-    if (data.mainImage && !imageUrlRegex.test(data.mainImage)) {
-      errors.push("Hauptbild-URL muss eine gültige Bild-URL sein (jpg, png, gif, webp)");
+    if (data.mainImage && data.mainImage.trim() && !imageUrlRegex.test(data.mainImage)) {
+      errors.push("Hauptbild-URL muss mit http:// oder https:// beginnen");
     }
     
     if (data.images) {
       data.images.forEach((img, index) => {
-        if (img && !imageUrlRegex.test(img)) {
-          errors.push(`Zusatzbild ${index + 1} muss eine gültige Bild-URL sein`);
+        if (img && img.trim() && !imageUrlRegex.test(img)) {
+          errors.push(`Zusatzbild ${index + 1} muss mit http:// oder https:// beginnen`);
         }
       });
     }
@@ -606,15 +606,24 @@ export default function AdminProductForm() {
     
     if (validationErrors.length > 0) {
       console.log('❌ Frontend validation failed:', validationErrors);
+      console.log('🍞 Attempting to show toast...');
       
-      const errorMessage = validationErrors.slice(0, 3).join(', ');
-      const moreErrors = validationErrors.length > 3 ? ` (und ${validationErrors.length - 3} weitere)` : '';
+      // Try to make toast more visible
+      const errorMessage = validationErrors.slice(0, 2).join(' • ');
+      const moreErrors = validationErrors.length > 2 ? ` (+${validationErrors.length - 2} weitere)` : '';
       
-      toast({
-        title: "❌ Eingabe-Fehler",
-        description: `Bitte korrigieren: ${errorMessage}${moreErrors}`,
-        variant: "destructive",
-      });
+      try {
+        toast({
+          title: "❌ Eingabe-Fehler",
+          description: `${errorMessage}${moreErrors}`,
+          variant: "destructive",
+        });
+        console.log('🍞 Toast called successfully');
+      } catch (toastError) {
+        console.error('🍞 Toast error:', toastError);
+        // Fallback: show as alert
+        alert(`Eingabe-Fehler:\n\n${validationErrors.join('\n')}`);
+      }
       return;
     }
     
@@ -626,14 +635,21 @@ export default function AdminProductForm() {
         return `${field}: ${error?.message || 'Ungültiger Wert'}`;
       });
       
-      const formErrorMessage = formErrors.slice(0, 3).join(', ');
-      const moreFormErrors = formErrors.length > 3 ? ` (und ${formErrors.length - 3} weitere)` : '';
+      const formErrorMessage = formErrors.slice(0, 2).join(' • ');
+      const moreFormErrors = formErrors.length > 2 ? ` (+${formErrors.length - 2} weitere)` : '';
       
-      toast({
-        title: "❌ Formular-Fehler",
-        description: `Validierung fehlgeschlagen: ${formErrorMessage}${moreFormErrors}`,
-        variant: "destructive",
-      });
+      try {
+        toast({
+          title: "❌ Formular-Fehler",
+          description: `${formErrorMessage}${moreFormErrors}`,
+          variant: "destructive",
+        });
+        console.log('🍞 Form error toast called successfully');
+      } catch (toastError) {
+        console.error('🍞 Form error toast failed:', toastError);
+        // Fallback: show as alert
+        alert(`Formular-Fehler:\n\n${formErrors.join('\n')}`);
+      }
       return;
     }
     
