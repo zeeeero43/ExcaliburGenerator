@@ -565,17 +565,22 @@ export default function AdminProductForm() {
       errors.push("Neuer Preis muss eine gültige Zahl sein");
     }
     
-    // Image URL validation - more lenient, just check if it's a URL
-    const imageUrlRegex = /^https?:\/\/.+/i;
-    
-    if (data.mainImage && data.mainImage.trim() && !imageUrlRegex.test(data.mainImage)) {
-      errors.push("Hauptbild-URL muss mit http:// oder https:// beginnen");
+    // Image URL validation - very lenient, only check for obviously invalid URLs
+    if (data.mainImage && data.mainImage.trim()) {
+      // Only block clearly invalid URLs (like just spaces, or starts with invalid chars)
+      const invalidChars = /^[\s<>"`{}|\\^]+/;
+      if (invalidChars.test(data.mainImage.trim())) {
+        errors.push("Hauptbild-URL enthält ungültige Zeichen");
+      }
     }
     
     if (data.images) {
       data.images.forEach((img, index) => {
-        if (img && img.trim() && !imageUrlRegex.test(img)) {
-          errors.push(`Zusatzbild ${index + 1} muss mit http:// oder https:// beginnen`);
+        if (img && img.trim()) {
+          const invalidChars = /^[\s<>"`{}|\\^]+/;
+          if (invalidChars.test(img.trim())) {
+            errors.push(`Zusatzbild ${index + 1} enthält ungültige Zeichen`);
+          }
         }
       });
     }

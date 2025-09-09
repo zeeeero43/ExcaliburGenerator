@@ -1,0 +1,40 @@
+🔄 Filtered subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Current subcategoryId value: null
+index-CtMpFLBq.js:410 🚨 AUTO-TRANSLATION DISABLED: Manual translation only to prevent quota exhaustion
+index-CtMpFLBq.js:410 ✅ SMART CACHE ENABLED: Product loaded, auto-translation enabled for NEW changes only
+index-CtMpFLBq.js:410 🔄 Selected category ID: 20
+index-CtMpFLBq.js:410 🔄 All subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Filtered subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Current subcategoryId value: null
+index-CtMpFLBq.js:410 🚨 AUTO-TRANSLATION DISABLED: Manual translation only to prevent quota exhaustion
+index-CtMpFLBq.js:410 🔄 Selected category ID: 20
+index-CtMpFLBq.js:410 🔄 All subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Filtered subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Current subcategoryId value: null
+index-CtMpFLBq.js:410 🚨 AUTO-TRANSLATION DISABLED: Manual translation only to prevent quota exhaustion
+index-CtMpFLBq.js:410 🔄 Selected category ID: 20
+index-CtMpFLBq.js:410 🔄 All subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Filtered subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Current subcategoryId value: null
+index-CtMpFLBq.js:410 🚨 AUTO-TRANSLATION DISABLED: Manual translation only to prevent quota exhaustion
+index-CtMpFLBq.js:416 🚀 Submit button clicked
+index-CtMpFLBq.js:416 🚀 Form state: Object
+index-CtMpFLBq.js:416 🚀 Form values: Object
+index-CtMpFLBq.js:416 🚀 isTranslating: false
+index-CtMpFLBq.js:410 🚀 Form submitted with data: Object
+index-CtMpFLBq.js:410 🚀 Form errors: Object
+index-CtMpFLBq.js:410 🚀 Form isValid: false
+index-CtMpFLBq.js:410 ❌ Frontend validation failed: Array(5)
+index-CtMpFLBq.js:410 🍞 Attempting to show toast...
+index-CtMpFLBq.js:356 Toast: Objectdescription: "Hauptbild-URL muss mit http:// oder https:// beginnen • Zusatzbild 1 muss mit http:// oder https:// beginnen (+3 weitere)"title: "❌ Eingabe-Fehler"variant: "destructive"[[Prototype]]: Object
+index-CtMpFLBq.js:410 🍞 Toast called successfully
+index-CtMpFLBq.js:410 🔄 Selected category ID: 20
+index-CtMpFLBq.js:410 🔄 All subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Filtered subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Current subcategoryId value: null
+index-CtMpFLBq.js:410 🚨 AUTO-TRANSLATION DISABLED: Manual translation only to prevent quota exhaustion
+index-CtMpFLBq.js:410 🔄 Selected category ID: 20
+index-CtMpFLBq.js:410 🔄 All subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Filtered subcategories: Array(0)
+index-CtMpFLBq.js:410 🔄 Current subcategoryId value: null
+index-CtMpFLBq.js:410 🚨 AUTO-TRANSLATION DISABLED: Manual translation only to prevent quota exhaustion
