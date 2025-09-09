@@ -585,17 +585,15 @@ export default function AdminProductForm() {
       });
     }
     
-    // Content length validation
-    if (data.nameDe && data.nameDe.length > 100) {
-      errors.push("Produktname darf maximal 100 Zeichen lang sein");
+    // Content length validation - very generous limits
+    if (data.nameDe && data.nameDe.length > 200) {
+      errors.push("Produktname darf maximal 200 Zeichen lang sein");
     }
     
-    if (data.shortDescriptionDe && data.shortDescriptionDe.length > 500) {
-      errors.push("Kurzbeschreibung darf maximal 500 Zeichen lang sein");
-    }
+    // No limit on short description - removed validation
     
-    if (data.descriptionDe && data.descriptionDe.length > 5000) {
-      errors.push("Vollständige Beschreibung darf maximal 5000 Zeichen lang sein");
+    if (data.descriptionDe && data.descriptionDe.length > 10000) {
+      errors.push("Vollständige Beschreibung darf maximal 10000 Zeichen lang sein");
     }
     
     return errors;
