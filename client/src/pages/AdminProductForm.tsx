@@ -586,8 +586,8 @@ export default function AdminProductForm() {
     }
     
     // Content length validation - very generous limits
-    if (data.nameDe && data.nameDe.length > 200) {
-      errors.push("Produktname darf maximal 200 Zeichen lang sein");
+    if (data.nameDe && data.nameDe.length > 300) {
+      errors.push("Produktname darf maximal 300 Zeichen lang sein");
     }
     
     // No limit on short description - removed validation
