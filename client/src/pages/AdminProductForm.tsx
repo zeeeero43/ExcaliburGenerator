@@ -356,6 +356,105 @@ export default function AdminProductForm() {
     });
   };
 
+  // Detailed error analysis function
+  const analyzeError = (error: any, response: Response) => {
+    // Network errors
+    if (!navigator.onLine) {
+      return {
+        title: "Netzwerk-Fehler",
+        description: "Keine Internetverbindung. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      };
+    }
+
+    // Server response errors
+    if (response) {
+      if (response.status === 400) {
+        return {
+          title: "Ungültige Eingaben",
+          description: error.message || "Die eingegebenen Daten sind ungültig. Überprüfen Sie alle Pflichtfelder.",
+        };
+      }
+      if (response.status === 401) {
+        return {
+          title: "Nicht angemeldet",
+          description: "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+        };
+      }
+      if (response.status === 403) {
+        return {
+          title: "Keine Berechtigung",
+          description: "Sie haben keine Berechtigung für diese Aktion.",
+        };
+      }
+      if (response.status === 409) {
+        return {
+          title: "Produkt bereits vorhanden",
+          description: "Ein Produkt mit dieser SKU existiert bereits. Wählen Sie eine andere SKU.",
+        };
+      }
+      if (response.status === 413) {
+        return {
+          title: "Datei zu groß",
+          description: "Die hochgeladenen Bilder sind zu groß. Maximum: 5MB pro Bild.",
+        };
+      }
+      if (response.status >= 500) {
+        return {
+          title: "Server-Fehler",
+          description: "Ein Serverfehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+        };
+      }
+    }
+
+    // Validation specific errors
+    if (error.message) {
+      const msg = error.message.toLowerCase();
+      
+      if (msg.includes('kategorie')) {
+        return {
+          title: "Kategorie-Fehler",
+          description: "Bitte wählen Sie eine gültige Kategorie aus der Liste aus.",
+        };
+      }
+      if (msg.includes('name') || msg.includes('titel')) {
+        return {
+          title: "Produktname fehlt",
+          description: "Der Produktname auf Deutsch ist erforderlich und darf nicht leer sein.",
+        };
+      }
+      if (msg.includes('beschreibung') || msg.includes('description')) {
+        return {
+          title: "Beschreibung fehlt",
+          description: "Die Kurzbeschreibung auf Deutsch ist erforderlich.",
+        };
+      }
+      if (msg.includes('preis') || msg.includes('price')) {
+        return {
+          title: "Preis-Fehler",
+          description: "Bitte geben Sie einen gültigen Preis ein oder wählen Sie 'Preis auf Anfrage'.",
+        };
+      }
+      if (msg.includes('sku')) {
+        return {
+          title: "SKU-Fehler",
+          description: "Die SKU muss eindeutig sein und darf nur Buchstaben, Zahlen und Bindestriche enthalten.",
+        };
+      }
+      if (msg.includes('bild') || msg.includes('image')) {
+        return {
+          title: "Bild-Fehler",
+          description: "Fehler beim Verarbeiten der Produktbilder. Überprüfen Sie Format und Größe.",
+        };
+      }
+    }
+
+    // Fallback generic error
+    return {
+      title: "Unbekannter Fehler",
+      description: error.message || "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    };
+  };
+
   // Save product mutation
   const saveProductMutation = useMutation({
     mutationFn: async (data: ProductFormData) => {
@@ -364,20 +463,44 @@ export default function AdminProductForm() {
       
       console.log('🚀 Mutation starting:', { url, method, data });
       
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      console.log('🚀 API Response:', response.status, response.statusText);
+      let response: Response;
+      
+      try {
+        response = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        
+        console.log('🚀 API Response:', response.status, response.statusText);
+        
+      } catch (networkError) {
+        console.error('❌ Network Error:', networkError);
+        throw { 
+          message: 'Netzwerkverbindung fehlgeschlagen',
+          response: null 
+        };
+      }
 
       if (!response.ok) {
-        const errorData = await response.json();
+        let errorData: any = {};
+        
+        try {
+          // Try to parse JSON error response
+          errorData = await response.json();
+        } catch (parseError) {
+          // If JSON parsing fails, use status text
+          errorData = { error: response.statusText };
+        }
+        
         console.log('❌ API Error:', errorData);
-        throw new Error(errorData.error || 'Fehler beim Speichern');
+        
+        const error = new Error(errorData.error || errorData.message || 'Fehler beim Speichern');
+        (error as any).response = response;
+        (error as any).data = errorData;
+        throw error;
       }
 
       const result = await response.json();
@@ -386,8 +509,8 @@ export default function AdminProductForm() {
     },
     onSuccess: () => {
       toast({
-        title: "Produkt gespeichert",
-        description: isEditing ? "Produkt wurde aktualisiert" : "Neues Produkt wurde erstellt",
+        title: "✅ Erfolg!",
+        description: isEditing ? "Produkt wurde erfolgreich aktualisiert" : "Neues Produkt wurde erfolgreich erstellt",
       });
       // Invalidate both admin and public product caches
       queryClient.invalidateQueries({ queryKey: ['/api/admin/products'] });
@@ -399,33 +522,129 @@ export default function AdminProductForm() {
       }
       setLocation('/admin');
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
+      console.error('🚨 DETAILED ERROR:', error);
+      
+      const errorInfo = analyzeError(error, error.response);
+      
       toast({
-        title: "Fehler",
-        description: error.message,
+        title: errorInfo.title,
+        description: errorInfo.description,
         variant: 'destructive',
       });
     },
   });
+
+  const validateFormData = (data: ProductFormData) => {
+    const errors: string[] = [];
+    
+    // Required field validation
+    if (!data.nameDe?.trim()) {
+      errors.push("Produktname (Deutsch) ist erforderlich");
+    }
+    
+    if (!data.shortDescriptionDe?.trim()) {
+      errors.push("Kurzbeschreibung (Deutsch) ist erforderlich");
+    }
+    
+    if (!data.categoryId || data.categoryId < 1) {
+      errors.push("Bitte wählen Sie eine gültige Kategorie aus");
+    }
+    
+    // SKU validation
+    if (data.sku && !/^[a-zA-Z0-9-_]+$/.test(data.sku)) {
+      errors.push("SKU darf nur Buchstaben, Zahlen, Bindestriche und Unterstriche enthalten");
+    }
+    
+    // Price validation
+    if (data.oldPrice && isNaN(parseFloat(data.oldPrice))) {
+      errors.push("Alter Preis muss eine gültige Zahl sein");
+    }
+    
+    if (data.newPrice && isNaN(parseFloat(data.newPrice))) {
+      errors.push("Neuer Preis muss eine gültige Zahl sein");
+    }
+    
+    // Image URL validation
+    const imageUrlRegex = /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i;
+    
+    if (data.mainImage && !imageUrlRegex.test(data.mainImage)) {
+      errors.push("Hauptbild-URL muss eine gültige Bild-URL sein (jpg, png, gif, webp)");
+    }
+    
+    if (data.images) {
+      data.images.forEach((img, index) => {
+        if (img && !imageUrlRegex.test(img)) {
+          errors.push(`Zusatzbild ${index + 1} muss eine gültige Bild-URL sein`);
+        }
+      });
+    }
+    
+    // Content length validation
+    if (data.nameDe && data.nameDe.length > 100) {
+      errors.push("Produktname darf maximal 100 Zeichen lang sein");
+    }
+    
+    if (data.shortDescriptionDe && data.shortDescriptionDe.length > 500) {
+      errors.push("Kurzbeschreibung darf maximal 500 Zeichen lang sein");
+    }
+    
+    if (data.descriptionDe && data.descriptionDe.length > 5000) {
+      errors.push("Vollständige Beschreibung darf maximal 5000 Zeichen lang sein");
+    }
+    
+    return errors;
+  };
 
   const onSubmit = (data: ProductFormData) => {
     console.log('🚀 Form submitted with data:', data);
     console.log('🚀 Form errors:', form.formState.errors);
     console.log('🚀 Form isValid:', form.formState.isValid);
     
-    // Manuelle Validierung für kritische Felder
-    if (!data.nameDe || !data.shortDescriptionDe || !data.categoryId || data.categoryId < 1) {
-      console.log('❌ Manual validation failed');
+    // Detailed frontend validation
+    const validationErrors = validateFormData(data);
+    
+    if (validationErrors.length > 0) {
+      console.log('❌ Frontend validation failed:', validationErrors);
+      
+      const errorMessage = validationErrors.slice(0, 3).join(', ');
+      const moreErrors = validationErrors.length > 3 ? ` (und ${validationErrors.length - 3} weitere)` : '';
+      
       toast({
-        title: "Formular ungültig",
-        description: "Produktname, Kurzbeschreibung und Kategorie sind erforderlich",
-        variant: "destructive"
+        title: "❌ Eingabe-Fehler",
+        description: `Bitte korrigieren: ${errorMessage}${moreErrors}`,
+        variant: "destructive",
       });
       return;
     }
     
-    // Ignore form.formState.isValid - proceed with submission
-    console.log('✅ Manual validation passed, proceeding with submission');
+    // Check React Hook Form validation as well
+    if (Object.keys(form.formState.errors).length > 0) {
+      console.log('❌ React Hook Form validation failed:', form.formState.errors);
+      
+      const formErrors = Object.entries(form.formState.errors).map(([field, error]) => {
+        return `${field}: ${error?.message || 'Ungültiger Wert'}`;
+      });
+      
+      const formErrorMessage = formErrors.slice(0, 3).join(', ');
+      const moreFormErrors = formErrors.length > 3 ? ` (und ${formErrors.length - 3} weitere)` : '';
+      
+      toast({
+        title: "❌ Formular-Fehler",
+        description: `Validierung fehlgeschlagen: ${formErrorMessage}${moreFormErrors}`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log('✅ All validation passed, proceeding with submission');
+    
+    // Show loading toast
+    toast({
+      title: "💾 Speichern...",
+      description: isEditing ? "Produkt wird aktualisiert..." : "Neues Produkt wird erstellt...",
+    });
+    
     saveProductMutation.mutate(data);
   };
 
