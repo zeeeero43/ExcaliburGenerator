@@ -714,7 +714,7 @@ export default function AdminDashboard() {
                   variant="outline"
                   onClick={() => {
                     // Sort subcategories by position
-                    const sorted = [...subcategories].sort((a, b) => a.sortOrder - b.sortOrder);
+                    const sorted = [...subcategories].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
                     console.log('Sorted subcategories:', sorted);
                   }}
                 >
@@ -735,7 +735,7 @@ export default function AdminDashboard() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {subcategories
-                .sort((a, b) => a.sortOrder - b.sortOrder)
+                .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
                 .map((subcategory: Subcategory) => {
                   const parentCategory = categories.find(c => c.id === subcategory.categoryId);
                   return (

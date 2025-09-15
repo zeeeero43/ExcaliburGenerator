@@ -1102,11 +1102,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       // Remove the id so it gets auto-generated
-      delete duplicatedProduct.id;
-      delete duplicatedProduct.createdAt;
-      delete duplicatedProduct.updatedAt;
+      const { id: _, createdAt, updatedAt, ...productToCreate } = duplicatedProduct;
 
-      const newProduct = await storage.createProduct(duplicatedProduct);
+      const newProduct = await storage.createProduct(productToCreate);
       res.json(newProduct);
     } catch (error: any) {
       console.error("Error duplicating product:", error);
@@ -1117,41 +1115,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Duplicate product
-  app.post("/api/admin/products/:id/duplicate", isAuthenticated, async (req: AuthRequest, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const originalProduct = await storage.getProductById(id);
-      
-      if (!originalProduct) {
-        return res.status(404).json({ error: "Product not found" });
-      }
-
-      // Create duplicated product with modified names
-      const duplicatedProduct = {
-        ...originalProduct,
-        nameEs: `${originalProduct.nameEs} - Kopie`,
-        nameDe: `${originalProduct.nameDe} - Kopie`,
-        nameEn: `${originalProduct.nameEn} - Copy`,
-        name: `${originalProduct.name} - Kopie`,
-        slug: `${originalProduct.slug}-kopie-${Date.now()}`,
-        isActive: false, // Set as inactive by default
-        isFeatured: false, // Remove featured status
-        sku: originalProduct.sku ? `${originalProduct.sku}-COPY` : null,
-      };
-
-      // Remove the id so it gets auto-generated
-      delete duplicatedProduct.id;
-      delete duplicatedProduct.createdAt;
-      delete duplicatedProduct.updatedAt;
-
-      const newProduct = await storage.createProduct(duplicatedProduct);
-      res.json(newProduct);
-    } catch (error) {
-      console.error("Error duplicating product:", error);
-      res.status(500).json({ error: "Failed to duplicate product" });
-    }
-  });
 
   // Inquiries API
   app.post("/api/inquiries", async (req: AuthRequest, res) => {
