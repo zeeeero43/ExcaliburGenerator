@@ -8,7 +8,6 @@ import { Layout } from "./components/Layout";
 import { useLanguage } from "./hooks/useLanguage";
 import { useVerification } from "./hooks/useVerification";
 import { CustomBotProtection } from "./components/CustomBotProtection";
-import { initGA } from "./lib/analytics";
 import { useAnalytics } from "./hooks/use-analytics";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -170,7 +169,6 @@ function App() {
     if (!import.meta.env.VITE_GA_MEASUREMENT_ID) {
       console.warn('Missing required Google Analytics key: VITE_GA_MEASUREMENT_ID');
     } else {
-      initGA();
     }
   }, []);
 
