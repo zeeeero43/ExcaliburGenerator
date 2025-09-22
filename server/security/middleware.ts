@@ -120,7 +120,10 @@ export const securityHeaders = helmet({
         "'self'",
         "https://api.ipapi.com",
         "https://ip-api.com",
-        "https://ipapi.co"
+        "https://ipapi.co",
+        "https://*.google-analytics.com",
+        "https://*.googletagmanager.com",
+        "https://*.analytics.google.com"
       ],
       frameSrc: ["'none'"],
       objectSrc: ["'none'"],

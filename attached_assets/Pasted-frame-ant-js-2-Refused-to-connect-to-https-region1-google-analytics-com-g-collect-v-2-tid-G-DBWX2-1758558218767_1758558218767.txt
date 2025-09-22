@@ -1,0 +1,22 @@
+frame_ant.js:2 Refused to connect to 'https://region1.google-analytics.com/g/collect?v=2&tid=G-DBWX2T2E1H&gtm=45je59h0v9230532597za200zd9230532597&_p=1758557617667&gcd=13l3l3l2l1l1&npa=1&dma_cps=syphamo&dma=1&cid=1911568788.1758557200&ul=de-de&sr=430x932&uaa=&uab=&uafvl=&uamb=0&uam=&uap=&uapv=&uaw=0&are=1&frm=0&pscdl=&_eu=AAAAAAQ&_s=1&tag_exp=101509157~103116026~103200004~103233427~104527906~104528501~104684208~104684211~104948813~115480710~115616986&sid=1758557200&sct=1&seg=1&dl=https%3A%2F%2Fwww.excalibur-cuba.com%2Fproducts&dt=Productos%20Excalibur%20Cuba%20-%20Solar%2C%20Generadores%2C%20Equipos%20%7C%20Matanzas&en=page_view&_ee=1&tfd=5299' because it violates the following Content Security Policy directive: "connect-src 'self' https://api.ipapi.com https://ip-api.com https://ipapi.co".
+
+window.fetch @ frame_ant.js:2
+$c @ js?id=G-DBWX2T2E1H:210
+cl @ js?id=G-DBWX2T2E1H:357
+pN @ js?id=G-DBWX2T2E1H:829
+k.flush @ js?id=G-DBWX2T2E1H:836
+(anonymous) @ js?id=G-DBWX2T2E1H:834Understand this error
+frame_ant.js:2 Fetch API cannot load https://region1.google-analytics.com/g/collect?v=2&tid=G-DBWX2T2E1H&gtm=45je59h0v9230532597za200zd9230532597&_p=1758557617667&gcd=13l3l3l2l1l1&npa=1&dma_cps=syphamo&dma=1&cid=1911568788.1758557200&ul=de-de&sr=430x932&uaa=&uab=&uafvl=&uamb=0&uam=&uap=&uapv=&uaw=0&are=1&frm=0&pscdl=&_eu=AAAAAAQ&_s=1&tag_exp=101509157~103116026~103200004~103233427~104527906~104528501~104684208~104684211~104948813~115480710~115616986&sid=1758557200&sct=1&seg=1&dl=https%3A%2F%2Fwww.excalibur-cuba.com%2Fproducts&dt=Productos%20Excalibur%20Cuba%20-%20Solar%2C%20Generadores%2C%20Equipos%20%7C%20Matanzas&en=page_view&_ee=1&tfd=5299. Refused to connect because it violates the document's Content Security Policy.
+window.fetch @ frame_ant.js:2
+$c @ js?id=G-DBWX2T2E1H:210
+cl @ js?id=G-DBWX2T2E1H:357
+pN @ js?id=G-DBWX2T2E1H:829
+k.flush @ js?id=G-DBWX2T2E1H:836
+(anonymous) @ js?id=G-DBWX2T2E1H:834Understand this error
+frame_ant.js:2 Uncaught (in promise) TypeError: Failed to fetch. Refused to connect because it violates the document's Content Security Policy.
+    at window.fetch (frame_ant.js:2:14027)
+    at $c (js?id=G-DBWX2T2E1H:210:334)
+    at cl (js?id=G-DBWX2T2E1H:357:87)
+    at pN (js?id=G-DBWX2T2E1H:829:227)
+    at k.flush (js?id=G-DBWX2T2E1H:836:421)
+    at js?id=G-DBWX2T2E1H:834:161
