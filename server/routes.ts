@@ -33,7 +33,6 @@ import {
   validatePassword
 } from "./security/auth";
 import { secureUpload, handleUploadError } from "./security/fileUpload";
-import { getBotStats } from "./security/botProtection";
 
 // REGION BLOCKING MIDDLEWARE - Blocks Chinese and Singaporean IP addresses
 function blockRegionsMiddleware(req: any, res: any, next: any) {
@@ -125,33 +124,6 @@ async function compressUploadedImage(uploadedPath: string, originalName: string)
   return filename;
 }
 
-// REAL GEOLOCATION with local database - VPS COMPATIBLE  
-async function getCountryFromIP(ip: string): Promise<string | null> {
-  console.log("🌍 Real Analytics: IP detection for:", ip);
-  
-  try {
-    // Local development fallbacks
-    if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip === 'unknown') {
-      console.log("🌍 Local Analytics: Local IP detected - defaulting to Germany");
-      return 'DE';
-    }
-    
-    // REAL GEOLOCATION using local database (works on VPS!)
-    const geo = geoip.lookup(ip);
-    if (geo && geo.country) {
-      console.log("🌍 Real Analytics: Country detected:", geo.country, "for IP:", ip);
-      return geo.country;
-    }
-    
-    // Fallback if IP not found in database
-    console.log("🌍 Real Analytics: IP not found in database, defaulting to Cuba");
-    return 'CU';
-    
-  } catch (error) {
-    console.error("🌍 Geolocation Error:", error);
-    return 'CU'; // Fallback to Cuba
-  }
-}
 
 // Helper function to generate slug from text
 function generateSlug(text: string): string {
@@ -1166,105 +1138,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Analytics API - Website visitor tracking (VPS-COMPATIBLE)
-  app.get("/api/admin/analytics", isAuthenticated, async (req: AuthRequest, res) => {
-    try {
-      const period = req.query.period || 'month';
-      console.log("📊 SIMPLE ANALYTICS: Fetching data for period:", period);
-      const analytics = await storage.getSimpleAnalytics(period as 'day' | 'month' | 'year');
-      console.log("📊 SIMPLE ANALYTICS: Success for", period, ":", {
-        uniqueVisitors: analytics.uniqueVisitors,
-        topProducts: analytics.topProducts.length,
-        topCountries: analytics.topCountries.length,
-        period: period
-      });
-      res.json(analytics);
-    } catch (error) {
-      console.error("❌ SIMPLE ANALYTICS ERROR:", error);
-      res.status(500).json({ error: "Failed to fetch analytics", details: error.message });
-    }
-  });
 
-  // Bot Protection Statistics API
-  app.get("/api/admin/bot-stats", isAuthenticated, async (req: AuthRequest, res) => {
-    try {
-      console.log("🤖 BOT STATS: Fetching bot protection statistics");
-      const stats = getBotStats();
-      
-      console.log("🤖 BOT STATS: Statistics retrieved:", {
-        totalTracked: stats.totalTracked,
-        blocked: stats.blocked,
-        suspicious: stats.suspicious,
-        topCountries: Object.keys(stats.byCountry).length
-      });
-      
-      res.json(stats);
-    } catch (error) {
-      console.error("❌ BOT STATS ERROR:", error);
-      res.status(500).json({ error: "Failed to fetch bot statistics", details: error.message });
-    }
-  });
 
-  // UNIVERSAL PAGE TRACKING: Track every page visit (auch Inkognito)
-  app.post("/api/track", async (req: AuthRequest, res) => {
-    try {
-      const { page, userAgent, referrer, timestamp } = req.body;
-      const ip = req.ip || req.connection.remoteAddress || 'unknown';
-      
-      console.log(`📊 PAGE VISIT: ${page} from IP=${ip}`);
-      
-      // Enhanced IP detection
-      const forwardedFor = req.headers['x-forwarded-for'];
-      let clientIp = ip;
-      if (forwardedFor) {
-        clientIp = Array.isArray(forwardedFor) 
-          ? forwardedFor[0] 
-          : forwardedFor.toString().split(',')[0].trim();
-      }
-      
-      // Real country detection with geoip-lite
-      let country = 'CU'; // Default für Development
-      
-      // Skip local IPs (development)
-      if (!clientIp.startsWith('127.0.0.1') && 
-          !clientIp.startsWith('192.168.') && 
-          !clientIp.startsWith('10.') && 
-          clientIp !== '::1') {
-        try {
-          const geo = geoip.lookup(clientIp);
-          if (geo && geo.country) {
-            country = geo.country;
-            console.log(`📊 GEOIP SUCCESS: IP ${clientIp} → ${country}`);
-          } else {
-            console.log(`📊 GEOIP: No data for IP ${clientIp}, using default CU`);
-          }
-        } catch (error) {
-          console.log(`📊 GEOIP ERROR: Failed for ${clientIp}:`, error.message);
-        }
-      } else {
-        console.log(`📊 GEOIP: Skipping local IP ${clientIp}, using default CU`);
-      }
-      
-      // Track visitor (creates or updates existing visitor)
-      const visitor = await storage.trackVisitor(clientIp, country);
-      console.log(`📊 VISITOR TRACKED: ID ${visitor.id}, IP ${clientIp}, Country ${country}`);
-      
-      res.json({ 
-        success: true, 
-        visitorId: visitor.id,
-        country: country,
-        debug: {
-          page,
-          ip: clientIp,
-          country,
-          timestamp
-        }
-      });
-    } catch (error) {
-      console.error("📊 PAGE TRACKING ERROR:", error);
-      res.json({ success: false, error: error.message });
-    }
-  });
 
   // Good Bot Detection - Allow legitimate crawlers and search engines
   function isGoodBot(userAgent: string, ip: string): boolean {
@@ -1496,102 +1371,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Track product clicks (only when user clicks on product detail)
-  app.post("/api/track/product", async (req: AuthRequest, res) => {
-    try {
-      const { productId } = req.body;
-      const ip = req.ip || req.connection.remoteAddress || 'unknown';
-      
-      // MOBILE DEBUGGING: Log all headers and request info
-      const userAgent = req.headers['user-agent'] || 'unknown';
-      const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-      
-      console.log(`📊 PRODUCT CLICK: Product ${productId}, IP=${ip}, Mobile=${isMobile}`);
-      console.log(`📊 USER AGENT: ${userAgent}`);
-      
-      // Enhanced IP detection for mobile devices
-      const forwardedFor = req.headers['x-forwarded-for'];
-      const realIp = req.headers['x-real-ip'];
-      const cfConnectingIp = req.headers['cf-connecting-ip']; // CloudFlare
-      const trueClientIp = req.headers['true-client-ip']; // Some mobile carriers
-      const clientIpHeader = req.headers['client-ip'];
-      
-      // Priority order for mobile IP detection
-      let clientIp = ip;
-      if (cfConnectingIp) {
-        clientIp = Array.isArray(cfConnectingIp) ? cfConnectingIp[0] : cfConnectingIp.toString().split(',')[0].trim();
-        console.log(`📱 MOBILE IP (CF): ${clientIp}`);
-      } else if (trueClientIp) {
-        clientIp = Array.isArray(trueClientIp) ? trueClientIp[0] : trueClientIp.toString().split(',')[0].trim();
-        console.log(`📱 MOBILE IP (TRUE): ${clientIp}`);
-      } else if (realIp) {
-        clientIp = Array.isArray(realIp) ? realIp[0] : realIp.toString().split(',')[0].trim();
-        console.log(`📱 MOBILE IP (REAL): ${clientIp}`);
-      } else if (forwardedFor) {
-        clientIp = Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor.toString().split(',')[0].trim();
-        console.log(`📱 MOBILE IP (FORWARDED): ${clientIp}`);
-      } else if (clientIpHeader) {
-        clientIp = Array.isArray(clientIpHeader) ? clientIpHeader[0] : clientIpHeader.toString().split(',')[0].trim();
-        console.log(`📱 MOBILE IP (CLIENT): ${clientIp}`);
-      }
-      
-      console.log(`📊 IP DETECTION: Original=${ip}, Final=${clientIp}, Headers={
-        x-forwarded-for: ${forwardedFor},
-        x-real-ip: ${realIp}, 
-        cf-connecting-ip: ${cfConnectingIp},
-        true-client-ip: ${trueClientIp},
-        client-ip: ${clientIpHeader}
-      }`);
-      
-      // Get country from IP using geoip-lite
-      let country = 'CU'; // Default to Cuba
-      if (clientIp !== 'unknown' && clientIp !== '127.0.0.1' && !clientIp.startsWith('192.168.') && !clientIp.startsWith('10.')) {
-        const geo = geoip.lookup(clientIp);
-        if (geo && geo.country) {
-          country = geo.country;
-          console.log(`📊 GEOIP SUCCESS: IP ${clientIp} → ${country} (${geo.city || 'Unknown city'}) [Mobile: ${isMobile}]`);
-        } else {
-          console.log(`📊 GEOIP FAILED: IP ${clientIp} not found in database, using default CU [Mobile: ${isMobile}]`);
-        }
-      } else {
-        console.log(`📊 LOCAL IP: ${clientIp} is local/development IP, using default CU [Mobile: ${isMobile}]`);
-      }
-      
-      // Track visitor (get existing or create new) - include mobile detection
-      const visitor = await storage.trackVisitor(clientIp, country);
-      console.log(`📊 VISITOR TRACKED: ID ${visitor.id}, IP ${visitor.ipAddress}, Country ${visitor.country}, Mobile ${isMobile} (Real IP: ${clientIp})`);
-      
-      // Track product click - first verify product exists
-      try {
-        const product = await storage.getProductById(parseInt(productId));
-        if (!product) {
-          console.log(`⚠️ PRODUCT NOT FOUND: Product ${productId} does not exist, skipping analytics`);
-          res.json({ success: true, warning: "Product not found" });
-          return;
-        }
-        
-        await storage.trackProductClick(parseInt(productId), visitor.id);
-        console.log(`📊 PRODUCT CLICK SAVED: Product ${productId} (${product.nameEs}) by visitor ${visitor.id} [Mobile: ${isMobile}]`);
-      } catch (productError) {
-        console.error(`❌ PRODUCT LOOKUP ERROR: ${productError}`);
-        res.json({ success: true, warning: "Product lookup failed" });
-        return;
-      }
-      
-      res.json({ 
-        success: true, 
-        debug: {
-          mobile: isMobile,
-          ip: clientIp,
-          country: country,
-          visitorId: visitor.id
-        }
-      });
-    } catch (error) {
-      console.error("❌ PRODUCT CLICK ERROR:", error);
-      res.json({ success: true, warning: "Tracking failed", error: error.message });
-    }
-  });
 
   // Geolocation endpoint for language detection
   app.get("/api/geolocation", async (req: AuthRequest, res) => {
@@ -1779,73 +1558,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // 📱 MOBILE ANALYTICS: Backup tracking for mobile devices (especially Cuban users)
-  app.use((req, res, next) => {
-    // Continue request immediately without waiting
-    next();
-    
-    // Only track GET requests for actual pages (PERFORMANCE: reduce tracking overhead)
-    if (req.method === 'GET' && 
-        !req.path.startsWith('/api/') && 
-        !req.path.startsWith('/admin/') && 
-        !req.path.startsWith('/@') && // No Vite dev files
-        !req.path.includes('.') && // No static files (.js, .css, .png, etc.)
-        !req.path.includes('__vite') &&
-        !req.path.includes('node_modules') &&
-        req.path !== '/favicon.ico') {
-      
-      // Use setImmediate for better performance
-      setImmediate(async () => {
-        try {
-          // Enhanced IP detection for mobile devices
-          const forwardedFor = req.headers['x-forwarded-for'];
-          const realIp = req.headers['x-real-ip'];
-          const cfConnectingIp = req.headers['cf-connecting-ip'];
-          const trueClientIp = req.headers['true-client-ip'];
-          
-          let clientIp = req.ip || req.connection.remoteAddress || 'unknown';
-          
-          // Priority order for mobile IP detection
-          if (cfConnectingIp) {
-            clientIp = Array.isArray(cfConnectingIp) ? cfConnectingIp[0] : cfConnectingIp.toString().split(',')[0].trim();
-          } else if (trueClientIp) {
-            clientIp = Array.isArray(trueClientIp) ? trueClientIp[0] : trueClientIp.toString().split(',')[0].trim();
-          } else if (realIp) {
-            clientIp = Array.isArray(realIp) ? realIp[0] : realIp.toString().split(',')[0].trim();
-          } else if (forwardedFor) {
-            clientIp = Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor.toString().split(',')[0].trim();
-          }
-          
-          const userAgent = req.get('User-Agent') || '';
-          const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-          
-          // Use geoip-lite for reliable offline geolocation
-          let country = 'CU'; // Default for Cuban users
-          if (clientIp !== 'unknown' && 
-              clientIp !== '127.0.0.1' && 
-              !clientIp.startsWith('192.168.') && 
-              !clientIp.startsWith('10.')) {
-            
-            const geoip = await import('geoip-lite');
-            const geo = geoip.default.lookup(clientIp);
-            if (geo && geo.country) {
-              country = geo.country;
-            }
-          }
-          
-          console.log(`📱 MOBILE BACKUP TRACKING: ${req.path} from IP=${clientIp}, Country=${country}, Mobile=${isMobile}`);
-          
-          // Track visitor (create or update)
-          const visitor = await storage.trackVisitor(clientIp, country);
-          console.log(`📱 MOBILE VISITOR SAVED: ID ${visitor.id}, IP ${visitor.ipAddress}, Country ${visitor.country} [Mobile: ${isMobile}]`);
-          
-        } catch (error) {
-          // Silent error handling to avoid blocking
-          console.log(`📱 MOBILE TRACKING ERROR: ${error.message}`);
-        }
-      });
-    }
-  });
 
   // Site Settings API routes
   app.post("/api/admin/site-settings", isAuthenticated, async (req: AuthRequest, res) => {
@@ -1893,21 +1605,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Analytics API routes
-  app.get("/api/admin/analytics/:period", isAuthenticated, async (req: AuthRequest, res) => {
-    try {
-      const period = req.params.period as 'day' | 'month' | 'year';
-      if (!['day', 'month', 'year'].includes(period)) {
-        return res.status(400).json({ error: 'Invalid period. Use day, month, or year.' });
-      }
-      
-      const analytics = await storage.getSimpleAnalytics(period);
-      res.json(analytics);
-    } catch (error) {
-      console.error("Error fetching analytics:", error);
-      res.status(500).json({ error: "Failed to fetch analytics" });
-    }
-  });
 
   // DIRECT LOGIN OVERRIDE - WORKING VERSION
   app.post("/api/admin/login", (req, res) => {

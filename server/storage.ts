@@ -6,10 +6,6 @@ import {
   inquiries,
   siteSettings,
   uploadedImages,
-  visitors,
-  productClicks,
-  pageViews,
-  productViews,
   type AdminUser,
   type InsertAdminUser,
   type Category,
@@ -24,14 +20,6 @@ import {
   type InsertSiteSetting,
   type UploadedImage,
   type InsertUploadedImage,
-  type Visitor,
-  type InsertVisitor,
-  type ProductClick,
-  type InsertProductClick,
-  type PageView,
-  type InsertPageView,
-  type ProductView,
-  type InsertProductView,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, or, ilike, count, countDistinct, sql, gte, isNotNull } from "drizzle-orm";
@@ -90,14 +78,6 @@ export interface IStorage {
   createUploadedImage(image: InsertUploadedImage): Promise<UploadedImage>;
   deleteUploadedImage(id: number): Promise<void>;
   
-  // Simple Analytics
-  trackVisitor(ipAddress: string, country: string): Promise<Visitor>;
-  trackProductClick(productId: number, visitorId: number): Promise<ProductClick>;
-  getSimpleAnalytics(period: 'day' | 'month' | 'year'): Promise<{
-    uniqueVisitors: number;
-    topProducts: Array<{ product: string; views: number; id: number }>;
-    topCountries: Array<{ country: string; uniqueVisitors: number }>;
-  }>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -333,10 +313,8 @@ export class DatabaseStorage implements IStorage {
   async deleteProduct(id: number): Promise<void> {
     console.log(`🗑️ STORAGE: Starting product deletion cascade for product ${id}`);
     
-    // First: Delete all product clicks that reference this product (foreign key constraint)
-    console.log(`🗑️ STORAGE: Deleting product clicks for product ${id}`);
-    await db.delete(productClicks).where(eq(productClicks.productId, id));
-    console.log(`✅ STORAGE: Product clicks deleted for product ${id}`);
+    // Delete product from database
+    console.log(`🗑️ STORAGE: Deleting product ${id}`);
     
     // Second: Delete the product itself
     console.log(`🗑️ STORAGE: Deleting product ${id}`);
@@ -413,121 +391,6 @@ export class DatabaseStorage implements IStorage {
     await db.delete(uploadedImages).where(eq(uploadedImages.id, id));
   }
 
-  // SIMPLE ANALYTICS SYSTEM
-  async trackVisitor(ipAddress: string, country: string): Promise<Visitor> {
-    // Try to find existing visitor by IP
-    const [existingVisitor] = await db
-      .select()
-      .from(visitors)
-      .where(eq(visitors.ipAddress, ipAddress))
-      .limit(1);
-
-    if (existingVisitor) {
-      // Update last visit time
-      const [updatedVisitor] = await db
-        .update(visitors)
-        .set({ lastVisit: new Date() })
-        .where(eq(visitors.id, existingVisitor.id))
-        .returning();
-      return updatedVisitor;
-    } else {
-      // Create new visitor
-      const [newVisitor] = await db
-        .insert(visitors)
-        .values({ ipAddress, country })
-        .returning();
-      return newVisitor;
-    }
-  }
-
-  async trackProductClick(productId: number, visitorId: number): Promise<ProductClick> {
-    const [productClick] = await db
-      .insert(productClicks)
-      .values({ productId, visitorId })
-      .returning();
-    return productClick;
-  }
-
-  async getSimpleAnalytics(period: 'day' | 'month' | 'year'): Promise<{
-    uniqueVisitors: number;
-    topProducts: Array<{ product: string; views: number; id: number }>;
-    topCountries: Array<{ country: string; uniqueVisitors: number }>;
-  }> {
-    const now = new Date();
-    let startDate: Date;
-
-    switch (period) {
-      case 'day':
-        startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-        break;
-      case 'month':
-        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-        break;
-      case 'year':
-        startDate = new Date(now.getFullYear(), 0, 1);
-        break;
-    }
-
-    // Removed debug logging
-
-    // Count unique visitors in time period (check both first visit AND last visit)
-    const [uniqueVisitorsResult] = await db
-      .select({ count: countDistinct(visitors.id) })
-      .from(visitors)
-      .where(
-        or(
-          gte(visitors.firstVisit, startDate),
-          gte(visitors.lastVisit, startDate)
-        )
-      );
-
-    // Silent analytics processing
-
-    // Top products by clicks with German names
-    const topProductsResult = await db
-      .select({
-        productId: productClicks.productId,
-        productNameDe: products.nameDe,
-        productNameEs: products.name,
-        views: count()
-      })
-      .from(productClicks)
-      .leftJoin(products, eq(productClicks.productId, products.id))
-      .where(gte(productClicks.clickedAt, startDate))
-      .groupBy(productClicks.productId, products.nameDe, products.name)
-      .orderBy(desc(count()))
-      .limit(10);
-
-    // Top countries by unique visitors (check both first visit AND last visit)
-    const topCountriesResult = await db
-      .select({
-        country: visitors.country,
-        uniqueVisitors: countDistinct(visitors.id)
-      })
-      .from(visitors)
-      .where(
-        or(
-          gte(visitors.firstVisit, startDate),
-          gte(visitors.lastVisit, startDate)
-        )
-      )
-      .groupBy(visitors.country)
-      .orderBy(desc(countDistinct(visitors.id)))
-      .limit(10);
-
-    return {
-      uniqueVisitors: uniqueVisitorsResult.count || 0,
-      topProducts: topProductsResult.map(item => ({
-        product: item.productNameDe || item.productNameEs || 'Unknown Product',
-        views: Number(item.views),
-        id: item.productId
-      })),
-      topCountries: topCountriesResult.map(row => ({
-        country: row.country || 'Unknown',
-        uniqueVisitors: Number(row.uniqueVisitors)
-      }))
-    };
-  }
 }
 
 export const storage = new DatabaseStorage();

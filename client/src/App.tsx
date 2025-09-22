@@ -8,6 +8,8 @@ import { Layout } from "./components/Layout";
 import { useLanguage } from "./hooks/useLanguage";
 import { useVerification } from "./hooks/useVerification";
 import { CustomBotProtection } from "./components/CustomBotProtection";
+import { initGA } from "./lib/analytics";
+import { useAnalytics } from "./hooks/use-analytics";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
@@ -18,7 +20,6 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminProductForm from "./pages/AdminProductForm";
 import AdminCategoryForm from "./pages/AdminCategoryForm";
 import AdminSubcategoryForm from "./pages/AdminSubcategoryForm";
-import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminSiteImages from "./pages/AdminSiteImages";
 import AdminImageManager from "./pages/AdminImageManager";
 import AdminContactSettings from "./pages/AdminContactSettings";
@@ -34,6 +35,9 @@ function Router() {
   const { isLoading } = useLanguage();
   const { needsVerification, isLoading: isVerificationLoading, markAsVerified } = useVerification();
   const [location] = useLocation();
+  
+  // Track page views with Google Analytics
+  useAnalytics();
 
   // Scroll to top whenever route changes
   useEffect(() => {
@@ -96,7 +100,6 @@ function Router() {
           return <AdminSubcategoryForm />;
         }}
       </Route>
-      <Route path="/admin/analytics" component={AdminAnalytics} />
       <Route path="/admin/site-images" component={AdminSiteImages} />
       <Route path="/admin/images" component={AdminImageManager} />
       <Route path="/admin/contact" component={AdminContactSettings} />
@@ -161,11 +164,20 @@ function Router() {
 }
 
 function App() {
+  // Initialize Google Analytics when app loads
+  useEffect(() => {
+    // Verify required environment variable is present
+    if (!import.meta.env.VITE_GA_MEASUREMENT_ID) {
+      console.warn('Missing required Google Analytics key: VITE_GA_MEASUREMENT_ID');
+    } else {
+      initGA();
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <CartProvider>
-          {/* Universal tracking now in Layout.tsx */}
           <OfflineIndicator />
           <Router />
           <Toaster />
