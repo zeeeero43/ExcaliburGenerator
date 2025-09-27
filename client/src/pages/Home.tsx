@@ -86,7 +86,7 @@ export default function Home() {
                       <Button 
                         variant="default" 
                         size="sm" 
-                        className="bg-green-600 text-white hover:bg-green-700 shadow-lg"
+                        className="bg-green-600 text-white hover:bg-green-700 shadow-lg animate-pulse"
                         onClick={(e) => {
                           e.stopPropagation();
                           window.location.href = `/products?category=${category.id}`;

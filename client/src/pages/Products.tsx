@@ -245,7 +245,7 @@ export default function Products() {
                           <Button 
                             variant="default" 
                             size="sm" 
-                            className="bg-green-600 text-white hover:bg-green-700 shadow-lg"
+                            className="bg-green-600 text-white hover:bg-green-700 shadow-lg animate-pulse"
                             onClick={(e) => {
                               e.stopPropagation();
                               selectSubcategory(subcategory.id, getLocalizedText(subcategory, 'name'));
@@ -318,7 +318,7 @@ export default function Products() {
                             <Button 
                               variant="default" 
                               size="sm" 
-                              className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs px-2 py-1"
+                              className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs px-2 py-1 animate-pulse"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <Eye className="w-3 h-3 mr-1" />
@@ -523,7 +523,7 @@ export default function Products() {
                         <Button 
                           variant="default" 
                           size="sm" 
-                          className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs px-2 py-1"
+                          className="bg-green-600 text-white hover:bg-green-700 shadow-lg text-xs px-2 py-1 animate-pulse"
                           onClick={(e) => e.stopPropagation()}
                         >
                           <Eye className="w-3 h-3 mr-1" />

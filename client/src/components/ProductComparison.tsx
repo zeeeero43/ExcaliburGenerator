@@ -122,7 +122,7 @@ export function ProductComparison({ products, onRemoveProduct, onAddMoreProducts
               {products.map((product) => (
                 <td key={product.id} className="py-4 px-4 text-center">
                   <div className="space-y-2">
-                    <Button size="sm" className="w-full">
+                    <Button size="sm" className="w-full animate-pulse">
                       Details ansehen
                     </Button>
                     <Button size="sm" variant="outline" className="w-full">
