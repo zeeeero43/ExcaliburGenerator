@@ -20,7 +20,7 @@ export function ProductCard({ title, description, image, linkText, category, cla
   return (
     <Link href={`/product/${category}`}>
       <Card className={`group cursor-pointer card-enhanced hover-lift overflow-hidden ${className}`}>
-        <div className="aspect-video bg-gray-100 overflow-hidden">
+        <div className="aspect-square md:aspect-video bg-gray-100 overflow-hidden">
           <OptimizedImage
             src={image}
             alt={title}

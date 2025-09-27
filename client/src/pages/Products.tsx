@@ -380,7 +380,7 @@ export default function Products() {
               >
                 <CardContent className="p-0">
                   {/* Category Image with overlay button */}
-                  <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
+                  <div className="aspect-square md:aspect-video bg-gray-100 rounded-t-lg overflow-hidden relative">
                     <img
                       src={category.image || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=500&h=300&fit=crop'}
                       alt={getLocalizedText(category, 'name')}
@@ -396,7 +396,7 @@ export default function Products() {
                       <Button 
                         variant="default" 
                         size="sm" 
-                        className="bg-green-600 text-white hover:bg-green-700 shadow-lg"
+                        className="bg-green-600 text-white hover:bg-green-700 shadow-lg animate-pulse"
                         onClick={(e) => {
                           e.stopPropagation();
                           selectCategory(category.id, getLocalizedText(category, 'name'));
