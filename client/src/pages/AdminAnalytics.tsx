@@ -67,22 +67,22 @@ export default function AdminAnalytics() {
   const [autoRefresh, setAutoRefresh] = useState(true);
 
   const { data: overview, refetch: refetchOverview } = useQuery<AnalyticsOverview>({
-    queryKey: ['/api/admin/analytics/overview', { days: timeRange }],
+    queryKey: [`/api/admin/analytics/overview?days=${timeRange}`],
     refetchInterval: autoRefresh ? 30000 : false,
   });
 
   const { data: topPages } = useQuery<TopPage[]>({
-    queryKey: ['/api/admin/analytics/top-pages', { days: timeRange }],
+    queryKey: [`/api/admin/analytics/top-pages?days=${timeRange}`],
     refetchInterval: autoRefresh ? 30000 : false,
   });
 
   const { data: countries } = useQuery<CountryStat[]>({
-    queryKey: ['/api/admin/analytics/countries', { days: timeRange }],
+    queryKey: [`/api/admin/analytics/countries?days=${timeRange}`],
     refetchInterval: autoRefresh ? 30000 : false,
   });
 
   const { data: devices } = useQuery<DeviceStat[]>({
-    queryKey: ['/api/admin/analytics/devices', { days: timeRange }],
+    queryKey: [`/api/admin/analytics/devices?days=${timeRange}`],
     refetchInterval: autoRefresh ? 30000 : false,
   });
 
@@ -92,7 +92,7 @@ export default function AdminAnalytics() {
   });
 
   const { data: trend } = useQuery<Array<{ date: string; visitors: number; sessions: number }>>({
-    queryKey: ['/api/admin/analytics/trend', { days: timeRange }],
+    queryKey: [`/api/admin/analytics/trend?days=${timeRange}`],
     refetchInterval: autoRefresh ? 30000 : false,
   });
 
