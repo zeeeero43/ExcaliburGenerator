@@ -525,6 +525,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Google Analytics API Endpoints
+  const { 
+    getAnalyticsOverview, 
+    getTopPages, 
+    getCountryStats, 
+    getDeviceStats, 
+    getRealtimeData,
+    getVisitorsTrend 
+  } = await import('./services/googleAnalytics.js');
+
+  app.get("/api/admin/analytics/overview", isAuthenticated, async (req: AuthRequest, res) => {
+    try {
+      const daysAgo = req.query.days ? parseInt(req.query.days as string) : 7;
+      const overview = await getAnalyticsOverview(daysAgo);
+      res.json(overview);
+    } catch (error) {
+      console.error("Error fetching analytics overview:", error);
+      res.status(500).json({ error: "Failed to fetch analytics overview" });
+    }
+  });
+
+  app.get("/api/admin/analytics/top-pages", isAuthenticated, async (req: AuthRequest, res) => {
+    try {
+      const daysAgo = req.query.days ? parseInt(req.query.days as string) : 7;
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+      const topPages = await getTopPages(daysAgo, limit);
+      res.json(topPages);
+    } catch (error) {
+      console.error("Error fetching top pages:", error);
+      res.status(500).json({ error: "Failed to fetch top pages" });
+    }
+  });
+
+  app.get("/api/admin/analytics/countries", isAuthenticated, async (req: AuthRequest, res) => {
+    try {
+      const daysAgo = req.query.days ? parseInt(req.query.days as string) : 7;
+      const countries = await getCountryStats(daysAgo);
+      res.json(countries);
+    } catch (error) {
+      console.error("Error fetching country stats:", error);
+      res.status(500).json({ error: "Failed to fetch country stats" });
+    }
+  });
+
+  app.get("/api/admin/analytics/devices", isAuthenticated, async (req: AuthRequest, res) => {
+    try {
+      const daysAgo = req.query.days ? parseInt(req.query.days as string) : 7;
+      const devices = await getDeviceStats(daysAgo);
+      res.json(devices);
+    } catch (error) {
+      console.error("Error fetching device stats:", error);
+      res.status(500).json({ error: "Failed to fetch device stats" });
+    }
+  });
+
+  app.get("/api/admin/analytics/realtime", isAuthenticated, async (req: AuthRequest, res) => {
+    try {
+      const realtime = await getRealtimeData();
+      res.json(realtime);
+    } catch (error) {
+      console.error("Error fetching realtime data:", error);
+      res.status(500).json({ error: "Failed to fetch realtime data" });
+    }
+  });
+
+  app.get("/api/admin/analytics/trend", isAuthenticated, async (req: AuthRequest, res) => {
+    try {
+      const daysAgo = req.query.days ? parseInt(req.query.days as string) : 7;
+      const trend = await getVisitorsTrend(daysAgo);
+      res.json(trend);
+    } catch (error) {
+      console.error("Error fetching visitors trend:", error);
+      res.status(500).json({ error: "Failed to fetch visitors trend" });
+    }
+  });
+
   // 🇨🇺 CUBAN OPTIMIZATION: Categories API with caching
   app.get("/api/categories", async (req: AuthRequest, res) => {
     try {
