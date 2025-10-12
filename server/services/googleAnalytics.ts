@@ -1,6 +1,10 @@
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import { google } from '@google-analytics/data/build/protos/protos';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PROPERTY_ID = '506069216';
 const CREDENTIALS_PATH = path.join(__dirname, '../google-analytics-credentials.json');
