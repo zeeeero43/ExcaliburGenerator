@@ -2,6 +2,7 @@ import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import { google } from '@google-analytics/data/build/protos/protos';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import * as fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,9 +14,29 @@ let analyticsDataClient: BetaAnalyticsDataClient;
 
 function getClient() {
   if (!analyticsDataClient) {
-    analyticsDataClient = new BetaAnalyticsDataClient({
-      keyFilename: CREDENTIALS_PATH,
-    });
+    // Check if credentials are provided via environment variable (for VPS/production)
+    if (process.env.GOOGLE_ANALYTICS_CREDENTIALS) {
+      try {
+        const credentials = JSON.parse(process.env.GOOGLE_ANALYTICS_CREDENTIALS);
+        analyticsDataClient = new BetaAnalyticsDataClient({
+          credentials: credentials,
+        });
+        console.log('📊 Google Analytics: Using credentials from environment variable');
+      } catch (error) {
+        console.error('❌ Failed to parse GOOGLE_ANALYTICS_CREDENTIALS:', error);
+        throw new Error('Invalid GOOGLE_ANALYTICS_CREDENTIALS format');
+      }
+    }
+    // Otherwise, use local file (for development)
+    else if (fs.existsSync(CREDENTIALS_PATH)) {
+      analyticsDataClient = new BetaAnalyticsDataClient({
+        keyFilename: CREDENTIALS_PATH,
+      });
+      console.log('📊 Google Analytics: Using credentials from local file');
+    } else {
+      console.error('❌ No Google Analytics credentials found!');
+      throw new Error('Google Analytics credentials not configured');
+    }
   }
   return analyticsDataClient;
 }
