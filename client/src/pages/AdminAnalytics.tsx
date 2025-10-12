@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, Eye, MousePointerClick, TrendingUp, Globe, Smartphone, Clock, Activity } from 'lucide-react';
+import { Users, Eye, MousePointerClick, TrendingUp, Globe, Smartphone, Clock, RotateCw } from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -54,12 +54,6 @@ interface DeviceStat {
   percentage: number;
 }
 
-interface RealtimeData {
-  activeUsers: number;
-  screenPageViews: number;
-  topPages: Array<{ pagePath: string; activeUsers: number }>;
-}
-
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
 export default function AdminAnalytics() {
@@ -84,13 +78,6 @@ export default function AdminAnalytics() {
   const { data: devices } = useQuery<DeviceStat[]>({
     queryKey: [`/api/admin/analytics/devices?days=${timeRange}`],
     refetchInterval: autoRefresh ? 30000 : false,
-  });
-
-  const { data: realtime } = useQuery<RealtimeData>({
-    queryKey: ['/api/admin/analytics/realtime'],
-    refetchInterval: 10000, // Realtime updates every 10 seconds
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
   });
 
   const { data: trend } = useQuery<Array<{ date: string; visitors: number; sessions: number }>>({
@@ -171,37 +158,10 @@ export default function AdminAnalytics() {
             size="sm"
             onClick={() => setAutoRefresh(!autoRefresh)}
           >
-            <Activity className="w-4 h-4 mr-2" />
+            <RotateCw className="w-4 h-4 mr-2" />
             Auto-Refresh {autoRefresh ? 'AN' : 'AUS'}
           </Button>
         </div>
-
-        {/* Realtime Widget */}
-        <Card className="mb-6 border-green-200 bg-green-50">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-700">
-              <Activity className="w-5 h-5" />
-              Live - Jetzt aktiv
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-8">
-              <div>
-                <div className="text-4xl font-bold text-green-700">{realtime?.activeUsers || 0}</div>
-                <div className="text-sm text-green-600">Aktive Besucher</div>
-              </div>
-              <div className="flex-1">
-                <div className="text-sm text-gray-600 mb-2">Aktive Seiten:</div>
-                {realtime?.topPages?.slice(0, 3).map((page, idx) => (
-                  <div key={idx} className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-700 truncate max-w-xs">{page.pagePath}</span>
-                    <span className="text-green-600 font-semibold">{page.activeUsers}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Overview Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
