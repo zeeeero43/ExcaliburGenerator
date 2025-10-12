@@ -8,7 +8,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PROPERTY_ID = '506069216';
-const CREDENTIALS_PATH = path.join(__dirname, '../google-analytics-credentials.json');
+
+// Try multiple possible paths for credentials file (development vs production build)
+const POSSIBLE_CREDENTIAL_PATHS = [
+  path.join(__dirname, '../google-analytics-credentials.json'),           // Production: dist/.. = root
+  path.join(__dirname, '../../google-analytics-credentials.json'),        // Development: server/services/../.. = root
+  path.join(__dirname, '../server/google-analytics-credentials.json'),    // Alternative: dist/../server
+  path.join(process.cwd(), 'google-analytics-credentials.json'),          // Root of project
+  path.join(process.cwd(), 'server/google-analytics-credentials.json'),   // Server folder in root
+];
 
 let analyticsDataClient: BetaAnalyticsDataClient;
 
@@ -27,15 +35,27 @@ function getClient() {
         throw new Error('Invalid GOOGLE_ANALYTICS_CREDENTIALS format');
       }
     }
-    // Otherwise, use local file (for development)
-    else if (fs.existsSync(CREDENTIALS_PATH)) {
-      analyticsDataClient = new BetaAnalyticsDataClient({
-        keyFilename: CREDENTIALS_PATH,
-      });
-      console.log('📊 Google Analytics: Using credentials from local file');
-    } else {
-      console.error('❌ No Google Analytics credentials found!');
-      throw new Error('Google Analytics credentials not configured');
+    // Otherwise, try to find local file
+    else {
+      let foundPath: string | null = null;
+      
+      for (const credPath of POSSIBLE_CREDENTIAL_PATHS) {
+        if (fs.existsSync(credPath)) {
+          foundPath = credPath;
+          break;
+        }
+      }
+      
+      if (foundPath) {
+        analyticsDataClient = new BetaAnalyticsDataClient({
+          keyFilename: foundPath,
+        });
+        console.log(`📊 Google Analytics: Using credentials from: ${foundPath}`);
+      } else {
+        console.error('❌ No Google Analytics credentials found!');
+        console.error('Searched paths:', POSSIBLE_CREDENTIAL_PATHS);
+        throw new Error('Google Analytics credentials not configured');
+      }
     }
   }
   return analyticsDataClient;
