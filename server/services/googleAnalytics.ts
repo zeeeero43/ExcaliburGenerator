@@ -236,40 +236,49 @@ export async function getRealtimeData(): Promise<RealtimeData> {
     property: `properties/${PROPERTY_ID}`,
     metrics: [
       { name: 'activeUsers' },
-      { name: 'screenPageViews' },
     ],
   });
 
-  const [pagesResponse] = await client.runRealtimeReport({
-    property: `properties/${PROPERTY_ID}`,
-    dimensions: [
-      { name: 'unifiedScreenName' },
-    ],
-    metrics: [
-      { name: 'activeUsers' },
-    ],
-    orderBys: [
-      {
-        metric: {
-          metricName: 'activeUsers',
-        },
-        desc: true,
-      },
-    ],
-    limit: 5,
-  });
+  console.log('📊 REALTIME API Response:', JSON.stringify(response, null, 2));
 
   const activeUsers = parseInt(response.rows?.[0]?.metricValues?.[0]?.value || '0');
-  const screenPageViews = parseInt(response.rows?.[0]?.metricValues?.[1]?.value || '0');
+  
+  // Try to get top pages with pagePath dimension
+  let topPages: Array<{ pagePath: string; activeUsers: number }> = [];
+  
+  try {
+    const [pagesResponse] = await client.runRealtimeReport({
+      property: `properties/${PROPERTY_ID}`,
+      dimensions: [
+        { name: 'pagePath' },
+      ],
+      metrics: [
+        { name: 'activeUsers' },
+      ],
+      orderBys: [
+        {
+          metric: {
+            metricName: 'activeUsers',
+          },
+          desc: true,
+        },
+      ],
+      limit: 5,
+    });
 
-  const topPages = (pagesResponse.rows || []).map((row) => ({
-    pagePath: row.dimensionValues?.[0]?.value || '/',
-    activeUsers: parseInt(row.metricValues?.[0]?.value || '0'),
-  }));
+    console.log('📊 REALTIME Pages Response:', JSON.stringify(pagesResponse, null, 2));
+
+    topPages = (pagesResponse.rows || []).map((row) => ({
+      pagePath: row.dimensionValues?.[0]?.value || '/',
+      activeUsers: parseInt(row.metricValues?.[0]?.value || '0'),
+    }));
+  } catch (error) {
+    console.error('Error fetching realtime pages:', error);
+  }
 
   return {
     activeUsers,
-    screenPageViews,
+    screenPageViews: activeUsers, // Simplified: use activeUsers as proxy
     topPages,
   };
 }
