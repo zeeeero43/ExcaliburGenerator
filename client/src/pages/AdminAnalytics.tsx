@@ -89,6 +89,8 @@ export default function AdminAnalytics() {
   const { data: realtime } = useQuery<RealtimeData>({
     queryKey: ['/api/admin/analytics/realtime'],
     refetchInterval: 10000, // Realtime updates every 10 seconds
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
   });
 
   const { data: trend } = useQuery<Array<{ date: string; visitors: number; sessions: number }>>({
@@ -332,14 +334,18 @@ export default function AdminAnalytics() {
             <CardContent>
               <div className="space-y-3">
                 {topPages?.slice(0, 5).map((page, idx) => (
-                  <div key={idx} className="flex items-center justify-between pb-3 border-b">
-                    <div className="flex-1">
-                      <div className="font-medium text-sm truncate">{page.pageTitle}</div>
-                      <div className="text-xs text-gray-500 truncate">{page.pagePath}</div>
+                  <div key={idx} className="flex items-start gap-3 pb-3 border-b">
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                      <div className="font-medium text-sm truncate" title={page.pageTitle}>
+                        {page.pageTitle}
+                      </div>
+                      <div className="text-xs text-gray-500 truncate" title={page.pagePath}>
+                        {page.pagePath}
+                      </div>
                     </div>
-                    <div className="text-right ml-4">
+                    <div className="text-right flex-shrink-0">
                       <div className="font-bold text-blue-600">{page.pageViews}</div>
-                      <div className="text-xs text-gray-500">{page.uniqueVisitors} Besucher</div>
+                      <div className="text-xs text-gray-500 whitespace-nowrap">{page.uniqueVisitors} Besucher</div>
                     </div>
                   </div>
                 ))}
