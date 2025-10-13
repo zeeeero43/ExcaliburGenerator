@@ -1,0 +1,73 @@
+Oct 13 07:02:51 srv896300 node[779375]: Error fetching country stats: Error: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+root@srv896300:/var/www/excalibur-cuba# journalctl -u excalibur-cuba 
+Jul 06 16:17:51 srv896300 systemd[1]: Started Excalibur Cuba Website.
+Jul 06 16:17:51 srv896300 node[7203]: Warning: connect.session() MemoryStore is not
+Jul 06 16:17:51 srv896300 node[7203]: designed for a production environment, as it will leak
+Jul 06 16:17:51 srv896300 node[7203]: memory, and will not scale past a single process.
+Jul 06 16:17:51 srv896300 node[7203]: 🌱 Starting database seeding...
+Jul 06 16:17:51 srv896300 node[7203]: ✅ Secure admin user already exists
+Jul 06 16:17:51 srv896300 node[7203]: 🎉 Database seeding completed successfully!
+Jul 06 16:17:51 srv896300 node[7203]: 4:17:51 PM [express] serving on port 5000
+Jul 06 16:18:42 srv896300 node[7203]: 4:18:42 PM [express] GET /api/site-settings 200 in 3ms :: []
+Jul 06 16:18:42 srv896300 node[7203]: 4:18:42 PM [express] GET /api/products/featured 200 in 3ms :: []
+Jul 06 16:18:42 srv896300 node[7203]: 4:18:42 PM [express] GET /api/categories 200 in 2ms :: []
+Jul 06 16:19:20 srv896300 node[7203]: Login attempt for username: excalibur_admin
+Jul 06 16:19:20 srv896300 node[7203]: Calling loginUser function...
+Jul 06 16:19:20 srv896300 node[7203]: validateAdminUser called with username: excalibur_admin
+Jul 06 16:19:20 srv896300 node[7203]: User found: YES
+Jul 06 16:19:20 srv896300 node[7203]: User is active, comparing password...
+Jul 06 16:19:20 srv896300 node[7203]: Password comparison result: false
+Jul 06 16:19:20 srv896300 node[7203]: loginUser result: FAILED
+Jul 06 16:19:20 srv896300 node[7203]: Login failed - invalid credentials
+Jul 06 16:19:20 srv896300 node[7203]: 4:19:20 PM [express] POST /api/admin/login 401 in 12ms :: {"error":"Invalid credentials"}
+Jul 06 16:19:21 srv896300 node[7203]: Login attempt for username: excalibur_admin
+Jul 06 16:19:21 srv896300 node[7203]: Calling loginUser function...
+Jul 06 16:19:21 srv896300 node[7203]: validateAdminUser called with username: excalibur_admin
+Jul 06 16:19:21 srv896300 node[7203]: User found: YES
+Jul 06 16:19:21 srv896300 node[7203]: User is active, comparing password...
+Jul 06 16:19:21 srv896300 node[7203]: Password comparison result: false
+Jul 06 16:19:21 srv896300 node[7203]: loginUser result: FAILED
+Jul 06 16:19:21 srv896300 node[7203]: Login failed - invalid credentials
+Jul 06 16:19:21 srv896300 node[7203]: 4:19:21 PM [express] POST /api/admin/login 401 in 2ms :: {"error":"Invalid credentials"}
+Jul 06 16:20:31 srv896300 node[7203]: Login attempt for username: excalibur_admin
+Jul 06 16:20:31 srv896300 node[7203]: Calling loginUser function...
+
+root@srv896300:/var/www/excalibur-cuba# ls -la dist/index.js
+-rw-r--r-- 1 root root 107666 Oct 13 07:02 dist/index.js
+root@srv896300:/var/www/excalibur-cuba# journalctl -u excalibur-cuba -n 50
+Oct 13 07:03:14 srv896300 node[779375]:     at ServiceClientImpl.makeUnaryRequest (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client.js:16>
+Oct 13 07:03:14 srv896300 node[779375]:     at ServiceClientImpl.<anonymous> (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/make-client.js:10>
+Oct 13 07:03:14 srv896300 node[779375]:     at /var/www/excalibur-cuba/node_modules/@google-analytics/data/build/src/v1beta/beta_analytics_data_client.js:23>
+Oct 13 07:03:14 srv896300 node[779375]:     at /var/www/excalibur-cuba/node_modules/google-gax/build/src/normalCalls/timeout.js:44:16
+Oct 13 07:03:14 srv896300 node[779375]:     at OngoingCallPromise.call (/var/www/excalibur-cuba/node_modules/google-gax/build/src/call.js:70:27)
+Oct 13 07:03:14 srv896300 node[779375]:     at NormalApiCaller.call (/var/www/excalibur-cuba/node_modules/google-gax/build/src/normalCalls/normalApiCaller.j>
+Oct 13 07:03:14 srv896300 node[779375]:     at /var/www/excalibur-cuba/node_modules/google-gax/build/src/createApiCall.js:110:30
+Oct 13 07:03:14 srv896300 node[779375]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+Oct 13 07:03:14 srv896300 node[779375]:   code: 16,
+Oct 13 07:03:14 srv896300 node[779375]:   details: 'Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other val>
+Oct 13 07:03:14 srv896300 node[779375]:   metadata: Metadata {
+Oct 13 07:03:14 srv896300 node[779375]:     internalRepr: Map(2) {
+Oct 13 07:03:14 srv896300 node[779375]:       'endpoint-load-metrics-bin' => [Array],
+Oct 13 07:03:14 srv896300 node[779375]:       'grpc-server-stats-bin' => [Array]
+Oct 13 07:03:14 srv896300 node[779375]:     },
+Oct 13 07:03:14 srv896300 node[779375]:     opaqueData: Map(0) {},
+Oct 13 07:03:14 srv896300 node[779375]:     options: {}
+Oct 13 07:03:14 srv896300 node[779375]:   }
+Oct 13 07:03:14 srv896300 node[779375]: }
+Oct 13 07:03:14 srv896300 node[779375]: 7:03:14 AM [express] GET /api/admin/analytics/trend 500 in 560ms :: {"error":"Failed to fetch visito…
+Oct 13 07:03:14 srv896300 node[779375]: Error fetching analytics overview: Error: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expect>
+Oct 13 07:03:14 srv896300 node[779375]:     at callErrorFromStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/call.js:32:19)
+Oct 13 07:03:14 srv896300 node[779375]:     at Object.onReceiveStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client.js:193:76)
+Oct 13 07:03:14 srv896300 node[779375]:     at Object.onReceiveStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:3>
+Oct 13 07:03:14 srv896300 node[779375]:     at Object.onReceiveStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:3>
+Oct 13 07:03:14 srv896300 node[779375]:     at /var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/resolving-call.js:135:78
+Oct 13 07:03:14 srv896300 node[779375]:     at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+Oct 13 07:03:14 srv896300 node[779375]: for call at
+Oct 13 07:03:14 srv896300 node[779375]:     at ServiceClientImpl.makeUnaryRequest (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client.js:16>
+Oct 13 07:03:14 srv896300 node[779375]:     at ServiceClientImpl.<anonymous> (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/make-client.js:10>
+Oct 13 07:03:14 srv896300 node[779375]:     at /var/www/excalibur-cuba/node_modules/@google-analytics/data/build/src/v1beta/beta_analytics_data_client.js:23>
+
+root@srv896300:/var/www/excalibur-cuba# cat google-analytics-credentials.json | jq '.client_email'
+Command 'jq' not found, but can be installed with:
+snap install jq  # version 1.5+dfsg-1, or
+apt  install jq  # version 1.6-2.1ubuntu3.1
