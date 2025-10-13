@@ -1,0 +1,91 @@
+Oct 13 08:42:55 srv896300 node[781580]: }
+Oct 13 08:42:55 srv896300 node[781580]: 8:42:55 AM [express] GET /api/admin/analytics/top-pages 500 in 517ms :: {"error":"Failed to fetch to…
+Oct 13 08:42:55 srv896300 node[781580]: Error fetching device stats: Error: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+Oct 13 08:42:55 srv896300 node[781580]:     at callErrorFromStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/call.js:32:19)
+Oct 13 08:42:55 srv896300 node[781580]:     at Object.onReceiveStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client.js:193:76)
+Oct 13 08:42:55 srv896300 node[781580]:     at Object.onReceiveStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:367:141)
+Oct 13 08:42:55 srv896300 node[781580]:     at Object.onReceiveStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:327:181)
+Oct 13 08:42:55 srv896300 node[781580]:     at /var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/resolving-call.js:135:78
+Oct 13 08:42:55 srv896300 node[781580]:     at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+Oct 13 08:42:55 srv896300 node[781580]: for call at
+Oct 13 08:42:55 srv896300 node[781580]:     at ServiceClientImpl.makeUnaryRequest (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client.js:161:32)
+Oct 13 08:42:55 srv896300 node[781580]:     at ServiceClientImpl.<anonymous> (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/make-client.js:105:19)
+Oct 13 08:42:55 srv896300 node[781580]:     at /var/www/excalibur-cuba/node_modules/@google-analytics/data/build/src/v1beta/beta_analytics_data_client.js:232:29
+Oct 13 08:42:55 srv896300 node[781580]:     at /var/www/excalibur-cuba/node_modules/google-gax/build/src/normalCalls/timeout.js:44:16
+Oct 13 08:42:55 srv896300 node[781580]:     at OngoingCallPromise.call (/var/www/excalibur-cuba/node_modules/google-gax/build/src/call.js:70:27)
+Oct 13 08:42:55 srv896300 node[781580]:     at NormalApiCaller.call (/var/www/excalibur-cuba/node_modules/google-gax/build/src/normalCalls/normalApiCaller.js:34:19)
+Oct 13 08:42:55 srv896300 node[781580]:     at /var/www/excalibur-cuba/node_modules/google-gax/build/src/createApiCall.js:110:30
+Oct 13 08:42:55 srv896300 node[781580]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+Oct 13 08:42:55 srv896300 node[781580]:   code: 16,
+Oct 13 08:42:55 srv896300 node[781580]:   details: 'Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.',
+Oct 13 08:42:55 srv896300 node[781580]:   metadata: Metadata {
+Oct 13 08:42:55 srv896300 node[781580]:     internalRepr: Map(4) {
+Oct 13 08:42:55 srv896300 node[781580]:       'endpoint-load-metrics-bin' => [Array],
+Oct 13 08:42:55 srv896300 node[781580]:       'grpc-server-stats-bin' => [Array],
+Oct 13 08:42:55 srv896300 node[781580]:       'google.rpc.errorinfo-bin' => [Array],
+Oct 13 08:42:55 srv896300 node[781580]:       'grpc-status-details-bin' => [Array]
+Oct 13 08:42:55 srv896300 node[781580]:     },
+Oct 13 08:42:55 srv896300 node[781580]:     opaqueData: Map(0) {},
+Oct 13 08:42:55 srv896300 node[781580]:     options: {}
+Oct 13 08:42:55 srv896300 node[781580]:   },
+Oct 13 08:42:55 srv896300 node[781580]:   statusDetails: [
+Oct 13 08:42:55 srv896300 node[781580]:     ErrorInfo {
+Oct 13 08:42:55 srv896300 node[781580]:       metadata: [Object],
+Oct 13 08:42:55 srv896300 node[781580]:       reason: 'ACCOUNT_STATE_INVALID',
+Oct 13 08:42:55 srv896300 node[781580]:       domain: 'googleapis.com'
+Oct 13 08:42:55 srv896300 node[781580]:     }
+Oct 13 08:42:55 srv896300 node[781580]:   ],
+Oct 13 08:42:55 srv896300 node[781580]:   reason: 'ACCOUNT_STATE_INVALID',
+Oct 13 08:42:55 srv896300 node[781580]:   domain: 'googleapis.com',
+Oct 13 08:42:55 srv896300 node[781580]:   errorInfoMetadata: {
+Oct 13 08:42:55 srv896300 node[781580]:     method: 'google.analytics.data.v1beta.BetaAnalyticsData.RunReport',
+Oct 13 08:42:55 srv896300 node[781580]:     email: 'excalibur-analytics-reader@handy-station-466715-u9.iam.gserviceaccount.com',
+Oct 13 08:42:55 srv896300 node[781580]:     service: 'analyticsdata.googleapis.com'
+Oct 13 08:42:55 srv896300 node[781580]:   }
+Oct 13 08:42:55 srv896300 node[781580]: }
+Oct 13 08:42:55 srv896300 node[781580]: 8:42:55 AM [express] GET /api/admin/analytics/devices 500 in 533ms :: {"error":"Failed to fetch devi…
+Oct 13 08:42:55 srv896300 node[781580]: Error fetching visitors trend: Error: 16 UNAUTHENTICATED: Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+Oct 13 08:42:55 srv896300 node[781580]:     at callErrorFromStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/call.js:32:19)
+Oct 13 08:42:55 srv896300 node[781580]:     at Object.onReceiveStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client.js:193:76)
+Oct 13 08:42:55 srv896300 node[781580]:     at Object.onReceiveStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:367:141)
+Oct 13 08:42:55 srv896300 node[781580]:     at Object.onReceiveStatus (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:327:181)
+Oct 13 08:42:55 srv896300 node[781580]:     at /var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/resolving-call.js:135:78
+Oct 13 08:42:55 srv896300 node[781580]:     at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+Oct 13 08:42:55 srv896300 node[781580]: for call at
+Oct 13 08:42:55 srv896300 node[781580]:     at ServiceClientImpl.makeUnaryRequest (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/client.js:161:32)
+Oct 13 08:42:55 srv896300 node[781580]:     at ServiceClientImpl.<anonymous> (/var/www/excalibur-cuba/node_modules/@grpc/grpc-js/build/src/make-client.js:105:19)
+Oct 13 08:42:55 srv896300 node[781580]:     at /var/www/excalibur-cuba/node_modules/@google-analytics/data/build/src/v1beta/beta_analytics_data_client.js:232:29
+Oct 13 08:42:55 srv896300 node[781580]:     at /var/www/excalibur-cuba/node_modules/google-gax/build/src/normalCalls/timeout.js:44:16
+Oct 13 08:42:55 srv896300 node[781580]:     at OngoingCallPromise.call (/var/www/excalibur-cuba/node_modules/google-gax/build/src/call.js:70:27)
+Oct 13 08:42:55 srv896300 node[781580]:     at NormalApiCaller.call (/var/www/excalibur-cuba/node_modules/google-gax/build/src/normalCalls/normalApiCaller.js:34:19)
+Oct 13 08:42:55 srv896300 node[781580]:     at /var/www/excalibur-cuba/node_modules/google-gax/build/src/createApiCall.js:110:30
+Oct 13 08:42:55 srv896300 node[781580]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+Oct 13 08:42:55 srv896300 node[781580]:   code: 16,
+Oct 13 08:42:55 srv896300 node[781580]:   details: 'Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.',
+Oct 13 08:42:55 srv896300 node[781580]:   metadata: Metadata {
+Oct 13 08:42:55 srv896300 node[781580]:     internalRepr: Map(4) {
+Oct 13 08:42:55 srv896300 node[781580]:       'endpoint-load-metrics-bin' => [Array],
+Oct 13 08:42:55 srv896300 node[781580]:       'grpc-server-stats-bin' => [Array],
+Oct 13 08:42:55 srv896300 node[781580]:       'google.rpc.errorinfo-bin' => [Array],
+Oct 13 08:42:55 srv896300 node[781580]:       'grpc-status-details-bin' => [Array]
+Oct 13 08:42:55 srv896300 node[781580]:     },
+Oct 13 08:42:55 srv896300 node[781580]:     opaqueData: Map(0) {},
+Oct 13 08:42:55 srv896300 node[781580]:     options: {}
+Oct 13 08:42:55 srv896300 node[781580]:   },
+Oct 13 08:42:55 srv896300 node[781580]:   statusDetails: [
+Oct 13 08:42:55 srv896300 node[781580]:     ErrorInfo {
+Oct 13 08:42:55 srv896300 node[781580]:       metadata: [Object],
+Oct 13 08:42:55 srv896300 node[781580]:       reason: 'ACCOUNT_STATE_INVALID',
+Oct 13 08:42:55 srv896300 node[781580]:       domain: 'googleapis.com'
+Oct 13 08:42:55 srv896300 node[781580]:     }
+Oct 13 08:42:55 srv896300 node[781580]:   ],
+Oct 13 08:42:55 srv896300 node[781580]:   reason: 'ACCOUNT_STATE_INVALID',
+Oct 13 08:42:55 srv896300 node[781580]:   domain: 'googleapis.com',
+Oct 13 08:42:55 srv896300 node[781580]:   errorInfoMetadata: {
+Oct 13 08:42:55 srv896300 node[781580]:     method: 'google.analytics.data.v1beta.BetaAnalyticsData.RunReport',
+Oct 13 08:42:55 srv896300 node[781580]:     email: 'excalibur-analytics-reader@handy-station-466715-u9.iam.gserviceaccount.com',
+Oct 13 08:42:55 srv896300 node[781580]:     service: 'analyticsdata.googleapis.com'
+Oct 13 08:42:55 srv896300 node[781580]:   }
+Oct 13 08:42:55 srv896300 node[781580]: }
+Oct 13 08:42:55 srv896300 node[781580]: 8:42:55 AM [express] GET /api/admin/analytics/trend 500 in 553ms :: {"error":"Failed to fetch visito…
+
