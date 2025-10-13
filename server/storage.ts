@@ -6,6 +6,7 @@ import {
   inquiries,
   siteSettings,
   uploadedImages,
+  googleAnalyticsCredentials,
   type AdminUser,
   type InsertAdminUser,
   type Category,
@@ -24,6 +25,7 @@ import {
 import { db } from "./db";
 import { eq, desc, and, or, ilike, count, countDistinct, sql, gte, isNotNull } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import { encrypt, decrypt } from "./utils/encryption";
 
 export interface IStorage {
   // Admin Users
@@ -78,6 +80,10 @@ export interface IStorage {
   createUploadedImage(image: InsertUploadedImage): Promise<UploadedImage>;
   deleteUploadedImage(id: number): Promise<void>;
   
+  // Google Analytics Credentials
+  saveGoogleAnalyticsCredentials(credentials: string, updatedBy: number): Promise<void>;
+  getGoogleAnalyticsCredentials(): Promise<string | null>;
+  hasGoogleAnalyticsCredentials(): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -389,6 +395,48 @@ export class DatabaseStorage implements IStorage {
 
   async deleteUploadedImage(id: number): Promise<void> {
     await db.delete(uploadedImages).where(eq(uploadedImages.id, id));
+  }
+
+  // Google Analytics Credentials
+  async saveGoogleAnalyticsCredentials(credentials: string, updatedBy: number): Promise<void> {
+    const encryptedCreds = encrypt(credentials);
+    
+    // Deactivate all existing credentials
+    await db.update(googleAnalyticsCredentials)
+      .set({ isActive: false })
+      .where(eq(googleAnalyticsCredentials.isActive, true));
+    
+    // Insert new encrypted credentials
+    await db.insert(googleAnalyticsCredentials).values({
+      encryptedCredentials: encryptedCreds,
+      isActive: true,
+      updatedBy,
+      updatedAt: new Date(),
+    });
+  }
+
+  async getGoogleAnalyticsCredentials(): Promise<string | null> {
+    const [creds] = await db.select()
+      .from(googleAnalyticsCredentials)
+      .where(eq(googleAnalyticsCredentials.isActive, true))
+      .limit(1);
+    
+    if (!creds) return null;
+    
+    try {
+      return decrypt(creds.encryptedCredentials);
+    } catch (error) {
+      console.error("Error decrypting Google Analytics credentials:", error);
+      return null;
+    }
+  }
+
+  async hasGoogleAnalyticsCredentials(): Promise<boolean> {
+    const [result] = await db.select({ count: count() })
+      .from(googleAnalyticsCredentials)
+      .where(eq(googleAnalyticsCredentials.isActive, true));
+    
+    return (result?.count || 0) > 0;
   }
 
 }

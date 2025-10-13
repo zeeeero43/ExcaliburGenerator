@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, Eye, MousePointerClick, TrendingUp, Globe, Smartphone, Clock, RotateCw } from 'lucide-react';
+import { Users, Eye, MousePointerClick, TrendingUp, Globe, Smartphone, Clock, RotateCw, Settings } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { apiRequest, queryClient } from '@/lib/queryClient';
 import {
   LineChart,
   Line,
@@ -59,6 +63,37 @@ const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 export default function AdminAnalytics() {
   const [timeRange, setTimeRange] = useState<TimeRange>('7');
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [credentialsDialogOpen, setCredentialsDialogOpen] = useState(false);
+  const [credentials, setCredentials] = useState('');
+  const { toast } = useToast();
+
+  const saveCredentialsMutation = useMutation({
+    mutationFn: async (creds: string) => {
+      return await apiRequest('POST', '/api/admin/analytics/credentials', { credentials: creds });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Erfolgreich gespeichert",
+        description: "Google Analytics Credentials wurden verschlüsselt gespeichert.",
+      });
+      setCredentialsDialogOpen(false);
+      setCredentials('');
+      // Refresh all analytics data - invalidate all queries starting with /api/admin/analytics
+      queryClient.invalidateQueries({ 
+        predicate: (query) => {
+          const key = query.queryKey[0];
+          return typeof key === 'string' && key.startsWith('/api/admin/analytics');
+        }
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        variant: "destructive",
+        title: "Fehler",
+        description: error.message || "Credentials konnten nicht gespeichert werden.",
+      });
+    },
+  });
 
   const { data: overview, refetch: refetchOverview } = useQuery<AnalyticsOverview>({
     queryKey: [`/api/admin/analytics/overview?days=${timeRange}`],
@@ -122,9 +157,55 @@ export default function AdminAnalytics() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Analytics Dashboard</h1>
-          <p className="text-gray-600">Google Analytics Echtzeit-Daten</p>
+        <div className="mb-8 flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Analytics Dashboard</h1>
+            <p className="text-gray-600">Google Analytics Echtzeit-Daten</p>
+          </div>
+          
+          <Dialog open={credentialsDialogOpen} onOpenChange={setCredentialsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="icon" data-testid="button-analytics-settings">
+                <Settings className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Google Analytics Credentials</DialogTitle>
+                <DialogDescription>
+                  Fügen Sie die Google Analytics Service Account JSON-Credentials ein. Diese werden verschlüsselt gespeichert.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <Textarea
+                  placeholder='{"type": "service_account", "project_id": "...", ...}'
+                  value={credentials}
+                  onChange={(e) => setCredentials(e.target.value)}
+                  className="font-mono text-sm min-h-[300px]"
+                  data-testid="textarea-credentials"
+                />
+                <div className="flex justify-end gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setCredentialsDialogOpen(false);
+                      setCredentials('');
+                    }}
+                    data-testid="button-cancel"
+                  >
+                    Abbrechen
+                  </Button>
+                  <Button
+                    onClick={() => saveCredentialsMutation.mutate(credentials)}
+                    disabled={!credentials.trim() || saveCredentialsMutation.isPending}
+                    data-testid="button-save-credentials"
+                  >
+                    {saveCredentialsMutation.isPending ? 'Speichere...' : 'Speichern'}
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Time Range Selector */}

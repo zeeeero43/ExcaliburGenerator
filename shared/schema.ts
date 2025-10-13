@@ -148,6 +148,16 @@ export const uploadedImages = pgTable("uploaded_images", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Google Analytics Credentials (encrypted)
+export const googleAnalyticsCredentials = pgTable("google_analytics_credentials", {
+  id: serial("id").primaryKey(),
+  encryptedCredentials: text("encrypted_credentials").notNull(),
+  isActive: boolean("is_active").default(true),
+  updatedBy: integer("updated_by").references(() => adminUsers.id),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 
 // Relations
 export const categoriesRelations = relations(categories, ({ many }) => ({
@@ -218,6 +228,12 @@ export const insertSiteSettingSchema = createInsertSchema(siteSettings).omit({
   updatedAt: true,
 });
 
+export const insertGoogleAnalyticsCredentialsSchema = createInsertSchema(googleAnalyticsCredentials).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type AdminUser = typeof adminUsers.$inferSelect;
 export type InsertAdminUser = z.infer<typeof insertAdminUserSchema>;
@@ -234,4 +250,7 @@ export type InsertSiteSetting = z.infer<typeof insertSiteSettingSchema>;
 
 export type UploadedImage = typeof uploadedImages.$inferSelect;
 export type InsertUploadedImage = typeof uploadedImages.$inferInsert;
+
+export type GoogleAnalyticsCredentials = typeof googleAnalyticsCredentials.$inferSelect;
+export type InsertGoogleAnalyticsCredentials = z.infer<typeof insertGoogleAnalyticsCredentialsSchema>;
 

@@ -601,6 +601,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Google Analytics Credentials Management
+  app.post("/api/admin/analytics/credentials", isAuthenticated, async (req: AuthRequest, res) => {
+    try {
+      const { credentials } = req.body;
+      
+      if (!credentials) {
+        return res.status(400).json({ error: "Credentials JSON required" });
+      }
+
+      // Validate JSON format
+      let credentialsObj;
+      try {
+        credentialsObj = typeof credentials === 'string' ? JSON.parse(credentials) : credentials;
+      } catch {
+        return res.status(400).json({ error: "Invalid JSON format" });
+      }
+
+      // Validate required fields
+      if (!credentialsObj.client_email || !credentialsObj.private_key) {
+        return res.status(400).json({ error: "Missing required fields (client_email, private_key)" });
+      }
+
+      // Save encrypted credentials
+      await storage.saveGoogleAnalyticsCredentials(
+        JSON.stringify(credentialsObj),
+        req.user!.id
+      );
+
+      res.json({ success: true, message: "Credentials saved successfully" });
+    } catch (error) {
+      console.error("Error saving Google Analytics credentials:", error);
+      res.status(500).json({ error: "Failed to save credentials" });
+    }
+  });
+
+  app.get("/api/admin/analytics/credentials/status", isAuthenticated, async (req: AuthRequest, res) => {
+    try {
+      const hasCredentials = await storage.hasGoogleAnalyticsCredentials();
+      res.json({ configured: hasCredentials });
+    } catch (error) {
+      console.error("Error checking credentials status:", error);
+      res.status(500).json({ error: "Failed to check credentials status" });
+    }
+  });
+
   // 🇨🇺 CUBAN OPTIMIZATION: Categories API with caching
   app.get("/api/categories", async (req: AuthRequest, res) => {
     try {

@@ -3,6 +3,7 @@ import { google } from '@google-analytics/data/build/protos/protos';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 import * as fs from 'fs';
+import { storage } from '../storage';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,9 +21,24 @@ const POSSIBLE_CREDENTIAL_PATHS = [
 
 let analyticsDataClient: BetaAnalyticsDataClient;
 
-function getClient() {
+async function getClient() {
   if (!analyticsDataClient) {
-    // Option 1: Use environment variable (best for VPS with systemd)
+    // Option 1: Try to load from database (encrypted, admin-configured)
+    try {
+      const dbCredentials = await storage.getGoogleAnalyticsCredentials();
+      if (dbCredentials) {
+        const credentials = JSON.parse(dbCredentials);
+        analyticsDataClient = new BetaAnalyticsDataClient({
+          credentials: credentials,
+        });
+        console.log('📊 Google Analytics: Using encrypted credentials from database');
+        return analyticsDataClient;
+      }
+    } catch (error) {
+      console.error('❌ Failed to load credentials from database:', error);
+    }
+
+    // Option 2: Use environment variable (VPS with systemd)
     if (process.env.GOOGLE_ANALYTICS_CREDENTIALS) {
       try {
         const credentials = JSON.parse(process.env.GOOGLE_ANALYTICS_CREDENTIALS);
@@ -36,7 +52,7 @@ function getClient() {
       }
     }
     
-    // Option 2: Try to find credentials file in multiple locations
+    // Option 3: Try to find credentials file (fallback for development)
     let foundPath: string | null = null;
     
     for (const credPath of POSSIBLE_CREDENTIAL_PATHS) {
@@ -53,7 +69,7 @@ function getClient() {
       console.log(`📊 Google Analytics: Using credentials from file: ${foundPath}`);
     } else {
       console.error('❌ No Google Analytics credentials found!');
-      console.error('Searched paths:', POSSIBLE_CREDENTIAL_PATHS);
+      console.error('Searched: Database, Environment Variable, File Paths');
       throw new Error('Google Analytics credentials not configured');
     }
   }
@@ -98,7 +114,7 @@ export interface RealtimeData {
 }
 
 export async function getAnalyticsOverview(daysAgo: number = 7): Promise<AnalyticsOverview> {
-  const client = getClient();
+  const client = await getClient();
   
   const [response] = await client.runReport({
     property: `properties/${PROPERTY_ID}`,
@@ -151,7 +167,7 @@ export async function getAnalyticsOverview(daysAgo: number = 7): Promise<Analyti
 }
 
 export async function getTopPages(daysAgo: number = 7, limit: number = 10): Promise<TopPage[]> {
-  const client = getClient();
+  const client = await getClient();
   
   const [response] = await client.runReport({
     property: `properties/${PROPERTY_ID}`,
@@ -189,7 +205,7 @@ export async function getTopPages(daysAgo: number = 7, limit: number = 10): Prom
 }
 
 export async function getCountryStats(daysAgo: number = 7): Promise<CountryStat[]> {
-  const client = getClient();
+  const client = await getClient();
   
   const [response] = await client.runReport({
     property: `properties/${PROPERTY_ID}`,
@@ -234,7 +250,7 @@ export async function getCountryStats(daysAgo: number = 7): Promise<CountryStat[
 }
 
 export async function getDeviceStats(daysAgo: number = 7): Promise<DeviceStat[]> {
-  const client = getClient();
+  const client = await getClient();
   
   const [response] = await client.runReport({
     property: `properties/${PROPERTY_ID}`,
@@ -270,7 +286,7 @@ export async function getDeviceStats(daysAgo: number = 7): Promise<DeviceStat[]>
 }
 
 export async function getRealtimeData(): Promise<RealtimeData> {
-  const client = getClient();
+  const client = await getClient();
   
   const [response] = await client.runRealtimeReport({
     property: `properties/${PROPERTY_ID}`,
@@ -324,7 +340,7 @@ export async function getRealtimeData(): Promise<RealtimeData> {
 }
 
 export async function getVisitorsTrend(daysAgo: number = 7): Promise<Array<{ date: string; visitors: number; sessions: number }>> {
-  const client = getClient();
+  const client = await getClient();
   
   const [response] = await client.runReport({
     property: `properties/${PROPERTY_ID}`,
