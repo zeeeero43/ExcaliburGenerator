@@ -25,7 +25,6 @@ import {
 import { db } from "./db";
 import { eq, desc, and, or, ilike, count, countDistinct, sql, gte, isNotNull } from "drizzle-orm";
 import bcrypt from "bcryptjs";
-import { encrypt, decrypt } from "./utils/encryption";
 
 export interface IStorage {
   // Admin Users
@@ -81,7 +80,7 @@ export interface IStorage {
   deleteUploadedImage(id: number): Promise<void>;
   
   // Google Analytics Credentials
-  saveGoogleAnalyticsCredentials(credentials: string, updatedBy: number): Promise<void>;
+  saveGoogleAnalyticsCredentials(credentials: string): Promise<void>;
   getGoogleAnalyticsCredentials(): Promise<string | null>;
   hasGoogleAnalyticsCredentials(): Promise<boolean>;
 }
@@ -399,16 +398,14 @@ export class DatabaseStorage implements IStorage {
 
   // Google Analytics Credentials
   async saveGoogleAnalyticsCredentials(credentials: string): Promise<void> {
-    const encryptedCreds = encrypt(credentials);
-    
     // Deactivate all existing credentials
     await db.update(googleAnalyticsCredentials)
       .set({ isActive: false })
       .where(eq(googleAnalyticsCredentials.isActive, true));
     
-    // Insert new encrypted credentials
+    // Insert new credentials (stored directly in database - database itself is protected)
     await db.insert(googleAnalyticsCredentials).values({
-      encryptedCredentials: encryptedCreds,
+      credentials: credentials,
       isActive: true,
       updatedAt: new Date(),
     });
@@ -420,14 +417,7 @@ export class DatabaseStorage implements IStorage {
       .where(eq(googleAnalyticsCredentials.isActive, true))
       .limit(1);
     
-    if (!creds) return null;
-    
-    try {
-      return decrypt(creds.encryptedCredentials);
-    } catch (error) {
-      console.error("Error decrypting Google Analytics credentials:", error);
-      return null;
-    }
+    return creds?.credentials || null;
   }
 
   async hasGoogleAnalyticsCredentials(): Promise<boolean> {

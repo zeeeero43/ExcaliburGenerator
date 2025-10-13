@@ -148,10 +148,10 @@ export const uploadedImages = pgTable("uploaded_images", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// Google Analytics Credentials (encrypted)
+// Google Analytics Credentials
 export const googleAnalyticsCredentials = pgTable("google_analytics_credentials", {
   id: serial("id").primaryKey(),
-  encryptedCredentials: text("encrypted_credentials").notNull(),
+  credentials: text("credentials").notNull(),
   isActive: boolean("is_active").default(true),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
