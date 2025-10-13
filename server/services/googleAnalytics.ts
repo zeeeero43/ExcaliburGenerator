@@ -22,54 +22,39 @@ let analyticsDataClient: BetaAnalyticsDataClient;
 
 function getClient() {
   if (!analyticsDataClient) {
-    let credentials: any = null;
-    
-    // Check if credentials are provided via environment variable (for VPS/production)
+    // Option 1: Use environment variable (best for VPS with systemd)
     if (process.env.GOOGLE_ANALYTICS_CREDENTIALS) {
       try {
-        credentials = JSON.parse(process.env.GOOGLE_ANALYTICS_CREDENTIALS);
+        const credentials = JSON.parse(process.env.GOOGLE_ANALYTICS_CREDENTIALS);
+        analyticsDataClient = new BetaAnalyticsDataClient({
+          credentials: credentials,
+        });
         console.log('📊 Google Analytics: Using credentials from environment variable');
+        return analyticsDataClient;
       } catch (error) {
         console.error('❌ Failed to parse GOOGLE_ANALYTICS_CREDENTIALS:', error);
-        throw new Error('Invalid GOOGLE_ANALYTICS_CREDENTIALS format');
-      }
-    }
-    // Otherwise, try to find and read local file
-    else {
-      let foundPath: string | null = null;
-      
-      for (const credPath of POSSIBLE_CREDENTIAL_PATHS) {
-        if (fs.existsSync(credPath)) {
-          foundPath = credPath;
-          break;
-        }
-      }
-      
-      if (foundPath) {
-        try {
-          const fileContent = fs.readFileSync(foundPath, 'utf-8');
-          credentials = JSON.parse(fileContent);
-          console.log(`📊 Google Analytics: Using credentials from: ${foundPath}`);
-        } catch (error) {
-          console.error(`❌ Failed to read credentials from ${foundPath}:`, error);
-          throw new Error('Failed to load Google Analytics credentials');
-        }
-      } else {
-        console.error('❌ No Google Analytics credentials found!');
-        console.error('Searched paths:', POSSIBLE_CREDENTIAL_PATHS);
-        throw new Error('Google Analytics credentials not configured');
       }
     }
     
-    // Create client with credentials object (avoids deprecated fromJSON method)
-    if (credentials) {
+    // Option 2: Try to find credentials file in multiple locations
+    let foundPath: string | null = null;
+    
+    for (const credPath of POSSIBLE_CREDENTIAL_PATHS) {
+      if (fs.existsSync(credPath)) {
+        foundPath = credPath;
+        break;
+      }
+    }
+    
+    if (foundPath) {
       analyticsDataClient = new BetaAnalyticsDataClient({
-        credentials: {
-          client_email: credentials.client_email,
-          private_key: credentials.private_key,
-        },
-        projectId: credentials.project_id,
+        keyFilename: foundPath,
       });
+      console.log(`📊 Google Analytics: Using credentials from file: ${foundPath}`);
+    } else {
+      console.error('❌ No Google Analytics credentials found!');
+      console.error('Searched paths:', POSSIBLE_CREDENTIAL_PATHS);
+      throw new Error('Google Analytics credentials not configured');
     }
   }
   return analyticsDataClient;
