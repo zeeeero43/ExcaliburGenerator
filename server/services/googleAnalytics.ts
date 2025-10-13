@@ -22,20 +22,19 @@ let analyticsDataClient: BetaAnalyticsDataClient;
 
 function getClient() {
   if (!analyticsDataClient) {
+    let credentials: any = null;
+    
     // Check if credentials are provided via environment variable (for VPS/production)
     if (process.env.GOOGLE_ANALYTICS_CREDENTIALS) {
       try {
-        const credentials = JSON.parse(process.env.GOOGLE_ANALYTICS_CREDENTIALS);
-        analyticsDataClient = new BetaAnalyticsDataClient({
-          credentials: credentials,
-        });
+        credentials = JSON.parse(process.env.GOOGLE_ANALYTICS_CREDENTIALS);
         console.log('📊 Google Analytics: Using credentials from environment variable');
       } catch (error) {
         console.error('❌ Failed to parse GOOGLE_ANALYTICS_CREDENTIALS:', error);
         throw new Error('Invalid GOOGLE_ANALYTICS_CREDENTIALS format');
       }
     }
-    // Otherwise, try to find local file
+    // Otherwise, try to find and read local file
     else {
       let foundPath: string | null = null;
       
@@ -47,15 +46,30 @@ function getClient() {
       }
       
       if (foundPath) {
-        analyticsDataClient = new BetaAnalyticsDataClient({
-          keyFilename: foundPath,
-        });
-        console.log(`📊 Google Analytics: Using credentials from: ${foundPath}`);
+        try {
+          const fileContent = fs.readFileSync(foundPath, 'utf-8');
+          credentials = JSON.parse(fileContent);
+          console.log(`📊 Google Analytics: Using credentials from: ${foundPath}`);
+        } catch (error) {
+          console.error(`❌ Failed to read credentials from ${foundPath}:`, error);
+          throw new Error('Failed to load Google Analytics credentials');
+        }
       } else {
         console.error('❌ No Google Analytics credentials found!');
         console.error('Searched paths:', POSSIBLE_CREDENTIAL_PATHS);
         throw new Error('Google Analytics credentials not configured');
       }
+    }
+    
+    // Create client with credentials object (avoids deprecated fromJSON method)
+    if (credentials) {
+      analyticsDataClient = new BetaAnalyticsDataClient({
+        credentials: {
+          client_email: credentials.client_email,
+          private_key: credentials.private_key,
+        },
+        projectId: credentials.project_id,
+      });
     }
   }
   return analyticsDataClient;
