@@ -398,7 +398,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Google Analytics Credentials
-  async saveGoogleAnalyticsCredentials(credentials: string, updatedBy: number): Promise<void> {
+  async saveGoogleAnalyticsCredentials(credentials: string): Promise<void> {
     const encryptedCreds = encrypt(credentials);
     
     // Deactivate all existing credentials
@@ -410,7 +410,6 @@ export class DatabaseStorage implements IStorage {
     await db.insert(googleAnalyticsCredentials).values({
       encryptedCredentials: encryptedCreds,
       isActive: true,
-      updatedBy,
       updatedAt: new Date(),
     });
   }

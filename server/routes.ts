@@ -624,10 +624,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Save encrypted credentials
-      await storage.saveGoogleAnalyticsCredentials(
-        JSON.stringify(credentialsObj),
-        req.user!.id
-      );
+      await storage.saveGoogleAnalyticsCredentials(JSON.stringify(credentialsObj));
 
       res.json({ success: true, message: "Credentials saved successfully" });
     } catch (error) {

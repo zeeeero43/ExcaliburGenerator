@@ -153,8 +153,6 @@ export const googleAnalyticsCredentials = pgTable("google_analytics_credentials"
   id: serial("id").primaryKey(),
   encryptedCredentials: text("encrypted_credentials").notNull(),
   isActive: boolean("is_active").default(true),
-  updatedBy: integer("updated_by").references(() => adminUsers.id),
-  createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
