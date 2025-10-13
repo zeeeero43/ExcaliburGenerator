@@ -73,6 +73,13 @@ echo "⚠️  This key will NOT be shown again. Store it safely!"
 echo "   If you lose it, you'll need to reconfigure Google Analytics credentials."
 echo ""
 
+# Rebuild application
+echo "🔨 Rebuilding application..."
+cd "$PROJECT_DIR"
+npm run build
+echo "✅ Application rebuilt successfully"
+echo ""
+
 # Ask about restarting the service
 echo "🔄 Restarting application..."
 echo ""
@@ -91,7 +98,7 @@ else
     echo "   Please restart your application manually:"
     echo "   - PM2: pm2 restart all"
     echo "   - systemd: sudo systemctl restart excalibur-cuba"
-    echo "   - Manual: cd $PROJECT_DIR && npm start"
+    echo "   - Manual: cd $PROJECT_DIR && npm run build && npm start"
 fi
 
 echo ""
